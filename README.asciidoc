@@ -1,4 +1,4 @@
-Freddix
+Packages
 ===================
 
 This is a repository containing packages in spec format.
