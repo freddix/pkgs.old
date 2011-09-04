@@ -1,0 +1,15 @@
+--- systemd-26/configure.ac.orig	2011-05-02 14:05:34.544253875 +0200
++++ systemd-26/configure.ac	2011-05-02 14:22:04.085559738 +0200
+@@ -369,6 +369,12 @@ case $with_distro in
+                 M4_DISTRO_FLAG=-DTARGET_MANDRIVA=1
+ 		have_plymouth=true
+                 ;;
++        freddix)
++    		SYSTEM_SYSVINIT_PATH=
++    		SYSTEM_SYSVRCND_PATH=
++    		AC_DEFINE(TARGET_PLD, [], [Target is Freddix])
++    		M4_DISTRO_FLAG=-DTARGET_FREDDIX=1
++    		;;
+         meego)
+                 SYSTEM_SYSVINIT_PATH=
+                 SYSTEM_SYSVRCND_PATH=
