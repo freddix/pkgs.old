@@ -1,7 +1,7 @@
 Summary:	A System and Service Manager
 Name:		systemd
 Version:	34
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.bz2
@@ -31,13 +31,13 @@ BuildRequires:	vala
 Requires(post,postun):	/sbin/ldconfig
 Requires:	%{name}-units = %{version}-%{release}
 Provides:	virtual(init-daemon)
+Requires:	agetty
 Requires:	dbus
 Requires:	kbd
-Requires:	mingetty
 Requires:	python-dbus
 Requires:	terminus-font-console
 Requires:	udev
-Requires:	util-linux
+Requires:	util-linux >= 2.20
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -71,9 +71,6 @@ Graphical front-end for systemd.
 %prep
 %setup -q
 %patch0 -p1
-
-# until agetty will be pimped upstream
-sed -i "s|ExecStart.*|ExecStart=-/sbin/mingetty %I|" units/getty@.service*
 
 %build
 %{__aclocal} -I m4
