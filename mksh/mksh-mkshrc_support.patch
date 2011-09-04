@@ -1,0 +1,19 @@
+--- main.c~	2011-07-07 18:15:26.961632040 +0100
++++ main.c	2011-07-07 18:15:50.664694256 +0100
+@@ -532,10 +532,14 @@
+ 		char *env_file;
+ 
+ 		/* include $ENV */
+-		env_file = substitute(substitute("${ENV:-" MKSHRC_PATH "}", 0),
+-		    DOTILDE);
++                env_file = substitute(substitute("${ENV}", 0), DOTILDE);
+ 		if (*env_file != '\0')
+ 			include(env_file, 0, NULL, 1);
++                else { 
++			env_file = substitute(MKSHRC_PATH, DOTILDE);
++			include("/etc/mkshrc", 0, NULL, 1);
++			include(env_file, 0, NULL, 1);
++                        }
+ 	}
+ 
+ 	if (restricted) {
