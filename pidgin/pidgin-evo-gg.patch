@@ -1,0 +1,111 @@
+diff -aurN pidgin-2.4.1.orig/pidgin/gtkblist.c pidgin-2.4.1/pidgin/gtkblist.c
+--- pidgin-2.4.1.orig/pidgin/gtkblist.c	2008-04-02 18:06:18.000000000 +0200
++++ pidgin-2.4.1/pidgin/gtkblist.c	2008-04-02 18:14:20.000000000 +0200
+@@ -1872,6 +1872,7 @@
+ 	char *s, *c;
+ 	char *alias    = NULL;
+ 	GList *aims    = NULL;
++	GList *ggs    = NULL;
+ 	GList *icqs    = NULL;
+ 	GList *yahoos  = NULL;
+ 	GList *msns    = NULL;
+@@ -1913,9 +1914,9 @@
+ 		/* We only want to worry about a few fields here. */
+ 		if (!strcmp(field, "FN"))
+ 			alias = g_strdup(value);
+-		else if (!strcmp(field, "X-AIM") || !strcmp(field, "X-ICQ") ||
+-				 !strcmp(field, "X-YAHOO") || !strcmp(field, "X-MSN") ||
+-				 !strcmp(field, "X-JABBER"))
++		else if (!strcmp(field, "X-AIM") || !strcmp(field, "X-GADUGADU") ||
++				 !strcmp(field, "X-ICQ") || !strcmp(field, "X-YAHOO") ||
++				 !strcmp(field, "X-MSN") || !strcmp(field, "X-JABBER"))
+ 		{
+ 			char **values = g_strsplit(value, ":", 0);
+ 			char **im;
+@@ -1924,6 +1925,8 @@
+ 			{
+ 				if (!strcmp(field, "X-AIM"))
+ 					aims = g_list_append(aims, g_strdup(*im));
++				else if (!strcmp(field, "X-GADUGADU"))
++					ggs = g_list_append(ggs, g_strdup(*im));
+ 				else if (!strcmp(field, "X-ICQ"))
+ 					icqs = g_list_append(icqs, g_strdup(*im));
+ 				else if (!strcmp(field, "X-YAHOO"))
+@@ -1940,8 +1943,8 @@
+ 
+ 	g_free(temp_vcard);
+ 
+-	if (aims == NULL && icqs == NULL && yahoos == NULL &&
+-		msns == NULL && jabbers == NULL)
++	if (aims == NULL && ggs == NULL && icqs == NULL &&
++		yahoos == NULL && msns == NULL && jabbers == NULL)
+ 	{
+ 		g_free(alias);
+ 
+@@ -1949,6 +1952,7 @@
+ 	}
+ 
+ 	add_buddies_from_vcard("prpl-oscar",  group, aims,    alias);
++	add_buddies_from_vcard("prpl-gg",     group, ggs,     alias);
+ 	add_buddies_from_vcard("prpl-oscar",  group, icqs,    alias);
+ 	add_buddies_from_vcard("prpl-yahoo",  group, yahoos,  alias);
+ 	add_buddies_from_vcard("prpl-msn",    group, msns,    alias);
+diff -aurN pidgin-2.4.1.orig/pidgin/plugins/gevolution/add_buddy_dialog.c pidgin-2.4.1/pidgin/plugins/gevolution/add_buddy_dialog.c
+--- pidgin-2.4.1.orig/pidgin/plugins/gevolution/add_buddy_dialog.c	2008-04-02 18:06:18.000000000 +0200
++++ pidgin-2.4.1/pidgin/plugins/gevolution/add_buddy_dialog.c	2008-04-02 18:16:27.000000000 +0200
+@@ -287,19 +287,20 @@
+ 	{
+ 		EContact *contact = E_CONTACT(c->data);
+ 		const char *name;
+-		GList *aims, *jabbers, *yahoos, *msns, *icqs, *novells;
++		GList *aims, *ggs, *jabbers, *yahoos, *msns, *icqs, *novells;
+ 
+ 		name = e_contact_get_const(contact, E_CONTACT_FULL_NAME);
+ 
+ 		aims    = e_contact_get(contact, E_CONTACT_IM_AIM);
++		ggs     = e_contact_get(contact, E_CONTACT_IM_GADUGADU);
+ 		jabbers = e_contact_get(contact, E_CONTACT_IM_JABBER);
+ 		yahoos  = e_contact_get(contact, E_CONTACT_IM_YAHOO);
+ 		msns    = e_contact_get(contact, E_CONTACT_IM_MSN);
+ 		icqs    = e_contact_get(contact, E_CONTACT_IM_ICQ);
+ 		novells = e_contact_get(contact, E_CONTACT_IM_GROUPWISE);
+ 
+-		if (aims == NULL && jabbers == NULL && yahoos == NULL &&
+-			msns == NULL && icqs == NULL && novells == NULL)
++		if (aims == NULL && ggs == NULL && jabbers == NULL &&
++			yahoos == NULL && msns == NULL && icqs == NULL && novells == NULL)
+ 		{
+ 			GtkTreeIter iter;
+ 
+@@ -313,6 +314,7 @@
+ 		else
+ 		{
+ 			add_ims(dialog, contact, name, aims,    "prpl-oscar");
++			add_ims(dialog, contact, name, ggs,     "prpl-gg");
+ 			add_ims(dialog, contact, name, aims,    "prpl-aim");
+ 			add_ims(dialog, contact, name, jabbers, "prpl-jabber");
+ 			add_ims(dialog, contact, name, yahoos,  "prpl-yahoo");
+diff -aurN pidgin-2.4.1.orig/pidgin/plugins/gevolution/gevo-util.c pidgin-2.4.1/pidgin/plugins/gevolution/gevo-util.c
+--- pidgin-2.4.1.orig/pidgin/plugins/gevolution/gevo-util.c	2008-04-02 18:06:18.000000000 +0200
++++ pidgin-2.4.1/pidgin/plugins/gevolution/gevo-util.c	2008-04-02 18:19:46.000000000 +0200
+@@ -111,6 +111,8 @@
+ 	}
+ 	else if (!strcmp(protocol_id, "prpl-aim"))
+ 		protocol_field = E_CONTACT_IM_AIM;
++	else if (!strcmp(protocol_id, "prpl-gg"))
++		protocol_field = E_CONTACT_IM_GADUGADU;
+ 	else if (!strcmp(protocol_id, "prpl-icq"))
+ 		protocol_field = E_CONTACT_IM_ICQ;
+ 	else if (!strcmp(protocol_id, "prpl-msn"))
+diff -aurN pidgin-2.4.1.orig/pidgin/plugins/gevolution/new_person_dialog.c pidgin-2.4.1/pidgin/plugins/gevolution/new_person_dialog.c
+--- pidgin-2.4.1.orig/pidgin/plugins/gevolution/new_person_dialog.c	2008-04-02 18:06:18.000000000 +0200
++++ pidgin-2.4.1/pidgin/plugins/gevolution/new_person_dialog.c	2008-04-02 18:20:43.000000000 +0200
+@@ -150,6 +150,8 @@
+ 		}
+ 		else if (!strcmp(im_service, "prpl-aim"))
+ 			field = E_CONTACT_IM_AIM;
++		else if (!strcmp(im_service, "prpl-gg"))
++			field = E_CONTACT_IM_GADUGADU;
+ 		else if (!strcmp(im_service, "prpl-icq"))
+ 			field = E_CONTACT_IM_ICQ;
+ 		else if (!strcmp(im_service, "prpl-yahoo"))

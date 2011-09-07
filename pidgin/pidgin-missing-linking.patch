@@ -1,0 +1,37 @@
+diff -aurN pidgin-2.10.0.orig/libpurple/protocols/jabber/Makefile.am pidgin-2.10.0/libpurple/protocols/jabber/Makefile.am
+--- pidgin-2.10.0.orig/libpurple/protocols/jabber/Makefile.am	2011-09-07 22:06:49.199151623 +0200
++++ pidgin-2.10.0/libpurple/protocols/jabber/Makefile.am	2011-09-07 22:07:47.354424583 +0200
+@@ -111,7 +111,8 @@
+ st =
+ pkg_LTLIBRARIES      = libjabber.la libxmpp.la
+ libjabber_la_SOURCES = $(JABBERSOURCES)
+-libjabber_la_LIBADD  = $(GLIB_LIBS) $(SASL_LIBS) $(LIBXML_LIBS) $(IDN_LIBS)\
++libjabber_la_LIBADD  = $(top_builddir)/libpurple/libpurple.la \
++	$(GLIB_LIBS) $(SASL_LIBS) $(LIBXML_LIBS) $(IDN_LIBS)\
+ 	$(FARSIGHT_LIBS) \
+ 	$(GSTREAMER_LIBS) \
+ 	$(GSTINTERFACES_LIBS)
+diff -aurN pidgin-2.10.0.orig/libpurple/protocols/oscar/Makefile.am pidgin-2.10.0/libpurple/protocols/oscar/Makefile.am
+--- pidgin-2.10.0.orig/libpurple/protocols/oscar/Makefile.am	2011-09-07 22:06:49.216151411 +0200
++++ pidgin-2.10.0/libpurple/protocols/oscar/Makefile.am	2011-09-07 22:08:14.042090940 +0200
+@@ -64,7 +64,7 @@
+ st =
+ pkg_LTLIBRARIES     = liboscar.la libaim.la libicq.la
+ liboscar_la_SOURCES = $(OSCARSOURCES)
+-liboscar_la_LIBADD  = $(GLIB_LIBS)
++liboscar_la_LIBADD  = $(top_builddir)/libpurple/libpurple.la $(GLIB_LIBS)
+ 
+ libaim_la_SOURCES   = libaim.c
+ libaim_la_LIBADD    = liboscar.la
+diff -aurN pidgin-2.10.0.orig/libpurple/protocols/yahoo/Makefile.am pidgin-2.10.0/libpurple/protocols/yahoo/Makefile.am
+--- pidgin-2.10.0.orig/libpurple/protocols/yahoo/Makefile.am	2011-09-07 22:06:49.203151574 +0200
++++ pidgin-2.10.0/libpurple/protocols/yahoo/Makefile.am	2011-09-07 22:08:31.283875388 +0200
+@@ -43,7 +43,7 @@
+ pkg_LTLIBRARIES     = libymsg.la libyahoo.la libyahoojp.la
+ 
+ libymsg_la_SOURCES = $(YAHOOSOURCES)
+-libymsg_la_LIBADD  = $(GLIB_LIBS)
++libymsg_la_LIBADD  = $(top_builddir)/libpurple/libpurple.la $(GLIB_LIBS)
+ 
+ libyahoo_la_SOURCES = libyahoo.c
+ libyahoo_la_LIBADD = libymsg.la

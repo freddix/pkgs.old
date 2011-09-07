@@ -1,0 +1,13 @@
+--- pidgin-2.7.0-orig/configure.ac	2010-05-14 10:50:13.801960582 +0200
++++ pidgin-2.7.0/configure.ac	2010-05-14 10:50:47.245498821 +0200
+@@ -143,8 +143,8 @@
+ dnl Check for inet_aton
+ AC_CHECK_FUNC(inet_aton, , [AC_CHECK_LIB(resolv, inet_aton, ,
+ 				         [AC_MSG_ERROR([inet_aton not found])])])
+-AC_CHECK_LIB(resolv, __res_query)
+-AC_CHECK_LIB(nsl, gethostent)
++AC_CHECK_FUNC(resolv, ,[AC_CHECK_LIB(resolv, __res_query)])
++AC_CHECK_FUNC(gethostent, , [AC_CHECK_LIB(nsl, gethostent)])
+ AC_CHECK_FUNC(socket, ,
+ 	[AC_CHECK_LIB(socket, socket, , [AC_MSG_ERROR([socket not found])])])
+ dnl If all goes well, by this point the previous two checks will have

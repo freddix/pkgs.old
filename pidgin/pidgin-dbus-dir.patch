@@ -1,0 +1,17 @@
+diff -aurN pidgin-2.0.0beta7.orig/configure.ac pidgin-2.0.0beta7/configure.ac
+--- pidgin-2.0.0beta7.orig/configure.ac	2007-04-30 03:26:53.000000000 +0200
++++ pidgin-2.0.0beta7/configure.ac	2007-05-01 07:50:01.000000000 +0200
+@@ -1093,11 +1093,9 @@
+ if test x"$enable_dbus" = "xyes" ; then
+ 	AC_MSG_CHECKING([location of the D-Bus services directory])
+ 	if ! test -z "$with_dbus_services" ; then
+-		if ! test -d "$with_dbus_services" ; then
+-			AC_MSG_ERROR([$with_dbus_services does not exist, if this is the correct location please make sure that it exists.])
+-		fi
+-
++	
+ 		DBUS_SERVICES_DIR="$with_dbus_services"
++	
+ 	else
+ 		if test x"$prefix" = x"NONE" ; then
+ 			dnl # no prefix given, so we look for the correct dbus system paths.
