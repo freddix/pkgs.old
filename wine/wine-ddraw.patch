@@ -1,0 +1,42 @@
+diff -urN wine-1.1.24.orig/dlls/ddraw/ddraw.c wine-1.1.24/dlls/ddraw/ddraw.c
+--- wine-1.1.24.orig/dlls/ddraw/ddraw.c	2009-03-27 18:31:22.000000000 +0000
++++ wine-1.1.24/dlls/ddraw/ddraw.c	2009-04-05 19:06:28.000000000 +0100
+@@ -35,6 +35,7 @@
+ #include "winbase.h"
+ #include "winerror.h"
+ #include "wingdi.h"
++#include "winreg.h"
+ #include "wine/exception.h"
+ 
+ #include "ddraw.h"
+@@ -45,6 +46,8 @@
+ 
+ WINE_DEFAULT_DEBUG_CHANNEL(ddraw);
+ 
++#define IS_OPTION_TRUE(ch) ((ch) == 'y' || (ch) == 'Y' || (ch) == 't' || (ch) == 'T' || (ch) == '1')
++
+ static BOOL IDirectDrawImpl_DDSD_Match(const DDSURFACEDESC2* requested, const DDSURFACEDESC2* provided);
+ static HRESULT IDirectDrawImpl_AttachD3DDevice(IDirectDrawImpl *This, IDirectDrawSurfaceImpl *primary);
+ static HRESULT IDirectDrawImpl_CreateNewSurface(IDirectDrawImpl *This, DDSURFACEDESC2 *pDDSD, IDirectDrawSurfaceImpl **ppSurf, UINT level);
+@@ -476,7 +479,20 @@
+             !(This->devicewindow) &&
+             (hwnd != window) )
+         {
+-            This->dest_window = hwnd;
++             BYTE buffer[32];
++             DWORD size = sizeof(buffer);
++             HKEY hkey = 0;
++             HWND drawwin = hwnd;
++             /* @@ Wine registry key: HKCU\Software\Wine\Direct3D */
++             if (!RegOpenKeyA( HKEY_CURRENT_USER, "Software\\Wine\\Direct3D", &hkey)) {
++                 if (!RegQueryValueExA( hkey, "DirectDrawDesktopHack", 0, NULL, buffer, &size)) {
++                     if ( IS_OPTION_TRUE( buffer[0] ) ) {
++                         TRACE("Enabling DirectDrawDesktopHack hack\n");
++                         drawwin = GetDesktopWindow();
++                    }
++                 }
++             }
++            This->dest_window = drawwin;
+         }
+     }
+     else if(cooplevel & DDSCL_EXCLUSIVE)
