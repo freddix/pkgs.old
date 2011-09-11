@@ -1,0 +1,6 @@
+/var/log/cron {
+	create 660 root crontab
+	postrotate
+		systemctl kill -s HUP --kill-who=main cronie.service
+	endscript
+}

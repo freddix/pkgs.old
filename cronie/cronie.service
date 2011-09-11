@@ -1,0 +1,12 @@
+[Unit]
+Description=Cron daemon
+After=syslog.target
+
+[Service]
+ExecStart=/usr/sbin/crond -n
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
