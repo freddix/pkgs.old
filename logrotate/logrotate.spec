@@ -1,7 +1,7 @@
 Summary:	Rotates, compresses, removes and mails system log files
 Name:		logrotate
 Version:	3.8.1
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		Applications/System
 Source0:	https://fedorahosted.org/releases/l/o/logrotate/%{name}-%{version}.tar.gz
@@ -40,6 +40,7 @@ install -d $RPM_BUILD_ROOT/etc/{cron.daily,logrotate.d} \
 
 install examples/logrotate.cron $RPM_BUILD_ROOT/etc/cron.daily/logrotate
 install examples/logrotate-default $RPM_BUILD_ROOT/%{_sysconfdir}/logrotate.conf
+echo "olddir /var/log/archive" >> $RPM_BUILD_ROOT/%{_sysconfdir}/logrotate.conf
 > $RPM_BUILD_ROOT%{_localstatedir}/logrotate.status
 > $RPM_BUILD_ROOT/var/log/archiv
 
