@@ -1,0 +1,32 @@
+--- cups-1.2rc1/man/Makefile.wiget	2006-04-05 12:06:41.000000000 +0200
++++ cups-1.2rc1/man/Makefile	2006-04-05 12:07:50.000000000 +0200
+@@ -149,10 +149,10 @@
+ 	done
+ 	for file in accept cupsreject reject; do \
+ 		$(RM) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
+-		$(LN) cupsaccept.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
++		echo ".so cupsaccept.$(MAN8EXT)" > $(AMANDIR)/man$(MAN8DIR)/$$file.$(MAN8EXT); \
+ 	done
+ 	$(RM) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
+-	$(LN) cupsenable.$(MAN8EXT) $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
++	echo ".so cupsenable.$(MAN8EXT)" > $(AMANDIR)/man$(MAN8DIR)/cupsdisable.$(MAN8EXT)
+ 
+ 
+ #
+--- cups-1.4.0/config-scripts/cups-manpages.m4~	2009-01-12 20:17:09.000000000 +0100
++++ cups-1.4.0/config-scripts/cups-manpages.m4	2009-08-29 22:32:49.346665192 +0200
+@@ -69,10 +69,10 @@
+ 		;;
+ 	Linux* | GNU* | Darwin*)
+ 		# Linux, GNU Hurd, and Mac OS X
+-		MAN1EXT=1.gz
+-		MAN5EXT=5.gz
+-		MAN7EXT=7.gz
+-		MAN8EXT=8.gz
++		MAN1EXT=1
++		MAN5EXT=5
++		MAN7EXT=7
++		MAN8EXT=8
+ 		MAN8DIR=8
+ 		;;
+ 	*)

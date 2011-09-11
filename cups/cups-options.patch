@@ -1,0 +1,18 @@
+*** cups-1.1.10/cups/options.c~  Wed Sep 13 19:47:00 2000
+--- cups-1.1.10/cups/options.c   Sat Sep 30 21:29:57 2000
+***************
+*** 442,447 ****
+--- 442,454 ----
+    copyarg     = strdup(arg);
+    ptr         = copyarg;
+  
++   /*
++    * skip leading spaces
++    */
++ 
++   while (isspace(*ptr))
++     ++ptr;
++ 
+    while (*ptr != '\0')
+    {
+     /*

@@ -1,0 +1,10 @@
+/var/log/cups/*log {
+	olddir /var/log/archive/cups
+	weekly
+	rotate 4
+	compress
+	create 660 root logs
+	postrotate
+		systemctl kill -s HUP --kill-who=main cups.service
+	endscript
+}
