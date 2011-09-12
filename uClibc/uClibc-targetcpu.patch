@@ -1,0 +1,21 @@
+diff -aurN uClibc.orig/extra/Configs/Config.in uClibc/extra/Configs/Config.in
+--- uClibc.orig/extra/Configs/Config.in	2008-05-05 19:48:37.000000000 +0200
++++ uClibc/extra/Configs/Config.in	2008-05-07 17:31:06.000000000 +0200
+@@ -1314,7 +1314,7 @@
+ 
+ config RUNTIME_PREFIX
+ 	string "uClibc runtime library directory"
+-	default "/usr/$(TARGET_ARCH)-linux-uclibc/"
++	default "/usr/$(TARGET_CPU)-linux-uclibc/"
+ 	help
+ 	  RUNTIME_PREFIX is the directory into which the uClibc runtime
+ 	  libraries will be installed.   The result will look something
+@@ -1332,7 +1332,7 @@
+ 
+ config DEVEL_PREFIX
+ 	string "uClibc development environment directory"
+-	default "/usr/$(TARGET_ARCH)-linux-uclibc/usr/"
++	default "/usr/$(TARGET_CPU)-linux-uclibc/usr/"
+ 	help
+ 	  DEVEL_PREFIX is the directory into which the uClibc development
+ 	  environment will be installed.   The result will look something
