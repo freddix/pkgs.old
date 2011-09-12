@@ -1,7 +1,7 @@
 Summary:	Cron daemon
 Name:		cronie
 Version:	1.4.8
-Release:	3
+Release:	4
 License:	MIT and BSD and GPL v2
 Group:		Daemons
 Source0:	https://fedorahosted.org/releases/c/r/cronie/%{name}-%{version}.tar.gz
@@ -79,7 +79,7 @@ cp -a %{SOURCE1} $RPM_BUILD_ROOT/%{_lib}/systemd/system/crond.service
 cp -a %{SOURCE2} $RPM_BUILD_ROOT/etc/logrotate.d/cron
 cp -a %{SOURCE3} $RPM_BUILD_ROOT/etc/cron.d/crontab
 cp -a %{SOURCE4} $RPM_BUILD_ROOT/etc/pam.d/crond
-cp -a %{SOURCE5} $RPM_BUILD_ROOT%{_bindir}/run-parts
+install -D %{SOURCE5} $RPM_BUILD_ROOT/bin/run-parts
 touch $RPM_BUILD_ROOT/var/log/cron
 
 cat > $RPM_BUILD_ROOT%{_sysconfdir}/cron/cron.allow << 'EOF'
@@ -127,7 +127,7 @@ fi
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
 %attr(2755,root,crontab) %{_bindir}/crontab
-%attr(755,root,root) %{_bindir}/run-parts
+%attr(755,root,root) /bin/run-parts
 %attr(640,root,crontab) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/cron/cron.allow
 %attr(640,root,crontab) %config(noreplace,missingok) %verify(not md5 mtime size) %{_sysconfdir}/cron/cron.deny
 %attr(640,root,crontab) %config(noreplace,missingok) /etc/cron.d/crontab
