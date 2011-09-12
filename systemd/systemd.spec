@@ -1,17 +1,19 @@
 Summary:	A System and Service Manager
 Name:		systemd
-Version:	34
-Release:	3
+Version:	35
+Release:	1
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.bz2
-# Source0-md5:	35761c50d5fe8fa8d15a3c651ab8bace
+# Source0-md5:	6b37b385d22f28c184a04a4e6c3c69b4
 Source10:	%{name}-locale.conf
 Source11:	%{name}-loop.conf
 Source12:	%{name}-sysctl.conf
 Source13:	%{name}-vconsole.conf
 Source14:	%{name}-os-release
+Source15:	%{name}-timezone
 Patch0:		%{name}-freddix.patch
+Patch1:		%{name}-fdo40583.patch
 URL:		http://www.freedesktop.org/wiki/Software/systemd
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -71,6 +73,7 @@ Graphical front-end for systemd.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__aclocal} -I m4
@@ -120,6 +123,7 @@ install %{SOURCE11} $RPM_BUILD_ROOT/etc/modules-load.d/loop.conf
 install %{SOURCE12} $RPM_BUILD_ROOT/etc/sysctl.d/sysctl.conf
 install %{SOURCE13} $RPM_BUILD_ROOT/etc/vconsole.conf
 install %{SOURCE14} $RPM_BUILD_ROOT/etc/os-release
+install %{SOURCE15} $RPM_BUILD_ROOT/etc/timezone
 
 ln -s ../bin/systemd $RPM_BUILD_ROOT/sbin/init
 ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/reboot
@@ -184,8 +188,8 @@ fi
 
 %attr(755,root,root) %ghost %{_libdir}/libsystemd-daemon.so.?
 %attr(755,root,root) %ghost %{_libdir}/libsystemd-login.so.?
-%attr(755,root,root) %{_libdir}/libsystemd-daemon.so.0.0.0
-%attr(755,root,root) %{_libdir}/libsystemd-login.so.0.0.3
+%attr(755,root,root) %{_libdir}/libsystemd-daemon.so.*.*.*
+%attr(755,root,root) %{_libdir}/libsystemd-login.so.*.*.*
 
 %attr(755,root,root) /sbin/halt
 %attr(755,root,root) /sbin/init
@@ -204,6 +208,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) /etc/modules-load.d/loop.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/os-release
 %config(noreplace) %verify(not md5 mtime size) /etc/sysctl.d/sysctl.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/timezone
 %config(noreplace) %verify(not md5 mtime size) /etc/vconsole.conf
 
 %ghost %config(noreplace) %{_sysconfdir}/machine-id
@@ -283,6 +288,7 @@ fi
 %{_mandir}/man5/systemd.target.5*
 %{_mandir}/man5/systemd.timer.5*
 %{_mandir}/man5/systemd.unit.5*
+%{_mandir}/man5/timezone.5*
 %{_mandir}/man5/vconsole.conf.5*
 %{_mandir}/man7/daemon.7*
 %{_mandir}/man7/sd-daemon.7*
