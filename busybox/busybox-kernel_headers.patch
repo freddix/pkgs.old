@@ -1,0 +1,9 @@
+diff -durN -x '*~' -x '*.o' -x '.*' -x '*.[0-9]' -x '*.links' -x '*.html' -x '*.txt' -x '*.pod' -x 'config*' busybox-1.00-pre4.orig/libbb/loop.h busybox-1.00-pre4/libbb/loop.h
+--- busybox-1.00-pre4.orig/libbb/loop.h	1970-01-01 01:00:00.000000000 +0100
++++ busybox-1.00-pre4/libbb/loop.h	2004-12-21 17:45:14.000000000 +0100
+@@ -0,0 +1,5 @@
++#include <linux/posix_types.h>
++#undef dev_t
++#define dev_t __kernel_dev_t
++#include <linux/loop.h>
++#undef dev_t
