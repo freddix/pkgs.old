@@ -1,0 +1,11 @@
+[Unit]
+Description=SSH Per-Connection Server
+Requires=ssh-gen-keys.service
+After=syslog.target ssh-gen-keys.service
+
+[Service]
+ExecStart=-/usr/sbin/sshd -i
+ExecReload=/bin/systemctl kill -s HUP --kill-who=main sshd.socket
+StandardInput=socket
+StandardOutput=socket
+
