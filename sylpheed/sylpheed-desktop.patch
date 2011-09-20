@@ -1,0 +1,14 @@
+diff -aurN sylpheed-3.1.0.orig/sylpheed.desktop sylpheed-3.1.0/sylpheed.desktop
+--- sylpheed-3.1.0.orig/sylpheed.desktop	2011-02-21 20:01:45.000000000 +0100
++++ sylpheed-3.1.0/sylpheed.desktop	2011-02-21 20:04:18.000000000 +0100
+@@ -10,8 +10,9 @@
+ Comment[tr]=E-Posta İstemcisi
+ Comment[ru]=E-Mail клиент
+ Comment[uk]=E-Mail клієнт
+-Exec=sylpheed
++Exec=sylpheed %u
+ Icon=sylpheed
+ Terminal=false
+ Type=Application
+ Categories=GTK;Network;Email;News;
++MimeType=x-scheme-handler/mailto;
