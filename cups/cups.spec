@@ -1,7 +1,7 @@
 Summary:	Common Unix Printing System
 Name:		cups
 Version:	1.4.8
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL/LGPL
 Group:		Applications/Printing
@@ -12,6 +12,7 @@ Source2:	%{name}.pamd
 Source3:	%{name}.logrotate
 Source4:	%{name}.mailto.conf
 Source5:	%{name}-modprobe.conf
+Source6:	%{name}-tmpfiles.conf
 Patch0:		%{name}-config.patch
 Patch2:		%{name}-options.patch
 Patch3:		%{name}-man_pages_linking.patch
@@ -147,7 +148,7 @@ sed -i -e 's|.SILENT:.*||g' Makedefs.in
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{pam.d,logrotate.d,modprobe.d,security} \
+install -d $RPM_BUILD_ROOT/etc/{pam.d,logrotate.d,modprobe.d,security,tmpfiles.d} \
 	$RPM_BUILD_ROOT/%{_lib}/systemd/system \
 	$RPM_BUILD_ROOT/var/run/cups \
 	$RPM_BUILD_ROOT/var/log/{,archive/}cups
@@ -162,6 +163,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/pam.d/%{name}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 install %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/cups/mailto.conf
 install %{SOURCE5} $RPM_BUILD_ROOT/etc/modprobe.d/cups.conf
+install %{SOURCE6} $RPM_BUILD_ROOT/etc/tmpfiles.d/cups.conf
 
 touch $RPM_BUILD_ROOT/var/log/cups/{access_log,error_log,page_log}
 touch $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/{classes,printers,client}.conf
@@ -237,6 +239,7 @@ fi
 %dir %attr(700,root,lp) %{_sysconfdir}/%{name}/ssl
 %dir %attr(755,root,lp) %{_sysconfdir}/%{name}/ppd
 %dir %{_sysconfdir}/%{name}/interfaces
+%{_sysconfdir}/tmpfiles.d/cups.conf
 
 /etc/dbus-1/system.d/cups.conf
 
@@ -244,18 +247,40 @@ fi
 %dir %{_ulibdir}/cups/*
 
 %attr(755,root,root) %{_ulibdir}/cups/cgi-bin/*.cgi
-%lang(de) %{_ulibdir}/cups/cgi-bin/de
-%lang(es) %{_ulibdir}/cups/cgi-bin/es
-%lang(eu) %{_ulibdir}/cups/cgi-bin/eu
-%lang(ja) %{_ulibdir}/cups/cgi-bin/ja
-%lang(pl) %{_ulibdir}/cups/cgi-bin/pl
-%lang(ru) %{_ulibdir}/cups/cgi-bin/ru
-
 %{_ulibdir}/cups/cgi-bin/*.css
 %{_ulibdir}/cups/cgi-bin/*.html
 %{_ulibdir}/cups/cgi-bin/*.txt
 %{_ulibdir}/cups/cgi-bin/help
 %{_ulibdir}/cups/cgi-bin/images
+
+%lang(de) %{_ulibdir}/cups/cgi-bin/de
+%lang(es) %{_ulibdir}/cups/cgi-bin/es
+%lang(eu) %{_ulibdir}/cups/cgi-bin/eu
+%lang(id) %{_ulibdir}/cups/cgi-bin/id
+%lang(it) %{_ulibdir}/cups/cgi-bin/it
+%lang(ja) %{_ulibdir}/cups/cgi-bin/ja
+%lang(pl) %{_ulibdir}/cups/cgi-bin/pl
+%lang(ru) %{_ulibdir}/cups/cgi-bin/ru
+
+%dir %{_datadir}/cups/templates
+%{_datadir}/cups/templates/*.tmpl
+%lang(de) %{_datadir}/cups/templates/de
+%lang(es) %{_datadir}/cups/templates/es
+%lang(eu) %{_datadir}/cups/templates/eu
+%lang(id) %{_datadir}/cups/templates/id
+%lang(it) %{_datadir}/cups/templates/it
+%lang(ja) %{_datadir}/cups/templates/ja
+%lang(pl) %{_datadir}/cups/templates/pl
+%lang(ru) %{_datadir}/cups/templates/ru
+
+%dir %{_datadir}/cups/model
+%dir %{_datadir}/cups/model/C
+%lang(da) %dir %{_datadir}/cups/model/da
+%lang(en_GB) %dir %{_datadir}/cups/model/en_GB
+%lang(fr) %dir %{_datadir}/cups/model/fr
+%lang(nb) %dir %{_datadir}/cups/model/nb
+%lang(pl) %dir %{_datadir}/cups/model/pl
+%lang(sv) %dir %{_datadir}/cups/model/sv
 
 %exclude %{_ulibdir}/cups/backend/usb
 %exclude %{_ulibdir}/cups/backend/serial
@@ -277,26 +302,8 @@ fi
 %{_datadir}/cups/examples
 %{_datadir}/cups/fonts
 %{_datadir}/cups/mime
-%dir %{_datadir}/cups/model
-# dirs for gimp-print-cups-4.2.7-1
-%dir %{_datadir}/cups/model/C
-%lang(da) %dir %{_datadir}/cups/model/da
-%lang(en_GB) %dir %{_datadir}/cups/model/en_GB
-%lang(fr) %dir %{_datadir}/cups/model/fr
-%lang(nb) %dir %{_datadir}/cups/model/nb
-%lang(pl) %dir %{_datadir}/cups/model/pl
-%lang(sv) %dir %{_datadir}/cups/model/sv
 
 %{_datadir}/cups/ppdc
-
-%dir %{_datadir}/cups/templates
-%{_datadir}/cups/templates/*.tmpl
-%lang(de) %{_datadir}/cups/templates/de
-%lang(es) %{_datadir}/cups/templates/es
-%lang(eu) %{_datadir}/cups/templates/eu
-%lang(ja) %{_datadir}/cups/templates/ja
-%lang(pl) %{_datadir}/cups/templates/pl
-%lang(ru) %{_datadir}/cups/templates/ru
 
 %{_mandir}/man1/cupstestppd.1*
 %{_mandir}/man1/cupstestdsc.1*
@@ -340,11 +347,12 @@ fi
 %lang(eu) %{_datadir}/locale/eu/cups_eu.po
 %lang(fi) %{_datadir}/locale/fi/cups_fi.po
 %lang(fr) %{_datadir}/locale/fr/cups_fr.po
+%lang(id) %{_datadir}/locale/id/cups_id.po
 %lang(it) %{_datadir}/locale/it/cups_it.po
-%lang(ko) %{_datadir}/locale/ko/cups_ko.po
 %lang(ja) %{_datadir}/locale/ja/cups_ja.po
-%lang(nl) %{_datadir}/locale/nl/cups_nl.po
+%lang(ko) %{_datadir}/locale/ko/cups_ko.po
 %lang(nb) %{_datadir}/locale/nb/cups_nb.po
+%lang(nl) %{_datadir}/locale/nl/cups_nl.po
 %lang(pl) %{_datadir}/locale/pl/cups_pl.po
 %lang(pt) %{_datadir}/locale/pt/cups_pt.po
 %lang(pt_BR) %{_datadir}/locale/pt_BR/cups_pt_BR.po
