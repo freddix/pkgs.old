@@ -1,0 +1,14 @@
+diff -aurN mc-4.7.1.orig/misc/mc.ext.in mc-4.7.1/misc/mc.ext.in
+--- mc-4.7.1.orig/misc/mc.ext.in	2010-05-01 19:05:30.000000000 +0200
++++ mc-4.7.1/misc/mc.ext.in	2010-05-01 19:07:29.000000000 +0200
+@@ -493,8 +493,8 @@
+ 
+ # html
+ regex/\.([hH][tT][mM][lL]?)$
+-	Open=(if test -n "@X11_WWW@" && test -n "$DISPLAY"; then (@X11_WWW@ file://%d/%p &) 1>&2; else links %f || lynx -force_html %f || ${PAGER:-more} %f; fi) 2>/dev/null
+-	View=%view{ascii} links -dump %f 2>/dev/null || w3m -dump %f 2>/dev/null || lynx -dump -force_html %f
++	Open=(if test -n "@X11_WWW@" && test -n "$DISPLAY"; then (@X11_WWW@ file://%d/%p &) 1>&2; else elinks %f || lynx -force_html %f || ${PAGER:-more} %f; fi) 2>/dev/null
++	View=%view{ascii} elinks -dump %f 2>/dev/null || w3m -dump %f 2>/dev/null || lynx -dump -force_html %f
+ 
+ # StarOffice 5.2
+ shell/.sdw
