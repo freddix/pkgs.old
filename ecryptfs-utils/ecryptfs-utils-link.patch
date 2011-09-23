@@ -1,0 +1,12 @@
+diff -aurN ecryptfs-utils-85.orig/src/libecryptfs-swig/Makefile.am ecryptfs-utils-85/src/libecryptfs-swig/Makefile.am
+--- ecryptfs-utils-85.orig/src/libecryptfs-swig/Makefile.am	2011-02-05 21:48:32.000000000 +0100
++++ ecryptfs-utils-85/src/libecryptfs-swig/Makefile.am	2011-02-05 21:49:34.000000000 +0100
+@@ -8,7 +8,7 @@
+ _libecryptfs_la_SOURCES = $(srcdir)/libecryptfs_wrap.c $(SWIG_SOURCES)
+ _libecryptfs_la_CFLAGS = $(SWIG_PYTHON_CPPFLAGS) -I$(top_srcdir)/src/include
+ _libecryptfs_la_LDFLAGS = -module
+-_libecryptfs_la_LIBADD = ../libecryptfs/.libs/libecryptfs.la
++_libecryptfs_la_LIBADD = ../libecryptfs/.libs/libecryptfs.la -lpython
+ 
+ $(srcdir)/libecryptfs_wrap.c : $(SWIG_SOURCES)
+ 	$(SWIG) $(SWIG_PYTHON_OPT) -I$(top_srcdir)/src/include -o $@ $<
