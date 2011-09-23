@@ -27,6 +27,7 @@ Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk+
 Requires(post,postun):	hicolor-icon-theme
 Requires(post,postun):	glib-gio-gsettings
+Requires:	glib-networking
 Requires:	libgphoto2-runtime
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
