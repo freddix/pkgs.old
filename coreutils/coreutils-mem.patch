@@ -1,0 +1,36 @@
+diff -aurN coreutils-8.3.orig/lib/physmem.c coreutils-8.3/lib/physmem.c
+--- coreutils-8.3.orig/lib/physmem.c	2010-01-08 21:51:00.000000000 +0100
++++ coreutils-8.3/lib/physmem.c	2010-01-08 21:53:30.000000000 +0100
+@@ -77,6 +77,14 @@
+ 
+ #define ARRAY_SIZE(a) (sizeof (a) / sizeof ((a)[0]))
+ 
++/* Cap physical memory to something sane */
++static double
++physmem_cap (double mem)
++{
++    double max = 1 << (sizeof(void *)*8 - 4);
++    return mem > max ? max : mem;
++}
++
+ /* Return the total amount of physical memory.  */
+ double
+ physmem_total (void)
+@@ -86,7 +94,7 @@
+     double pages = sysconf (_SC_PHYS_PAGES);
+     double pagesize = sysconf (_SC_PAGESIZE);
+     if (0 <= pages && 0 <= pagesize)
+-      return pages * pagesize;
++      return physmem_cap(pages * pagesize);
+   }
+ #endif
+ 
+@@ -98,7 +106,7 @@
+         double pages = pss.physical_memory;
+         double pagesize = pss.page_size;
+         if (0 <= pages && 0 <= pagesize)
+-          return pages * pagesize;
++          return physmem_cap(pages * pagesize);
+       }
+   }
+ #endif
