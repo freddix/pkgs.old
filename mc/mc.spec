@@ -1,7 +1,7 @@
 Summary:	A user-friendly file manager and visual shell
 Name:		mc
 Version:	4.7.5.4
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Shells
 Source0:	http://www.midnight-commander.org/downloads/%{name}-%{version}.tar.bz2
@@ -66,7 +66,7 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{rc.d/init.d,pam.d,shrc.d,sysconfig}
 
 install contrib/{mc.sh,mc.csh} $RPM_BUILD_ROOT/etc/shrc.d
 
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{be-tarask,fi_FI}
+rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{be-tarask,fi_FI,it_IT}
 
 %find_lang %{name}
 
