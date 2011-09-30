@@ -1,7 +1,7 @@
 Summary:	Photo organizer
 Name:		shotwell
 Version:	0.11.2
-Release:	6
+Release:	7
 License:	LGPL
 Group:		X11/Applications
 Source0:	http://www.yorba.org/download/shotwell/0.11/%{name}-%{version}.tar.bz2
