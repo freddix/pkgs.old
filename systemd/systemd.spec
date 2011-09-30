@@ -1,11 +1,11 @@
 Summary:	A System and Service Manager
 Name:		systemd
-Version:	35
-Release:	2
+Version:	36
+Release:	1
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.bz2
-# Source0-md5:	6b37b385d22f28c184a04a4e6c3c69b4
+# Source0-md5:	e1213338efb697abc8215d9a66a7f082
 Source10:	%{name}-locale.conf
 Source11:	%{name}-loop.conf
 Source12:	%{name}-sysctl.conf
@@ -13,8 +13,7 @@ Source13:	%{name}-vconsole.conf
 Source14:	%{name}-os-release
 Source15:	%{name}-timezone
 Patch0:		%{name}-freddix.patch
-Patch1:		%{name}-fdo40583.patch
-Patch2:		%{name}-machine_id_writable.patch
+Patch1:		%{name}-machine_id_writable.patch
 URL:		http://www.freedesktop.org/wiki/Software/systemd
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -75,7 +74,6 @@ Graphical front-end for systemd.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %build
 %{__aclocal} -I m4
