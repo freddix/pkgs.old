@@ -1,7 +1,7 @@
 Summary:	A System and Service Manager
 Name:		systemd
 Version:	36
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.bz2
@@ -108,11 +108,6 @@ rm -f $RPM_BUILD_ROOT%{_npkgconfigdir}/systemd.pc
 # them.
 rm -r $RPM_BUILD_ROOT%{_sysconfdir}/systemd/system/*.target.wants
 
-# hugepages are controlled from kernel space
-rm -f $RPM_BUILD_ROOT/lib/systemd/system/dev-hugepages.mount
-rm -f $RPM_BUILD_ROOT/lib/systemd/system/sysinit.target.wants/dev-hugepages.automount
-rm -f $RPM_BUILD_ROOT/lib/systemd/system/dev-hugepages.automount
-
 touch $RPM_BUILD_ROOT%{_sysconfdir}/machine-id
 touch $RPM_BUILD_ROOT%{_sysconfdir}/machine-info
 
@@ -143,12 +138,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %post units
 if [ "$1" = "1" ] ; then
-    # And symlink what we found to the new-style default.target
-    ln -sf "$target" %{_sysconfdir}/systemd/system/default.target > /dev/null 2>&1 || :
     /bin/systemctl enable getty@.service \
     systemd-readahead-collect.service \
     systemd-readahead-replay.service  \
     remote-fs.target > /dev/null 2>&1 || :
+    ln -sf /lib/systemd/system/multi-user.target \
+    	/etc/systemd/system/default.target
 fi
 
 %preun units
