@@ -1,3 +1,10 @@
+# NOTE:
+# for multi-user target tty1 is not enabled by default
+#
+# mkdir -p ${FS_DIR}/etc/systemd/system/getty.target.wants
+# ln -sf /lib/systemd/system/getty@.service \
+# 	${FS_DIR}/etc/systemd/system/getty.target.wants/getty@tty1.service
+#
 Summary:	A System and Service Manager
 Name:		systemd
 Version:	36
