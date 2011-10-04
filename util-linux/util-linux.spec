@@ -1,12 +1,18 @@
 Summary:	Collection of basic system utilities for Linux
 Name:		util-linux
 Version:	2.20
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/util-linux/v2.20/%{name}-%{version}.tar.bz2
 # Source0-md5:	4dcacdbdafa116635e52b977d9d0e879
 Source2:	%{name}-login.pamd
+Patch0:		%{name}-agetty-typo.patch
+Patch1:		%{name}-dmesg-non-printk.patch
+Patch2:		%{name}-dmesg-space.patch
+Patch3:		%{name}-dont-close-0.patch
+Patch4:		%{name}-fix-remount.patch
+Patch5:		%{name}-write-freopen.patch
 URL:		http://userweb.kernel.org/~kzak/util-linux-ng/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -184,6 +190,12 @@ uuid static library.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 %build
 %{__libtoolize}
@@ -196,17 +208,16 @@ CPPFLAGS="%{rpmcppflags} -I/usr/include/ncurses -DHAVE_LSEEK64_PROTOTYPE -DHAVE_
 export CPPFLAGS
 %configure \
 	--bindir=/bin			\
+	--sbindir=/sbin			\
 	--disable-silent-rules		\
 	--disable-use-tty-group 	\
 	--disable-wall			\
-	--enable-ddate			\
 	--enable-kill			\
+	--enable-libmount-mount		\
 	--enable-line			\
-	--enable-login-chown-vcs	\
 	--enable-login-utils		\
 	--enable-partx			\
 	--enable-write			\
-	--sbindir=/sbin			\
 	--with-pam			\
 	--without-selinux
 %{__make}
@@ -275,7 +286,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/colrm
 %attr(755,root,root) %{_bindir}/column
 %attr(755,root,root) %{_bindir}/cytune
-%attr(755,root,root) %{_bindir}/ddate
 %attr(755,root,root) %{_bindir}/fallocate
 %attr(755,root,root) %{_bindir}/flock
 %attr(755,root,root) %{_bindir}/getopt
@@ -317,7 +327,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /bin/kill
 %attr(755,root,root) /bin/lsblk
 %attr(755,root,root) /bin/more
-%attr(755,root,root) /bin/mountpoint
 
 %attr(755,root,root) /sbin/addpart
 %attr(755,root,root) /sbin/blkid
@@ -351,7 +360,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/colcrt.1*
 %{_mandir}/man1/colrm.1*
 %{_mandir}/man1/column.1*
-%{_mandir}/man1/ddate.1*
 %{_mandir}/man1/dmesg.1*
 %{_mandir}/man1/fallocate.1*
 %{_mandir}/man1/flock.1*
@@ -438,9 +446,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %ghost /%{_lib}/libmount.so.?
 %attr(755,root,root) /%{_lib}/libmount.so.*.*
-# move to -n mount when mount starts to use libmount
-%attr(755,root,root) /bin/findmnt
-%{_mandir}/man8/findmnt.8*
 
 %files -n libmount-devel
 %defattr(644,root,root,755)
@@ -507,10 +512,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(4755,root,root) /bin/mount
 %attr(4755,root,root) /bin/umount
+%attr(755,root,root) /bin/findmnt
+%attr(755,root,root) /bin/mountpoint
 %attr(755,root,root) /sbin/pivot_root
 %attr(755,root,root) /sbin/swapoff
 %attr(755,root,root) /sbin/swapon
+%{_mandir}/man1/mountpoint.1*
 %{_mandir}/man5/fstab.5*
+%{_mandir}/man8/findmnt.8*
 %{_mandir}/man8/mount.8*
 %{_mandir}/man8/pivot_root.8*
 %{_mandir}/man8/swapoff.8*
