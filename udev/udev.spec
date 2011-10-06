@@ -1,12 +1,13 @@
 Summary:	A userspace implementation of devfs
 Name:		udev
 Version:	173
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 Group:		Base
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
 # Source0-md5:	91a88a359b60bbd074b024883cc0dbde
+Source1:	%{name}-65-permissions.rules
 URL:		http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html
 BuildRequires:	device-mapper-devel
 BuildRequires:	gobject-introspection-devel
@@ -75,6 +76,7 @@ GObject introspection data for udev.
 %setup -q
 
 %build
+%{__gtkdocize}
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoheader}
@@ -100,6 +102,8 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+install %{SOURCE1} $RPM_BUILD_ROOT/%{_lib}/udev/rules.d/65-permissions.rules
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -159,6 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 /%{_lib}/udev/rules.d/60-persistent-storage.rules
 /%{_lib}/udev/rules.d/60-persistent-v4l.rules
 /%{_lib}/udev/rules.d/61-accelerometer.rules
+/%{_lib}/udev/rules.d/65-permissions.rules
 /%{_lib}/udev/rules.d/75-cd-aliases-generator.rules
 /%{_lib}/udev/rules.d/75-net-description.rules
 /%{_lib}/udev/rules.d/75-persistent-net-generator.rules
