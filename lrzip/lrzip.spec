@@ -60,6 +60,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/lrztar
 %attr(755,root,root) %{_bindir}/lrzuntar
 %{_mandir}/man1/lrunzip.1*
+%{_mandir}/man1/lrzcat.1*
 %{_mandir}/man1/lrzip.1*
 %{_mandir}/man1/lrztar.1*
 %{_mandir}/man1/lrzuntar.1*
