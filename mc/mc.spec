@@ -45,6 +45,7 @@ sed -i 's:|hxx|:|hh|hpp|hxx|:' misc/syntax/Syntax
 
 export X11_WWW="xdg-open"
 %configure \
+	--disable-silent-rules	\
 	--enable-charset	\
 	--with-edit		\
 	--with-gpm-mouse	\
