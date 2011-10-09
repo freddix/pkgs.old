@@ -1,0 +1,15 @@
+diff -aurN hugin-2009.2.0.orig/src/hugin_base/vigra_ext/ImageTransforms.h hugin-2009.2.0/src/hugin_base/vigra_ext/ImageTransforms.h
+--- hugin-2009.2.0.orig/src/hugin_base/vigra_ext/ImageTransforms.h	2009-10-18 12:23:13.000000000 +0200
++++ hugin-2009.2.0/src/hugin_base/vigra_ext/ImageTransforms.h	2009-10-18 12:23:42.000000000 +0200
+@@ -42,10 +42,7 @@
+ #include "MultiThreadOperations.h"
+ #include <boost/thread/thread.hpp>
+ #include <boost/bind.hpp>
+-#ifdef __APPLE__
+-    #include <boost/function.hpp>
+-#endif
+-
++#include <boost/function.hpp>
+ 
+ namespace vigra_ext
+ {

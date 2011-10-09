@@ -1,0 +1,12 @@
+diff -aurN hugin-2009.2.0.orig/src/hugin1/hugin/hugin.desktop hugin-2009.2.0/src/hugin1/hugin/hugin.desktop
+--- hugin-2009.2.0.orig/src/hugin1/hugin/hugin.desktop	2010-01-01 18:57:50.000000000 +0100
++++ hugin-2009.2.0/src/hugin1/hugin/hugin.desktop	2010-01-01 18:59:47.000000000 +0100
+@@ -17,7 +17,7 @@
+ GenericName[cs]=Nástroj pro skládání panoramat
+ GenericName[ru]=Сшиватель панорам
+ GenericName[hu]=Panoráma összefűző
+-Categories=Graphics;
++Categories=GTK;Graphics;Photography;
+ Exec=hugin
+ Icon=hugin
+ StartupNotify=false
