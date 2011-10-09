@@ -1,0 +1,44 @@
+--- ZThread-2.3.2/share/pthread.m4.orig	2005-03-13 02:47:28.000000000 +0100
++++ ZThread-2.3.2/share/pthread.m4	2008-09-10 18:38:26.872979766 +0200
+@@ -36,7 +36,7 @@
+ GNU Pth can also be used if it was configured with --enable-pthread.
+ EOF
+ 
+-AC_DEFUN(AM_DETECT_PTHREAD,
++AC_DEFUN([AM_DETECT_PTHREAD],
+ [
+ 
+ pthread_explicit="no"
+--- ZThread-2.3.2/share/zthread.m4.orig	2005-03-13 02:47:52.000000000 +0100
++++ ZThread-2.3.2/share/zthread.m4	2008-09-10 18:39:05.148994851 +0200
+@@ -31,7 +31,7 @@
+ dnl ZTHREAD_CXXFLAGS
+ dnl ZTHREAD_LIBS
+ dnl 
+-AC_DEFUN(AM_PATH_ZTHREAD,
++AC_DEFUN([AM_PATH_ZTHREAD],
+ [
+ 
+ 
+--- ZThread-2.3.2/share/ftime.m4.orig	2005-03-13 02:47:24.000000000 +0100
++++ ZThread-2.3.2/share/ftime.m4	2008-09-10 18:46:25.680989823 +0200
+@@ -35,7 +35,7 @@
+ 
+ have_ftime="detect"
+ 
+-AC_DEFUN(AM_DETECT_FTIME,
++AC_DEFUN([AM_DETECT_FTIME],
+ [
+ 
+  AC_ARG_WITH(ftime,
+--- ZThread-2.3.2/share/zthread-config.in.orig	2002-06-29 16:31:16.000000000 +0200
++++ ZThread-2.3.2/share/zthread-config.in	2008-09-10 18:39:58.180982280 +0200
+@@ -215,7 +215,7 @@
+ ##
+ 
+ includes="-I@prefix@/include"
+-libs="-L@prefix@/lib"
++libs="-L@libdir@"
+ 
+ af_cflags="$af_cflags $includes -DREENTRANT -DZT_POSIX"
+ af_libs="$libs -l$LIB_NAME $af_libs @LINKER_OPTIONS@"
