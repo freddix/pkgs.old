@@ -1,0 +1,23 @@
+diff -ur boost_1_41_0/libs/python/build/Jamfile.v2 boost_1_41_0.new/libs/python/build/Jamfile.v2
+--- boost_1_41_0/libs/python/build/Jamfile.v2	2009-10-14 00:37:59.000000000 +0200
++++ boost_1_41_0.new/libs/python/build/Jamfile.v2	2009-11-20 08:52:07.423214282 +0100
+@@ -46,6 +46,8 @@
+ rule cond ( test ? : yes * : no * ) { if $(test) { return $(yes) ; } else { return $(no) ; } }
+ rule unless ( test ? : yes * : no * ) { if ! $(test) { return $(yes) ; } else { return $(no) ; } }
+ 
++lib pythonlib : : <name>python <link>shared ;
++
+ rule lib_boost_python ( is-py3 ? )
+ {
+ 
+@@ -80,6 +82,9 @@
+         import.cpp
+         exec.cpp
+         object/function_doc_signature.cpp
++
++    pythonlib
++
+         :   # requirements
+             <link>static:<define>BOOST_PYTHON_STATIC_LIB 
+             <define>BOOST_PYTHON_SOURCE
+Tylko w boost_1_41_0.new/libs/python/build: Jamfile.v2~
