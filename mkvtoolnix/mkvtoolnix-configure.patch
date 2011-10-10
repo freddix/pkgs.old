@@ -1,0 +1,11 @@
+--- mkvtoolnix-2.4.2/configure.orig	2009-01-17 22:11:11.000000000 +0100
++++ mkvtoolnix-2.4.2/configure	2009-02-16 18:08:13.000000000 +0100
+@@ -10451,7 +10451,7 @@
+ 
+         BOOSTLIBDIR=`echo $BOOST_LDFLAGS | sed -e 's/[^\/]*//'`
+         if test "x$ax_boost_user_regex_lib" = "x"; then
+-            for libextension in `ls $BOOSTLIBDIR/libboost_regex*.{so,a,dylib}* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^lib\(boost_regex.*\)\.so.*$;\1;' -e 's;^lib\(boost_regex.*\)\.a*$;\1;' -e 's;^lib\(boost_regex.*\)\.dylib.*$;\1;'` ; do
++            for libextension in `ls $BOOSTLIBDIR/libboost_regex*.so* 2>/dev/null | sed 's,.*/,,' | sed -e 's;^lib\(boost_regex.*\)\.so.*$;\1;' -e 's;^lib\(boost_regex.*\)\.a*$;\1;' -e 's;^lib\(boost_regex.*\)\.dylib.*$;\1;'` ; do
+                  ax_lib=${libextension}
+                 as_ac_Lib=`echo "ac_cv_lib_$ax_lib''_exit" | $as_tr_sh`
+ { echo "$as_me:$LINENO: checking for exit in -l$ax_lib" >&5
