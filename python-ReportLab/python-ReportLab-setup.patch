@@ -1,0 +1,15 @@
+--- reportlab_2_1/reportlab/setup.py~	2007-05-24 13:08:21.000000000 +0200
++++ reportlab_2_1/reportlab/setup.py	2007-11-19 16:25:05.594885101 +0100
+@@ -194,10 +194,11 @@
+         assert tra in _yesnoV, 'bad argument --rl_accel='+tra
+         tra = tra in _yesV
+ 
++    DATA_FILES = {}
++    EXT_MODULES = []
+     if tra:
+         RL_ACCEL = _find_rl_accel()
+         LIBS = []
+-        DATA_FILES = {}
+         if not RL_ACCEL:
+             EXT_MODULES = []
+             print '***************************************************'
