@@ -1,0 +1,15 @@
+--- tesseract-3.00/configure.ac.orig	2010-11-14 20:50:59.491100775 +0100
++++ tesseract-3.00/configure.ac	2010-11-14 21:30:34.535094909 +0100
+@@ -265,9 +265,9 @@
+ # which causes unnecessary warnings with Visual C++.
+ # Comment it out for now.
+ #AC_CHECK_LIB(m,sqrt)
+-AC_CHECK_LIB(z,deflate)
+-AC_CHECK_LIB(png,png_read_png)
+-AC_CHECK_LIB(jpeg,jpeg_read_scanlines)
++AC_CHECK_LIB(z,deflate,[LIBZ=-lz])
++AC_CHECK_LIB(png,png_read_png,[LIBPNG=-lpng])
++AC_CHECK_LIB(jpeg,jpeg_read_scanlines,[LIBJPEG=-ljpeg])
+ AC_CHECK_LIB(pthread,sem_init)
+ 
+ # ----------------------------------------
