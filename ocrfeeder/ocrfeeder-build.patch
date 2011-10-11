@@ -1,0 +1,15 @@
+--- ocrfeeder-0.6.orig/resources/ocrfeeder.desktop.in	2010-01-24 12:35:06.000000000 +0100
++++ ocrfeeder-0.6/resources/ocrfeeder.desktop.in	2010-01-24 12:49:39.000000000 +0100
+@@ -1,5 +1,4 @@
+ [Desktop Entry]
+-Version=0.5
+ Type=Application
+ Name=OCRFeeder
+ Comment=The complete OCR suite.
+@@ -7,4 +6,5 @@
+ Exec=ocrfeeder
+ Icon=ocrfeeder
+ MimeType=image/bmp;image/gif;image/jpeg;image/jpg;image/pjpeg;image/png;image/tiff;
+-Categories=Application;Office;
++Categories=GTK;OCR;Graphics;
++
