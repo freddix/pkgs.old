@@ -1,0 +1,12 @@
+diff -aurN texmaker-3.1.orig/configdialog.cpp texmaker-3.1/configdialog.cpp
+--- texmaker-3.1.orig/configdialog.cpp	2011-10-11 19:03:12.762613316 +0200
++++ texmaker-3.1/configdialog.cpp	2011-10-11 19:04:29.069659347 +0200
+@@ -124,7 +124,7 @@
+ #ifdef DEBIAN_SPELLDIR
+ QDir spelldir(PREFIX"/share/myspell/dicts");
+ #else
+-QDir spelldir(PREFIX"/share/texmaker");
++QDir spelldir(PREFIX"/share/myspell");
+ #endif
+ #endif
+ 
