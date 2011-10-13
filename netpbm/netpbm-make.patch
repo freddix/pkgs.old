@@ -1,0 +1,12 @@
+--- netpbm-10.15/lib/Makefile.orig	2003-01-19 20:49:07.000000000 +0100
++++ netpbm-10.15/lib/Makefile	2003-05-17 23:06:16.000000000 +0200
+@@ -186,7 +186,8 @@
+ 	  libnetpbm.$(NETPBMLIBSUFFIX).$(MAJ).$(MIN)  $(PKGDIR)/lib/
+ 	cd $(PKGDIR)/lib/ ; \
+           rm -f libnetpbm.$(NETPBMLIBSUFFIX).$(MAJ); \
+-          $(SYMLINK) libnetpbm.$(NETPBMLIBSUFFIX).$(MAJ).$(MIN) $(SONAME)
++          $(SYMLINK) libnetpbm.$(NETPBMLIBSUFFIX).$(MAJ).$(MIN) $(SONAME); \
++          $(SYMLINK) libnetpbm.$(NETPBMLIBSUFFIX).$(MAJ).$(MIN) libnetpbm.$(NETPBMLIBSUFFIX)
+ endif
+ ifeq ($(NETPBMLIBTYPE),dll)
+ #install a Windows DLL shared library
