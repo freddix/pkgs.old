@@ -1,13 +1,15 @@
 Summary:	Integrated LaTeX Environment for the GNOME Desktop
 Name:		latexila
 Version:	2.2.2
-Release:	1
+Release:	2
 License:	GPL v3
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/latexila/2.2/%{name}-%{version}.tar.xz
 # Source0-md5:	a6eb543898d61c16916be0d2982be68d
+Patch0:		%{name}-spellcheck.patch
 BuildRequires:	cmake
 BuildRequires:	gtksourceview2-devel
+BuildRequires:	gtkspell-devel
 BuildRequires:	itstool
 BuildRequires:	libgee-devel
 BuildRequires:	libunique-devel
@@ -22,11 +24,15 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
+rm -f src/C/*.c
+
 install -d build
 cd build
-%cmake ..
+%cmake .. \
+	-DBUILD_VALA=1
 %{__make}
 
 %install
