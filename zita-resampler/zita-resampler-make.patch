@@ -1,0 +1,50 @@
+diff -aurN zita-resampler-0.1.1.orig/libs/Makefile zita-resampler-0.1.1/libs/Makefile
+--- zita-resampler-0.1.1.orig/libs/Makefile	2011-01-04 22:00:43.000000000 +0100
++++ zita-resampler-0.1.1/libs/Makefile	2011-01-04 22:03:16.000000000 +0100
+@@ -17,18 +17,13 @@
+ 
+ # Modify as required.
+ #
+-PREFIX = /usr/local
+-SUFFIX := $(shell uname -m | sed -e 's/^unknown/$//' -e 's/^i.86/$//' -e 's/^x86_64/$/64/')
+-LIBDIR = lib$(SUFFIX)
+-
+-
+ MAJVERS = 0
+ MINVERS = 1.1
+ VERSION = $(MAJVERS).$(MINVERS)
+ DISTDIR = zita-resampler-$(VERSION)
+ 
+ 
+-CPPFLAGS += -Wall -I. -fPIC -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -O2 -ffast-math
++CPPFLAGS += -Wall -I. -fPIC -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS $(OPTFLAGS)
+ #CPPFLAGS += -march=native
+ LDFLAGS += 
+ LDLIBS +=
+@@ -43,18 +38,19 @@
+ 
+ 
+ $(ZITA-RESAMPLER_MIN): $(ZITA-RESAMPLER_O)
+-	g++ -shared $(LDFLAGS) -Wl,-soname,$(ZITA-RESAMPLER_MAJ) -o $(ZITA-RESAMPLER_MIN) $(ZITA-RESAMPLER_O) $(ZITA-RESAMPLER_DEP)
++	$(CXX) -shared $(LDFLAGS) -Wl,-soname,$(ZITA-RESAMPLER_MAJ) -o $(ZITA-RESAMPLER_MIN) $(ZITA-RESAMPLER_O) $(ZITA-RESAMPLER_DEP)
+ 
+ $(ZITA-RESAMPLER_O):	$(ZITA-RESAMPLER_H)
+ 
+ 
+ install:	$(ZITA-RESAMPLER_MIN)
+-	install -d $(PREFIX)/include
+-	install -d $(PREFIX)/$(LIBDIR)
+-	install -m 644 $(ZITA-RESAMPLER_H) $(PREFIX)/include
+-	install -m 755 $(ZITA-RESAMPLER_MIN) $(PREFIX)/$(LIBDIR)
+-	/sbin/ldconfig -n $(PREFIX)/$(LIBDIR)
+-	ln -sf $(ZITA-RESAMPLER_MIN) $(PREFIX)/$(LIBDIR)/$(ZITA-RESAMPLER_SO)
++	install -d $(DESTDIR)/usr/include
++	install -d $(DESTDIR)/$(LIBDIR)
++	install -m 644 $(ZITA-RESAMPLER_H) $(DESTDIR)/usr/include
++	install -m 755 $(ZITA-RESAMPLER_MIN) $(DESTDIR)/$(LIBDIR)
++	/sbin/ldconfig -n $(DESTDIR)/$(LIBDIR)
++	ln -sf $(ZITA-RESAMPLER_MIN) $(DESTDIR)/$(LIBDIR)/$(ZITA-RESAMPLER_MAJ)
++	ln -sf $(ZITA-RESAMPLER_MAJ) $(DESTDIR)/$(LIBDIR)/$(ZITA-RESAMPLER_SO)
+ 
+ 
+ clean:
