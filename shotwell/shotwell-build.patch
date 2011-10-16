@@ -1,25 +1,127 @@
+diff -aurN shotwell-0.11.2.orig/Makefile shotwell-0.11.2/Makefile
+--- shotwell-0.11.2.orig/Makefile	2011-09-22 23:12:46.855946744 +0200
++++ shotwell-0.11.2/Makefile	2011-09-22 23:13:20.148530531 +0200
+@@ -258,8 +258,6 @@
+ 	posix \
+ 	LConv
+ 
+-# libraw is not listed (see note below); when libraw-config is no longer needed, it should be
+-# added to this list
+ EXT_PKGS = \
+ 	atk \
+ 	gdk-2.0 \
+@@ -277,6 +275,7 @@
+ 	libexif \
+ 	libgphoto2 \
+ 	libsoup-2.4 \
++	libraw \
+ 	libxml-2.0 \
+ 	sqlite3 \
+ 	unique-1.0 \
+@@ -294,11 +293,6 @@
+ 
+ DIRECT_LIBS =
+ 
+-LIBRAW_PKG = \
+-	libraw
+-
+-# libraw is handled separately (see note below); when libraw-config is no longer needed, the version
+-# should be added to this list
+ EXT_PKG_VERSIONS = \
+ 	gee-1.0 >= 0.5.0 \
+ 	gexiv2 >= 0.2.0 \
+@@ -312,6 +306,7 @@
+ 	gudev-1.0 >= 145 \
+ 	libexif >= 0.6.16 \
+ 	libgphoto2 >= 2.4.2 \
++	libraw >= 0.13.4 \
+ 	libsoup-2.4 >= 2.26.0 \
+ 	libxml-2.0 >= 2.6.32 \
+ 	sqlite3 >= 3.5.9 \
+@@ -325,10 +320,7 @@
+ endif
+ DIRECT_LIBS_VERSIONS =
+ 
+-LIBRAW_VERSION = \
+-	0.9.0
+-
+-VALA_PKGS = $(EXT_PKGS) $(LOCAL_PKGS) $(LIBRAW_PKG)
++VALA_PKGS = $(EXT_PKGS) $(LOCAL_PKGS)
+ 
+ ifndef BUILD_DIR
+ BUILD_DIR=src
+@@ -419,21 +411,14 @@
+ CFLAGS = -O0 -g -pipe
+ PLUGIN_CFLAGS = -O0 -g -pipe
+ else
+-CFLAGS = -O2 -g -pipe
+-PLUGIN_CFLAGS = -O2 -g -pipe
++CFLAGS = $(OPTFLAGS) -pipe
++PLUGIN_CFLAGS = $(OPTFLAGS) -pipe
+ endif
+ endif
+ 
+ CFLAGS += $(REQUIRED_CFLAGS)
+ PLUGIN_CFLAGS += $(REQUIRED_CFLAGS)
+ 
+-# Required for gudev-1.0
+-CFLAGS += -DG_UDEV_API_IS_SUBJECT_TO_CHANGE
+-
+-# Packaged libraw is not widely available, so we must fake what would be in its .pc file
+-# if not available.
+-LIBRAW_CONFIG=./libraw-config
+-
+ define check_valac_version
+ 	@ ./chkver min $(VALAC_VERSION) $(MIN_VALAC_VERSION) || ( echo 'Shotwell requires Vala compiler $(MIN_VALAC_VERSION) or greater.  You are running' $(VALAC_VERSION) '\b.'; exit 1 )
+ 	$(if $(MAX_VALAC_VERSION),\
+@@ -677,10 +662,10 @@
+ 	@
+ 
+ $(EXPANDED_OBJ_FILES): %.o: %.c $(CONFIG_IN) Makefile
+-	$(CC) -c $(VALA_CFLAGS) `$(LIBRAW_CONFIG) --cflags` $(CFLAGS) -o $@ $<
++	$(CC) -c $(VALA_CFLAGS) $(CFLAGS) -o $@ $<
+ 
+ $(PROGRAM): $(EXPANDED_OBJ_FILES) $(RESOURCES) $(LANG_STAMP) $(THUMBNAILER_BIN)
+-	$(CC) $(EXPANDED_OBJ_FILES) $(CFLAGS) $(LDFLAGS) $(RESOURCES) $(VALA_LDFLAGS) `$(LIBRAW_CONFIG) --libs` $(EXPORT_FLAGS) -o $@
++	$(CC) $(EXPANDED_OBJ_FILES) $(CFLAGS) $(LDFLAGS) $(RESOURCES) $(VALA_LDFLAGS) $(EXPORT_FLAGS) -o $@
+ 	glib-compile-schemas misc
+ 
+ $(THUMBNAILER_BIN): $(EXPANDED_THUMBNAILER_SRC_FILES)
+@@ -709,7 +694,7 @@
+ glade: lib$(PROGRAM).so
+ 
+ lib$(PROGRAM).so: $(EXPANDED_OBJ_FILES) $(RESOURCES) $(LANG_STAMP)
+-	$(CC) $(EXPANDED_OBJ_FILES) $(CFLAGS) $(LDFLAGS) $(RESOURCES) $(VALA_LDFLAGS) `$(LIBRAW_CONFIG) --libs` $(EXPORT_FLAGS) -shared -o $@
++	$(CC) $(EXPANDED_OBJ_FILES) $(CFLAGS) $(LDFLAGS) $(RESOURCES) $(VALA_LDFLAGS) $(EXPORT_FLAGS) -shared -o $@
+ 
+ .PHONY: pkgcheck
+ pkgcheck:
+@@ -720,7 +705,5 @@
+ ifdef EXT_PKGS
+ 	@pkg-config --print-errors --exists $(EXT_PKGS) $(DIRECT_LIBS_VERSIONS)
+ endif
+-# Check for libraw manually
+-	@$(LIBRAW_CONFIG) --exists=$(LIBRAW_VERSION)
+ endif
+ 	@ type msgfmt > /dev/null || ( echo 'msgfmt (usually found in the gettext package) is missing and is required to build Shotwell. ' ; exit 1 )
 diff -aurN shotwell-0.11.2.orig/plugins/Makefile.plugin.mk shotwell-0.11.2/plugins/Makefile.plugin.mk
 --- shotwell-0.11.2.orig/plugins/Makefile.plugin.mk	2011-09-22 23:12:46.853946770 +0200
-+++ shotwell-0.11.2/plugins/Makefile.plugin.mk	2011-09-29 18:45:37.458983023 +0200
-@@ -23,8 +23,8 @@
++++ shotwell-0.11.2/plugins/Makefile.plugin.mk	2011-09-23 21:39:33.301487793 +0200
+@@ -23,7 +23,7 @@
  PKGS := $(shell sed ':a;N;$$!ba;s/\n/ /g' ../shotwell-plugin-dev-1.0.deps) $(PKGS)
  
  # automatically include the shotwell-plugin-dev-1.0 package as a local dependency
 -EXT_PKGS := $(PKGS) 
--PKGS := shotwell-plugin-dev-1.0 $(PKGS)
 +EXT_PKGS := $(PKGS)
-+PKGS := shotwell-plugin-dev-1.0 $(PKGS) $(PLUGIN_PKGS)
+ PKGS := shotwell-plugin-dev-1.0 $(PKGS)
  
  # automatically include the Resources.vala common file
- SRC_FILES := ../common/Resources.vala $(SRC_FILES)
-@@ -32,8 +32,8 @@
- CFILES := $(notdir $(SRC_FILES:.vala=.c))
+@@ -33,7 +33,7 @@
  OFILES := $(notdir $(SRC_FILES:.vala=.o))
  
--CFLAGS := `pkg-config --print-errors --cflags $(EXT_PKGS)` -nostdlib -export-dynamic $(PLUGIN_CFLAGS)
+ CFLAGS := `pkg-config --print-errors --cflags $(EXT_PKGS)` -nostdlib -export-dynamic $(PLUGIN_CFLAGS)
 -LDFLAGS := `pkg-config --print-errors --libs $(EXT_PKGS)` $(LDFLAGS)
-+CFLAGS := `pkg-config --print-errors --cflags $(EXT_PKGS) $(PLUGIN_PKGS)` -nostdlib -export-dynamic $(PLUGIN_CFLAGS)
-+LIBS := `pkg-config --print-errors --libs $(EXT_PKGS) $(PLUGIN_PKGS)`
++LIBS := `pkg-config --print-errors --libs $(EXT_PKGS)`
  DEFINES := -D_VERSION='"$(PLUGINS_VERSION)"' -DGETTEXT_PACKAGE='"shotwell"'
  
  all: $(PLUGIN).so
@@ -32,27 +134,23 @@ diff -aurN shotwell-0.11.2.orig/plugins/Makefile.plugin.mk shotwell-0.11.2/plugi
  
  .PHONY: cleantemps
  cleantemps:
-diff -aurN shotwell-0.11.2.orig/plugins/shotwell-publishing/Makefile shotwell-0.11.2/plugins/shotwell-publishing/Makefile
---- shotwell-0.11.2.orig/plugins/shotwell-publishing/Makefile	2011-09-22 23:12:46.854946757 +0200
-+++ shotwell-0.11.2/plugins/shotwell-publishing/Makefile	2011-09-29 18:42:02.802666596 +0200
-@@ -1,7 +1,7 @@
+diff -aurN shotwell-0.11.2.orig/src/plugins/mk/interfaces.mk shotwell-0.11.2/src/plugins/mk/interfaces.mk
+--- shotwell-0.11.2.orig/src/plugins/mk/interfaces.mk	2011-09-22 23:12:46.835946996 +0200
++++ shotwell-0.11.2/src/plugins/mk/interfaces.mk	2011-09-23 22:03:41.130387441 +0200
+@@ -5,10 +5,13 @@
+ 	src/plugins/PublishingInterfaces.vala
  
- PLUGIN := shotwell-publishing
+ PLUGIN_PKG_REQS := \
+-	gobject-2.0 \
+-	glib-2.0 \
+ 	gdk-2.0 \
+-	gtk+-2.0
++	gio-2.0 \
++	glib-2.0 \
++	gmodule-2.0 \
++	gobject-2.0 \
++	gtk+-2.0 \
++	libsoup-2.4
  
--PKGS := \
-+PLUGIN_PKGS := \
- 	gtk+-2.0 \
- 	libsoup-2.4 \
- 	libxml-2.0 \
-diff -aurN shotwell-0.11.2.orig/plugins/shotwell-publishing-extras/Makefile shotwell-0.11.2/plugins/shotwell-publishing-extras/Makefile
---- shotwell-0.11.2.orig/plugins/shotwell-publishing-extras/Makefile	2011-09-22 23:12:46.854946757 +0200
-+++ shotwell-0.11.2/plugins/shotwell-publishing-extras/Makefile	2011-09-29 18:42:16.622493824 +0200
-@@ -1,7 +1,7 @@
- 
- PLUGIN := shotwell-publishing-extras
- 
--PKGS := \
-+PLUGIN_PKGS := \
- 	gtk+-2.0 \
- 	libsoup-2.4 \
- 	libxml-2.0 \
+ PLUGIN_VAPI := plugins/shotwell-plugin-dev-1.0.vapi
+ PLUGIN_HEADER := $(PLUGIN_VAPI:.vapi=.h)
