@@ -7,12 +7,12 @@
 #
 Summary:	A System and Service Manager
 Name:		systemd
-Version:	36
-Release:	2
+Version:	37
+Release:	1
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.bz2
-# Source0-md5:	e1213338efb697abc8215d9a66a7f082
+# Source0-md5:	1435f23be79c8c38d1121c6b150510f3
 Source10:	%{name}-locale.conf
 Source11:	%{name}-loop.conf
 Source12:	%{name}-sysctl.conf
@@ -216,11 +216,14 @@ fi
 %ghost %config(noreplace) %{_sysconfdir}/machine-id
 %ghost %config(noreplace) %{_sysconfdir}/machine-info
 
+%dir %{_datadir}/systemd
 %dir %{_prefix}/lib/systemd
 %dir %{_prefix}/lib/systemd/user-generators
 %dir %{_sysconfdir}/systemd
 %dir /%{_lib}/systemd/system-generators
 %dir /%{_lib}/systemd/system-shutdown
+
+%{_datadir}/systemd/kbd-model-map
 
 %{_datadir}/dbus-1/services/org.freedesktop.systemd1.service
 %{_datadir}/dbus-1/system-services/org.freedesktop.hostname1.service
