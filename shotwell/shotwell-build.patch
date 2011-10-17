@@ -104,24 +104,26 @@ diff -aurN shotwell-0.11.2.orig/Makefile shotwell-0.11.2/Makefile
 -	@$(LIBRAW_CONFIG) --exists=$(LIBRAW_VERSION)
  endif
  	@ type msgfmt > /dev/null || ( echo 'msgfmt (usually found in the gettext package) is missing and is required to build Shotwell. ' ; exit 1 )
-diff -aurN shotwell-0.11.2.orig/plugins/Makefile.plugin.mk shotwell-0.11.2/plugins/Makefile.plugin.mk
---- shotwell-0.11.2.orig/plugins/Makefile.plugin.mk	2011-09-22 23:12:46.853946770 +0200
-+++ shotwell-0.11.2/plugins/Makefile.plugin.mk	2011-09-23 21:39:33.301487793 +0200
-@@ -23,7 +23,7 @@
- PKGS := $(shell sed ':a;N;$$!ba;s/\n/ /g' ../shotwell-plugin-dev-1.0.deps) $(PKGS)
+diff -aurN shotwell-0.11.4.orig/plugins/Makefile.plugin.mk shotwell-0.11.4/plugins/Makefile.plugin.mk
+--- shotwell-0.11.4.orig/plugins/Makefile.plugin.mk	2011-10-16 23:30:45.155015315 +0200
++++ shotwell-0.11.4/plugins/Makefile.plugin.mk	2011-10-16 23:32:40.236576598 +0200
+@@ -24,7 +24,7 @@
  
  # automatically include the shotwell-plugin-dev-1.0 package as a local dependency
--EXT_PKGS := $(PKGS) 
-+EXT_PKGS := $(PKGS)
- PKGS := shotwell-plugin-dev-1.0 $(PKGS)
+ EXT_PKGS := $(PKGS) 
+-PKGS := shotwell-plugin-dev-1.0 $(PKGS)
++PKGS := shotwell-plugin-dev-1.0 $(PKGS) $(PLUGIN_PKGS)
  
  # automatically include the Resources.vala common file
-@@ -33,7 +33,7 @@
+ SRC_FILES := ../common/Resources.vala $(SRC_FILES)
+@@ -32,8 +32,8 @@
+ CFILES := $(notdir $(SRC_FILES:.vala=.c))
  OFILES := $(notdir $(SRC_FILES:.vala=.o))
  
- CFLAGS := `pkg-config --print-errors --cflags $(EXT_PKGS)` -nostdlib -export-dynamic $(PLUGIN_CFLAGS)
+-CFLAGS := `pkg-config --print-errors --cflags $(EXT_PKGS)` -nostdlib -export-dynamic $(PLUGIN_CFLAGS)
 -LDFLAGS := `pkg-config --print-errors --libs $(EXT_PKGS)` $(LDFLAGS)
-+LIBS := `pkg-config --print-errors --libs $(EXT_PKGS)`
++CFLAGS := `pkg-config --print-errors --cflags $(EXT_PKGS) $(PLUGIN_PKGS)` -nostdlib -export-dynamic $(PLUGIN_CFLAGS)
++LIBS := `pkg-config --print-errors --libs $(EXT_PKGS) $(PLUGIN_PKGS)`
  DEFINES := -D_VERSION='"$(PLUGINS_VERSION)"' -DGETTEXT_PACKAGE='"shotwell"'
  
  all: $(PLUGIN).so
@@ -134,23 +136,27 @@ diff -aurN shotwell-0.11.2.orig/plugins/Makefile.plugin.mk shotwell-0.11.2/plugi
  
  .PHONY: cleantemps
  cleantemps:
-diff -aurN shotwell-0.11.2.orig/src/plugins/mk/interfaces.mk shotwell-0.11.2/src/plugins/mk/interfaces.mk
---- shotwell-0.11.2.orig/src/plugins/mk/interfaces.mk	2011-09-22 23:12:46.835946996 +0200
-+++ shotwell-0.11.2/src/plugins/mk/interfaces.mk	2011-09-23 22:03:41.130387441 +0200
-@@ -5,10 +5,13 @@
- 	src/plugins/PublishingInterfaces.vala
+diff -aurN shotwell-0.11.4.orig/plugins/shotwell-publishing/Makefile shotwell-0.11.4/plugins/shotwell-publishing/Makefile
+--- shotwell-0.11.4.orig/plugins/shotwell-publishing/Makefile	2011-10-16 23:30:45.156015303 +0200
++++ shotwell-0.11.4/plugins/shotwell-publishing/Makefile	2011-10-16 23:32:49.991454644 +0200
+@@ -1,7 +1,7 @@
  
- PLUGIN_PKG_REQS := \
--	gobject-2.0 \
--	glib-2.0 \
- 	gdk-2.0 \
--	gtk+-2.0
-+	gio-2.0 \
-+	glib-2.0 \
-+	gmodule-2.0 \
-+	gobject-2.0 \
-+	gtk+-2.0 \
-+	libsoup-2.4
+ PLUGIN := shotwell-publishing
  
- PLUGIN_VAPI := plugins/shotwell-plugin-dev-1.0.vapi
- PLUGIN_HEADER := $(PLUGIN_VAPI:.vapi=.h)
+-PKGS := \
++PLUGIN_PKGS := \
+ 	gtk+-2.0 \
+ 	libsoup-2.4 \
+ 	libxml-2.0 \
+diff -aurN shotwell-0.11.4.orig/plugins/shotwell-publishing-extras/Makefile shotwell-0.11.4/plugins/shotwell-publishing-extras/Makefile
+--- shotwell-0.11.4.orig/plugins/shotwell-publishing-extras/Makefile	2011-10-16 23:30:45.155015315 +0200
++++ shotwell-0.11.4/plugins/shotwell-publishing-extras/Makefile	2011-10-16 23:32:57.172364870 +0200
+@@ -1,7 +1,7 @@
+ 
+ PLUGIN := shotwell-publishing-extras
+ 
+-PKGS := \
++PLUGIN_PKGS := \
+ 	gtk+-2.0 \
+ 	libsoup-2.4 \
+ 	libxml-2.0 \
