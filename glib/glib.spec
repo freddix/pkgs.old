@@ -1,12 +1,12 @@
 Summary:	Cross-platform software utility library
 Name:		glib
-Version:	2.30.0
+Version:	2.28.8
 Release:	1
 Epoch:		1
 License:	LGPL
 Group:		Libraries
-Source0:	http://download.gnome.org/sources/glib/2.30/%{name}-%{version}.tar.xz
-# Source0-md5:	68ac9516233044f27e76577d4f4e6de9
+Source0:	http://download.gnome.org/sources/glib/2.28/%{name}-%{version}.tar.xz
+# Source0-md5:	710e8390ae0600feebc9143c23e9da52
 Patch0:		%{name}-makefile.patch
 URL:		http://www.gtk.org/
 BuildRequires:	autoconf
@@ -174,7 +174,6 @@ umask 022
 %files devel
 %defattr(644,root,root,755)
 %doc ChangeLog
-%attr(755,root,root) %{_bindir}/gdbus-codegen
 %attr(755,root,root) %{_bindir}/glib-genmarshal
 %attr(755,root,root) %{_bindir}/glib-gettextize
 %attr(755,root,root) %{_bindir}/glib-mkenums
@@ -190,11 +189,6 @@ umask 022
 %{_libdir}/libgmodule-2.0.la
 %{_libdir}/libgobject-2.0.la
 %{_libdir}/libgthread-2.0.la
-
-%dir %{_libdir}/gdbus-2.0
-%dir %{_libdir}/gdbus-2.0/codegen
-%{_libdir}/gdbus-2.0/codegen/*.py[co]
-%{_mandir}/man1/gdbus-codegen.1*
 
 %{_libdir}/glib-2.0
 %dir %{_datadir}/glib-2.0/gettext
@@ -231,7 +225,6 @@ umask 022
 %defattr(644,root,root,755)
 %{_gtkdocdir}/glib
 %{_gtkdocdir}/gobject
-%{_gtkdocdir}/gdbus-object-manager-example
 
 %files gdbus
 %defattr(644,root,root,755)
