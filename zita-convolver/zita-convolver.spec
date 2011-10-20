@@ -1,17 +1,15 @@
 Summary:	Zita convolver library
 Name:		zita-convolver
-Version:	2.0.0
-Release:	2
+Version:	3.0.2
+Release:	1
 License:	GPL v2
 Group:		Libraries
-Source0:	http://www.kokkinizita.net/linuxaudio/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	7e4e30fb628aed009fa22e4ed46f556a
+Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
+# Source0-md5:	55d7b186c0fe15877cb33e2288533255
 BuildRequires:	fftw3-single-devel
 BuildRequires:	libstdc++-devel
 Patch0:		%{name}-make.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		specflags	-O3
 
 %description
 Zita convolver library.
@@ -39,7 +37,8 @@ zita-convolver library.
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} -C libs install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT	\
+	PREFIX="%{_prefix}"
 
 %clean
 rm -rf $RPM_BUILD_ROOT
