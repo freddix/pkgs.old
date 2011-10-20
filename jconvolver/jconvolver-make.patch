@@ -1,47 +1,45 @@
-diff -aurN jconvolver-0.8.6.orig/source/Makefile jconvolver-0.8.6/source/Makefile
---- jconvolver-0.8.6.orig/source/Makefile	2010-03-21 16:42:50.000000000 +0100
-+++ jconvolver-0.8.6/source/Makefile	2010-03-21 16:46:32.000000000 +0100
-@@ -15,14 +15,13 @@
- #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- 
- 
--PREFIX = /usr/local
-+PREFIX = /usr
- SUFFIX := $(shell uname -m | sed -e 's/^unknown/$//' -e 's/^i.86/$//' -e 's/^x86_64/$/64/')
- LIBDIR = lib$(SUFFIX)
+diff -aurN jconvolver-0.9.1.orig/source/Makefile jconvolver-0.9.1/source/Makefile
+--- jconvolver-0.9.1.orig/source/Makefile	2011-10-20 11:36:31.862591166 +0200
++++ jconvolver-0.9.1/source/Makefile	2011-10-20 11:56:12.021837145 +0200
+@@ -25,8 +25,8 @@
  DISTDIR = jconvolver-$(VERSION)
- VERSION = 0.8.7
+ VERSION = 0.9.1
  LDFLAGS += -L$(PREFIX)/$(LIBDIR)
 -CPPFLAGS += -O3 -Wall -MMD -MP -DVERSION=\"$(VERSION)\"
 -CPPFLAGS += -march=native
 +CPPFLAGS += $(OPTFLAGS) -Wall -MMD -MP -DVERSION=\"$(VERSION)\"
++CXX = g++
  
  
- # Uncomment if you use a libsndfile version without support for
-@@ -38,7 +37,7 @@
- JCONVOLVER_O =	jconvolver.o config.o jconfig.o audiofile.o jclient.o
+ all:	jconvolver fconvolver makemulti
+@@ -35,25 +35,25 @@
+ JCONVOLVER_O =	jconvolver.o config.o jconfig.o audiofile.o sstring.o jclient.o
  jconvolver:	LDLIBS += -lzita-convolver -lfftw3f -lsndfile -lclthreads -ljack -lpthread -lrt
  jconvolver:	$(JCONVOLVER_O)
 -	g++ $(LDFLAGS) -o $@ $(JCONVOLVER_O) $(LDLIBS)
-+	$(CXX) $(OPTFLAGS) $(LDFLAGS) -o $@ $(JCONVOLVER_O) $(LDLIBS)
++	$(CXX) $(LDFLAGS) $(OPTFLAGS) $(JCONVOLVER_O) $(LDLIBS) -o $@
++
  $(JCONVOLVER_O):
  -include $(JCONVOLVER_O:%.o=%.d)
  
-@@ -47,7 +46,7 @@
- FCONVOLVER_O =	fconvolver.o config.o fconfig.o audiofile.o
+ 
+-
+ FCONVOLVER_O =	fconvolver.o config.o fconfig.o audiofile.o sstring.o
  fconvolver:	LDLIBS += -lzita-convolver -lfftw3f -lsndfile -lpthread -lrt
  fconvolver:	$(FCONVOLVER_O)
 -	g++ $(LDFLAGS) -o $@ $(FCONVOLVER_O) $(LDLIBS)
-+	$(CXX) $(OPTFLAGS) $(LDFLAGS) -o $@ $(FCONVOLVER_O) $(LDLIBS)
++	$(CXX) $(LDFLAGS) $(OPTFLAGS) $(FCONVOLVER_O) $(LDLIBS) -o $@
++
  $(FCONVOLVER_O):
  -include $(FCONVOLVER_O:%.o=%.d)
  
-@@ -56,7 +55,7 @@
+ 
+-
  MAKEMULTI_O =	makemulti.o audiofile.o
  makemulti : LDLIBS += -lsndfile -lrt
  makemulti:	$(MAKEMULTI_O)
 -	g++ $(LDFLAGS) -o $@ $(MAKEMULTI_O) $(LDLIBS)
-+	$(CXX) $(OPTFLAGS) $(LDFLAGS) -o $@ $(MAKEMULTI_O) $(LDLIBS)
++	$(CXX) $(LDFLAGS) $(OPTFLAGS) $(MAKEMULTI_O) $(LDLIBS) -o $@
  
  
  install:	all

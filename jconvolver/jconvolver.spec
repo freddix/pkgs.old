@@ -1,19 +1,18 @@
 Summary:	Convolution Engine for JACK
 Name:		jconvolver
-Version:	0.8.7
-Release:	4
+Version:	0.9.1
+Release:	1
 License:	GPL v2
 Group:		Applications
-Source0:	http://www.kokkinizita.net/linuxaudio/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	aec27cdd1dcda26f0d4000ccf0220251
-Source1:	http://www.kokkinizita.net/linuxaudio/downloads/%{name}-reverbs.tar.bz2
+Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
+# Source0-md5:	ffa318df32aa9e6056e02c33ecd95e74
+Source1:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-reverbs.tar.bz2
 # Source1-md5:	a33ec6a97fac039400f7674f3bde4ca9
 Patch0:		%{name}-make.patch
 BuildRequires:	jack-audio-connection-kit-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	zita-convolver-devel
-Obsoletes:	jconv
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -43,7 +42,8 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_datadir}/%{name}
 
 %{__make} -C source install \
-	DESTDIR=$RPM_BUILD_ROOT
+	DESTDIR=$RPM_BUILD_ROOT	\
+	PREFIX=%{_prefix}
 
 cp -aR config-files/* $RPM_BUILD_ROOT%{_datadir}/%{name}
 cp -aR reverbs $RPM_BUILD_ROOT%{_datadir}/%{name}
@@ -53,7 +53,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README
+%doc AUTHORS README README.CONFIG
 %attr(755,root,root) %{_bindir}/*
 %{_datadir}/%{name}
 
