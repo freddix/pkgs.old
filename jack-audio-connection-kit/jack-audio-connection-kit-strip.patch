@@ -1,0 +1,12 @@
+diff -aurN jack-audio-connection-kit-0.109.2.orig/jackd/Makefile.am jack-audio-connection-kit-0.109.2/jackd/Makefile.am
+--- jack-audio-connection-kit-0.109.2.orig/jackd/Makefile.am	2008-06-29 20:29:45.000000000 +0200
++++ jack-audio-connection-kit-0.109.2/jackd/Makefile.am	2008-06-29 20:31:08.000000000 +0200
+@@ -32,7 +32,7 @@
+ 
+ jack_md5.h: jackd
+ if STRIPPED_JACKD
+-	strip -R .note -R .comment .libs/jackd
++	strip --strip-unneeded -R.note -R.comment .libs/jackd
+ endif
+ 	echo "#define JACKD_MD5_SUM \"`md5sum .libs/jackd | awk '{print $$1}'`\"" > jack_md5.h
+ 

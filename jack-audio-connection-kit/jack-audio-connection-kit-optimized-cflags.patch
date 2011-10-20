@@ -1,0 +1,12 @@
+diff -aurN jack-audio-connection-kit-0.116.2.orig/configure.ac jack-audio-connection-kit-0.116.2/configure.ac
+--- jack-audio-connection-kit-0.116.2.orig/configure.ac	2009-04-10 18:49:15.000000000 +0200
++++ jack-audio-connection-kit-0.116.2/configure.ac	2009-04-10 18:51:14.000000000 +0200
+@@ -411,7 +411,7 @@
+     fi
+     
+     AC_DEFINE(x86, 1, "Nope it's intel")
+-    COMMON_X86_OPT_FLAGS="-O3 -fomit-frame-pointer -ffast-math -funroll-loops"
++    COMMON_X86_OPT_FLAGS="-DREENTRANT -O3 -fomit-frame-pointer -ffast-math -funroll-all-loops -fforce-addr -fprefetch-loop-arrays"
+ 
+ dnl
+ dnl its a little sad that OS X doesn't make it possible to identify 
