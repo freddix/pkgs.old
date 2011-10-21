@@ -1,33 +1,36 @@
 diff -aurN zita-convolver-3.0.2.orig/libs/Makefile zita-convolver-3.0.2/libs/Makefile
 --- zita-convolver-3.0.2.orig/libs/Makefile	2011-10-20 00:17:20.313927544 +0200
-+++ zita-convolver-3.0.2/libs/Makefile	2011-10-20 00:29:07.668084400 +0200
-@@ -22,7 +22,7 @@
++++ zita-convolver-3.0.2/libs/Makefile	2011-10-20 17:53:38.510719139 +0200
+@@ -22,18 +22,17 @@
  #
  PREFIX = /usr/local
  SUFFIX := $(shell uname -m | sed -e 's/^unknown/$//' -e 's/^i.86/$//' -e 's/^x86_64/$/64/')
 -LIBDIR = lib$(SUFFIX)
+-
 +LIBDIR = $(PREFIX)/lib$(SUFFIX)
- 
++CXX = g++
  
  MAJVERS = 3
-@@ -30,9 +30,9 @@
+ MINVERS = 0.2
  VERSION = $(MAJVERS).$(MINVERS)
  
  
 -CPPFLAGS += -Wall -I. -fPIC -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -O3
-+CPPFLAGS += -Wall -I. -fPIC -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS
- CPPFLAGS += -ffast-math -funroll-loops 
+-CPPFLAGS += -ffast-math -funroll-loops 
 -CPPFLAGS += -march=native
-+CPPFLAGS += $(OPTFLAGS)
- CPPFLAGS += -DENABLE_VECTOR_MODE 
+-CPPFLAGS += -DENABLE_VECTOR_MODE 
++CPPFLAGS += -Wall -I. -fPIC -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS
++CPPFLAGS += -DENABLE_VECTOR_MODE
++CXXFLAGS = -ffast-math -funroll-loops -march=native -O3
  
  LDLFAGS += 
-@@ -48,15 +48,16 @@
+ LDLIBS +=
+@@ -48,15 +47,17 @@
  
  
  $(ZITA-CONVOLVER_MIN):	$(ZITA-CONVOLVER_O)
 -	g++ -shared $(LDFLAGS) -Wl,-soname,$(ZITA-CONVOLVER_MAJ) -o $(ZITA-CONVOLVER_MIN) $(ZITA-CONVOLVER_O) $(ZITA-CONVOLVER_DEP)
-+	$(CXX) -shared $(LDFLAGS) $(OPTFLAGS) -Wl,-soname,$(ZITA-CONVOLVER_MAJ) -o $(ZITA-CONVOLVER_MIN) $(ZITA-CONVOLVER_O) $(ZITA-CONVOLVER_DEP)
++	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared -Wl,-soname,$(ZITA-CONVOLVER_MAJ) $(ZITA-CONVOLVER_O) $(ZITA-CONVOLVER_DEP) -o $(ZITA-CONVOLVER_MIN)
  
  
  install:	$(ZITA-CONVOLVER_MIN)
@@ -37,6 +40,7 @@ diff -aurN zita-convolver-3.0.2.orig/libs/Makefile zita-convolver-3.0.2/libs/Mak
  	install -m 644 $(ZITA-CONVOLVER_H) $(DESTDIR)$(PREFIX)/include
 -	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)
 -	ldconfig
++	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)
 +	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)
 +	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)/$(LIBDIR)/$(ZITA-CONVOLVER_MAJ)
 +	ln -sf $(ZITA-CONVOLVER_MAJ) $(DESTDIR)/$(LIBDIR)/$(ZITA-CONVOLVER_SO)

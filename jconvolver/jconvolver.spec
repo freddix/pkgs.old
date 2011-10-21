@@ -1,7 +1,7 @@
 Summary:	Convolution Engine for JACK
 Name:		jconvolver
 Version:	0.9.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications
 Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
@@ -34,8 +34,8 @@ find the time to write the user documentation.
 %build
 %{__make} -C source \
 	CXX="%{__cxx}"		\
-	LDFLAGS="%{rpmldflags}"	\
-	OPTFLAGS="%{rpmcflags}"
+	CXXFLAGS="%{rpmcflags}"	\
+	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
