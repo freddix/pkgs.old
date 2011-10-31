@@ -1,11 +1,11 @@
 Summary:	GNU Core-utils - basic command line utilities
 Name:		coreutils
-Version:	8.13
-Release:	2
+Version:	8.14
+Release:	1
 License:	GPL v3+
 Group:		Applications/System
 Source0:	http://ftp.gnu.org/gnu/coreutils/%{name}-%{version}.tar.xz
-# Source0-md5:	8e1675c6c336ff55557c698706a63d6c
+# Source0-md5:	bcb135ce553493a45aba01b39eb3920a
 Source2:	DIR_COLORS
 Source3:	fileutils.sh
 Source10:	su.pamd
