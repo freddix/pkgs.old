@@ -1,11 +1,11 @@
 Summary:	The eCryptfs mount helper and support libraries
 Name:		ecryptfs-utils
-Version:	92
+Version:	93
 Release:	1
 License:	GPL v2+
 Group:		Base
 Source0:	http://launchpad.net/ecryptfs/trunk/%{version}/+download/%{name}_%{version}.orig.tar.gz
-# Source0-md5:	9dbd568d1dc6fde81d6e647c0b2afd99
+# Source0-md5:	7a162a2102a2c1701a156498d9218685
 Patch0:		%{name}-sh.patch
 Patch1:		%{name}-configure.patch
 Patch2:		%{name}-link.patch
@@ -116,6 +116,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/ecryptfs-stat
 %attr(755,root,root) %{_bindir}/ecryptfs-umount-private
 %attr(755,root,root) %{_bindir}/ecryptfs-unwrap-passphrase
+%attr(755,root,root) %{_bindir}/ecryptfs-verify
 %attr(755,root,root) %{_bindir}/ecryptfs-wrap-passphrase
 %attr(755,root,root) %{_bindir}/ecryptfsd
 
