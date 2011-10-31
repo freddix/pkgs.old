@@ -1,11 +1,11 @@
 Summary:	Convolution Engine for JACK
 Name:		jconvolver
-Version:	0.9.1
-Release:	2
+Version:	0.9.2
+Release:	1
 License:	GPL v2
 Group:		Applications
 Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	ffa318df32aa9e6056e02c33ecd95e74
+# Source0-md5:	f1a33f0f455961a7b21b56bdb0f725b1
 Source1:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-reverbs.tar.bz2
 # Source1-md5:	a33ec6a97fac039400f7674f3bde4ca9
 Patch0:		%{name}-make.patch
@@ -14,6 +14,8 @@ BuildRequires:	libsndfile-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	zita-convolver-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		specflags	-O3
 
 %description
 Jconv is a Convolution Engine for JACK, based on FFT convolution and
