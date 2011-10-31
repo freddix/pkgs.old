@@ -1,15 +1,17 @@
 Summary:	Zita convolver library
 Name:		zita-convolver
-Version:	3.0.2
-Release:	2
+Version:	3.0.3
+Release:	1
 License:	GPL v2
 Group:		Libraries
 Source0:	http://kokkinizita.linuxaudio.org/linuxaudio/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	55d7b186c0fe15877cb33e2288533255
+# Source0-md5:	5070e1c7b96ee71697d275be0193b045
 BuildRequires:	fftw3-single-devel
 BuildRequires:	libstdc++-devel
 Patch0:		%{name}-make.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		specflags	-O3 -ffast-math -funroll-loops
 
 %description
 Zita convolver library.

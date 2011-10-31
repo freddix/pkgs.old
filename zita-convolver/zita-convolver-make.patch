@@ -1,17 +1,16 @@
-diff -aurN zita-convolver-3.0.2.orig/libs/Makefile zita-convolver-3.0.2/libs/Makefile
---- zita-convolver-3.0.2.orig/libs/Makefile	2011-10-20 00:17:20.313927544 +0200
-+++ zita-convolver-3.0.2/libs/Makefile	2011-10-20 17:53:38.510719139 +0200
-@@ -22,18 +22,17 @@
+diff -aurN zita-convolver-3.0.3.orig/libs/Makefile zita-convolver-3.0.3/libs/Makefile
+--- zita-convolver-3.0.3.orig/libs/Makefile	2011-10-31 11:48:18.677529424 +0100
++++ zita-convolver-3.0.3/libs/Makefile	2011-10-31 12:04:08.598653775 +0100
+@@ -22,7 +22,7 @@
  #
  PREFIX = /usr/local
  SUFFIX := $(shell uname -m | sed -e 's/^unknown/$//' -e 's/^i.86/$//' -e 's/^x86_64/$/64/')
 -LIBDIR = lib$(SUFFIX)
--
 +LIBDIR = $(PREFIX)/lib$(SUFFIX)
-+CXX = g++
+ 
  
  MAJVERS = 3
- MINVERS = 0.2
+@@ -30,12 +30,11 @@
  VERSION = $(MAJVERS).$(MINVERS)
  
  
@@ -23,9 +22,17 @@ diff -aurN zita-convolver-3.0.2.orig/libs/Makefile zita-convolver-3.0.2/libs/Mak
 +CPPFLAGS += -DENABLE_VECTOR_MODE
 +CXXFLAGS = -ffast-math -funroll-loops -march=native -O3
  
- LDLFAGS += 
+-LDLFAGS += 
++LDLFAGS +=
  LDLIBS +=
-@@ -48,15 +47,17 @@
+ 
+ 
+@@ -44,20 +43,21 @@
+ ZITA-CONVOLVER_MIN = $(ZITA-CONVOLVER_MAJ).$(MINVERS)
+ ZITA-CONVOLVER_DEP = -lfftw3f -lpthread
+ ZITA-CONVOLVER_O = zita-convolver.o
+-ZITA-CONVOLVER_H = zita-convolver.h 
++ZITA-CONVOLVER_H = zita-convolver.h
  
  
  $(ZITA-CONVOLVER_MIN):	$(ZITA-CONVOLVER_O)
@@ -39,11 +46,12 @@ diff -aurN zita-convolver-3.0.2.orig/libs/Makefile zita-convolver-3.0.2/libs/Mak
 +	install -d $(DESTDIR)$(LIBDIR)
  	install -m 644 $(ZITA-CONVOLVER_H) $(DESTDIR)$(PREFIX)/include
 -	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)
+-	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(PREFIX)/$(LIBDIR)/$(ZITA-CONVOLVER_SO)
 -	ldconfig
 +	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)
-+	install -m 755 $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)
-+	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)/$(LIBDIR)/$(ZITA-CONVOLVER_MAJ)
-+	ln -sf $(ZITA-CONVOLVER_MAJ) $(DESTDIR)/$(LIBDIR)/$(ZITA-CONVOLVER_SO)
++	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)/$(ZITA-CONVOLVER_SO)
++	ln -sf $(ZITA-CONVOLVER_MIN) $(DESTDIR)$(LIBDIR)/$(ZITA-CONVOLVER_MAJ)
++	ln -sf $(ZITA-CONVOLVER_MAJ) $(DESTDIR)$(LIBDIR)/$(ZITA-CONVOLVER_SO)
  
  clean:
  	/bin/rm -f *~ *.o *.a *.d *.so.*
