@@ -1,11 +1,11 @@
 Summary:	JACK recorder
 Name:		jack_capture
-Version:	0.9.57
-Release:	2
+Version:	0.9.61
+Release:	1
 License:	GPL v2 and BSD
 Group:		X11/Applications
 Source0:	http://archive.notam02.no/arkiv/src/%{name}-%{version}.tar.gz
-# Source0-md5:	c78ddb7d6b9f1bbef20f663d7c3f99a5
+# Source0-md5:	67808571799a01cd3bd6eb960d4ba537
 Patch0:		%{name}-build.patch
 BuildRequires:	gtk+-devel
 BuildRequires:	jack-audio-connection-kit-devel
