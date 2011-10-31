@@ -1,11 +1,11 @@
 Summary:	The GNU Transport Layer Security Library
 Name:		gnutls
-Version:	2.12.11
+Version:	2.12.12
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	ftp://ftp.gnutls.org/pub/gnutls/%{name}-%{version}.tar.bz2
-# Source0-md5:	f08234b64a8025d6d5aa1307868b02ed
+# Source0-md5:	29ec03027f0e551301da781f02953160
 Patch0:		%{name}-link.patch
 URL:		http://www.gnu.org/software/gnutls/
 BuildRequires:	autoconf
