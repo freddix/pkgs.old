@@ -1,13 +1,11 @@
-%define		dict_version	2.00
-
 Summary:	Tesseract Open Source OCR Engine
 Name:		tesseract
-Version:	3.00
-Release:	2
+Version:	3.01
+Release:	1
 License:	Apache Software License v2
 Group:		Applications/Graphics
 Source0:	http://tesseract-ocr.googlecode.com/files//%{name}-%{version}.tar.gz
-# Source0-md5:	cc812a261088ea0c3d2da735be35d09f
+# Source0-md5:	1ba496e51a42358fb9d3ffe781b2d20a
 #
 Source1:	http://tesseract-ocr.googlecode.com/files/deu.traineddata.gz
 # Source1-md5:	be81a761f61800f6d39393a31435fff3
@@ -17,9 +15,6 @@ Source3:	http://tesseract-ocr.googlecode.com/files/eng.traineddata.gz
 # Source3-md5:	d91041ad156cf2db36664e91ef799451
 Source4:	http://tesseract-ocr.googlecode.com/files/pol.traineddata.gz
 # Source4-md5:	c3d6447245663138f1d3aa4567c72192
-#
-Patch0:		%{name}-missing.patch
-Patch1:		%{name}-link.patch
 URL:		http://code.google.com/p/tesseract-ocr/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -29,7 +24,7 @@ BuildRequires:	libtool
 Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		skip_post_check_so	'.+(libtesseract).+\.so.+'
+#%%define		skip_post_check_so	'.+(libtesseract).+\.so.+'
 
 %description
 A commercial quality OCR engine originally developed at HP between
@@ -78,8 +73,6 @@ Tesseract polish language support.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -112,21 +105,26 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog README
 %attr(755,root,root) %{_bindir}/tesseract
-
 %dir %{_datadir}/tessdata
 %{_datadir}/tessdata/configs
 %{_datadir}/tessdata/tessconfigs
 %{_datadir}/tessdata/eng.*
+%{_mandir}/man1/cntraining.1*
+%{_mandir}/man1/combine_tessdata.1*
+%{_mandir}/man1/mftraining.1*
+%{_mandir}/man1/tesseract.1*
+%{_mandir}/man1/unicharset_extractor.1*
+%{_mandir}/man1/wordlist2dawg.1*
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %ghost %{_libdir}/libtesseract_*.so.?
-%attr(755,root,root) %{_libdir}/libtesseract_*.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libtesseract.so.?
+%attr(755,root,root) %{_libdir}/libtesseract.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libtesseract_*.so
-%{_libdir}/libtesseract_*.la
+%attr(755,root,root) %{_libdir}/libtesseract.so
+%{_libdir}/libtesseract.la
 %{_includedir}/%{name}
 
 %files trainer
