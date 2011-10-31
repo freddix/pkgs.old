@@ -1,26 +1,28 @@
 Summary:	A user-friendly file manager and visual shell
 Name:		mc
-Version:	4.7.5.5
+Version:	4.8.0
 Release:	1
-License:	GPL
+License:	GPL v3v
 Group:		Applications/Shells
 Source0:	http://www.midnight-commander.org/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	ef1582651115ca8aa52f8d11e99f7da3
+# Source0-md5:	592478c3edfa2ad64c8cd165b9bec446
 Patch0:		%{name}-elinks.patch
 URL:		http://www.ibiblio.org/mc/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gettext-devel
 BuildRequires:	glib-devel
+BuildRequires:	gpm-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	pam-devel
-BuildRequires:	pkgconfig
+BuildRequires:	pcre-devel
+BuildRequires:	pkg-config
 BuildRequires:	rpm-perlprov
 BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel
-BuildRequires:	gpm-devel
 BuildRequires:	xorg-libX11-devel
 Requires:	file
+Requires:	xdg-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -50,6 +52,7 @@ export X11_WWW="xdg-open"
 	--with-edit		\
 	--with-gpm-mouse	\
 	--with-mcfs		\
+	--with-pcre		\
 	--with-screen=slang	\
 	--with-vfs		\
 	--with-x 		\
@@ -59,13 +62,13 @@ export X11_WWW="xdg-open"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{rc.d/init.d,pam.d,shrc.d,sysconfig}} \
+install -d $RPM_BUILD_ROOT{%{_sbindir},/etc/{pam.d,shrc.d,sysconfig}} \
 	$RPM_BUILD_ROOT%{_mandir}/man8
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install contrib/{mc.sh,mc.csh} $RPM_BUILD_ROOT/etc/shrc.d
+install contrib/mc.sh $RPM_BUILD_ROOT/etc/shrc.d
 
 rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{be-tarask,fi_FI,it_IT}
 
@@ -76,7 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc NEWS README
+%doc NEWS README doc/keybind-migration.txt
 
 %dir %{_datadir}/mc
 %dir %{_libdir}/mc
@@ -84,7 +87,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/mc
 
 %attr(755,root,root) %{_bindir}/mc*
-%attr(755,root,root) %{_libdir}/mc/*.csh
 %attr(755,root,root) %{_libdir}/mc/*.sh
 %attr(755,root,root) %{_libdir}/mc/cons.saver
 
@@ -119,18 +121,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/mc/extfs.d/README*
 %attr(755,root,root) %{_libdir}/mc/extfs.d/a+
 %attr(755,root,root) %{_libdir}/mc/extfs.d/apt+
-%attr(755,root,root) %{_libdir}/mc/extfs.d/deb*
-%attr(755,root,root) %{_libdir}/mc/extfs.d/dpkg+
-%attr(755,root,root) %{_libdir}/mc/extfs.d/mailfs
-%attr(755,root,root) %{_libdir}/mc/extfs.d/patchfs
-%attr(755,root,root) %{_libdir}/mc/extfs.d/rpms+
-%attr(755,root,root) %{_libdir}/mc/extfs.d/uzip
 %attr(755,root,root) %{_libdir}/mc/extfs.d/audio
 %attr(755,root,root) %{_libdir}/mc/extfs.d/bpp
+%attr(755,root,root) %{_libdir}/mc/extfs.d/changesetfs
+%attr(755,root,root) %{_libdir}/mc/extfs.d/deb*
+%attr(755,root,root) %{_libdir}/mc/extfs.d/dpkg+
+%attr(755,root,root) %{_libdir}/mc/extfs.d/gitfs+
 %attr(755,root,root) %{_libdir}/mc/extfs.d/hp48+
 %attr(755,root,root) %{_libdir}/mc/extfs.d/iso9660
 %attr(755,root,root) %{_libdir}/mc/extfs.d/lslR
+%attr(755,root,root) %{_libdir}/mc/extfs.d/mailfs
+%attr(755,root,root) %{_libdir}/mc/extfs.d/patchfs
+%attr(755,root,root) %{_libdir}/mc/extfs.d/patchsetfs
 %attr(755,root,root) %{_libdir}/mc/extfs.d/rpm
+%attr(755,root,root) %{_libdir}/mc/extfs.d/rpms+
 %attr(755,root,root) %{_libdir}/mc/extfs.d/s3+
 %attr(755,root,root) %{_libdir}/mc/extfs.d/trpm
 %attr(755,root,root) %{_libdir}/mc/extfs.d/u7z
@@ -142,6 +146,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/mc/extfs.d/uha
 %attr(755,root,root) %{_libdir}/mc/extfs.d/ulha
 %attr(755,root,root) %{_libdir}/mc/extfs.d/urar
+%attr(755,root,root) %{_libdir}/mc/extfs.d/uzip
 %attr(755,root,root) %{_libdir}/mc/extfs.d/uzoo
 
 %dir %{_libdir}/mc/fish
