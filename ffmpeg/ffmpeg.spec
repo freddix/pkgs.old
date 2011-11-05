@@ -1,11 +1,11 @@
 Summary:	Realtime audio/video encoder and streaming server
 Name:		ffmpeg
-Version:	0.7.5
+Version:	0.7.7
 Release:	1
 License:	GPL with LGPL parts
 Group:		Applications/Multimedia
 Source0:	http://ffmpeg.org/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	4e85037d1a94ff8cbcf5a0a133181a48
+# Source0-md5:	b3e268f01c3cea8fcbd4736a0d7f2806
 URL:		http://ffmpeg.org/
 BuildRequires:	SDL-devel
 BuildRequires:	dirac-devel
