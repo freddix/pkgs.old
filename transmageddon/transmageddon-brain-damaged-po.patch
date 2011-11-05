@@ -1,0 +1,12 @@
+diff -aurN transmageddon-0.15.orig/po/pl.po transmageddon-0.15/po/pl.po
+--- transmageddon-0.15.orig/po/pl.po	2009-11-22 14:47:06.000000000 +0100
++++ transmageddon-0.15/po/pl.po	2009-11-22 14:48:27.000000000 +0100
+@@ -316,7 +316,7 @@
+ 
+ #: ../transmageddon.desktop.in.in.h:1
+ msgid "Transmageddon Video Transcoder"
+-msgstr "Przekodowywanie nagrań wideo Transmageddon"
++msgstr "Transmageddon"
+ 
+ #: ../transmageddon.desktop.in.in.h:2
+ msgid "Video format conversion tool"
