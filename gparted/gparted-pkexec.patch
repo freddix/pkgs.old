@@ -1,0 +1,77 @@
+Description: add pkexec policy file
+Author: Marc Deslauriers <marc.deslauriers@canonical.com>
+
+Index: gparted-0.8.1/data/Makefile.am
+===================================================================
+--- gparted-0.8.1.orig/data/Makefile.am	2011-08-17 09:31:01.876432765 -0400
++++ gparted-0.8.1/data/Makefile.am	2011-08-17 09:31:06.046432795 -0400
+@@ -1 +1,10 @@
+ SUBDIRS = icons
++
++polkit_policydir = $(datadir)/polkit-1/actions
++
++dist_polkit_policy_in_files = org.freddix.pkexec.gparted.policy.in
++dist_polkit_policy_DATA = $(dist_polkit_policy_in_files:.policy.in=.policy)
++
++@INTLTOOL_POLICY_RULE@
++
++EXTRA_DIST = $(dist_polkit_policy_in_files)
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ gparted-0.8.1/data/org.freddix.pkexec.gparted.policy.in	2011-08-17 09:31:18.566432878 -0400
+@@ -0,0 +1,19 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE policyconfig PUBLIC
++ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
++ "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
++<policyconfig>
++
++  <action id="org.freddix.pkexec.gparted">
++    <_message>Authentication is required to run the GParted</_message>
++    <icon_name>gparted</icon_name>
++    <defaults>
++      <allow_any>auth_admin</allow_any>
++      <allow_inactive>auth_admin</allow_inactive>
++      <allow_active>auth_admin</allow_active>
++    </defaults>
++    <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/gparted</annotate>
++    <annotate key="org.freedesktop.policykit.exec.allow_gui">true</annotate>
++  </action>
++
++</policyconfig>
+Index: gparted-0.8.1/po/POTFILES.in
+===================================================================
+--- gparted-0.8.1.orig/po/POTFILES.in	2011-08-17 09:31:01.896432766 -0400
++++ gparted-0.8.1/po/POTFILES.in	2011-08-17 09:31:06.046432795 -0400
+@@ -1,5 +1,6 @@
+ # List of source files containing translatable strings.
+ # Please keep this file sorted alphabetically.
++data/org.freddix.pkexec.gparted.policy.in
+ gparted.desktop.in.in
+ src/Dialog_Base_Partition.cc
+ src/Dialog_Disklabel.cc
+diff -aurN gparted-0.10.0.orig/gparted.in gparted-0.10.0/gparted.in
+--- gparted-0.10.0.orig/gparted.in	2011-11-02 23:42:46.796916984 +0100
++++ gparted-0.10.0/gparted.in	2011-11-03 00:04:35.663553901 +0100
+@@ -54,7 +54,7 @@
+ #
+ #  Define base command for executing GParted
+ #
+-BASE_CMD="@installdir@/gpartedbin $*"
++BASE_CMD="pkexec @installdir@/gpartedbin $*"
+ 
+ #
+ #  If no root privileges, then invoke gpartedbin directly
+diff -aurN gparted-0.10.0.orig/Makefile.am gparted-0.10.0/Makefile.am
+--- gparted-0.10.0.orig/Makefile.am	2011-11-02 23:42:46.786917109 +0100
++++ gparted-0.10.0/Makefile.am	2011-11-03 00:04:09.372882578 +0100
+@@ -14,8 +14,8 @@
+ desktopdir = $(datadir)/applications
+ desktop_DATA = $(DESKTOP_FILES)
+ 
+-sbin_SCRIPTS = gparted
+-CLEANFILES = $(sbin_SCRIPTS) $(DESKTOP_IN_FILES)
++bin_SCRIPTS = gparted
++CLEANFILES = $(bin_SCRIPTS) $(DESKTOP_IN_FILES)
+ 
+ do_subst = sed -e 's,[@]installdir[@],$(sbindir),g' \
+ 	-e 's,[@]gksuprog[@],$(GKSUPROG),g'

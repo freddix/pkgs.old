@@ -1,0 +1,15 @@
+diff -aurN gparted-0.10.0.orig/gparted.desktop.in.in gparted-0.10.0/gparted.desktop.in.in
+--- gparted-0.10.0.orig/gparted.desktop.in.in	2011-11-02 23:42:46.804916884 +0100
++++ gparted-0.10.0/gparted.desktop.in.in	2011-11-02 23:43:31.621356603 +0100
+@@ -3,9 +3,9 @@
+ _GenericName=Partition Editor
+ _X-GNOME-FullName=GParted Partition Editor
+ _Comment=Create, reorganize, and delete partitions
+-Exec=@gksuprog@ @installdir@/gparted %f
++Exec=gparted %f
+ Icon=gparted
+ Terminal=false
+ Type=Application
+-Categories=GNOME;System;Filesystem;
++Categories=GNOME;GTK;System;Filesystem;Settings;
+ StartupNotify=true
