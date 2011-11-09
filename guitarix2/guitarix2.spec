@@ -1,16 +1,16 @@
 Summary:	Simple Linux Rock Guitar Amplifier for JACK
 Name:		guitarix2
-Version:	0.19.0
-Release:	2
+Version:	0.20.0
+Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/guitarix/%{name}-%{version}.tar.bz2
-# Source0-md5:	6b103e306225577a479a601c4eff5a30
+# Source0-md5:	454f45ba1855e81345131a7ce0f983d0
 BuildRequires:	boost-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	jack-audio-connection-kit-devel
 BuildRequires:	libsndfile-devel
-#BuildRequires:	zita-convolver-devel
+BuildRequires:	zita-convolver-devel
 Requires:	jack-audio-connection-kit
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -20,7 +20,7 @@ Connektion Kit) with one input and two outputs. Designed, with GTK and
 faust, to get nice thrash/metal/rock guitar sounds.
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -qn guitarix-%{version}
 
 sed -i -e 's/boost_program_options-mt/boost_program_options/g' \
     -i -e 's/-O3 -DNDEBUG/-DNDEBUG/g' wscript
