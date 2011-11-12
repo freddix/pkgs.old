@@ -1,0 +1,4 @@
+x-scheme-handler/mailto=evolution.desktop;sylpheed.desktop
+x-scheme-handler/http=firefox.desktop;midori.desktop
+x-scheme-handler/https=firefox.desktop;midori.desktop
+
