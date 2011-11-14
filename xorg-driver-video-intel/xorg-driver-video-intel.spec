@@ -1,10 +1,10 @@
-%define		gitver	d4edbd480445bc6aadd2c9f17262bd4b3eefbca6
+%define		gitver	5647e2981d81fd2b5cdb22d544f83d2d0f9445c9
 
 Summary:	X.org video driver for Intel integrated graphics chipsets
 Name:		xorg-driver-video-intel
-Version:	2.16.901
+Version:	2.16.903
 %if "%{gitver}" != "%{nil}"
-Release:	0.%{gitver}.1
+Release:	0.%{gitver}.2
 %else
 Release:	1
 %endif
@@ -12,10 +12,10 @@ License:	MIT
 Group:		X11/Applications
 %if "%{gitver}" != "%{nil}"
 Source0:	http://cgit.freedesktop.org/xorg/driver/xf86-video-intel/snapshot/xf86-video-intel-%{gitver}.tar.gz
-# Source0-md5:	fc1c1e77033e35c9d24e544bf9733249
+# Source0-md5:	7667fecbc5e254ae9b18c738f27de197
 %else
 Source0:	http://xorg.freedesktop.org/releases/individual/driver/xf86-video-intel-%{version}.tar.bz2
-# Source0-md5:	fc1c1e77033e35c9d24e544bf9733249
+# Source0-md5:	7667fecbc5e254ae9b18c738f27de197
 %endif
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	Mesa-libGL-devel
@@ -76,5 +76,3 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/lib*.so.?
 %attr(755,root,root) %{_libdir}/lib*.so.*.*.*
 %attr(755,root,root) %{_libdir}/xorg/modules/drivers/*.so
-%{_mandir}/man4/intel.4*
-
