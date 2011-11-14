@@ -1,0 +1,4 @@
+# Put the name of the system default session executable here.
+# Examples: awesome, gnome, openbox, xfce
+DEFAULTWM=openbox
+

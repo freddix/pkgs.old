@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Call standard xinit actions
+. /etc/X11/xinit/xinitdefs
+
+if [ -f $HOME/.Xclients ]; then
+	exec $CK_LAUNCH_SESSION $SSH_AGENT $HOME/.Xclients $*
+else
+	exec $CK_LAUNCH_SESSION $SSH_AGENT /etc/X11/xinit/Xclients $*
+fi
+

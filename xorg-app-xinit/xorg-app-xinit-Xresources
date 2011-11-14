@@ -1,0 +1,10 @@
+! default Freddix settings
+Xcursor.theme:		neutral
+Xcursor.theme_core:	true
+Xcursor.size:		0
+
+Xft.hinting:		true
+Xft.hintstyle:		hintslight
+Xft.antialias:		true
+Xft.rgba:		rgb
+

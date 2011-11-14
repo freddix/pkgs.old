@@ -1,0 +1,62 @@
+#!/bin/sh
+
+# System wide configuration file
+syswmfile="/etc/sysconfig/desktop"
+
+# Default values - may be redefined in $syswmfile
+userwmfile=".desktop"
+wmstyledir="/etc/sysconfig/wmstyle"
+xsessdir="/usr/share/xsessions"
+DEFAULTWM=""
+
+# Unset these
+unset USERWM WM_CHOICE
+
+load_session() {
+    if test `/usr/bin/which $WM_CHOICE 2>/dev/null`; then
+	eval "exec $WM_CHOICE"
+    fi
+}
+
+[ -f $syswmfile ] && . $syswmfile
+
+userwmfilefp=$HOME/$userwmfile
+
+[ -f $userwmfilefp ] && USERWM=`cat $userwmfilefp |grep -v ^# |head -n 1`
+
+# Evaluate cmdline first
+[ -n "$*" ] && USERWM="$*"
+
+if [ -n "$USERWM" ]; then
+        # Tray to run literal user choice first
+	WM_CHOICE=$USERWM
+	load_session
+	# if it fails - take another actions
+	WM_CHOICE=""
+	if [ ! -d "$xsessdir" ]; then
+		echo "$xsessdir not found - check Your settings."
+		exit 1
+	fi
+	for f in $xsessdir/*.desktop; do
+		if [ "`cat $f |grep ^Name= |sed -e 's/Name=//' |tr A-Z a-z`" = "`echo $USERWM |tr A-Z a-z`" ]; then
+			WM_CHOICE=`cat $f |grep ^Exec= |sed -e 's/Exec=//'`
+			break
+		fi
+		for g in `cat $f |grep ^X-AltNames= |sed -e 's/X-AltNames=//' -e 's/;/ /g'`; do
+			if [ "`echo $g |tr A-Z a-z`" = "`echo $USERWM |tr A-Z a-z`" ]; then
+	    			WM_CHOICE=`cat $f |grep ^Exec= |sed -e 's/Exec=//'`
+	    			break 2
+			fi
+		done
+	done
+	if [ -z "$WM_CHOICE" ]; then
+		echo "Sorry - nothing known about $USERWM"
+		echo "Resuming with system defaults..."
+		WM_CHOICE=$DEFAULTWM
+	fi
+else
+        WM_CHOICE=$DEFAULTWM
+fi
+
+[ -n "$WM_CHOICE" ] && load_session || exec urxvt
+

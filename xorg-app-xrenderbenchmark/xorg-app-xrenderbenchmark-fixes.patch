@@ -1,0 +1,108 @@
+diff -aurN xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/configure.ac xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/configure.ac
+--- xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/configure.ac	2010-08-06 18:26:39.000000000 +0200
++++ xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/configure.ac	2010-08-06 18:26:51.000000000 +0200
+@@ -9,7 +9,7 @@
+ AC_PROG_INSTALL
+ 
+ # Checks for pkg-config packages
+-PKG_CHECK_MODULES(XRENDERBENCHMARK, libpng12 x11 xrender)
++PKG_CHECK_MODULES(XRENDERBENCHMARK, libpng x11 xrender)
+ AC_SUBST(XRENDERBENCHMARK_CFLAGS)
+ AC_SUBST(XRENDERBENCHMARK_LIBS)
+ 
+diff -aurN xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/main.c xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/main.c
+--- xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/main.c	2010-08-06 18:26:39.000000000 +0200
++++ xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/main.c	2010-08-06 18:27:37.000000000 +0200
+@@ -82,7 +82,7 @@
+     Picture back;
+     XRenderSurf *surf;
+ 
+-    readPng("images/fdo-translucent.png", &data, &w, &h);
++    readPng("/usr/share/xrenderbenchmark/fdo-translucent.png", &data, &w, &h);
+     surf = xrender_surf_new(disp, win, PictStandardARGB32, w, h, False);
+     xrender_surf_populate(disp, surf, w, h, data);
+     XRenderPictureAttributes pa;
+diff -aurN xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/readpng.c xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/readpng.c
+--- xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/readpng.c	2010-08-06 18:26:39.000000000 +0200
++++ xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/readpng.c	2010-08-06 18:28:56.000000000 +0200
+@@ -118,7 +118,7 @@
+ 
+     /* expand gray bit depth if needed */
+     if (color_type == PNG_COLOR_TYPE_GRAY && depth < 8)
+-	png_set_gray_1_2_4_to_8 (png);
++    	png_set_expand_gray_1_2_4_to_8 (png);
+ 
+     /* transform transparency to alpha */
+     if (png_get_valid(png, info, PNG_INFO_tRNS))
+diff -aurN xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/testscenarios.c xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/testscenarios.c
+--- xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c.orig/testscenarios.c	2010-08-06 18:26:39.000000000 +0200
++++ xrenderbenchmark-9992b32a15392686d86bdc9ca9a965da9addcb5c/testscenarios.c	2010-08-06 18:27:37.000000000 +0200
+@@ -23,8 +23,8 @@
+     current->dst   = xrender_surf_adopt(disp, win,  w, h);
+     current->mask  = 0;
+     current->src   = xrender_surf_new(disp, win, PictStandardRGB24, 128, 128, False);
+-    populate_from_file(disp, current->dst, "images/bg1.png");
+-    populate_from_file(disp, current->src, "images/xorg-small.png");
++    populate_from_file(disp, current->dst, "/usr/share/xrenderbenchmark/bg1.png");
++    populate_from_file(disp, current->src, "/usr/share/xrenderbenchmark/xorg-small.png");
+ 
+ 
+     current = &scenarios[currentNumber++];
+@@ -34,7 +34,7 @@
+     current->dst   = xrender_surf_adopt(disp, win, w, h);
+     current->mask  = 0;
+     current->src   = xrender_surf_new(disp, win,PictStandardARGB32, 128, 128, False);
+-    populate_from_file(disp, current->src,  "images/xorg-small.png");
++    populate_from_file(disp, current->src,  "/usr/share/xrenderbenchmark/xorg-small.png");
+ 
+     current = &scenarios[currentNumber++];
+     /*********************************/
+@@ -43,8 +43,8 @@
+     current->dst   = xrender_surf_adopt(disp, win, w, h);
+     current->mask  = xrender_surf_new(disp, win,PictStandardARGB32, 128, 128, False);
+     current->src   = xrender_surf_new(disp, win,PictStandardARGB32, 128, 128, False);
+-    populate_from_file(disp, current->mask, "images/mask.png");
+-    populate_from_file(disp, current->src,  "images/xorg-small.png");
++    populate_from_file(disp, current->mask, "/usr/share/xrenderbenchmark/mask.png");
++    populate_from_file(disp, current->src,  "/usr/share/xrenderbenchmark/xorg-small.png");
+ 
+     current = &scenarios[currentNumber++];
+     /*********************************/
+@@ -53,8 +53,8 @@
+     current->dst   = xrender_surf_adopt(disp, win, w, h);
+     current->mask  = xrender_surf_new(disp, win,PictStandardARGB32, 128, 128, True);
+     current->src   = xrender_surf_new(disp, win,PictStandardARGB32, 128, 128, False);
+-    populate_from_file(disp, current->mask, "images/mask.png");
+-    populate_from_file(disp, current->src,  "images/xorg-small.png");
++    populate_from_file(disp, current->mask, "/usr/share/xrenderbenchmark/mask.png");
++    populate_from_file(disp, current->src,  "/usr/share/xrenderbenchmark/xorg-small.png");
+ 
+     current = &scenarios[currentNumber++];
+     /*********************************/
+@@ -64,7 +64,7 @@
+     current->mask  = 0;
+     current->src   = xrender_surf_new(disp, win, PictStandardRGB24,
+                                      128, 128, False);
+-    populate_from_file(disp, current->src, "images/xorg-small.png");
++    populate_from_file(disp, current->src, "/usr/share/xrenderbenchmark/xorg-small.png");
+     xrender_surf_prepare(disp, current->src, current->src->w, current->src->h, 1,
+                          SurfaceNone);
+ 
+@@ -75,7 +75,7 @@
+     current->dst   = xrender_surf_adopt(disp, win, w, h);
+     current->mask  = 0;
+     current->src   = xrender_surf_new(disp, win, PictStandardRGB24, 128, 128, False);
+-    populate_from_file(disp, current->src, "images/xorg-small.png");
++    populate_from_file(disp, current->src, "/usr/share/xrenderbenchmark/xorg-small.png");
+     xrender_surf_prepare(disp, current->src, current->src->w, current->src->h, 1,
+                          SurfaceBilinear);
+ 
+@@ -86,7 +86,7 @@
+     current->dst   = xrender_surf_adopt(disp, win, w, h);
+     current->mask  = 0;
+     current->src   = xrender_surf_new(disp, win, PictStandardARGB32, 128, 128, False);
+-    populate_from_file(disp, current->src, "images/xorg-small.png");
++    populate_from_file(disp, current->src, "/usr/share/xrenderbenchmark/xorg-small.png");
+     xrender_surf_prepare(disp, current->src, current->src->w, current->src->h, 0,
+                          SurfaceConvolution);
+ 
