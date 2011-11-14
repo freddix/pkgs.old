@@ -1,0 +1,12 @@
+diff -aurN systemd-35.orig/src/machine-id-setup.c systemd-35/src/machine-id-setup.c
+--- systemd-35.orig/src/machine-id-setup.c	2011-09-12 15:44:59.428811885 +0200
++++ systemd-35/src/machine-id-setup.c	2011-09-12 15:45:51.118165679 +0200
+@@ -114,7 +114,7 @@
+          * will be owned by root it doesn't matter much, but maybe
+          * people look. */
+ 
+-        fd = open("/etc/machine-id", O_RDWR|O_CREAT|O_CLOEXEC|O_NOCTTY, 0444);
++        fd = open("/etc/machine-id", O_RDWR|O_CREAT|O_CLOEXEC|O_NOCTTY, 0644);
+         if (fd >= 0)
+                 writable = true;
+         else {
