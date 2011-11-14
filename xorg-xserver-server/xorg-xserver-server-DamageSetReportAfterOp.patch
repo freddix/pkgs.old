@@ -1,0 +1,35 @@
+From 8d7b7a0d71e0b89321b3341b781bc8845386def6 Mon Sep 17 00:00:00 2001
+From: Kristian Høgsberg <krh@bitplanet.net>
+Date: Fri, 30 Jul 2010 00:36:25 +0000
+Subject: Set DamageSetReportAfterOp to true for the damage extension
+
+Change the damage extension reporter to queue up events after we chain
+to the wrapped functions.  Damage events are typically sent out after
+the rendering happens anyway, since we submit batch buffers from the
+flush callback chain and then flush client io buffers.  Compositing
+managers relie on this order, and there is no way we could reliably
+provide damage events to clients before the rendering happens anyway.
+
+By queueing up the damage events before the rendering happens, there's
+a risk that the client io buffer may overflow and send the damage
+events to the client before the driver has even seen the rendering
+request.  Reporting damage events after the rendering fixes this
+corner case and better corresponds with how we expect this to work.
+
+Signed-off-by: Kristian Høgsberg <krh@bitplanet.net>
+Reviewed-by: Keith Packard <keithp@keithp.com>
+---
+diff --git a/damageext/damageext.c b/damageext/damageext.c
+index f5265dd..b4bb478 100644
+--- a/damageext/damageext.c
++++ b/damageext/damageext.c
+@@ -217,6 +217,7 @@ ProcDamageCreate (ClientPtr client)
+     if (!AddResource (stuff->damage, DamageExtType, (pointer) pDamageExt))
+ 	return BadAlloc;
+ 
++    DamageSetReportAfterOp (pDamageExt->pDamage, TRUE);
+     DamageRegister (pDamageExt->pDrawable, pDamageExt->pDamage);
+ 
+     if (pDrawable->type == DRAWABLE_WINDOW)
+--
+cgit v0.8.3-6-g21f6

@@ -1,0 +1,36 @@
+From c1c59e7d5f0c6f0eea88657f892175166679da4f Mon Sep 17 00:00:00 2001
+From: Chris Wilson <chris@chris-wilson.co.uk>
+Date: Sat, 15 May 2010 19:24:30 +0100
+Subject: [PATCH] dri2: Only send the swap event if the client hasn't gone fishing
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes:
+
+  Bug 27497 - xorg crashes after update to 1.8.0
+  https://bugs.freedesktop.org/show_bug.cgi?id=27497
+
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Kristian Høgsberg <krh@bitplanet.net>
+---
+ hw/xfree86/dri2/dri2ext.c |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/hw/xfree86/dri2/dri2ext.c b/hw/xfree86/dri2/dri2ext.c
+index 602eb66..9f69f3e 100644
+--- a/hw/xfree86/dri2/dri2ext.c
++++ b/hw/xfree86/dri2/dri2ext.c
+@@ -364,6 +364,9 @@ DRI2SwapEvent(ClientPtr client, void *data, int type, CARD64 ust, CARD64 msc,
+     xDRI2BufferSwapComplete event;
+     DrawablePtr pDrawable = data;
+ 
++    if (client->clientGone)
++	return;
++
+     event.type = DRI2EventBase + DRI2_BufferSwapComplete;
+     event.sequenceNumber = client->sequence;
+     event.event_type = type;
+-- 
+1.7.1
+
