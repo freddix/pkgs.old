@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=XSession
+Exec=awesome
+TryExec=awesome
+Name=Awesome
+Comment=This session logs you into Awesome
+
