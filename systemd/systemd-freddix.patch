@@ -7,7 +7,7 @@
 +        freddix)
 +    		SYSTEM_SYSVINIT_PATH=
 +    		SYSTEM_SYSVRCND_PATH=
-+    		AC_DEFINE(TARGET_PLD, [], [Target is Freddix])
++    		AC_DEFINE(TARGET_FREDDIX, [], [Target is Freddix])
 +    		M4_DISTRO_FLAG=-DTARGET_FREDDIX=1
 +    		;;
          meego)
