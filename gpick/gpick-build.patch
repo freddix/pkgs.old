@@ -1,0 +1,31 @@
+diff -aurN gpick_0.2.4.orig/SConscript gpick_0.2.4/SConscript
+--- gpick_0.2.4.orig/SConscript	2011-11-19 23:02:39.343928228 +0100
++++ gpick_0.2.4/SConscript	2011-11-19 23:24:24.770608148 +0100
+@@ -73,16 +73,17 @@
+ 
+ Decider('MD5-timestamp')
+ 
+-env.Replace(
+-	SHCCCOMSTR = "Compiling ==> $TARGET",
+-	SHCXXCOMSTR = "Compiling ==> $TARGET",
+-	CCCOMSTR = "Compiling ==> $TARGET",
+-	CXXCOMSTR = "Compiling ==> $TARGET",
+-	SHLINKCOMSTR = "Linking shared ==> $TARGET",
+-	LINKCOMSTR = "Linking ==> $TARGET",
+-	LDMODULECOMSTR = "Linking module ==> $TARGET",
+-	ARCOMSTR = "Linking static ==> $TARGET",
+-	TARCOMSTR = "Archiving ==> $TARGET"
++if not os.environ.has_key('VERBOSE'):
++	env.Replace(
++		SHCCCOMSTR = "Compiling ==> $TARGET",
++		SHCXXCOMSTR = "Compiling ==> $TARGET",
++		CCCOMSTR = "Compiling ==> $TARGET",
++		CXXCOMSTR = "Compiling ==> $TARGET",
++		SHLINKCOMSTR = "Linking shared ==> $TARGET",
++		LINKCOMSTR = "Linking ==> $TARGET",
++		LDMODULECOMSTR = "Linking module ==> $TARGET",
++		ARCOMSTR = "Linking static ==> $TARGET",
++		TARCOMSTR = "Archiving ==> $TARGET"
+ 	)
+ 
+ if not (os.environ.has_key('CFLAGS') or os.environ.has_key('CXXFLAGS') or os.environ.has_key('LDFLAGS')):
