@@ -1,15 +1,15 @@
-%define		gitver	de8f22af28259cb5c416bd0f9914f62e3d8879ee
+%define		gitver	%{nil}
 
 Summary:	Free OpenGL implementation
 Name:		Mesa
-Version:	7.11.0
+Version:	7.11.1
 %if "%{gitver}" != "%{nil}"
 Release:	6.%{gitver}.1
 Source:		http://cgit.freedesktop.org/mesa/mesa/snapshot/mesa-%{gitver}.tar.bz2
 %else
-Release:	5
+Release:	1
 Source0:	ftp://ftp.freedesktop.org/pub/mesa/%{version}/MesaLib-%{version}.tar.gz
-# Source0-md5:	e29231630b32381571eb63e6a829d2aa
+# Source0-md5:	ac0181a4076770fb657c1169af43aa09
 %endif
 License:	MIT (core), SGI (GLU) and others - see COPYRIGHT file
 Group:		X11/Libraries
@@ -163,8 +163,9 @@ rm -f include/GL/uglglutshapes.h
 	--disable-gl-osmesa		\
 	--disable-glut			\
 	--disable-glw			\
-	--enable-texture-float		\
+	--enable-gallium-llvm		\
 	--enable-glx-tls		\
+	--enable-texture-float		\
 	--with-dri-driverdir=%{dridir}	\
 	--with-dri-drivers="i915,i965,r200,swrast"	\
 	--with-driver=dri		\
