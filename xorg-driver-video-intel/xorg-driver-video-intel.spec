@@ -1,12 +1,12 @@
-%define		gitver	ac7df2919b92c9fe47c6745975e1848932f989e8
+%define		gitver	4a27dd287cdb85d80ceaf6b54e7de0c17e01c00d
 
-%bcond_with     sna	# enable SNA acceleration architecture
+%bcond_without	sna	# enable SNA acceleration architecture
 
 Summary:	X.org video driver for Intel integrated graphics chipsets
 Name:		xorg-driver-video-intel
 Version:	2.17.0
 %if "%{gitver}" != "%{nil}"
-Release:	0.%{gitver}.2
+Release:	1.%{gitver}.1
 %else
 Release:	1
 %endif
@@ -14,10 +14,10 @@ License:	MIT
 Group:		X11/Applications
 %if "%{gitver}" != "%{nil}"
 Source0:	http://cgit.freedesktop.org/xorg/driver/xf86-video-intel/snapshot/xf86-video-intel-%{gitver}.tar.gz
-# Source0-md5:	5342d98b8504f1283dfd7af97c064b75
+# Source0-md5:	bb72b84dd421d60028e17f351a547cf5
 %else
 Source0:	http://xorg.freedesktop.org/releases/individual/driver/xf86-video-intel-%{version}.tar.bz2
-# Source0-md5:	5342d98b8504f1283dfd7af97c064b75
+# Source0-md5:	bb72b84dd421d60028e17f351a547cf5
 %endif
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	Mesa-libGL-devel
