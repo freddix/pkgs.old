@@ -1,11 +1,11 @@
 Summary:	PIM SyncML synchronizer
 Name:		syncevolution
-Version:	1.1.1
-Release:	3
+Version:	1.2
+Release:	2
 License:	GPL v2
 Group:		Applications
-Source0:	http://downloads.syncevolution.org/syncevolution/sources/%{name}-%{version}a.tar.gz
-# Source0-md5:	78f73c51e5f16283eb5cf3ed306ccb1f
+Source0:	http://downloads.syncevolution.org/syncevolution/sources/%{name}-%{version}.tar.gz
+# Source0-md5:	2307b863bbb57f9cca9aa3847759502d
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	boost-devel
@@ -55,31 +55,37 @@ Syncevolution GUI.
 %prep
 %setup -q
 
+# fix linking
 sed -i "s/-lz/-lz -ldl/g" src/synthesis/src/Makefile.am.in
+# disable qt build
+sed -i "s/ qt//" src/dbus/Makefile.am
+# library location
+sed -i "s/pkglib/lib/" src/gdbus/Makefile.am
 
 %build
-[ -d m4 ] || mkdir m4
 ./gen-autotools.sh
+%{__libtoolize}
 %{__glib_gettextize}
 %{__intltoolize} --automake
-%{__libtoolize}
 %{__aclocal} -I m4 -I m4-repo
-%{__autoconf}
-%{__autoheader}
 %{__automake} -Wno-portability
+%{__autoheader}
+%{__autoconf}
 cd src/synthesis/src && ./gen-makefile-am.sh && cd ..
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4 -I m4-repo
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 cd ../..
 %configure \
 	--disable-static	\
+	--enable-bluetooth	\
 	--enable-dbus-service	\
 	--enable-gui		\
 	--enable-libcurl	\
-	--enable-libsoup
+	--enable-libsoup	\
+	--enable-qtcontacts=no
 %{__make}
 
 %install
@@ -89,7 +95,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{_docdir}/%{name}
-
+rm -f $RPM_BUILD_ROOT%{_libexecdir}/{,backends}/*.la
 %find_lang %{name}
 
 %clean
@@ -102,10 +108,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README test/README*
 %dir %{_libexecdir}
+%dir %{_libexecdir}/backends
 %attr(755,root,root) %{_bindir}/synccompare
 %attr(755,root,root) %{_bindir}/syncevo*
 %attr(755,root,root) %{_libexecdir}/syncevo-dbus-server
 %attr(755,root,root) %{_libexecdir}/syncevo-dbus-server-startup.sh
+%attr(755,root,root) %{_libexecdir}/backends/*.so
 %{_datadir}/%{name}
 %{_datadir}/dbus-1/services/org.syncevolution.service
 %{_mandir}/man1/syncevolution.1*
