@@ -1,20 +1,23 @@
 Summary:	Tool suite for mobile phones
 Name:		gammu
 Version:	1.30.0
-Release:	1
+Release:	4
 License:	GPL v2+
 Group:		Applications/Communications
-Source0:	http://dl.cihar.com/gammu/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	5bb061f1299e7ae8d38ecac1b8b11465
+Source0:	http://dl.cihar.com/gammu/releases/%{name}-%{version}.tar.xz
+# Source0-md5:	3b76973d0c398519a876d203926420a6
 URL:		http://www.gammu.org/
 BuildRequires:	bluez-libs-devel
 BuildRequires:	cmake
 BuildRequires:	curl-devel
 BuildRequires:	gettext-devel
-BuildRequires:	mysql-devel
-BuildRequires:	postgresql-devel
+BuildRequires:	libusb-devel
 BuildRequires:	python-devel
 BuildRequires:	rpm-pythonprov
+BuildRequires:	sqlite3-devel
+BuildRequires:	udev-glib-devel
+#BuildRequires:	mysql-devel
+#BuildRequires:	postgresql-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
