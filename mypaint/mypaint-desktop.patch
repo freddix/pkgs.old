@@ -1,0 +1,17 @@
+diff -aurN mypaint-0.8.0.orig/desktop/mypaint.desktop mypaint-0.8.0/desktop/mypaint.desktop
+--- mypaint-0.8.0.orig/desktop/mypaint.desktop	2010-02-16 13:28:40.000000000 +0100
++++ mypaint-0.8.0/desktop/mypaint.desktop	2010-02-16 13:29:47.000000000 +0100
+@@ -1,6 +1,4 @@
+ [Desktop Entry]
+-Version=1.0
+-Encoding=UTF-8
+ Name=MyPaint
+ Exec=mypaint %f
+ Comment=Paint images from scratch
+@@ -8,5 +6,5 @@
+ MimeType=image/openraster;image/png;image/jpeg;
+ Type=Application
+ Icon=mypaint
+-Categories=Graphics;
++Categories=GTK;Graphics;2DGraphics;RasterGraphics;
+ Terminal=false
