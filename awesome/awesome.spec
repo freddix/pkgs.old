@@ -1,13 +1,12 @@
 Summary:	awesome window manager
 Name:		awesome
-Version:	3.4.10
-Release:	2
+Version:	3.4.11
+Release:	1
 License:	GPL v2
 Group:		X11/Window Managers
 Source0:	http://awesome.naquadah.org/download/%{name}-%{version}.tar.xz
-# Source0-md5:	b91c4d9392d3c3385e6074f4347044e2
+# Source0-md5:	d6aa71334b5cd4ef63ce69d6c612ecf2
 Source1:	%{name}-xsession.desktop
-Patch0:		%{name}-xcb.patch
 URL:		http://awesome.naquadah.org/
 BuildRequires:	asciidoc
 BuildRequires:	cairo-devel
@@ -35,6 +34,7 @@ BuildRequires:	xorg-libXrandr-devel
 BuildRequires:  xcb-util-image-devel
 BuildRequires:  xcb-util-keysyms-devel
 BuildRequires:  xcb-util-wm-devel
+Obsoletes:	awesome-example-config
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -51,19 +51,8 @@ Group:		Documentation
 %description doc
 awesome window manager API documentation.
 
-%package example-config
-Summary:	Example config for awesome window manager
-Group:		Documentation
-Requires:	%{name} = %{version}-%{release}
-
-%description example-config
-Example config for awesome window manager. It can be a good starting
-point for those people, who have never used awesome window manager
-before.
-
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %cmake \
@@ -116,19 +105,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/awesome/themes/sky
 %{_datadir}/awesome/themes/zenburn
 
+%dir %{_sysconfdir}/xdg/awesome
+%{_sysconfdir}/xdg/awesome/*
 %{_datadir}/xsessions/%{name}.desktop
 
 %{_mandir}/man[1,5]/*
 %lang(de) %{_mandir}/de/man[1,5]/*
 %lang(es) %{_mandir}/es/man[1,5]/*
 %lang(fr) %{_mandir}/fr/man[1.5]/*
+%lang(ru) %{_mandir}/ru/man[1.5]/*
 
 %files doc
 %defattr(644,root,root,755)
 %{_docdir}/%{name}-doc-%{version}
-
-%files example-config
-%defattr(644,root,root,755)
-%dir %{_sysconfdir}/xdg/awesome
-%{_sysconfdir}/xdg/awesome/*
 
