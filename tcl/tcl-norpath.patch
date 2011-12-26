@@ -1,0 +1,25 @@
+--- tcl8.5a6/unix/Makefile.in.orig	2007-06-26 07:50:20.974722448 +0200
++++ tcl8.5a6/unix/Makefile.in	2007-06-26 18:05:36.274405487 +0200
+@@ -192,8 +192,8 @@
+ # Additional search flags needed to find the various shared libraries at
+ # run-time. The first symbol is for use when creating a binary with cc, and
+ # the second is for use when running ld directly.
+-CC_SEARCH_FLAGS	= @CC_SEARCH_FLAGS@
+-LD_SEARCH_FLAGS	= @LD_SEARCH_FLAGS@
++CC_SEARCH_FLAGS	=
++LD_SEARCH_FLAGS	=
+ 
+ # The following symbol is defined to "$(DLTEST_TARGETS)" if dynamic loading is
+ # available; this causes everything in the "dltest" subdirectory to be built
+diff -urN tcl8.5a3.org/unix/tcl.m4 tcl8.5a3/unix/tcl.m4
+--- tcl8.5a3.org/unix/tcl.m4	2005-06-04 23:07:14.000000000 +0200
++++ tcl8.5a3/unix/tcl.m4	2005-06-17 23:44:37.081099616 +0200
+@@ -2042,7 +2042,7 @@
+ 
+     AS_IF([test "${SHARED_BUILD}" = 1 -a "${SHLIB_SUFFIX}" != ""], [
+         LIB_SUFFIX=${SHARED_LIB_SUFFIX}
+-        MAKE_LIB='${SHLIB_LD} -o [$]@ ${OBJS} ${SHLIB_LD_LIBS} ${TCL_SHLIB_LD_EXTRAS} ${TK_SHLIB_LD_EXTRAS} ${LD_SEARCH_FLAGS}'
++        MAKE_LIB='${SHLIB_LD} -o [$]@ ${OBJS} ${SHLIB_LD_LIBS} ${TCL_SHLIB_LD_EXTRAS} ${TK_SHLIB_LD_EXTRAS}'
+         INSTALL_LIB='$(INSTALL_LIBRARY) $(LIB_FILE) "$(LIB_INSTALL_DIR)"/$(LIB_FILE)'
+     ], [
+         LIB_SUFFIX=${UNSHARED_LIB_SUFFIX}

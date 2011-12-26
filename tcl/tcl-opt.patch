@@ -1,0 +1,15 @@
+diff -urN tcl8.5a2.org/unix/Makefile.in tcl8.5a2/unix/Makefile.in
+--- tcl8.5a2.org/unix/Makefile.in	2004-12-08 00:16:06.000000000 +0100
++++ tcl8.5a2/unix/Makefile.in	2005-04-04 13:15:13.000000000 +0200
+@@ -94,9 +94,9 @@
+ # To change the compiler switches, for example to change from optimization to
+ # debugging symbols, change the following line:
+ #CFLAGS			= $(CFLAGS_DEBUG)
+-#CFLAGS			= $(CFLAGS_OPTIMIZE)
++CFLAGS			= $(CFLAGS_OPTIMIZE)
+ #CFLAGS			= $(CFLAGS_DEBUG) $(CFLAGS_OPTIMIZE)
+-CFLAGS			= @CFLAGS_DEFAULT@ @CFLAGS@
++#CFLAGS			= @CFLAGS_DEFAULT@ @CFLAGS@
+ 
+ # Flags to pass to the linker
+ LDFLAGS_DEBUG		= @LDFLAGS_DEBUG@

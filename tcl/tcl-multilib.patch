@@ -1,0 +1,11 @@
+--- tcl8.5a5/unix/Makefile.in.orig	2007-03-02 15:35:09.000000000 +0100
++++ tcl8.5a5/unix/Makefile.in	2007-03-02 15:35:26.000000000 +0100
+@@ -188,7 +188,7 @@
+ # these definitions by hand.
+ 
+ STLIB_LD		= @STLIB_LD@
+-SHLIB_LD		= @SHLIB_LD@
++SHLIB_LD		= @SHLIB_LD@ ${CFLAGS}
+ SHLIB_CFLAGS		= @SHLIB_CFLAGS@
+ SHLIB_LD_LIBS		= @SHLIB_LD_LIBS@
+ TCL_SHLIB_LD_EXTRAS	= @TCL_SHLIB_LD_EXTRAS@

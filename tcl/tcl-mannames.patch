@@ -1,0 +1,11 @@
+--- tcl8.5.9/unix/installManPage.orig	2010-09-08 19:40:48.000000000 +0200
++++ tcl8.5.9/unix/installManPage	2010-10-02 08:14:15.348556463 +0200
+@@ -108,7 +108,7 @@
+ 	chmod 444 $Dir/$First
+ 	$Gzip $Dir/$First
+     else
+-	ln $SymOrLoc$First$Gz $Dir/$Target$Gz
++	echo ".so $First" > $Dir/$Target
+     fi
+ done
+ 
