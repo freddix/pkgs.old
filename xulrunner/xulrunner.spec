@@ -155,6 +155,7 @@ ac_add_options --with-distribution-id=org.freddix
 #
 export BUILD_OFFICIAL=1
 export MOZILLA_OFFICIAL=1
+export MOZ_UA_BUILDID=20100101
 mk_add_options BUILD_OFFICIAL=1
 mk_add_options MOZILLA_OFFICIAL=1
 
