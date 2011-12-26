@@ -1,0 +1,92 @@
+--- libebml-1.0.0/make/linux/Makefile~	2010-08-05 23:04:21.000000000 +0300
++++ libebml-1.0.0/make/linux/Makefile	2010-08-05 23:04:54.438670198 +0300
+@@ -28,6 +28,7 @@
+ INSTALL_OPTS = -m 644
+ INSTALL_OPTS_LIB = -m 644
+ INSTALL_DIR_OPTS = -m 755
++LIBTOOL = libtool
+
+ # Options
+ EXTENSION=.cpp
+@@ -50,9 +51,7 @@
+ LIBS=
+
+ # Names
+-LIBRARY=libebml.a
+-LIBRARY_SO=libebml.so
+-LIBRARY_SO_VER=libebml.so.3
++LIBRARY=libebml.la
+
+ # source-files
+ sources:=$(wildcard ${SRC_DIR}*$(EXTENSION))
+@@ -60,9 +59,8 @@
+ # header files; replace .cxx extension with .h
+ headers:=$(patsubst %$(EXTENSION),%.h,$(sources))
+
+-# object files; replace .cxx extension with .o
+-objects:=$(patsubst %$(EXTENSION),%.o,$(sources))
+-objects_so:=$(patsubst %$(EXTENSION),%.lo,$(sources))
++# object files; replace .cxx extension with .lo
++objects:=$(patsubst %$(EXTENSION),%.lo,$(sources))
+
+ WARNINGFLAGS=-Wall -Wno-unknown-pragmas -ansi -fno-gnu-keywords -Wshadow
+ COMPILEFLAGS=$(WARNINGFLAGS) $(CXXFLAGS) $(CPPFLAGS) $(DEBUGFLAGS) $(INCLUDE)
+@@ -78,20 +78,11 @@
+ 	@false
+
+ # Build rules
+-%.o: %$(EXTENSION)
+-	$(CXX) -c $(COMPILEFLAGS) -o $@ $<
+-
+ %.lo: %$(EXTENSION)
+-	$(CXX) -c $(COMPILEFLAGS) -fPIC -o $@ $<
++	$(LIBTOOL) --mode=compile --tag=CC $(CXX) -c $(COMPILEFLAGS) -o $@ $<
+
+ $(LIBRARY): $(objects)
+-	$(AR) rcvu $@ $(objects)
+-	$(RANLIB) $@
+-
+-$(LIBRARY_SO): $(objects_so)
+-	$(CXX) -shared -Wl,-soname,$(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so)
+-	rm -f $(LIBRARY_SO)
+-	ln -s $(LIBRARY_SO_VER) $(LIBRARY_SO)
++	$(LIBTOOL) --mode=link --tag=CC $(LD) $(LDFLAGS) -version-info 3:0:0 -o $@ $^ $(LIBS) -rpath $(libdir) -lstdc++
+
+ clean:
+ 	rm -f $(objects) $(objects_so)
+@@ -121,27 +110,22 @@
+ ifeq (Darwin,$(shell uname -s))
+ install: install_staticlib install_headers
+ else
+-install: install_staticlib install_sharedlib install_headers
++install: install_lib install_headers
+ endif
+
+ install_headers:
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(includedir)
++	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(includedir)
+ 	for i in $(INCLUDE_DIR)/*.h; do \
+-		$(INSTALL) $(INSTALL_OPTS) $$i $(includedir) ; \
++		$(INSTALL) $(INSTALL_OPTS) $$i $(DESTDIR)$(includedir) ; \
+ 	done
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(includedir)/c
++	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(includedir)/c
+ 	for i in $(INCLUDE_DIR)/c/*.h; do \
+-		$(INSTALL) $(INSTALL_OPTS) $$i $(includedir)/c ; \
++		$(INSTALL) $(INSTALL_OPTS) $$i $(DESTDIR)$(includedir)/c ; \
+ 	done
+
+-install_staticlib: $(LIBRARY)
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(libdir)
+-	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY) $(libdir)
+-
+-install_sharedlib: $(LIBRARY_SO)
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(libdir)
+-	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY_SO_VER) $(libdir)
+-	ln -fs $(LIBRARY_SO_VER) $(libdir)/$(LIBRARY_SO)
++install_lib: $(LIBRARY)
++	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(libdir)
++	$(LIBTOOL) --mode=install $(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY) $(DESTDIR)$(libdir)
+
+
+ ifneq ($(wildcard .depend),)
