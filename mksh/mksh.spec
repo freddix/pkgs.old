@@ -1,11 +1,11 @@
 Summary:	MirBSD Korn Shell
 Name:		mksh
-Version:	40b
+Version:	40d
 Release:	1
 License:	BSD
 Group:		Applications/Shells
 Source0:	http://www.mirbsd.org/MirOS/dist/mir/mksh/%{name}-R%{version}.cpio.gz
-# Source0-md5:	afb08b65272ace550ec59b26a876a7de
+# Source0-md5:	c6428401103367730a95b99284bf47dc
 Source1:	%{name}-mkshrc
 Patch0:		%{name}-mkshrc_support.patch
 Patch1:		%{name}-no_stop_alias.patch
