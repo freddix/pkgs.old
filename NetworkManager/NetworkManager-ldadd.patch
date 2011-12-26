@@ -1,0 +1,12 @@
+diff -aurN NetworkManager-0.7.0.98.orig/system-settings/plugins/keyfile/io/Makefile.am NetworkManager-0.7.0.98/system-settings/plugins/keyfile/io/Makefile.am
+--- NetworkManager-0.7.0.98.orig/system-settings/plugins/keyfile/io/Makefile.am	2009-03-02 22:15:58.000000000 +0100
++++ NetworkManager-0.7.0.98/system-settings/plugins/keyfile/io/Makefile.am	2009-03-03 20:07:14.000000000 +0100
+@@ -16,5 +16,7 @@
+ 	$(GLIB_CFLAGS) \
+ 	$(DBUS_CFLAGS)
+ 
+-libkeyfile_io_la_LIBADD = $(GLIB_LIBS)
++libkeyfile_io_la_LIBADD = \
++	$(top_builddir)/libnm-glib/libnm_glib.la \
++	$(GLIB_LIBS)
+ 

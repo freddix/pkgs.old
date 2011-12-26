@@ -1,0 +1,97 @@
+From c4d387efb88ab0cc4dea4ae17e60c8360b5e45a8 Mon Sep 17 00:00:00 2001
+From: Lennart Poettering <lennart@poettering.net>
+Date: Wed, 06 Apr 2011 02:30:02 +0000
+Subject: systemd: pull in network.service and introduce NetworkManager-wait-online.service
+
+This pulls in network.target from NetworkManager.service (and not the
+other way round), as suggested and agreed on on the systemd ML:
+
+http://lists.freedesktop.org/archives/systemd-devel/2011-March/001692.html
+
+This also introduces an auxiliary service
+NetworkManager-wait-online.service that can be used to order a unit
+after the point where the network is available. When this is enabled
+with "systemd enable NetworkManager-wait-online.service" the unit
+network.target will be delayed until the network is up, which is
+suitable for synchronizing NFS mounts and similar to it.
+
+https://bugzilla.redhat.com/show_bug.cgi?id=692008
+---
+diff --git a/data/Makefile.am b/data/Makefile.am
+index f91d3a8..2a1d1cf 100644
+--- a/data/Makefile.am
++++ b/data/Makefile.am
+@@ -1,10 +1,15 @@
+ 
+ if HAVE_SYSTEMD
+-systemdsystemunit_DATA = NetworkManager.service
++systemdsystemunit_DATA = \
++	NetworkManager.service \
++	NetworkManager-wait-online.service
+ 
+ NetworkManager.service: NetworkManager.service.in
+ 	$(edit) $< >$@
+ 
++NetworkManager-wait-online.service: NetworkManager-wait-online.service.in
++	$(edit) $< >$@
++
+ servicedir = $(datadir)/dbus-1/system-services
+ service_in_files = org.freedesktop.NetworkManager.service.in
+ service_DATA = $(service_in_files:.service.in=.service)
+@@ -14,13 +19,14 @@ $(service_DATA): $(service_in_files) Makefile
+ endif
+ 
+ edit = sed \
++	-e 's|@bindir[@]|$(bindir)|g' \
+ 	-e 's|@sbindir[@]|$(sbindir)|g' \
+ 	-e 's|@sysconfdir[@]|$(sysconfdir)|g' \
+ 	-e 's|@localstatedir[@]|$(localstatedir)|g'
+ 
+ EXTRA_DIST = \
+ 	NetworkManager.service.in \
++	NetworkManager-wait-online.service.in \
+ 	org.freedesktop.NetworkManager.service.in
+ 
+-CLEANFILES = NetworkManager.service org.freedesktop.NetworkManager.service
+-
++CLEANFILES = NetworkManager.service NetworkManager-wait-online.service org.freedesktop.NetworkManager.service
+diff --git a/data/NetworkManager-wait-online.service.in b/data/NetworkManager-wait-online.service.in
+new file mode 100644
+index 0000000..1a43d17
+--- a/dev/null
++++ b/data/NetworkManager-wait-online.service.in
+@@ -0,0 +1,12 @@
++[Unit]
++Description=Network Manager Wait Online
++Requires=NetworkManager.service
++Wants=network.target
++Before=network.target
++
++[Service]
++Type=oneshot
++ExecStart=@bindir@/nm-online -q --timeout=30
++
++[Install]
++WantedBy=multi-user.target
+diff --git a/data/NetworkManager.service.in b/data/NetworkManager.service.in
+index d93fc67..bb169fb 100644
+--- a/data/NetworkManager.service.in
++++ b/data/NetworkManager.service.in
+@@ -1,6 +1,8 @@
+ [Unit]
+ Description=Network Manager
+ After=syslog.target
++Wants=network.target
++Before=network.target
+ 
+ [Service]
+ Type=dbus
+@@ -8,5 +10,5 @@ BusName=org.freedesktop.NetworkManager
+ ExecStart=@sbindir@/NetworkManager --no-daemon
+ 
+ [Install]
+-WantedBy=network.target multi-user.target
++WantedBy=multi-user.target
+ Alias=dbus-org.freedesktop.NetworkManager.service
+--
+cgit v0.8.3-6-g21f6
