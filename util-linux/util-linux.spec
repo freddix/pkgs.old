@@ -1,18 +1,13 @@
 Summary:	Collection of basic system utilities for Linux
 Name:		util-linux
-Version:	2.20
-Release:	2
+Version:	2.20.1
+Release:	1
 License:	GPL
 Group:		Applications/System
-Source0:	ftp://ftp.kernel.org/pub/linux/utils/util-linux/v2.20/%{name}-%{version}.tar.bz2
-# Source0-md5:	4dcacdbdafa116635e52b977d9d0e879
+#Source0:	ftp://ftp.kernel.org/pub/linux/utils/util-linux/v2.20.1/%{name}-%{version}.tar.bz2
+Source0:        ftp://ftp.infradead.org/pub/util-linux/v2.20/%{name}-%{version}.tar.bz2
+# Source0-md5:	079b37517fd4e002a2e6e992e8b4e361
 Source2:	%{name}-login.pamd
-Patch0:		%{name}-agetty-typo.patch
-Patch1:		%{name}-dmesg-non-printk.patch
-Patch2:		%{name}-dmesg-space.patch
-Patch3:		%{name}-dont-close-0.patch
-Patch4:		%{name}-fix-remount.patch
-Patch5:		%{name}-write-freopen.patch
 URL:		http://userweb.kernel.org/~kzak/util-linux-ng/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -190,12 +185,6 @@ uuid static library.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 %build
 %{__libtoolize}
