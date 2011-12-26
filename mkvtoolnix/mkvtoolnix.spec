@@ -1,7 +1,8 @@
+# NOTE: 5.1.0 requires gcc 4.6.x
 Summary:	Matroska video utilities
 Name:		mkvtoolnix
 Version:	5.0.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/Multimedia
 Source0:	http://www.bunkus.org/videotools/mkvtoolnix/sources/%{name}-%{version}.tar.bz2
@@ -30,7 +31,7 @@ Matroska video utilities.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 
 %build
 %{__libtoolize}
