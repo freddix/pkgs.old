@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib/mozilla
+includedir=/usr/include/mozilla
+
+Name: NSS
+Description: Mozilla Network Security Services
+Version: VERSION
+Requires: mozilla-nspr
+Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
+Cflags: -I${includedir}/nss
