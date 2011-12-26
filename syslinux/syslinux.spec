@@ -1,11 +1,11 @@
 Summary:	Simple bootloader
 Name:		syslinux
-Version:	4.04
+Version:	4.05
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/boot/syslinux/%{name}-%{version}.tar.bz2
-# Source0-md5:	a3936208767eb7ced65320abe2e33a10
+# Source0-md5:	82299242418385da1274c9479a778cb2
 URL:		http://syslinux.zytor.com/
 BuildRequires:	nasm
 BuildRequires:	perl-base
@@ -39,9 +39,6 @@ customized syslinux clients.
 
 %prep
 %setup -q
-
-sed -i 's/-march=i386//' sample/Makefile
-sed -i 's/FPNG_NO_WRITE_SUPPORTED/DPNG_NO_WRITE_SUPPORTED/' com32/lib/MCONFIG
 
 %build
 rm -f ldlinux.{bin,bss,lst,sys}
