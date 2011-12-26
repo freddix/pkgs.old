@@ -1,12 +1,12 @@
 Summary:	An image viewer and browser for GNOME
 Name:		gthumb
-Version:	2.14.0
-Release:	2
+Version:	2.14.1
+Release:	1
 License:	GPL v2
 Vendor:		GNOME
 Group:		X11/Applications/Graphics
-Source0:	http://ftp.gnome.org/pub/gnome/sources/gthumb/2.14/%{name}-%{version}.tar.bz2
-# Source0-md5:	020ecd78f62ae6072c5b6446eca04088
+Source0:	http://ftp.gnome.org/pub/gnome/sources/gthumb/2.14/%{name}-%{version}.tar.xz
+# Source0-md5:	00b68db29b9db05e7ff22d53bbdee822
 URL:		http://live.gnome.org/gthumb
 BuildRequires:	GConf-devel
 BuildRequires:	ORBit2-devel
