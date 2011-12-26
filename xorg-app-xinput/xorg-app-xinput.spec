@@ -1,11 +1,11 @@
 Summary:	Configuration and testing of XInput devices
 Name:		xorg-app-xinput
-Version:	1.5.3
+Version:	1.5.4
 Release:	1
 License:	MIT
 Group:		X11/Applications
 Source0:	http://xorg.freedesktop.org/archive/individual/app/xinput-%{version}.tar.bz2
-# Source0-md5:	1e2f0ad4f3fa833b65c568907f171d28
+# Source0-md5:	69cd4dea77915b87c106003668378749
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
