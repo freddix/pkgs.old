@@ -1,0 +1,141 @@
+--- libmatroska-1.3.0/make/linux/Makefile.orig	2011-09-26 17:14:10.104527029 +0200
++++ libmatroska-1.3.0/make/linux/Makefile	2011-09-26 17:15:20.211196043 +0200
+@@ -29,12 +29,13 @@
+ INSTALL_OPTS = -m 644
+ INSTALL_OPTS_LIB = -m 644
+ INSTALL_DIR_OPTS = -m 755
++LIBTOOL = libtool
+ 
+ CWD=$(shell pwd)
+ 
+ # Options
+-LIBEBML_INCLUDE_DIR=$(CWD)/../../../libebml
+-LIBEBML_LIB_DIR=$(CWD)/../../../libebml/make/linux
++LIBEBML_INCLUDE_DIR=
++LIBEBML_LIB_DIR=
+ EXTENSION=.cpp
+ 
+ ifeq (yes,$(DEBUG))
+@@ -49,12 +50,10 @@
+ # Librarires
+ INCLUDE=-I$(CWD)/../.. -I$(LIBEBML_INCLUDE_DIR)
+ LIBS=
+-MUX_LIBS=-lmatroska -lebml $(LIBICONV)
++MUX_LIBS=libmatroska.la -lebml $(LIBICONV)
+ 
+ # Names
+-LIBRARY=libmatroska.a
+-LIBRARY_SO=libmatroska.so
+-LIBRARY_SO_VER=libmatroska.so.5
++LIBRARY=libmatroska.la
+ 
+ # source-files
+ sources:=$(wildcard ${SRC_DIR}*$(EXTENSION))
+@@ -62,10 +61,8 @@
+ # header files; replace .cxx extension with .h
+ headers:=$(patsubst %$(EXTENSION),%.h,$(sources))
+ 
+-# object files; replace .cxx extension with .o
+-objects:=$(patsubst %$(EXTENSION),%.o,$(sources))
+-
+-objects_so:=$(patsubst %$(EXTENSION),%.lo,$(sources))
++# object files; replace .cxx extension with .lo
++objects:=$(patsubst %$(EXTENSION),%.lo,$(sources))
+ 
+ WARNINGFLAGS=-Wall -Wno-unknown-pragmas -ansi -fno-gnu-keywords -D_GNU_SOURCE \
+ 		-Wshadow
+@@ -76,32 +73,19 @@
+ ifeq (Darwin,$(shell uname -s))
+ all: staticlib
+ else
+-all: staticlib sharedlib
++all: $(LIBRARY)
+ endif
+ 
+-staticlib: $(LIBRARY)
+-
+-sharedlib: $(LIBRARY_SO)
+-
+ lib:
+ 	@echo "Use the 'staticlib', 'sharedlib' or 'all' targets."
+ 	@false
+ 
+ # Build rules
+-%.o: %$(EXTENSION)
+-	$(CXX) -c $(COMPILEFLAGS) -o $@ $<
+-
+ %.lo: %$(EXTENSION)
+-	$(CXX) -c $(COMPILEFLAGS) -fPIC -o $@ $<
++	$(LIBTOOL) --mode=compile --tag=CC $(CXX) -c $(COMPILEFLAGS) -o $@ $<
+ 
+ $(LIBRARY): $(objects)
+-	$(AR) rcvu $@ $(objects)
+-	$(RANLIB) $@
+-
+-$(LIBRARY_SO): $(objects_so)
+-	$(CXX) -shared -Wl,-soname,$(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) -lebml
+-	rm -f $(LIBRARY_SO)
+-	ln -s $(LIBRARY_SO_VER) $(LIBRARY_SO)
++	$(LIBTOOL) --mode=link --tag=CC $(LD) $(LDFLAGS) -version-info 5:0:0 -o $@ $^ $(LIBS) -lebml -rpath $(libdir)
+ 
+ clean:	cleantest
+ 	rm -f $(objects) $(objects_so)
+@@ -129,19 +113,19 @@
+ test: test6 test9
+ 
+ test6:	test6.o $(LIBRARY) $(LIBRARY_SO)
+-	$(LD) -o $@ $(LINKFLAGS) $< $(MUX_LIBS)
++	$(LIBTOOL) --mode=link --tag=CC $(LD) -o $@ $(LINKFLAGS) $< $(MUX_LIBS)
+ 
+ test6.o: $(MUX_SRC_DIR)test6.cpp
+ 	$(CXX) -c $(COMPILEFLAGS) -o $@ $<
+ 
+ test8:	test8.o $(LIBRARY) $(LIBRARY_SO)
+-	$(LD) -o $@ $(LINKFLAGS) $< $(MUX_LIBS)
++	$(LIBTOOL) --mode=link --tag=CC $(LD) -o $@ $(LINKFLAGS) $< $(MUX_LIBS)
+ 
+ test8.o: $(MUX_SRC_DIR)test8.cpp
+ 	$(CXX) -c $(COMPILEFLAGS) -o $@ $<
+ 
+ test9:	test9.o $(LIBRARY) $(LIBRARY_SO)
+-	$(LD) -o $@ $(LINKFLAGS) $< $(MUX_LIBS)
++	$(LIBTOOL) --mode=link --tag=CC $(LD) -o $@ $(LINKFLAGS) $< $(MUX_LIBS)
+ 
+ test9.o: $(TAG_SRC_DIR)test9.cpp
+ 	$(CXX) -c $(COMPILEFLAGS) -o $@ $<
+@@ -149,27 +133,22 @@
+ ifeq (Darwin,$(shell uname -s))
+ install: install_staticlib install_headers
+ else
+-install: install_staticlib install_sharedlib install_headers
++install: install_lib install_headers
+ endif
+ 
+ install_headers:
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(includedir)
++	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(includedir)
+ 	for i in $(INCLUDE_DIR)/*.h; do \
+-		$(INSTALL) $(INSTALL_OPTS) $$i $(includedir) ; \
++		$(INSTALL) $(INSTALL_OPTS) $$i $(DESTDIR)$(includedir) ; \
+ 	done
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(includedir)/c
++	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(includedir)/c
+ 	for i in $(INCLUDE_DIR)/c/*.h; do \
+-		$(INSTALL) $(INSTALL_OPTS) $$i $(includedir)/c ; \
++		$(INSTALL) $(INSTALL_OPTS) $$i $(DESTDIR)$(includedir)/c ; \
+ 	done
+ 
+-install_staticlib: $(LIBRARY)
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(libdir)
+-	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY) $(libdir)
+-
+-install_sharedlib: $(LIBRARY_SO)
+-	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(libdir)
+-	$(INSTALL) $(INSTALL_OPTS_LIB) $(LIBRARY_SO_VER) $(libdir)
+-	ln -fs $(LIBRARY_SO_VER) $(libdir)/$(LIBRARY_SO)
++install_lib: $(LIBRARY)
++	$(INSTALL) $(INSTALL_DIR_OPTS) -d $(DESTDIR)$(libdir)
++	$(LIBTOOL) --mode=install $(INSTALL) $(LIBRARY) $(DESTDIR)$(libdir)
+ 
+ ifneq ($(wildcard .depend),)
+ include .depend
