@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=VirtualBox
+Type=Application
+Comment=Virual machine
+Comment[pl]=Maszyna wirtualna
+Exec=VirtualBox
+Icon=VBox
+Terminal=false
+Categories=Qt;System;Emulator;
+
