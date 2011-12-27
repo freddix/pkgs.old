@@ -1,7 +1,7 @@
 Summary:	Web browser
 Name:		firefox
 Version:	9.0.1
-Release:	4
+Release:	5
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
@@ -183,7 +183,7 @@ EOF
 rm -rf $RPM_BUILD_ROOT%{_bindir}/firefox
 cat > $RPM_BUILD_ROOT%{_bindir}/firefox <<EOF
 #!/bin/sh
-exec /usr/lib/xulrunner/run-mozilla.sh /usr/lib/firefox-4.0/firefox "$@"
+exec /usr/lib/xulrunner/run-mozilla.sh /usr/lib/firefox-4.0/firefox "\$@"
 EOF
 
 %clean
@@ -207,9 +207,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/%{name}-%{app_version}/components
 %dir %{_libdir}/%{name}-%{app_version}/dictionaries
 %dir %{_libdir}/%{name}-%{app_version}/extensions
-%dir %{_libdir}/%{name}-%{app_version}/icons
 %dir %{_libdir}/%{name}-%{app_version}/plugins
-%dir %{_libdir}/%{name}-%{app_version}/searchplugins
 %dir %{_libdir}/%{name}-%{app_version}/defaults
 
 %{_libdir}/%{name}-%{app_version}/application.ini
