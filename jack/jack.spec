@@ -1,16 +1,15 @@
-%define		svnrev	r4549
+%define		svnrev	%{nil}
 
 Summary:	The JACK Audio Connection Kit
 Name:		jack
 Version:	1.9.8
-Release:	0.%{svnrev}.1
+Release:	1
 License:	LGPL v2.1+ (libjack), GPL v2+ (the rest)
 Group:		Daemons
-#Source0:	http://www.grame.fr/~letz/jack-%{version}.tar.bz2
+Source0:	http://www.grame.fr/~letz/jack-%{version}.tgz
+# Source0-md5:	1dd2ff054cab79dfc11d134756f27165
 # svn co http://subversion.jackaudio.org/jack/jack2/trunk/jackmp
-Source0:	%{name}-%{version}-%{svnrev}.tar.xz
-# Source0-md5:	9082da7a3c34f98a640ea4b10f05b9b3
-Patch0:		%{name}-link.patch
+#Source0:	%{name}-%{version}-%{svnrev}.tar.xz
 URL:		http://jackit.sourceforge.net/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf
@@ -81,9 +80,9 @@ JACK API documentation.
 
 %prep
 %setup -qn jack-%{version}
-%patch0 -p1
 
 %build
+cd %{name}-%{version}
 CXXFLAGS="%{rpmcxxflags}"	\
 CFLAGS="%{rpmcflags}"		\
 PREFIX="%{_prefix}"		\
@@ -100,6 +99,7 @@ PREFIX="%{_prefix}"		\
 %install
 rm -rf $RPM_BUILD_ROOT
 
+cd %{name}-%{version}
 ./waf install --destdir=$RPM_BUILD_ROOT
 
 # waf workaround
@@ -114,7 +114,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 # note: COPYING only specifies which parts fall under GPL and LGPL
-%doc TODO
 %attr(755,root,root) %{_bindir}/jackd
 
 %attr(755,root,root) %{_bindir}/jackdbus
