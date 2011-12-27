@@ -1,13 +1,11 @@
-%define		pre	beta2
-
 Summary:	Software synthesizer
 Name:		amSynth
-Version:	1.3
-Release:	0.%{pre}.1
+Version:	1.3.0
+Release:	1
 License:	GPL v2
 Group:		X11/Applications/Sound
-Source0:	http://amsynth.googlecode.com/files/%{name}-%{version}-%{pre}.tar.gz
-# Source0-md5:	8b5df8c2f82a3abc6e0addbaf6cffc58
+Source0:	http://amsynth.googlecode.com/files/%{name}-%{version}.tar.gz
+# Source0-md5:	2ce5ee9adda16badf3f4f2792001fb4d
 BuildRequires:	alsa-lib-devel
 BuildRequires:	gtkmm-devel
 BuildRequires:	jack-audio-connection-kit-devel
@@ -30,7 +28,7 @@ Currently it runs as a stand-alone application on Linux, supporting
 OSS, ALSA and JACK for Audio / MIDI I/O.
 
 %prep
-%setup -qn %{name}-%{version}-%{pre}
+%setup -q
 
 %build
 %configure
