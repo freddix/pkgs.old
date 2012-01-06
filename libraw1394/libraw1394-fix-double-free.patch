@@ -1,0 +1,37 @@
+diff -aurN libraw1394-2.0.6.orig/src/dispatch.c libraw1394-2.0.6/src/dispatch.c
+--- libraw1394-2.0.6.orig/src/dispatch.c	2011-01-08 18:04:23.000000000 +0100
++++ libraw1394-2.0.6/src/dispatch.c	2011-01-08 18:06:00.000000000 +0100
+@@ -49,10 +49,8 @@
+ 		handle->is_fw = 1;
+ 		handle->mode.fw = fw_handle;
+ 		return handle;
+-	}
+-
+-	free(handle);
+-	return NULL;
++	} else
++		return NULL;
+ }
+ 
+ void raw1394_destroy_handle(raw1394handle_t handle)
+@@ -64,7 +62,6 @@
+ 		fw_destroy_handle(handle->mode.fw);
+ 	else
+ 		ieee1394_destroy_handle(handle->mode.ieee1394);
+-	free(handle);
+ }
+ 
+ raw1394handle_t raw1394_new_handle_on_port(int port)
+@@ -89,10 +86,8 @@
+ 		handle->is_fw = 1;
+ 		handle->mode.fw = fw_handle;
+ 		return handle;
+-	}
+-
+-	free(handle);
+-	return NULL;
++	} else
++		return NULL;
+ }
+ 
+ int raw1394_busreset_notify (raw1394handle_t handle, int off_on_switch)
