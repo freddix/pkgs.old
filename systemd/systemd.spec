@@ -8,7 +8,7 @@
 Summary:	A System and Service Manager
 Name:		systemd
 Version:	37
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.bz2
@@ -21,6 +21,7 @@ Source14:	%{name}-os-release
 Source15:	%{name}-timezone
 Patch0:		%{name}-freddix.patch
 Patch1:		%{name}-machine_id_writable.patch
+Patch2:		%{name}-autofs4_bug.patch
 URL:		http://www.freedesktop.org/wiki/Software/systemd
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -81,6 +82,7 @@ Graphical front-end for systemd.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__aclocal} -I m4
