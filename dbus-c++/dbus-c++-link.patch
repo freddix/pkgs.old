@@ -1,0 +1,11 @@
+diff -aurN libdbus-c++-0.9.0.orig/src/integration/glib/Makefile.am libdbus-c++-0.9.0/src/integration/glib/Makefile.am
+--- libdbus-c++-0.9.0.orig/src/integration/glib/Makefile.am	2012-01-07 23:59:52.592480449 +0100
++++ libdbus-c++-0.9.0/src/integration/glib/Makefile.am	2012-01-08 00:02:17.724666048 +0100
+@@ -11,6 +11,7 @@
+ 	-Wno-unused-parameter
+ 
+ libdbus_c___glib_1_la_LIBADD = \
++	$(top_builddir)/src/libdbus-c++-1.la \
+ 	$(dbus_LIBS) \
+ 	$(glib_LIBS)
+ 
