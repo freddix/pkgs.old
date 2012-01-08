@@ -1,0 +1,30 @@
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=652019
+Author: hermann <brummer-@web.de>
+Description: Porting ir.lv2 to zita-convolver's new API (series 3.x).
+Forwarded: yes
+---
+ ir.cc |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- ir.lv2.orig/ir.cc
++++ ir.lv2/ir.cc
+@@ -165,8 +165,8 @@ static void free_conv_safely(Convproc *
+ 		treq.tv_nsec = 10000000;
+ 		nanosleep(&treq, &trem);
+ 
+-		conv->check();
+-		state = conv->state();
++		if(conv->check_stop())
++			state = conv->state();
+ 	}
+ 	delete conv;	
+ }
+@@ -558,7 +558,7 @@ static void init_conv(IR * ir) {
+ 			ir->nchan);
+ 	}
+ 
+-	conv->start_process(0);
++	conv->start_process(0, SCHED_FIFO);
+ 	ir->conv_req_to_use = req_to_use;
+ }
+ 
