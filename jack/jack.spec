@@ -3,7 +3,7 @@
 Summary:	The JACK Audio Connection Kit
 Name:		jack
 Version:	1.9.8
-Release:	1
+Release:	2
 License:	LGPL v2.1+ (libjack), GPL v2+ (the rest)
 Group:		Daemons
 Source0:	http://www.grame.fr/~letz/jack-%{version}.tgz
@@ -85,6 +85,7 @@ JACK API documentation.
 cd %{name}-%{version}
 CXXFLAGS="%{rpmcxxflags}"	\
 CFLAGS="%{rpmcflags}"		\
+LINKFLAGS="%{rpmldflags}"	\
 PREFIX="%{_prefix}"		\
 ./waf configure			\
 	-d release		\
