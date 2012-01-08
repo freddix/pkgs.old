@@ -2,22 +2,22 @@
 
 Summary:	Free FireWire Audio Drivers
 Name:		libffado
-Version:	2.0.1
-#Release:	0.%{svnrev}.1
-Release:	1
+Version:	2.999.0
+Release:	0.%{svnrev}.2
 License:	LGPL
 Group:		Libraries
 # svn checkout http://subversion.ffado.org/ffado/branches/libffado-2.0 libffado-2.0-svn
 # mv libffado-2.0-svn libffado-2.0.1
 # tar -cf - libffado-2.0.1 | xz -9e -c > libffado-2.0.1.tar.xz
-#Source0:	%{name}-%{version}-%{svnrev}.tar.xz
-Source0:	http://www.ffado.org/files/%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}-%{svnrev}.tar.xz
 # Source0-md5:	786f31facd417e6207e429f50af0e15e
+#Source0:	http://www.ffado.org/files/%{name}-%{version}.tar.gz
 URL:		http://www.ffado.org/
-BuildRequires:	dbus-devel
+BuildRequires:	dbus-c++-devel
 BuildRequires:	expat-devel
 BuildRequires:	glibmm-devel
 BuildRequires:	libavc1394-devel
+BuildRequires:	libconfig-c++-devel
 BuildRequires:	libiec61883-devel
 BuildRequires:	libraw1394-devel
 BuildRequires:	libxml++-devel
@@ -25,7 +25,6 @@ BuildRequires:	libxml2-devel
 BuildRequires:	pkg-config
 BuildRequires:	python-PyQt4-QtDBus
 BuildRequires:	python-PyQt4-devel
-BuildRequires:	libconfig-c++-devel
 BuildRequires:	scons
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -65,7 +64,8 @@ sed -i -e 's|-O2|%{rpmcflags}|g' SConstruct
 	DEBUG=0				\
 	DESTDIR=$RPM_BUILD_ROOT		\
 	DIST_TARGET="%{_target_cpu}"	\
-	PREFIX=%{_prefix}
+	PREFIX=%{_prefix}		\
+	WILL_DEAL_WITH_XDG_MYSELF="True"
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -74,7 +74,8 @@ install -d $RPM_BUILD_ROOT{%{_desktopdir},%{_pixmapsdir}}
 %{__scons} install		\
 	DEBUG=0			\
 	DESTDIR=$RPM_BUILD_ROOT	\
-	PREFIX=%{_prefix}
+	PREFIX=%{_prefix}	\
+	WILL_DEAL_WITH_XDG_MYSELF="True"
 
 %py_ocomp $RPM_BUILD_ROOT%{_datadir}
 %py_comp $RPM_BUILD_ROOT%{_datadir}
@@ -115,13 +116,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/ffado-mixer
 
 %{_datadir}/libffado/configuration
-#%{_datadir}/dbus-1/services/org.ffado.Control.service
+%{_datadir}/dbus-1/services/org.ffado.Control.service
 
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/icons
 %{_datadir}/%{name}/python
-#%{_datadir}/%{name}/*.xml
-#%{py_sitescriptdir}/ffado
+%{_datadir}/%{name}/*.xml
+%{py_sitescriptdir}/ffado
 
 %{_desktopdir}/ffado-mixer.desktop
 %{_pixmapsdir}/ffado.png
