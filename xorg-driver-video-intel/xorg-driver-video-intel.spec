@@ -1,12 +1,12 @@
 %define		gitver	4a27dd287cdb85d80ceaf6b54e7de0c17e01c00d
 
-%bcond_without	sna	# enable SNA acceleration architecture
+%bcond_with	sna	# enable SNA acceleration architecture
 
 Summary:	X.org video driver for Intel integrated graphics chipsets
 Name:		xorg-driver-video-intel
 Version:	2.17.0
 %if "%{gitver}" != "%{nil}"
-Release:	1.%{gitver}.1
+Release:	1.%{gitver}.2
 %else
 Release:	1
 %endif
