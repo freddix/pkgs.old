@@ -1,7 +1,7 @@
 Summary:	Common Unix Printing System
 Name:		cups
 Version:	1.4.8
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL/LGPL
 Group:		Applications/Printing
@@ -29,7 +29,6 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtiff-devel
-BuildRequires:	openslp-devel
 BuildRequires:	pam-devel
 BuildRequires:	pkg-config
 Requires(post,preun):	/bin/systemctl
