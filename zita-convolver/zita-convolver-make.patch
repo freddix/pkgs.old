@@ -10,23 +10,6 @@ diff -aurN zita-convolver-3.0.3.orig/libs/Makefile zita-convolver-3.0.3/libs/Mak
  
  
  MAJVERS = 3
-@@ -30,12 +30,11 @@
- VERSION = $(MAJVERS).$(MINVERS)
- 
- 
--CPPFLAGS += -Wall -I. -fPIC -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS -O3
--CPPFLAGS += -ffast-math -funroll-loops 
--CPPFLAGS += -march=native
--CPPFLAGS += -DENABLE_VECTOR_MODE 
-+CPPFLAGS += -Wall -I. -fPIC -D_REENTRANT -D_POSIX_PTHREAD_SEMANTICS
-+CPPFLAGS += -DENABLE_VECTOR_MODE
-+CXXFLAGS = -ffast-math -funroll-loops -march=native -O3
- 
--LDLFAGS += 
-+LDLFAGS +=
- LDLIBS +=
- 
- 
 @@ -44,20 +43,21 @@
  ZITA-CONVOLVER_MIN = $(ZITA-CONVOLVER_MAJ).$(MINVERS)
  ZITA-CONVOLVER_DEP = -lfftw3f -lpthread
