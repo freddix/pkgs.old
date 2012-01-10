@@ -1,0 +1,41 @@
+--- less-394/filename.c~	2006-02-23 01:49:12.000000000 +0200
++++ less-394/filename.c	2006-02-23 01:50:36.000000000 +0200
+@@ -557,37 +557,7 @@
+ {
+ 	FILE *fd;
+ 
+-#if HAVE_SHELL
+-	char *shell;
+-
+-	shell = lgetenv("SHELL");
+-	if (shell != NULL && *shell != '\0')
+-	{
+-		char *scmd;
+-		char *esccmd;
+-
+-		/*
+-		 * Read the output of <$SHELL -c cmd>.  
+-		 * Escape any metacharacters in the command.
+-		 */
+-		esccmd = shell_quote(cmd);
+-		if (esccmd == NULL)
+-		{
+-			fd = popen(cmd, "r");
+-		} else
+-		{
+-			int len = strlen(shell) + strlen(esccmd) + 5;
+-			scmd = (char *) ecalloc(len, sizeof(char));
+-			SNPRINTF3(scmd, len, "%s %s %s", shell, shell_coption(), esccmd);
+-			free(esccmd);
+-			fd = popen(scmd, "r");
+-			free(scmd);
+-		}
+-	} else
+-#endif
+-	{
+-		fd = popen(cmd, "r");
+-	}
++	fd = popen(cmd, "r");
+ 	/*
+ 	 * Redirection in `popen' might have messed with the
+ 	 * standard devices.  Restore binary input mode.
