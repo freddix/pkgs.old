@@ -7,12 +7,12 @@
 #
 Summary:	A System and Service Manager
 Name:		systemd
-Version:	37
-Release:	2
+Version:	38
+Release:	0.1
 License:	GPL v2+
 Group:		Base
-Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.bz2
-# Source0-md5:	1435f23be79c8c38d1121c6b150510f3
+Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.xz
+# Source0-md5:	68c66dce5a28c0efd7c210af5d11efed
 Source10:	%{name}-locale.conf
 Source11:	%{name}-loop.conf
 Source12:	%{name}-sysctl.conf
@@ -96,7 +96,8 @@ Graphical front-end for systemd.
 	--disable-silent-rules	\
 	--disable-static	\
 	--with-distro=freddix	\
-	--with-rootdir=		\
+	--with-rootlibdir=/%{_lib}	\
+	--with-rootprefix=	\
 	--with-udevrulesdir=/lib/udev/rules.d
 %{__make}
 
@@ -175,6 +176,7 @@ fi
 %doc DISTRO_PORTING README TODO
 
 %attr(755,root,root) /bin/systemd
+%attr(755,root,root) /bin/systemd-journalctl
 %attr(755,root,root) /bin/systemd-ask-password
 %attr(755,root,root) /bin/systemd-loginctl
 %attr(755,root,root) /bin/systemd-machine-id-setup
@@ -190,10 +192,14 @@ fi
 %attr(755,root,root) /%{_lib}/systemd/system-generators/systemd-getty-generator
 %attr(755,root,root) /%{_lib}/systemd/systemd-*
 
-%attr(755,root,root) %ghost %{_libdir}/libsystemd-daemon.so.?
-%attr(755,root,root) %ghost %{_libdir}/libsystemd-login.so.?
-%attr(755,root,root) %{_libdir}/libsystemd-daemon.so.*.*.*
-%attr(755,root,root) %{_libdir}/libsystemd-login.so.*.*.*
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-daemon.so.?
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-id128.so.?
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-journal.so.?
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-login.so.?
+%attr(755,root,root) /%{_lib}/libsystemd-daemon.so.*.*.*
+%attr(755,root,root) /%{_lib}/libsystemd-id128.so.*.*.*
+%attr(755,root,root) /%{_lib}/libsystemd-journal.so.*.*.*
+%attr(755,root,root) /%{_lib}/libsystemd-login.so.*.*.*
 
 %attr(755,root,root) /sbin/halt
 %attr(755,root,root) /sbin/init
@@ -204,6 +210,7 @@ fi
 %attr(755,root,root) /sbin/telinit
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/system.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/systemd-journald.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/systemd-logind.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/user.conf
 
