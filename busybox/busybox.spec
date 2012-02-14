@@ -1,7 +1,7 @@
 Summary:	Set of common Unix utilities for embeded systems
 Name:		busybox
 Version:	1.19.3
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications
 Source0:	http://www.busybox.net/downloads/%{name}-%{version}.tar.bz2
