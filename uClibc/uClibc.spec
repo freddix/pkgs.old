@@ -3,16 +3,16 @@
 
 Summary:	C library optimized for size
 Name:		uClibc
-Version:	0.9.32
+Version:	0.9.32.1
 Epoch:		1
 %if "%{gitver}" != "%{nil}"
 Release:	0.%{gitver}.%{rel}
 Source0:	http://git.uclibc.org/uClibc/snapshot/%{name}-%{gitver}.tar.bz2
-# Source0-md5:	51660b93b8f1edb486049981fecfd148
+# Source0-md5:	85fbafaf3e634988e49e2b222e8a2180
 %else
 Release:	%{rel}
 Source0:	http://uclibc.org/downloads/%{name}-%{version}.tar.xz
-# Source0-md5:	51660b93b8f1edb486049981fecfd148
+# Source0-md5:	85fbafaf3e634988e49e2b222e8a2180
 %endif
 License:	LGPL v2.1
 Group:		Libraries
