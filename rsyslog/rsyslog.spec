@@ -1,11 +1,11 @@
 Summary:	Linux system and kernel logger
 Name:		rsyslog
-Version:	5.8.5
-Release:	2
+Version:	5.8.7
+Release:	1
 License:	GPL v3+
 Group:		Daemons
 Source0:	http://www.rsyslog.com/files/download/rsyslog/%{name}-%{version}.tar.gz
-# Source0-md5:	a73cb577cb4bc5b9c8f0d217eb054ad2
+# Source0-md5:	d806a91de534d6e33d7d1c1138cfdd37
 Source1:	%{name}.logrotate
 Source2:	%{name}.conf
 URL:		http://www.rsyslog.com/
@@ -44,6 +44,8 @@ very easy to setup for the novice user.
 
 %build
 %configure \
+	--disable-silent-rules		\
+	--enable-mail			\
 	--enable-unlimited-select	\
 	--with-systemdsystemunitdir=/%{_lib}/systemd/system
 %{__make}
@@ -138,6 +140,7 @@ fi
 %attr(755,root,root) %{_libdir}/rsyslog/lmtcpclt.so
 %attr(755,root,root) %{_libdir}/rsyslog/lmtcpsrv.so
 %attr(755,root,root) %{_libdir}/rsyslog/lmzlibw.so
+%attr(755,root,root) %{_libdir}/rsyslog/ommail.so
 %attr(755,root,root) %{_libdir}/rsyslog/omruleset.so
 %attr(755,root,root) %{_libdir}/rsyslog/omtesting.so
 
