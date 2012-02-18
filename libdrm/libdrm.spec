@@ -1,16 +1,16 @@
-%define		gitver	%{nil}
+%define		gitver	23eeb7e1e45417a5a84f826286dd982dba440cd3
 
 Summary:	Userspace interface to kernel DRM services
 Name:		libdrm
-Version:	2.4.30
+Version:	2.4.31
 %if "%{gitver}" != "%{nil}"
 Release:	0.%{gitver}.1
 Source0:	http://cgit.freedesktop.org/mesa/drm/snapshot/drm-%{gitver}.tar.bz2
-# Source0-md5:	cd790fb761a83125eceb64162d7d5ce5
+# Source0-md5:	1ef6337ab438881a80db220c5075429d
 %else
-Release:	2
+Release:	1
 Source0:	http://dri.freedesktop.org/libdrm/%{name}-%{version}.tar.gz
-# Source0-md5:	cd790fb761a83125eceb64162d7d5ce5
+# Source0-md5:	1ef6337ab438881a80db220c5075429d
 %endif
 Patch0:		%{name}-link.patch
 License:	MIT
