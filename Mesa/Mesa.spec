@@ -2,18 +2,17 @@
 
 Summary:	Free OpenGL implementation
 Name:		Mesa
-Version:	7.11.1
+Version:	8.0.1
 %if "%{gitver}" != "%{nil}"
 Release:	6.%{gitver}.1
 Source:		http://cgit.freedesktop.org/mesa/mesa/snapshot/mesa-%{gitver}.tar.bz2
 %else
 Release:	1
 Source0:	ftp://ftp.freedesktop.org/pub/mesa/%{version}/MesaLib-%{version}.tar.gz
-# Source0-md5:	ac0181a4076770fb657c1169af43aa09
+# Source0-md5:	4855c2d93bd2ebd43f384bdcc92c9a27
 %endif
 License:	MIT (core), SGI (GLU) and others - see COPYRIGHT file
 Group:		X11/Libraries
-Patch0:		%{name}-hush-vblank-warning.patch
 URL:		http://www.mesa3d.org/
 BuildRequires:	expat-devel
 BuildRequires:	libdrm-devel
@@ -148,11 +147,6 @@ X.org DRI software rasterizer driver.
 %setup -q
 %endif
 
-%patch0 -p1
-
-# remove header - not free software
-rm -f include/GL/uglglutshapes.h
-
 %build
 %{__libtoolize}
 %{__aclocal}
@@ -160,15 +154,11 @@ rm -f include/GL/uglglutshapes.h
 %configure \
 	--disable-asm			\
 	--disable-egl			\
-	--disable-gl-osmesa		\
-	--disable-glut			\
-	--disable-glw			\
 	--enable-gallium-llvm		\
 	--enable-glx-tls		\
 	--enable-texture-float		\
 	--with-dri-driverdir=%{dridir}	\
 	--with-dri-drivers="i915,i965,r200,swrast"	\
-	--with-driver=dri		\
 	--with-gallium-drivers="r300,r600,swrast"
 %{__make}
 
@@ -191,7 +181,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files libGL
 %defattr(644,root,root,755)
-%doc docs/{*.html,README.{3DFX,GGI,MITS,QUAKE,THREADS},RELNOTES*}
+%doc docs/{*.html,README.{MITS,QUAKE,THREADS},RELNOTES*}
 %attr(755,root,root) %ghost %{_libdir}/libGL.so.1
 %attr(755,root,root) %{_libdir}/libGL.so.*.*
 # symlink for binary apps which fail to conform Linux OpenGL ABI
@@ -248,5 +238,5 @@ rm -rf $RPM_BUILD_ROOT
 %files dri-driver-swrast
 %defattr(644,root,root,755)
 %attr(755,root,root) %{dridir}/swrast_dri.so
-%attr(755,root,root) %{dridir}/swrastg_dri.so
+#%attr(755,root,root) %{dridir}/swrastg_dri.so
 
