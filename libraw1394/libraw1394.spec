@@ -1,11 +1,11 @@
 Summary:	Interface to Linux IEEE-1394 subsystem
 Name:		libraw1394
-Version:	2.0.7
+Version:	2.0.8
 Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	http://www.kernel.org/pub/linux/libs/ieee1394/%{name}-%{version}.tar.bz2
-# Source0-md5:	997ef18ab8e2e21f3966dff00e92be28
+# Source0-md5:	8a58968373bb3c3938df1bca6c4a3dce
 Patch0:		%{name}-fix-double-free.patch
 URL:		http://ieee1394.wiki.kernel.org/
 BuildRequires:	autoconf
