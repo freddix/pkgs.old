@@ -1,11 +1,11 @@
 Summary:	LaTeX development environment
 Name:		texmaker
-Version:	3.1
+Version:	3.3
 Release:	1
 License:	GPL
 Group:		X11/Applications/Publishing
 Source0:	http://www.xm1math.net/texmaker/%{name}-%{version}.tar.bz2
-# Source0-md5:	10a14c75abbb7234d4e5e58a7c85b110
+# Source0-md5:	cefdedca06ba9396c033bbb18f0e46a6
 Patch0:		%{name}-spelldir.patch
 URL:		http://www.xm1math.net/texmaker/
 BuildRequires:	QtDBus-devel
@@ -53,14 +53,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %dir %{_datadir}/%{name}
 
-%lang(ca) %{_datadir}/%{name}/texmaker_ca.qm
 %lang(cs) %{_datadir}/%{name}/texmaker_cs.qm
-%lang(cs) %{_datadir}/%{name}/texmaker_cs.qm
-%lang(de) %{_datadir}/%{name}/texmaker_de.qm
 %lang(de) %{_datadir}/%{name}/texmaker_de.qm
 %lang(es) %{_datadir}/%{name}/texmaker_es.qm
 %lang(fa) %{_datadir}/%{name}/texmaker_fa.qm
-%lang(fr) %{_datadir}/%{name}/texmaker_fr.qm
 %lang(fr) %{_datadir}/%{name}/texmaker_fr.qm
 %lang(gl) %{_datadir}/%{name}/texmaker_gl.qm
 %lang(hu) %{_datadir}/%{name}/texmaker_hu.qm
@@ -72,7 +68,9 @@ rm -rf $RPM_BUILD_ROOT
 %lang(zh_CN) %{_datadir}/%{name}/texmaker_zh_CN.qm
 %lang(zh_TW) %{_datadir}/%{name}/texmaker_zh_TW.qm
 
+%{_datadir}/%{name}/*.css
 %{_datadir}/%{name}/*.html
+%{_datadir}/%{name}/*.js
 %{_datadir}/%{name}/*.png
 %{_datadir}/%{name}/*.svg
 %{_desktopdir}/*.desktop
