@@ -1,0 +1,22 @@
+--- zlib-1.2.1/Makefile.in.orig	2003-11-09 03:29:23.000000000 +0100
++++ zlib-1.2.1/Makefile.in	2003-11-25 23:58:48.202584104 +0100
+@@ -49,7 +49,7 @@
+ OBJS = adler32.o compress.o crc32.o gzio.o uncompr.o deflate.o trees.o \
+        zutil.o inflate.o infback.o inftrees.o inffast.o
+ 
+-OBJA =
++OBJA = match.o
+ # to use the asm code: make OBJA=match.o
+ 
+ TEST_OBJS = example.o minigzip.o
+@@ -77,8 +77,8 @@
+ 	mv _match.o match.o
+ 	rm -f _match.s
+ 
+-$(SHAREDLIBV): $(OBJS)
+-	$(LDSHARED) -o $@ $(OBJS)
++$(SHAREDLIBV): $(OBJS) $(OBJA)
++	$(LDSHARED) -o $@ $(OBJS) $(OBJA)
+ 	rm -f $(SHAREDLIB) $(SHAREDLIBM)
+ 	ln -s $@ $(SHAREDLIB)
+ 	ln -s $@ $(SHAREDLIBM)
