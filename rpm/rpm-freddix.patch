@@ -1,0 +1,34 @@
+diff -aurN rpm-4.5.orig/configure.ac rpm-4.5/configure.ac
+--- rpm-4.5.orig/configure.ac	2009-08-31 22:46:35.000000000 +0200
++++ rpm-4.5/configure.ac	2009-08-31 22:47:47.000000000 +0200
+@@ -1452,7 +1452,7 @@
+ esac
+ RPMCANONVENDOR="$build_vendor"
+ case "${build_vendor}" in
+-unknown|pc|ibm|redhat|pld|mandrake|conectiva|lvr|yellowdog|caos|crux)
++unknown|pc|ibm|redhat|pld|mandrake|conectiva|lvr|yellowdog|caos|crux|freddix)
+ 	test -f /etc/redhat-release &&		RPMCANONVENDOR=redhat
+ 	test -f /etc/pld-release &&		RPMCANONVENDOR=pld
+ 	test -f /etc/mandrake-release &&	RPMCANONVENDOR=mandrake
+@@ -1461,6 +1461,7 @@
+ 	test -f /etc/yellowdog-release &&	RPMCANONVENDOR=yellowdog
+ 	test -f /etc/caos-release &&		RPMCANONVENDOR=caos
+ 	test -f /usr/bin/crux &&		RPMCANONVENDOR=crux
++	test -f /etc/freddix-release &&		RPMCANONVENDOR=freddix
+ 	;;
+ esac
+ RPMCANONOS="$build_os_noversion"
+diff -aurN rpm-4.5.orig/installplatform rpm-4.5/installplatform
+--- rpm-4.5.orig/installplatform	2009-08-31 22:46:35.000000000 +0200
++++ rpm-4.5/installplatform	2009-08-31 22:48:23.000000000 +0200
+@@ -80,6 +80,10 @@
+   yellowdog)
+     VENDORSED='-e s,^@yellowdog@,,'
+     ;;
++  freddix)
++    VENDORSED='-e s,^@freddix@,,'
++    RPMRC_OPTFLAGS="`echo $RPMRC_OPTFLAGS | sed -e "s/ -g/ /"`"
++    ;;
+   pld)
+     VENDORSED='-e s,^@pld@,,'
+     RPMRC_OPTFLAGS="`echo $RPMRC_OPTFLAGS | sed -e "s/ -g/ /"`"

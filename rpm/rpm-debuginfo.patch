@@ -1,0 +1,47 @@
+--- rpm-4.4.9.orig/macros.in	2008-01-31 19:20:08.798315963 +0200
++++ rpm-4.4.9/macros.in	2008-01-31 19:20:50.850567944 +0200
+@@ -188,15 +188,21 @@
+ %debug_package \
+ %ifnarch noarch\
+ %global __debug_package 1\
+-%package debug\
++%package debuginfo\
+ Summary: Debug information for package %{name}\
++Summary(pl.UTF-8): Informacje dla debuggera dla pakietu %{name}\
+ Group: Development/Debug\
++Requires: filesystem-debuginfo >= 3.0-16\
+ AutoReqProv: 0\
+-%description debug\
++%description debuginfo\
+ This package provides debug information for package %{name}.\
+ Debug information is useful when developing applications that use this\
+ package or when debugging this package.\
+-%files debug -f debugfiles.list\
++%description debuginfo -l pl.UTF-8\
++Ten pakiet dostarcza informacje dla debuggera dla pakietu %{name}.\
++Informacje te są przydatne przy rozwijaniu aplikacji używających tego\
++pakietu oraz przy odpluskwianiu samego pakietu.\
++%files debuginfo -f debugfiles.list\
+ %defattr(-,root,root)\
+ %endif\
+ %{nil}
+@@ -1046,7 +1052,7 @@
+ %{?buildroot:%{__rm} -rf '%{buildroot}'}
+ %__spec_install_body	%{___build_body}
+ %__spec_install_post\
+-%{?__debug_package:%{__debug_install_post}}\
++%{expand:%%define __sip_%{?_enable_debug_packages} 1}%{?__sip_1:%{?__debug_package:%{__debug_install_post}}}%{expand:%%undefine __sip_%{?_enable_debug_packages}}\
+ %{__arch_install_post}\
+ %{__os_install_post}\
+ %{nil}
+--- rpm-4.4.9.orig/platform.in	2008-01-31 19:20:08.676303626 +0200
++++ rpm-4.4.9/platform.in	2008-01-31 19:20:50.844567337 +0200
+@@ -61,7 +61,7 @@
+ %{nil}
+ 
+ %__spec_install_post\
+-    %{?__debug_package:%{__debug_install_post}}\
++    %{expand:%%define __sip_%{?_enable_debug_packages} 1}%{?__sip_1:%{?__debug_package:%{__debug_install_post}}}%{expand:%%undefine __sip_%{?_enable_debug_packages}}\
+     %{__arch_install_post}\
+     %{__os_install_post}\
+ %{nil}
