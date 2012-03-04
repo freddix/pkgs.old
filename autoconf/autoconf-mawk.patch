@@ -1,0 +1,24 @@
+diff -Nur autoconf-2.53.orig/configure autoconf-2.53/configure
+--- autoconf-2.53.orig/configure	Fri Mar  8 14:09:59 2002
++++ autoconf-2.53/configure	Sat Mar 16 13:12:23 2002
+@@ -1312,7 +1312,7 @@
+ echo "$as_me: WARNING: \`missing' script is too old or missing" >&2;}
+ fi
+ 
+-for ac_prog in gawk mawk nawk awk
++for ac_prog in mawk gawk nawk awk
+ do
+   # Extract the first word of "$ac_prog", so it can be a program name with args.
+ set dummy $ac_prog; ac_word=$2
+diff -Nur autoconf-2.53.orig/lib/autoconf/programs.m4 autoconf-2.53/lib/autoconf/programs.m4
+--- autoconf-2.53.orig/lib/autoconf/programs.m4	Mon Mar  4 15:34:20 2002
++++ autoconf-2.53/lib/autoconf/programs.m4	Sat Mar 16 13:11:53 2002
+@@ -258,7 +258,7 @@
+ 
+ # Check for gawk first since it's generally better.
+ AC_DEFUN([AC_PROG_AWK],
+-[AC_CHECK_PROGS(AWK, gawk mawk nawk awk, )])
++[AC_CHECK_PROGS(AWK, mawk gawk nawk awk, )])
+ 
+ 
+ # AC_PROG_INSTALL
