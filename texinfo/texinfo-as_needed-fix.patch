@@ -1,0 +1,12 @@
+diff -Nur texinfo-4.8/configure.ac texinfo-4.8.as_needed-fix/configure.ac
+--- texinfo-4.8/configure.ac	2004-12-31 19:00:48.000000000 +0100
++++ texinfo-4.8.as_needed-fix/configure.ac	2006-08-02 02:37:33.000000000 +0200
+@@ -119,7 +119,7 @@
+ # rather ncurses.  So we check for it.
+ TERMLIBS=
+ # Check for termlib before termcap because Solaris termcap needs libucb.
+-TERMLIB_VARIANTS="ncurses curses termlib termcap terminfo"
++TERMLIB_VARIANTS="tinfo ncurses curses termlib termcap terminfo"
+ for termlib in ${TERMLIB_VARIANTS}; do
+   AC_CHECK_LIB(${termlib}, tgetent,
+      [TERMLIBS="${TERMLIBS} -l${termlib}"; break])
