@@ -16,7 +16,6 @@ BuildRequires:	libltdl-devel
 BuildRequires:	libtool
 BuildRequires:	perl-devel
 BuildRequires:	texinfo
-Requires(post,postun):	/sbin/ldconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
