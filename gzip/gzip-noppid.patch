@@ -1,0 +1,70 @@
+--- gzip-1.3.12/znew.in.orig	2007-04-18 10:59:07.713235970 +0200
++++ gzip-1.3.12/znew.in	2007-04-18 11:02:12.715778664 +0200
+@@ -55,9 +55,9 @@
+ # block is the disk block size (best guess, need not be exact)
+ 
+ warn="(does not preserve modes and timestamp)"
+-tmp=${TMPDIR-/tmp}/zfoo.$$
++tmp=`mktemp ${TMPDIR-/tmp}/zfoo.XXXXXX` || exit 1
+ set -C
+-echo hi > $tmp || exit
++echo hi >| $tmp || exit
+ if test -z "`(${CPMOD-cpmod} $tmp $tmp) 2>&1`"; then
+   cpmod=${CPMOD-cpmod}
+   warn=""
+@@ -113,6 +113,7 @@
+ 
+ for i do
+   n=`echo $i | sed 's/.Z$//'`
++  ntmp=`mktemp ${TMPDIR:-/tmp}/$n.XXXXXX` || exit 1
+   if test ! -f "$n.Z" ; then
+     echo $n.Z not found
+     res=1; continue
+@@ -128,7 +129,7 @@
+     fi
+   else
+     if test $check -eq 1; then
+-      if cp -p "$n.Z" "$n.$$" 2> /dev/null || cp "$n.Z" "$n.$$"; then
++      if cp -p "$n.Z" $ntmp 2> /dev/null || cp "$n.Z" $ntmp; then
+ 	:
+       else
+ 	echo cannot backup "$n.Z"
+@@ -138,7 +139,7 @@
+     if gzip -d "$n.Z"; then
+       :
+     else
+-      test $check -eq 1 && mv "$n.$$" "$n.Z"
++      test $check -eq 1 && mv $ntmp "$n.Z"
+       echo error while uncompressing $n.Z
+       res=1; continue
+     fi
+@@ -146,7 +147,7 @@
+       :
+     else
+       if test $check -eq 1; then
+-	mv "$n.$$" "$n.Z" && rm -f "$n"
++	mv $ntmp "$n.Z" && rm -f "$n"
+         echo error while recompressing $n
+       else
+ 	# compress $n  (might be dangerous if disk full)
+@@ -161,7 +162,7 @@
+     if test $pipe -eq 1; then
+       rm -f "$n$ext"
+     elif test $check -eq 1; then
+-      mv "$n.$$" "$n.Z" && rm -f "$n$ext"
++      mv $ntmp "$n.Z" && rm -f "$n$ext"
+     else
+       gzip -d "$n$ext" && compress "$n" && rm -f "$n$ext"
+     fi
+@@ -169,9 +170,9 @@
+ 
+   elif test $check -eq 1; then
+     if gzip -t "$n$ext" ; then
+-      rm -f "$n.$$" "$n.Z"
++      rm -f $ntmp "$n.Z"
+     else
+-      test $pipe -eq 0 && mv "$n.$$" "$n.Z"
++      test $pipe -eq 0 && mv $ntmp "$n.Z"
+       rm -f "$n$ext"
+       echo error while testing $n$ext, $n.Z unchanged
+       res=1; continue
