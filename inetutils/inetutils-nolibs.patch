@@ -1,0 +1,15 @@
+--- inetutils-1.9/configure.ac.orig	2011-12-31 16:02:32.000000000 +0100
++++ inetutils-1.9/configure.ac	2012-01-06 11:41:10.360431078 +0100
+@@ -141,9 +141,9 @@
+ gl_INIT
+ 
+ ### Checks for libraries.
+-AC_CHECK_LIB(nsl, inet_ntoa)
+-AC_CHECK_LIB(resolv, gethostname)
+-AC_CHECK_LIB(socket, getpeername)
++AC_SEARCH_LIBS(inet_ntoa, nsl)
++AC_SEARCH_LIBS(gethostname, resolv)
++AC_SEARCH_LIBS(getpeername, socket)
+ 
+ # See if a termcap library is available (under one of several names)
+ IU_LIB_TERMCAP
