@@ -5,7 +5,7 @@
 Summary:	GNU automake - Makefile configuration tools
 Name:		automake
 Version:	1.11.3
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL v2+
 Group:		Development/Building
