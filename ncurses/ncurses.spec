@@ -158,23 +158,36 @@ done
 
 ln -sf ../l/linux $RPM_BUILD_ROOT%{_datadir}/terminfo/c/console
 
-mv -f $RPM_BUILD_ROOT%{_libdir}/libncursesw.so.6* $RPM_BUILD_ROOT/%{_lib}
-ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.*.*) $RPM_BUILD_ROOT%{_libdir}/libtinfo.so
-ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) $RPM_BUILD_ROOT%{_libdir}/libtinfow.so
-ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) $RPM_BUILD_ROOT%{_libdir}/libncursesw.so
-ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) $RPM_BUILD_ROOT%{_libdir}/libcursesw.so
-mv -f $RPM_BUILD_ROOT%{_libdir}/libncurses.so.* $RPM_BUILD_ROOT/%{_lib}
-ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.*.*) $RPM_BUILD_ROOT%{_libdir}/libcurses.so
-ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.*.*) $RPM_BUILD_ROOT%{_libdir}/libncurses.so
+mv -f $RPM_BUILD_ROOT%{_libdir}/libncursesw.so.6* \
+	$RPM_BUILD_ROOT/%{_lib}
+mv -f $RPM_BUILD_ROOT%{_libdir}/libncurses.so.* \
+	$RPM_BUILD_ROOT/%{_lib}
+
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.*.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libtinfo.so
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libtinfow.so
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libncursesw.so
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libcursesw.so
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.*.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libcurses.so
+ln -sf /%{_lib}/$(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.*.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libncurses.so
 
 ln -sf libncursesw.a $RPM_BUILD_ROOT%{_libdir}/libcursesw.a
 
 # binary compatibility for packages using libncursesw.so.5 (without ext-colors)
 cp -a obj-wideclowcolor/lib/libncursesw.so.5* $RPM_BUILD_ROOT%{_libdir}
+
 # binary compatibility for packages usign libtinfo.so.5/libtinfow.so.5/libtinfow.so.6
-ln -sf $(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.5.*) $RPM_BUILD_ROOT/%{_lib}/libtinfo.so.5
-ln -sf $(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) $RPM_BUILD_ROOT/%{_lib}/libtinfow.so.6
-ln -sf $(basename $RPM_BUILD_ROOT%{_libdir}/libncursesw.so.5.*) $RPM_BUILD_ROOT%{_libdir}/libtinfow.so.5
+ln -sf $(basename $RPM_BUILD_ROOT/%{_lib}/libncurses.so.5.*) \
+	$RPM_BUILD_ROOT/%{_lib}/libtinfo.so.5
+ln -sf $(basename $RPM_BUILD_ROOT/%{_lib}/libncursesw.so.6.*) \
+	$RPM_BUILD_ROOT/%{_lib}/libtinfow.so.6
+ln -sf $(basename $RPM_BUILD_ROOT%{_libdir}/libncursesw.so.5.*) \
+	$RPM_BUILD_ROOT%{_libdir}/libtinfow.so.5
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libcurses.a
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libcursesw.a
