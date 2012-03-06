@@ -1,6 +1,6 @@
 #
 %define		major	8.5
-%define		minor	9
+%define		minor	11
 #
 Summary:	Tool Command Language embeddable scripting language, with shared libraries
 Name:		tcl
@@ -8,17 +8,16 @@ Version:	%{major}.%{minor}
 Release:	3
 License:	BSD
 Group:		Development/Languages/Tcl
-Source0:	http://heanet.dl.sourceforge.net/tcl/%{name}%{version}-src.tar.gz
-# Source0-md5:	d0b0b3ff7600ff63135c710b575265cd
+Source0:	http://downloads.sourceforge.net/tcl/%{name}%{version}-src.tar.gz
+# Source0-md5:	b01a9691c83990b3db0ce62d1012ca67
 Patch0:		%{name}-ieee.patch
-Patch1:		%{name}-readline.patch
-Patch2:		%{name}-opt.patch
-Patch3:		%{name}-mannames.patch
-Patch4:		%{name}-soname_fix.patch
-Patch5:		%{name}-norpath.patch
-Patch6:		%{name}-hidden.patch
-Patch7:		%{name}-conf.patch
-Patch8:		%{name}-autopath.patch
+Patch1:		%{name}-opt.patch
+Patch2:		%{name}-mannames.patch
+Patch3:		%{name}-soname_fix.patch
+Patch4:		%{name}-norpath.patch
+Patch5:		%{name}-hidden.patch
+Patch6:		%{name}-conf.patch
+Patch7:		%{name}-autopath.patch
 URL:		http://www.tcl.tk/
 BuildRequires:	autoconf
 BuildRequires:	ncurses-devel
@@ -56,18 +55,20 @@ develpment documentation.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
-%patch8 -p1
+
+sed -i -e "s/^CFLAGS_OPTIMIZE.*/CFLAGS_OPTIMIZE=%{rpmcflags} -D__NO_STRING_INLINES -D__NO_MATH_INLINES -D_REENTRANT -DTCL_NO_STACK_CHECK=1 -fPIC/" \
+	-e "s/^SHLIB_LD .*/SHLIB_LD=ld.bfd/"			\
+	-e "s/^SHLIB_CFLAGS.*/SHLIB_CFLAGS=%{rpmldflags}/"	\
+	unix/Makefile.in
 
 %build
 cd unix
-sed -i -e "s/^CFLAGS_OPTIMIZE.*/CFLAGS_OPTIMIZE=%{rpmcflags} -D__NO_STRING_INLINES -D__NO_MATH_INLINES -D_REENTRANT -DTCL_NO_STACK_CHECK=1/" \
-	Makefile.in
 %{__autoconf}
 %configure \
-	--enable-langinfo \
-	--enable-shared \
-	--disable-threads \
-	--enable-64bit \
+	--disable-threads	\
+	--enable-64bit		\
+	--enable-langinfo	\
+	--enable-shared		\
 	--without-tzdata
 %{__make}
 
