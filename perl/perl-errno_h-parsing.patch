@@ -1,0 +1,17 @@
+diff -urN perl-5.6.1.orig/ext/Errno/Errno_pm.PL perl-5.6.1/ext/Errno/Errno_pm.PL
+--- perl-5.6.1.orig/ext/Errno/Errno_pm.PL	Sun Apr  8 08:09:16 2001
++++ perl-5.6.1/ext/Errno/Errno_pm.PL	Thu Apr 12 20:58:53 2001
+@@ -37,6 +37,13 @@
+             warn "Cannot open '$file'";
+             return;
+ 	}     
++    } elsif ($^O eq 'linux') {
++	# With the -dM option option, gcc outputs every #define's it finds
++	my $cpp = default_cpp();
++	unless(open(FH, "$cpp -dM < $file |")) {
++            warn "Cannot open '$file'";
++            return;
++	}
+     } else {
+ 	unless(open(FH,"< $file")) {
+ 	    # This file could be a temporary file created by cppstdin

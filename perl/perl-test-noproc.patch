@@ -1,0 +1,22 @@
+--- perl-5.12.0/dist/threads/t/join.t.orig	Tue Sep 30 19:10:32 2003
++++ perl-5.12.0/dist/threads/t/join.t	Mon Dec  8 14:49:12 2003
+@@ -118,6 +118,10 @@
+ 
+ # We parse ps output so this is OS-dependent.
+ if ($^O eq 'linux') {
++    if (! -d "/proc/$$") {
++      # proc not mounted? skip.
++      skip("\$0 check: /proc not mounted?");
++    } else {
+     # First modify $0 in a subthread.
+     #print "# mainthread: \$0 = $0\n";
+     threads->create(sub{ #print "# subthread: \$0 = $0\n";
+@@ -148,6 +152,7 @@
+     } else {
+         skip("\$0 check: opening 'ps -f |' failed: $!");
+     }
++    }
+ } else {
+     skip("\$0 check: only on Linux");
+ }
+

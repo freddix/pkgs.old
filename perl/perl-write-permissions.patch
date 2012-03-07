@@ -1,0 +1,20 @@
+--- perl-5.12.0/dist/ExtUtils-Install/lib/ExtUtils/Install.pm.orig	2009-08-03 21:36:03.000000000 +0200
++++ perl-5.12.0/dist/ExtUtils-Install/lib/ExtUtils/Install.pm	2009-09-12 10:07:06.181527344 +0200
+@@ -813,7 +813,7 @@
+                 utime($atime,$mtime + $Is_VMS,$targetfile) unless $dry_run>1;
+ 
+ 
+-                $mode = 0444 | ( $mode & 0111 ? 0111 : 0 );
++                $mode = 0644 | ( $mode & 0111 ? 0111 : 0 );
+                 $mode = $mode | 0222
+                     if $realtarget ne $targetfile;
+                 _chmod( $mode, $targetfile, $verbose );
+@@ -1215,7 +1215,7 @@
+         }
+         my($mode,$atime,$mtime) = (stat $from)[2,8,9];
+         utime($atime,$mtime+$Is_VMS,$to);
+-        _chmod(0444 | ( $mode & 0111 ? 0111 : 0 ),$to);
++        _chmod(0644 | ( $mode & 0111 ? 0111 : 0 ),$to);
+         next unless $from =~ /\.pm$/;
+         _autosplit($to,$autodir);
+     }
