@@ -3,7 +3,7 @@
 Summary:	Rxvt terminal with unicode support and some improvements
 Name:		urxvt
 Version:	9.15
-Release:	1
+Release:	2
 Group:		X11/Applications
 License:	GPL v2+
 Source0:	http://dist.schmorp.de/rxvt-unicode/rxvt-unicode-%{version}.tar.bz2
