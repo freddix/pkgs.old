@@ -1,9 +1,9 @@
-%define		sover		4.5
+%define		sover	4.5
 #
 Summary:	RPM Package Manager
 Name:		rpm
 Version:	4.5
-Release:	19
+Release:	21
 License:	LGPL
 Group:		Base
 Source0:	%{name}-%{version}.tar.gz
@@ -99,6 +99,8 @@ Patch73:	%{name}-gendiff.patch
 Patch74:	%{name}-set-failed-on-reopen.patch
 Patch75:	%{name}-shescape-memfault.patch
 Patch76:	%{name}-gid-uucp.patch
+#
+Patch77:	%{name}-am.patch
 #
 # lzma / xz
 Patch80:	%{name}-lzma-mem.patch
@@ -410,6 +412,7 @@ sources by doxygen.
 %patch74 -p1
 %patch75 -p1
 %patch76 -p1
+%patch77 -p1
 # lzma / xz
 %patch80 -p1
 %patch81 -p1
@@ -738,10 +741,6 @@ find %{_rpmlibdir} -name '*-linux' -type l | xargs rm -f
 %attr(755,root,root) %{_libdir}/librpmdb.so
 %attr(755,root,root) %{_libdir}/librpmdb-%{sover}.so
 %attr(755,root,root) %{_libdir}/librpmbuild.so
-%{_libdir}/librpm.la
-%{_libdir}/librpmbuild.la
-%{_libdir}/librpmdb.la
-%{_libdir}/librpmio.la
 %{_includedir}/rpm
 %{_pkgconfigdir}/*.pc
 
