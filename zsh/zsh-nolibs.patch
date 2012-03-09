@@ -1,0 +1,13 @@
+diff -ur zsh-4.2.5/configure.ac zsh-4.2.5.new/configure.ac
+--- zsh-4.2.5/configure.ac	2005-04-04 09:48:58.000000000 +0000
++++ zsh-4.2.5.new/configure.ac	2005-04-12 08:48:06.414551264 +0000
+@@ -725,7 +725,7 @@
+   AC_CHECK_LIB(cap, cap_get_proc)
+ fi
+ 
+-AC_CHECK_LIB(socket, socket)
++AC_SEARCH_LIBS(socket, socket)
+ AC_SEARCH_LIBS(gethostbyname2, bind)
+ 
+ case $LIBS in
+   *-lbind*)

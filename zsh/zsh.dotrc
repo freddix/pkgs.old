@@ -1,0 +1,31 @@
+# .zshrc
+if [ -f /etc/profile ]; then
+    source /etc/profile
+fi
+
+# standard variables
+export HISTFILE=~/.zsh_history
+export HISTSIZE=50000
+export SAVEHIST=50000
+export TMP=~/tmp
+export TMPDIR="$TMP"
+
+# nice prompt
+PS1=$'%{\e[0;36m%}%#%{\e[0m%} '
+RPS1=$'%{\e[0;31m%}%~%{\e[0m%}'
+
+# Shell options
+TIMEFMT=$'real\t%*Es\nuser\t%*Us\nsys \t%*Ss\ncpu \t%P'
+
+# allow approximate
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+# tab completion for PID :D
+zstyle ':completion:*:*:kill:*' menu yes select
+zstyle ':completion:*:kill:*' force-list always
+
+# cd not select parent dir
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
