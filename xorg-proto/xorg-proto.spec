@@ -8,7 +8,7 @@
 %define		fontcacheproto_version		0.1.3
 %define		fontsproto_version		2.1.1
 %define		glproto_version			1.4.14
-%define		inputproto_version		2.0.2
+%define		inputproto_version		2.2
 %define		kbproto_version			1.0.5
 %define		printproto_version		1.0.4
 %define		randrproto_version		1.3.2
@@ -35,7 +35,7 @@
 Summary:	Xorg headers
 Name:		xorg-proto
 Version:	7.6
-Release:	4
+Release:	5
 License:	MIT
 Group:		X11/Development/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/proto/bigreqsproto-%{bigreqsproto_version}.tar.bz2
@@ -57,7 +57,7 @@ Source7:	http://xorg.freedesktop.org/releases/individual/proto/fontsproto-%{font
 Source8:	http://xorg.freedesktop.org/releases/individual/proto/glproto-%{glproto_version}.tar.bz2
 # Source8-md5:	f48257daf0017f7a7667e5bf48ca3578
 Source9:	http://xorg.freedesktop.org/releases/individual/proto/inputproto-%{inputproto_version}.tar.bz2
-# Source9-md5:	07d54ae098ed4e6dce472f6ef3de05ce
+# Source9-md5:	13c8aedaf98a92e282b7e456c0a5bed9
 Source10:	http://xorg.freedesktop.org/releases/individual/proto/kbproto-%{kbproto_version}.tar.bz2
 # Source10-md5:	e7edb59a3f54af15f749e8f3e314ee62
 Source11:	http://xorg.freedesktop.org/releases/individual/proto/printproto-%{printproto_version}.tar.bz2
