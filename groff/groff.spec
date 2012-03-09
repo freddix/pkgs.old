@@ -1,7 +1,7 @@
 Summary:	A document formatting system
 Name:		groff
 Version:	1.21
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		Applications/Publishing
@@ -14,8 +14,6 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	texinfo
 Requires:	mktemp
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_appdefsdir	/usr/share/X11/app-defaults
 
 %description
 Groff is a document formatting system. Groff takes standard text and
@@ -44,7 +42,8 @@ troff-to-ps print filter.
 %setup -q
 
 %build
-%configure
+%configure \
+	--without-x
 %{__make}
 
 %install
@@ -133,7 +132,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/chem
 %attr(755,root,root) %{_bindir}/gdiffmk
 %attr(755,root,root) %{_bindir}/grap2graph
-%attr(755,root,root) %{_bindir}/gxditview
 %attr(755,root,root) %{_bindir}/pdfroff
 %attr(755,root,root) %{_bindir}/preconv
 %attr(755,root,root) %{_bindir}/roff2dvi
@@ -142,7 +140,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/roff2ps
 %attr(755,root,root) %{_bindir}/roff2text
 %attr(755,root,root) %{_bindir}/roff2x
-%attr(755,root,root) %{_bindir}/xtotroff
 
 %dir %{_libdir}/groff
 %dir %{_libdir}/groff/groffer
@@ -175,7 +172,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/gsoelim.1*
 %{_mandir}/man1/gtbl.1*
 %{_mandir}/man1/gtroff.1*
-%{_mandir}/man1/gxditview.1*
 %{_mandir}/man1/hpftodit.1*
 %{_mandir}/man1/indxbib.1*
 %{_mandir}/man1/lkbib.1*
@@ -198,7 +194,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/tbl.1*
 %{_mandir}/man1/tfmtodit.1*
 %{_mandir}/man1/troff.1*
-%{_mandir}/man1/xtotroff.1*
 %{_mandir}/man5/*
 %{_mandir}/man7/[!m]*
 
