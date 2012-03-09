@@ -15,7 +15,7 @@
 Summary:	Very high level scripting language with X interface
 Name:		python
 Version:	%{py_ver}.7
-Release:	1
+Release:	2
 Epoch:		1
 License:	PSF
 Group:		Applications
