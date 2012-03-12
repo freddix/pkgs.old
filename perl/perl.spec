@@ -12,16 +12,12 @@
 %define		__perl			%{_builddir}/perl-%{version}/runperl
 %define		__perl_provides		%{__perl} %{SOURCE2}
 
-# extract module version from source
-%define		perl_modver()		%([ -f %{SOURCE3} ] && awk -vp=%1 '$1 == p{print $3}' %{SOURCE3} || echo ERROR)
-%define		perl_modversion()	%([ -f %{SOURCE3} ] && awk -vp=%1 '$1 == p{m=$1; gsub(/::/, "-", m); printf("perl-%s = %s\\n", m, $3)}END{if (!m) printf("# Error looking up [%s]\\n", p)}' %{SOURCE3} || echo ERROR)
-
 %bcond_without	gdbm	# build without the GDBM_File module
 
 Summary:	Practical Extraction and Report Language (Perl)
 Name:		perl
 Version:	5.14.2
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL v1+ or Artistic
 Group:		Development/Languages/Perl
@@ -40,6 +36,10 @@ Requires:	%{name}-doc-reference = %{epoch}:%{version}-%{release}
 Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
 Requires:	perldoc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# extract module version from source
+%define		perl_modver()		%([ -f %{SOURCE3} ] && awk -vp=%1 '$1 == p{print $3}' %{SOURCE3} || echo ERROR)
+%define		perl_modversion()	%([ -f %{SOURCE3} ] && awk -vp=%1 '$1 == p{m=$1; gsub(/::/, "-", m); printf("perl-%s = %s\\n", m, $3)}END{if (!m) printf("# Error looking up [%s]\\n", p)}' %{SOURCE3} || echo ERROR)
 
 %description
 Perl is an interpreted language optimized for scanning arbitrary text
@@ -210,24 +210,6 @@ pod2usage	- print usage messages from embedded pod docs in files
 podchecker	- check the syntax of POD format documentation files
 podselect	- print selected sections of pod documentation
 
-%package Encode
-Summary:	Encode - character encodings
-Group:		Libraries
-Requires:	%{name}-base = %{epoch}:%{version}-%{release}
-
-%description Encode
-The Encode module provides the interfaces between Perl's strings and
-the rest of the system.
-
-%package GDBM_File
-Summary:	GDBM_File - Perl5 access to the gdbm library
-Group:		Libraries
-Requires:	%{name}-base = 1:%{version}-%{release}
-
-%description GDBM_File
-GDBM_File is a module which allows Perl programs to make use of the
-facilities provided by the GNU gdbm library.
-
 %prep
 %setup -q
 %patch0 -p1
@@ -288,6 +270,8 @@ fi
 
 if [ ! -f installed.stamp ]; then
 	install -d $RPM_BUILD_ROOT%{_mandir}/{ja,ko,zh_CN,zh_TW}/man1
+
+	install -d $RPM_BUILD_ROOT%{perl_vendorlib}/Encode
 
 	## use symlinks instead of hardlinks
 	%{__ln_s} -f perl%{version} $RPM_BUILD_ROOT%{_bindir}/perl
@@ -563,30 +547,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{perl_archlib}/auto/Socket/*.so
 %{_mandir}/man3/Socket.*
 
-%files Encode
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/enc2xs
-%attr(755,root,root) %{_bindir}/piconv
-%{perl_privlib}/Encode
-%{perl_archlib}/Encode*
-%{perl_archlib}/encoding.pm
-%dir %{perl_archlib}/auto/Encode
-%dir %{perl_archlib}/auto/Encode/*/
-%attr(755,root,root) %{perl_archlib}/auto/Encode/*/*.so
-%{_mandir}/man1/enc2xs.*
-%{_mandir}/man1/piconv.*
-%{_mandir}/man3/Encode*
-%{_mandir}/man3/encoding.*
-
-%if %{with gdbm}
-%files GDBM_File
-%defattr(644,root,root,755)
-%{perl_archlib}/GDBM_File.*
-%dir %{perl_archlib}/auto/GDBM_File
-%attr(755,root,root) %{perl_archlib}/auto/GDBM_File/*.so
-%{_mandir}/man3/GDBM_File.*
-%endif
-
 %files devel
 %defattr(644,root,root,755)
 %doc doc-devel/*
@@ -752,6 +712,20 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_privlib}/DBM_Filter*
 %{_mandir}/man3/DBM_Filter*
 
+%attr(755,root,root) %{_bindir}/enc2xs
+%attr(755,root,root) %{_bindir}/piconv
+%{perl_privlib}/Encode
+%{perl_archlib}/Encode*
+%{perl_archlib}/encoding.pm
+%dir %{perl_archlib}/auto/Encode
+%dir %{perl_archlib}/auto/Encode/*/
+%dir %{perl_vendorlib}/Encode
+%attr(755,root,root) %{perl_archlib}/auto/Encode/*/*.so
+%{_mandir}/man1/enc2xs.*
+%{_mandir}/man1/piconv.*
+%{_mandir}/man3/Encode*
+%{_mandir}/man3/encoding.*
+
 %attr(755,root,root) %{perl_archlib}/auto/Filter/Util/Call/*.so
 %dir %{perl_archlib}/auto/Filter
 %dir %{perl_archlib}/auto/Filter/Util
@@ -759,6 +733,13 @@ rm -rf $RPM_BUILD_ROOT
 %{perl_archlib}/Filter
 %{perl_privlib}/Filter
 %{_mandir}/man3/Filter*
+
+%if %{with gdbm}
+%{perl_archlib}/GDBM_File.*
+%dir %{perl_archlib}/auto/GDBM_File
+%attr(755,root,root) %{perl_archlib}/auto/GDBM_File/*.so
+%{_mandir}/man3/GDBM_File.*
+%endif
 
 %attr(755,root,root) %{perl_archlib}/auto/Hash/*/*.so
 %attr(755,root,root) %{perl_archlib}/auto/Hash/*/*/*.so
@@ -989,14 +970,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/pod*
 %{_mandir}/man1/pod*
-
-%if 0
-
-
-/usr/bin/ptargrep
-/usr/share/man/man1/ptargrep.1.gz
-
-
-
-%endif
 
