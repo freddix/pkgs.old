@@ -1,19 +1,19 @@
 Summary:	Flexible partitioning tool
 Name:		parted
 Version:	2.4
-Release:	1
+Release:	3
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.gnu.org/gnu/parted/%{name}-%{version}.tar.xz
 # Source0-md5:	b6cc55fd6e04b37b1745bc2e10d1a888
 Source1:	%{name}.m4
 URL:		http://www.gnu.org/software/parted/
-BuildRequires:	autoconf >= 2.50
+BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	device-mapper-devel
 BuildRequires:	gettext-devel
+BuildRequires:	libblkid-devel
 BuildRequires:	libtool
-BuildRequires:	libuuid-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	texinfo
@@ -39,6 +39,9 @@ libparted library.
 Summary:	Files required to compile software that uses libparted
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	device-mapper-devel
+Requires:	pkgconfig(blkid)
+Requires:	pkgconfig(libcryptsetup)
 
 %description devel
 Files required to compile software that uses libparted.
@@ -54,8 +57,9 @@ Files required to compile software that uses libparted.
 %{__autoconf}
 %{__automake}
 %configure \
-	--with-readline \
-	--disable-static
+	--with-readline		\
+	--disable-static	\
+	--disable-silent-rules
 %{__make}
 
 %install
@@ -97,7 +101,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
 %{_aclocaldir}/*
 %{_includedir}/parted
 %{_pkgconfigdir}/libparted.pc
