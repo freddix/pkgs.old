@@ -1,7 +1,7 @@
 Summary:	A user-friendly file manager and visual shell
 Name:		mc
 Version:	4.8.1
-Release:	1
+Release:	2
 License:	GPL v3v
 Group:		Applications/Shells
 Source0:	http://www.midnight-commander.org/downloads/%{name}-%{version}.tar.bz2
@@ -22,7 +22,7 @@ BuildRequires:	sed >= 4.0
 BuildRequires:	slang-devel
 BuildRequires:	xorg-libX11-devel
 Requires:	file
-Requires:	xdg-utils
+Suggests:	xdg-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
