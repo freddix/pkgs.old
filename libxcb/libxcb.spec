@@ -1,11 +1,11 @@
 Summary:	X protocol C-language Binding library
 Name:		libxcb
-Version:	1.7
-Release:	2
+Version:	1.8.1
+Release:	1
 License:	MIT
 Group:		Libraries
 Source0:	http://xcb.freedesktop.org/dist/%{name}-%{version}.tar.gz
-# Source0-md5:	f715e53c9c1b25f856d14d6123663d96
+# Source0-md5:	a906566857eb9ba2772a7d40da4f04fe
 URL:		http://xcb.freedesktop.org/
 BuildRequires:	check-devel
 BuildRequires:	doxygen
@@ -15,7 +15,7 @@ BuildRequires:	pkg-config
 BuildRequires:	python
 BuildRequires:	xorg-libXau-devel
 BuildRequires:	xorg-libXdmcp-devel
-BuildRequires:	xorg-proto
+BuildRequires:	xorg-proto >= 7.6-6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -39,8 +39,10 @@ benefit from a native XCB port.
 Summary:	Header files for XCB library
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libpthread-stubs
-Requires:	xorg-proto
+Requires:	pkgconfig(pthread-stubs)
+Requires:	pkgconfig(xau)
+Requires:	pkgconfig(xdmcp)
+Requires:	pkgconfig(xproto)
 
 %description devel
 Header files for XCB library.
@@ -54,7 +56,8 @@ Header files for XCB library.
 %{__automake}
 %{__autoconf}
 %configure \
-	--disable-static
+	--disable-static	\
+	--disable-silent-rules
 %{__make}
 
 %install
@@ -83,8 +86,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libxcb-*.so
 %attr(755,root,root) %{_libdir}/libxcb.so
-%{_libdir}/libxcb-*.la
-%{_libdir}/libxcb.la
 %{_includedir}/xcb
 %{_pkgconfigdir}/xcb-*.pc
 %{_pkgconfigdir}/xcb.pc
