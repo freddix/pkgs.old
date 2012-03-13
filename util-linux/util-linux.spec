@@ -1,12 +1,11 @@
 Summary:	Collection of basic system utilities for Linux
 Name:		util-linux
-Version:	2.20.1
+Version:	2.21
 Release:	1
 License:	GPL
 Group:		Applications/System
-#Source0:	ftp://ftp.kernel.org/pub/linux/utils/util-linux/v2.20.1/%{name}-%{version}.tar.bz2
-Source0:        ftp://ftp.infradead.org/pub/util-linux/v2.20/%{name}-%{version}.tar.bz2
-# Source0-md5:	079b37517fd4e002a2e6e992e8b4e361
+Source0:	ftp://ftp.kernel.org/pub/linux/utils/util-linux/v2.21/%{name}-%{version}.tar.xz
+# Source0-md5:	208aa058f4117759d2939d1be7d662fc
 Source2:	%{name}-login.pamd
 URL:		http://userweb.kernel.org/~kzak/util-linux-ng/
 BuildRequires:	autoconf
@@ -266,7 +265,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc */README.* text-utils/LICENSE.pg NEWS
+%doc NEWS
 %attr(2755,root,tty) %{_bindir}/write
 %attr(755,root,root) %{_bindir}/cal
 %attr(755,root,root) %{_bindir}/chrt
@@ -293,6 +292,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/mcookie
 %attr(755,root,root) %{_bindir}/namei
 %attr(755,root,root) %{_bindir}/pg
+%attr(755,root,root) %{_bindir}/prlimit
 %attr(755,root,root) %{_bindir}/rename
 %attr(755,root,root) %{_bindir}/renice
 %attr(755,root,root) %{_bindir}/rev
@@ -320,6 +320,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /sbin/addpart
 %attr(755,root,root) /sbin/blkid
 %attr(755,root,root) /sbin/cfdisk
+%attr(755,root,root) /sbin/chcpu
 %attr(755,root,root) /sbin/clock
 %attr(755,root,root) /sbin/ctrlaltdel
 %attr(755,root,root) /sbin/delpart
@@ -336,6 +337,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /sbin/mkfs.minix
 %attr(755,root,root) /sbin/mkswap
 %attr(755,root,root) /sbin/partx
+%attr(755,root,root) /sbin/raw
 %attr(755,root,root) /sbin/sfdisk
 %attr(755,root,root) /sbin/swaplabel
 %attr(755,root,root) /sbin/switch_root
@@ -367,7 +369,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/more.1*
 %{_mandir}/man1/namei.1*
 %{_mandir}/man1/pg.1*
-%{_mandir}/man1/readprofile.1*
+%{_mandir}/man1/prlimit.1*
 %{_mandir}/man1/rename.1*
 %{_mandir}/man1/renice.1*
 %{_mandir}/man1/rev.1*
@@ -387,6 +389,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/addpart.8*
 %{_mandir}/man8/blkid.8*
 %{_mandir}/man8/cfdisk.8*
+%{_mandir}/man8/chcpu.8*
 %{_mandir}/man8/clock.8*
 %{_mandir}/man8/ctrlaltdel.8*
 %{_mandir}/man8/cytune.8*
@@ -408,6 +411,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/mkfs.minix.8*
 %{_mandir}/man8/mkswap.8*
 %{_mandir}/man8/partx.8*
+%{_mandir}/man8/raw.8.gz
+%{_mandir}/man8/readprofile.8*
 %{_mandir}/man8/rtcwake.8*
 %{_mandir}/man8/setarch.8*
 %{_mandir}/man8/sfdisk.8*
@@ -423,7 +428,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libblkid-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libblkid.so
-%{_libdir}/libblkid.la
 %{_includedir}/blkid
 %{_pkgconfigdir}/blkid.pc
 
@@ -439,7 +443,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libmount-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libmount.so
-%{_libdir}/libmount.la
 %{_includedir}/libmount
 %{_pkgconfigdir}/mount.pc
 
@@ -457,7 +460,6 @@ rm -rf $RPM_BUILD_ROOT
 %files -n libuuid-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libuuid.so
-%{_libdir}/libuuid.la
 %{_includedir}/uuid
 %{_pkgconfigdir}/uuid.pc
 %{_mandir}/man3/*uuid*
