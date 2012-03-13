@@ -1,4 +1,4 @@
-%define		rpm_macros_rev 1.601
+%define		rpm_macros_rev 1.602
 #
 Summary:	Freddix RPM build macros
 Name:		rpm-build-macros

@@ -78,15 +78,15 @@
 
 # if %{_topdir}/SPECS exists, it's old style structure
 %_specdir       %{expand:%%global _specdir %([ ! -d %{_topdir}/SPECS ] && echo %{_topdir}/%{name} || echo %{_topdir}/SPECS)}%_specdir
-%_sourcedir		%{expand:%%global _sourcedir %([ ! -d %{_topdir}/SOURCES ] && echo %{_specdir} || echo %{_topdir}/SOURCES)}%_sourcedir
+%_sourcedir	%{expand:%%global _sourcedir %([ ! -d %{_topdir}/SOURCES ] && echo %{_specdir} || echo %{_topdir}/SOURCES)}%_sourcedir
 
 # BUILD/RPMS/SRPMS are one same level by default as packages dir, if these exist
 # if they don't exist assume we are having custom topdir (which is not named as
 # "packages", i.e ~/rpm/kde/{kdelibs,BUILD/RPMS/SRPMS})
 # NOTE: readlink fails if some parent dir is not readable (/home/services/builder for example can't read /home/services), therfore the extra echo
-%_builddir		%{expand:%%global _builddir %(if [ -d %{_topdir}/BUILD ]; then echo %{_topdir}/BUILD; else readlink -m %{_topdir}/../BUILD || echo %{_topdir}/../BUILD; fi)}%_builddir
-%_rpmdir		%{expand:%%global _rpmdir %(if [ -d %{_topdir}/RPMS ]; then echo %{_topdir}/RPMS; else readlink -m %{_topdir}/../RPMS || echo readlink -m %{_topdir}/../RPMS; fi)}%_rpmdir
-%_srcrpmdir		%{expand:%%global _srcrpmdir %(if [ -d %{_topdir}/SRPMS ]; then echo %{_topdir}/SRPMS; else readlink -m %{_topdir}/../SRPMS || echo readlink -m %{_topdir}/../SRPMS; fi)}%_srcrpmdir
+%_builddir	%{expand:%%global _builddir %(if [ -d %{_topdir}/BUILD ]; then echo %{_topdir}/BUILD; else readlink -m %{_topdir}/../BUILD || echo %{_topdir}/../BUILD; fi)}%_builddir
+%_rpmdir	%{expand:%%global _rpmdir %(if [ -d %{_topdir}/RPMS ]; then echo %{_topdir}/RPMS; else readlink -m %{_topdir}/../RPMS || echo readlink -m %{_topdir}/../RPMS; fi)}%_rpmdir
+%_srcrpmdir	%{expand:%%global _srcrpmdir %(if [ -d %{_topdir}/SRPMS ]; then echo %{_topdir}/SRPMS; else readlink -m %{_topdir}/../SRPMS || echo readlink -m %{_topdir}/../SRPMS; fi)}%_srcrpmdir
 
 #	The number of cvs changelog entries kept when building package.
 %_buildchangelogtruncate 20
@@ -451,7 +451,7 @@ CXXFLAGS="%{rpmcxxflags}" \
 %__kernel_rel	%{expand:%%global __kernel_rel %(Z=$(LC_ALL=C rpm -qf %{_kernelsrcdir}/include/linux/fs.h 2>/dev/null --qf "%{R}" | grep -v "is not"); echo ${Z:-ERROR})}%__kernel_rel
 %__kernel_rpmvr	%{expand:%%global __kernel_rpmvr %(Z=$(LC_ALL=C rpm -qf %{_kernelsrcdir}/include/linux/fs.h 2>/dev/null --qf "%{V}-%{R}" | grep -v "is not"); echo ${Z:-ERROR})}%__kernel_rpmvr
 %_kernel_ver	%{expand:%%global _kernel_ver %{__kernel_ver}%{?with_dist_kernel:%(echo %{__kernel_ver} | grep -q -e - || echo -%{__kernel_rel})}}%_kernel_ver
-%_kernel_ver_str %{expand:%%global _kernel_ver_str %(echo %{!?_without_dist_kernel:%{__kernel_rpmvr}}%{?_without_dist_kernel:%{__kernel_ver}} | sed -e 's/-/_/g')}%_kernel_ver_str
+%_kernel_ver_str	%{expand:%%global _kernel_ver_str %(echo %{!?_without_dist_kernel:%{__kernel_rpmvr}}%{?_without_dist_kernel:%{__kernel_ver}} | sed -e 's/-/_/g')}%_kernel_ver_str
 
 # `uname -r` to be used in @release field
 %_kernel_vermagic	%{expand:%%global _kernel_vermagic %(echo %{_kernel_ver} | sed -e 's/-/_/g')}%_kernel_vermagic
@@ -1027,18 +1027,6 @@ else \
 	fi \
 fi; \
 }
-
-# XMMS specific macros
-%xmms_prefix			%{expand:%%global xmms_prefix %(xmms-config --prefix 2>/dev/null || echo ERROR)}%xmms_prefix
-%xmms_exec_prefix		%{expand:%%global xmms_exec_prefix %(xmms-config --exec-prefix 2>/dev/null || echo ERROR)}%xmms_exec_prefix
-%xmms_version			%{expand:%%global xmms_version %(xmms-config --version 2>/dev/null || echo ERROR)}%xmms_version
-%xmms_datadir			%{expand:%%global xmms_datadir %(xmms-config --data-dir 2>/dev/null || echo ERROR)}%xmms_datadir
-%xmms_plugindir			%{expand:%%global xmms_plugindir %(xmms-config --plugin-dir 2>/dev/null || echo ERROR)}%xmms_plugindir
-%xmms_visualization_plugindir	%{expand:%%global xmms_visualization_plugindir %(xmms-config --visualization-plugin-dir 2>/dev/null || echo ERROR)}%xmms_visualization_plugindir
-%xmms_input_plugindir		%{expand:%%global xmms_input_plugindir %(xmms-config --input-plugin-dir 2>/dev/null || echo ERROR)}%xmms_input_plugindir
-%xmms_output_plugindir		%{expand:%%global xmms_output_plugindir %(xmms-config --output-plugin-dir 2>/dev/null || echo ERROR)}%xmms_output_plugindir
-%xmms_effect_plugindir		%{expand:%%global xmms_effect_plugindir %(xmms-config --effect-plugin-dir 2>/dev/null || echo ERROR)}%xmms_effect_plugindir
-%xmms_general_plugindir		%{expand:%%global xmms_general_plugindir %(xmms-config --general-plugin-dir 2>/dev/null || echo ERROR)}%xmms_general_plugindir
 
 %_target_base_arch	%{expand:%%global _target_base_arch %(echo %{_target_cpu} | sed 's/i.86/i386/;s/athlon/i386/;s/pentium./i386/;s/amd64/x86_64/;s/ia32e/x86_64/')}%_target_base_arch
 
@@ -1954,12 +1942,12 @@ else: \
 # BuildRequires:	rpmbuild(macros) >= 1.647
 # Requires:	systemd-units >= 38
 
-%systemd_reload /bin/systemd_booted && SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog /bin/systemctl --quiet daemon-reload || :
+%systemd_reload SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog /bin/systemctl --quiet daemon-reload || :
 
 %systemd_service_enable() \
 	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
 	/bin/systemctl --quiet enable %{*} || : \
-	/bin/systemd_booted && echo 'Run "/bin/systemctl start %{*}" to start %{*}.' || : \
+	echo 'Run "/bin/systemctl start %{*}" to start %{*}.' || : \
 %{nil}
 
 %systemd_service_disable() \
@@ -1969,61 +1957,46 @@ else: \
 
 %systemd_service() \
 	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-	/bin/systemd_booted && /bin/systemctl --quiet %{*} || : \
+	/bin/systemctl --quiet %{*} || : \
 %{nil}
 
 %systemd_service_start() \
 	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-	/bin/systemd_booted && /bin/systemctl --quiet start %{*} || : \
+	/bin/systemctl --quiet start %{*} || : \
 %{nil}
 
 %systemd_service_stop() \
 	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-	/bin/systemd_booted && /bin/systemctl --quiet stop %{*} || : \
+	/bin/systemctl --quiet stop %{*} || : \
 %{nil}
 
 %systemd_service_restart() \
 	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-	/bin/systemd_booted && /bin/systemctl --quiet try-restart %{*} || : \
+	/bin/systemctl --quiet try-restart %{*} || : \
 %{nil}
 
 %systemd_service_reload() \
 	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-	/bin/systemd_booted && /bin/systemctl --quiet reload %{*} || : \
-%{nil}
-
-%systemd_trigger() \
-want_enable_service() { \
-	[ -f /etc/sysconfig/rpm ] && . /etc/sysconfig/rpm \
-	[ ${RPM_ENABLE_SYSTEMD_SERVICE:-yes} = no ] && return 1 \
-	/sbin/chkconfig --list ${1%.service} 2>/dev/null | grep -qsv "[0-6]:on" && return 1 \
-	return 0 \
-}\
-	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-	for s in %{*}; do \
-		if want_enable_service $s; then \
-			/bin/systemctl --quiet enable $s || : \
-		fi \
-	done \
+	/bin/systemctl --quiet reload %{*} || : \
 %{nil}
 
 %systemd_post() \
 	export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-	/bin/systemd_booted && /bin/systemctl --quiet daemon-reload || : \
+	/bin/systemctl --quiet daemon-reload || : \
 	if [ $1 -eq 1 ]; then \
 		/bin/systemctl --quiet enable %{*} || : \
-		/bin/systemd_booted && echo 'Run "/bin/systemctl start %{*}" to start %{*}.' || : \
+		echo 'Run "/bin/systemctl start %{*}" to start %{*}.' || : \
 	elif [ -z "$NORESTART" ]; then \
-		/bin/systemd_booted && /bin/systemctl --quiet try-restart %{*} || : \
+		/bin/systemctl --quiet try-restart %{*} || : \
 	else \
-		/bin/systemd_booted && echo 'Run "/bin/systemctl restart %{*}" to restart %{*}.' || : \
+		echo 'Run "/bin/systemctl restart %{*}" to restart %{*}.' || : \
 	fi \
 %{nil}
 
 %systemd_preun() \
 	if [ $1 -eq 0 ]; then \
 		export SYSTEMD_LOG_LEVEL=warning SYSTEMD_LOG_TARGET=syslog \
-		/bin/systemd_booted && /bin/systemctl --quiet stop %{*} || : \
+		/bin/systemctl --quiet stop %{*} || : \
 		/bin/systemctl --quiet disable %{*} || : \
 	fi \
 %{nil}
