@@ -474,6 +474,6 @@
 +msgid " killed.\n"
 +msgstr " zabito.\n"
 +
- #: src/su.c:382
+ #: src/su.c:373
  msgid ""
  "Change the effective user id and group id to that of USER.\n"

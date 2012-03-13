@@ -1,15 +1,14 @@
 Summary:	GNU Core-utils - basic command line utilities
 Name:		coreutils
-Version:	8.14
+Version:	8.15
 Release:	1
 License:	GPL v3+
 Group:		Applications/System
 Source0:	http://ftp.gnu.org/gnu/coreutils/%{name}-%{version}.tar.xz
-# Source0-md5:	bcb135ce553493a45aba01b39eb3920a
+# Source0-md5:	094909fafa86110140b32e4948941545
 Source2:	DIR_COLORS
 Source3:	fileutils.sh
 Source10:	su.pamd
-Source11:	su-l.pamd
 Patch0:		%{name}-pam.patch
 Patch1:		%{name}-getgid.patch
 Patch2:		%{name}-su-paths.patch
@@ -93,7 +92,6 @@ install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}
 install %{SOURCE3} $RPM_BUILD_ROOT/etc/shrc.d
 
 install %{SOURCE10} $RPM_BUILD_ROOT/etc/pam.d/su
-install %{SOURCE11} $RPM_BUILD_ROOT/etc/pam.d/su-l
 
 # unwanted
 rm -f $RPM_BUILD_ROOT%{_mandir}/*/man1/{hostname,kill,uptime}.1
@@ -124,7 +122,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/coreutils/libstdbuf.so
 
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/su
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/pam.d/su-l
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/DIR_COLORS
 %config(noreplace) /etc/shrc.d/fileutils.*sh
 
