@@ -1,3 +1,5 @@
+%bcond_without	tests	# skip tests
+
 # tests which will not work on 64-bit platforms
 %define		no64bit_tests	test_audioop test_rgbimg test_imageop
 # tests which may fail because of builder environment limitations (no /proc or /dev/pts)
@@ -11,18 +13,17 @@
 %define		py_prefix	%{_prefix}
 %define		py_sitedir	%{py_libdir}/site-packages
 %define		py_ver		2.6
+%define		pre		rc1
 
 Summary:	Very high level scripting language with X interface
 Name:		python
-Version:	%{py_ver}.7
-Release:	2
+Version:	%{py_ver}.8
+Release:	1.%{pre}.1
 Epoch:		1
 License:	PSF
 Group:		Applications
-Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}.tar.bz2
-# Source0-md5:	d40ef58ed88438a870bbeb0ac5d4217b
-Source1:	http://www.python.org/ftp/python/doc/%{version}/%{name}-%{version}-docs-html.tar.bz2
-# Source1-md5:	a2fc12049840d5c66262c546cdf241fd
+Source0:	http://www.python.org/ftp/python/%{version}/Python-%{version}%{pre}.tar.bz2
+# Source0-md5:	df6ccdac7da3b7c7c79124b92110277e
 Patch0:		%{name}-pythonpath.patch
 Patch1:		%{name}-no_ndbm.patch
 Patch2:		%{name}-ac_fixes.patch
@@ -122,24 +123,8 @@ Requires:	%{name}-modules = %{epoch}:%{version}-%{release}
 %description devel-tools
 Python development tools such as profilers and debugger.
 
-%package doc
-Summary:	Documentation on Python
-Group:		Documentation
-Obsoletes:	python-docs
-
-%description doc
-This package contains documentation on the Python language and
-interpretor as a mix of plain ASCII files and LaTeX sources.
-
-%package doc-info
-Summary:	Documentation on Python in texinfo format
-Group:		Documentation
-
-%description doc-info
-Documentation on Python in texinfo format.
-
 %prep
-%setup -qn Python-%{version} -a1
+%setup -qn Python-%{version}%{pre}
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
@@ -147,12 +132,14 @@ Documentation on Python in texinfo format.
 %patch4 -p1
 
 %build
-sed -i -e 's#-ltermcap#-ltinfo#g' configure*
 %{__autoconf}
-CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
+CPPFLAGS="-I/usr/include/ncursesw %{rpmcppflags}"
+export CPPFLAGS
 %configure \
+	--enable-ipv6				\
 	--enable-shared				\
 	--enable-unicode=ucs4			\
+	--with-cxx-main="%{__cxx}"		\
 	--with-system-ffi			\
 	--with-threads				\
 	BLDSHARED='$(CC) $(CFLAGS) -shared'	\
@@ -160,8 +147,7 @@ CPPFLAGS="-I/usr/include/ncurses"; export CPPFLAGS
 	LINKCC='$(PURIFY) $(CXX)'		\
 	LDFLAGS="%{rpmcflags} %{rpmldflags}"
 
-%{__make} \
-	OPT="%{rpmcflags}" 2>&1 | awk '
+%{__make} 2>&1 | awk '
 BEGIN { fail = 0; logmsg = ""; }
 {
 		if ($0 ~ /\*\*\* WARNING:/) {
@@ -172,21 +158,11 @@ BEGIN { fail = 0; logmsg = ""; }
 }
 END { if (fail) { print "\nPROBLEMS FOUND:"; print logmsg; exit(1); } }'
 
-LC_ALL=C
-export LC_ALL
-
-%check
-%{__make} -j1 test \
-        TESTOPTS="%{test_flags} %{test_list}" \
-	TESTPYTHON="LD_LIBRARY_PATH=`pwd` PYTHONHOME=`pwd` PYTHONPATH=`pwd`/Lib:`pwd`/Lib/lib-tk:`pwd`/build/lib.linux-`uname -m`-%{py_ver} ./python -tt"
-
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}} \
-	$RPM_BUILD_ROOT{%{py_sitedir},%{_mandir}/man1} \
-	$RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version} \
-	$RPM_BUILD_ROOT%{_infodir} \
-	$RPM_BUILD_ROOT/etc/shrc.d
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}} 	\
+	$RPM_BUILD_ROOT{%{py_sitedir},%{_mandir}/man1}	\
+	$RPM_BUILD_ROOT%{_infodir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -197,30 +173,6 @@ ln -sf libpython%{py_ver}.so.1.0 $RPM_BUILD_ROOT%{_libdir}/libpython.so
 ln -sf libpython%{py_ver}.so.1.0 $RPM_BUILD_ROOT%{_libdir}/libpython%{py_ver}.so
 
 rm -f $RPM_BUILD_ROOT%{_bindir}/python%{py_ver}
-
-#
-# create several useful aliases, such as timeit.py, profile.py, pdb.py, smtpd.py
-#
-
-# for python devel tools
-for script in timeit profile pdb pstats; do
-    echo alias $script.py=\"python -m ${script}\"
-done > $RPM_BUILD_ROOT/etc/shrc.d/python-devel.sh
-
-sed 's/=/ /' \
-	< $RPM_BUILD_ROOT/etc/shrc.d/python-devel.sh \
-	> $RPM_BUILD_ROOT/etc/shrc.d/python-devel.csh
-
-# for python modules
-for script in smtpd webbrowser; do
-    echo alias $script.py=\"python -m ${script}\"
-done > $RPM_BUILD_ROOT/etc/shrc.d/python-modules.sh
-
-sed 's/=/ /' \
-	< $RPM_BUILD_ROOT/etc/shrc.d/python-modules.sh \
-	> $RPM_BUILD_ROOT/etc/shrc.d/python-modules.csh
-
-sed -i 's|/usr/bin/python2.6|/usr/bin/python|' $RPM_BUILD_ROOT%{_bindir}/{2to3,pydoc}
 
 # just to cut the noise, as they are not packaged (now)
 # first tests
@@ -246,17 +198,18 @@ find $RPM_BUILD_ROOT%{py_scriptdir} -name \*.bat -exec rm {} \;
 find $RPM_BUILD_ROOT%{py_scriptdir} -name \*.txt -exec rm {} \;
 find $RPM_BUILD_ROOT%{py_scriptdir} -name README\* -exec rm {} \;
 
+%if %{with tests}
+%check
+%{__make} -j1 test \
+        TESTOPTS="%{test_flags} %{test_list}" \
+	TESTPYTHON="LD_LIBRARY_PATH=`pwd` PYTHONHOME=`pwd` PYTHONPATH=`pwd`/Lib:`pwd`/Lib/lib-tk:`pwd`/build/lib.linux-`uname -m`-%{py_ver} ./python -tt"
+%endif
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
-
-%post	doc-info -p /sbin/postshell
--/usr/sbin/fix-info-dir -c %{_infodir}
-
-%postun	doc-info -p /sbin/postshell
--/usr/sbin/fix-info-dir -c %{_infodir}
 
 %files
 %defattr(644,root,root,755)
@@ -265,7 +218,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files modules
 %defattr(644,root,root,755)
-/etc/shrc.d/python-modules*
 %exclude %{py_scriptdir}/UserDict.py[co]
 %exclude %{py_scriptdir}/codecs.py[co]
 %exclude %{py_scriptdir}/copy_reg.py[co]
@@ -487,7 +439,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel-tools
 %defattr(644,root,root,755)
 %doc Lib/pdb.doc
-/etc/shrc.d/python-devel*
 %attr(755,root,root) %{_bindir}/2to3
 %attr(755,root,root) %{py_dyndir}/_hotshot.so
 
@@ -505,8 +456,4 @@ rm -rf $RPM_BUILD_ROOT
 %{py_scriptdir}/profile.py[co]
 %{py_scriptdir}/pstats.py[co]
 %{py_scriptdir}/timeit.py[co]
-
-%files doc
-%defattr(644,root,root,755)
-%doc python-%{version}-docs-html/*
 
