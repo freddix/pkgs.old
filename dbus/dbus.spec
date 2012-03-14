@@ -1,12 +1,13 @@
 Summary:	D-BUS message bus
 Name:		dbus
-Version:	1.4.16
-Release:	1
+Version:	1.4.18
+Release:	2
 License:	AFL v2.1 or GPL v2
 Group:		Libraries
 Source0:	http://dbus.freedesktop.org/releases/dbus/%{name}-%{version}.tar.gz
-# Source0-md5:	44a2a10678e7e50460879c3eb4453a65
+# Source0-md5:	5944f93b194ce93d4c88142fc0e6b94b
 Source1:	%{name}-xinitrc.sh
+Source2:	%{name}-tmpfiles.conf
 Patch0:		%{name}-nolibs.patch
 URL:		http://www.freedesktop.org/Software/dbus
 BuildRequires:	autoconf
@@ -84,14 +85,14 @@ Header files for D-BUS.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_datadir}/dbus-1/{interfaces,services}
-install -d $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d
-install -d $RPM_BUILD_ROOT/etc/profile.d
+install -d $RPM_BUILD_ROOT%{_datadir}/dbus-1/{interfaces,services} \
+	$RPM_BUILD_ROOT/etc/{X11/xinit/xinitrc.d,profile.d,tmpfiles.d}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/X11/xinit/xinitrc.d/00-start-message-bus.sh
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/tmpfiles.d/dbus.conf
 
 rm -rf $RPM_BUILD_ROOT%{_docdir}/dbus/api
 
@@ -103,21 +104,18 @@ rm -rf $RPM_BUILD_ROOT
 %useradd -u 122 -d /usr/share/empty -s /bin/false -c "System message bus" -g messagebus messagebus
 
 %post
-if [ "$1" = "1" ]; then
-	/bin/systemctl enable dbus.service >/dev/null 2>&1 || :
-fi
+export NORESTART="yes"
+%systemd_post messagebus.service
 
 %preun
-if [ "$1" = "0" ]; then
-	/bin/systemctl --no-reload disable dbus.service >/dev/null 2>&1 || :
-	/bin/systemctl stop dbus.service >/dev/null 2>&1 || :
-fi
+%systemd_preun messagebus.service
 
 %postun
 if [ "$1" = "0" ]; then
 	%userremove messagebus
 	%groupremove messagebus
 fi
+%systemd_reload
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
@@ -131,6 +129,7 @@ fi
 %dir /var/lib/dbus
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/dbus-1/*.conf
+/etc/tmpfiles.d/dbus.conf
 
 %attr(4750,root,messagebus) %{_libexecdir}/dbus-daemon-launch-helper
 %attr(755,root,root) %{_bindir}/dbus-cleanup-sockets
@@ -176,6 +175,5 @@ fi
 %attr(755,root,root) %{_libdir}/libdbus-1.so
 %{_includedir}/dbus*
 %{_libdir}/dbus-*/include
-%{_libdir}/libdbus-1.la
 %{_pkgconfigdir}/dbus-1.pc
 
