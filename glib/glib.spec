@@ -1,12 +1,12 @@
 Summary:	Cross-platform software utility library
 Name:		glib
-Version:	2.28.8
+Version:	2.30.3
 Release:	1
 Epoch:		1
 License:	LGPL
 Group:		Libraries
-Source0:	http://download.gnome.org/sources/glib/2.28/%{name}-%{version}.tar.xz
-# Source0-md5:	710e8390ae0600feebc9143c23e9da52
+Source0:	http://download.gnome.org/sources/glib/2.30/%{name}-%{version}.tar.xz
+# Source0-md5:	0f9fa329c6c1012d0fd861ad3d8a4520
 Patch0:		%{name}-makefile.patch
 URL:		http://www.gtk.org/
 BuildRequires:	autoconf
@@ -14,7 +14,6 @@ BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-style-xsl
 BuildRequires:	gettext-devel
-BuildRequires:	gtk-doc
 BuildRequires:	libtool
 BuildRequires:	pcre-devel >= 8.11
 BuildRequires:	perl-base
@@ -114,7 +113,6 @@ Glib GIO API documetation.
 sed -i -e 's|])dnl|])|g' acglib.m4
 
 %build
-%{__gtkdocize}
 %{__libtoolize}
 %{__aclocal} -I m4macros -I glib/libcharset
 %{__autoconf}
@@ -143,6 +141,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,be@latin,en@shaw}
 %find_lang glib20 --with-gnome
 
 > $RPM_BUILD_ROOT%{_libdir}/gio/modules/giomodule.cache
+> $RPM_BUILD_ROOT%{_datadir}/glib-2.0/schemas/gschemas.compiled
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -185,10 +184,6 @@ umask 022
 %attr(755,root,root) %{_libdir}/libgmodule-2.0.so
 %attr(755,root,root) %{_libdir}/libgobject-2.0.so
 %attr(755,root,root) %{_libdir}/libgthread-2.0.so
-%{_libdir}/libglib-2.0.la
-%{_libdir}/libgmodule-2.0.la
-%{_libdir}/libgobject-2.0.la
-%{_libdir}/libgthread-2.0.la
 
 %{_libdir}/glib-2.0
 %dir %{_datadir}/glib-2.0/gettext
@@ -202,6 +197,12 @@ umask 022
 %{_pkgconfigdir}/gmodule-no-export-2.0.pc
 %{_pkgconfigdir}/gobject-2.0.pc
 %{_pkgconfigdir}/gthread-2.0.pc
+
+%dir %{_libdir}/gdbus-2.0
+%dir %{_libdir}/gdbus-2.0/codegen
+%attr(755,root,root) %{_bindir}/gdbus-codegen
+%{_libdir}/gdbus-2.0/codegen/*.py[co]
+%{_mandir}/man1/gdbus-codegen.1*
 
 %{_includedir}/*
 %{_aclocaldir}/*
@@ -244,13 +245,13 @@ umask 022
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/glib-compile-schemas
 %attr(755,root,root) %{_bindir}/gsettings
+%ghost %{_datadir}/glib-2.0/schemas/gschemas.compiled
 %{_mandir}/man1/glib-compile-schemas.1*
 %{_mandir}/man1/gsettings.1*
 
 %files gio-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgio-2.0.so
-%{_libdir}/libgio-2.0.la
 %{_pkgconfigdir}/gio-2.0.pc
 %{_pkgconfigdir}/gio-unix-2.0.pc
 
