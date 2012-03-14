@@ -1,7 +1,7 @@
 Summary:	GObject introspection library
 Name:		gobject-introspection
 Version:	0.10.8
-Release:	1
+Release:	2
 License:	LGPL v2+ (giscanner) and GPL v2+ (tools)
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/0.10/%{name}-%{version}.tar.bz2
@@ -64,6 +64,7 @@ GI API documentation.
 %configure \
 	--disable-silent-rules	\
 	--disable-static	\
+	--disable-tests		\
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
 
@@ -116,7 +117,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/gobject-introspection-1.0
 
 %{_datadir}/aclocal/introspection.m4
-%{_libdir}/libgirepository-*.la
 %{_pkgconfigdir}/*.pc
 
 %{_libdir}/gobject-introspection/giscanner/*.py[co]
