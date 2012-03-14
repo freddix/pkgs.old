@@ -1,7 +1,7 @@
 Summary:	GLib-based library for using D-BUS
 Name:		dbus-glib
 Version:	0.98
-Release:	1
+Release:	2
 License:	AFL v2.1 or GPL v2
 Group:		Libraries
 Source0:	http://dbus.freedesktop.org/releases/dbus-glib/%{name}-%{version}.tar.gz
@@ -12,8 +12,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	dbus-devel
 BuildRequires:	expat-devel
-BuildRequires:	glib-devel
-BuildRequires:	gtk-doc
+BuildRequires:	glib-gio-devel
 BuildRequires:	libtool
 BuildRequires:	pkg-config
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -68,14 +67,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libdbus-glib-1.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libdbus-glib-1.so.?
+%attr(755,root,root) %{_libdir}/libdbus-glib-1.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/dbus-binding-tool
 %attr(755,root,root) %{_libdir}/libdbus-glib-1.so
-%{_libdir}/libdbus-glib-1.la
 %{_includedir}/dbus-1.0/dbus/dbus-glib*.h
 %{_includedir}/dbus-1.0/dbus/dbus-gtype-specialized.h
 %{_includedir}/dbus-1.0/dbus/dbus-gvalue-parse-variant.h
