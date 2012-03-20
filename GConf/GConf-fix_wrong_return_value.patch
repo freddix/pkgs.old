@@ -1,0 +1,16 @@
+Description: fix wrong return value
+Bug: http://bugzilla.gnome.org/show_bug.cgi?id=582865
+Bug-Debian: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=532119
+
+diff -Nur -x '*.orig' -x '*~' gconf-2.27.0/gconf/gconf-client.c gconf-2.27.0.new/gconf/gconf-client.c
+--- gconf-2.27.0/gconf/gconf-client.c	2009-07-21 01:00:28.000000000 +0100
++++ gconf-2.27.0.new/gconf/gconf-client.c	2009-08-27 15:09:14.708846399 +0100
+@@ -2025,7 +2025,7 @@
+     {
+       g_free (dir);
+       trace ("Negative cache hit on %s", key);
+-      return TRUE;
++      return FALSE;
+     }
+ 
+     g_free (dir);
