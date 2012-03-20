@@ -1,0 +1,96 @@
+diff -Nru net-tools-1.50/man/en_US/dnsdomainname.1 net-tools-1.50.new/man/en_US/dnsdomainname.1
+--- net-tools-1.50/man/en_US/dnsdomainname.1	Wed Jan 27 16:15:03 1999
++++ net-tools-1.50.new/man/en_US/dnsdomainname.1	Wed Jan 27 21:57:10 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/en_US/domainname.1 net-tools-1.50.new/man/en_US/domainname.1
+--- net-tools-1.50/man/en_US/domainname.1	Wed Jan 27 16:15:03 1999
++++ net-tools-1.50.new/man/en_US/domainname.1	Wed Jan 27 21:57:23 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/en_US/nisdomainname.1 net-tools-1.50.new/man/en_US/nisdomainname.1
+--- net-tools-1.50/man/en_US/nisdomainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/en_US/nisdomainname.1	Wed Jan 27 21:57:35 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/en_US/ypdomainname.1 net-tools-1.50.new/man/en_US/ypdomainname.1
+--- net-tools-1.50/man/en_US/ypdomainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/en_US/ypdomainname.1	Wed Jan 27 21:57:48 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/fr_FR/dnsdomainname.1 net-tools-1.50.new/man/fr_FR/dnsdomainname.1
+--- net-tools-1.50/man/fr_FR/dnsdomainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/fr_FR/dnsdomainname.1	Wed Jan 27 22:00:40 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/fr_FR/domainname.1 net-tools-1.50.new/man/fr_FR/domainname.1
+--- net-tools-1.50/man/fr_FR/domainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/fr_FR/domainname.1	Wed Jan 27 22:00:47 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/fr_FR/nisdomainname.1 net-tools-1.50.new/man/fr_FR/nisdomainname.1
+--- net-tools-1.50/man/fr_FR/nisdomainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/fr_FR/nisdomainname.1	Wed Jan 27 22:00:37 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/fr_FR/ypdomainname.1 net-tools-1.50.new/man/fr_FR/ypdomainname.1
+--- net-tools-1.50/man/fr_FR/ypdomainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/fr_FR/ypdomainname.1	Wed Jan 27 22:00:43 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/pt_BR/dnsdomainname.1 net-tools-1.50.new/man/pt_BR/dnsdomainname.1
+--- net-tools-1.50/man/pt_BR/dnsdomainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/pt_BR/dnsdomainname.1	Wed Jan 27 21:58:12 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/pt_BR/domainname.1 net-tools-1.50.new/man/pt_BR/domainname.1
+--- net-tools-1.50/man/pt_BR/domainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/pt_BR/domainname.1	Wed Jan 27 21:58:20 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/pt_BR/nisdomainname.1 net-tools-1.50.new/man/pt_BR/nisdomainname.1
+--- net-tools-1.50/man/pt_BR/nisdomainname.1	Wed Jan 27 16:15:04 1999
++++ net-tools-1.50.new/man/pt_BR/nisdomainname.1	Wed Jan 27 21:58:08 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -Nru net-tools-1.50/man/pt_BR/ypdomainname.1 net-tools-1.50.new/man/pt_BR/ypdomainname.1
+--- net-tools-1.50/man/pt_BR/ypdomainname.1	Wed Jan 27 16:15:05 1999
++++ net-tools-1.50.new/man/pt_BR/ypdomainname.1	Wed Jan 27 21:58:16 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -rnu net-tools-1.52/man/de_DE/dnsdomainname.1 net-tools-1.52.new/man/de_DE/dnsdomainname.1
+--- net-tools-1.52/man/de_DE/dnsdomainname.1	Wed Apr 21 19:48:55 1999
++++ net-tools-1.52.new/man/de_DE/dnsdomainname.1	Mon Apr 26 20:41:13 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -rnu net-tools-1.52/man/de_DE/domainname.1 net-tools-1.52.new/man/de_DE/domainname.1
+--- net-tools-1.52/man/de_DE/domainname.1	Wed Apr 21 19:48:55 1999
++++ net-tools-1.52.new/man/de_DE/domainname.1	Mon Apr 26 20:41:30 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -rnu net-tools-1.52/man/de_DE/nisdomainname.1 net-tools-1.52.new/man/de_DE/nisdomainname.1
+--- net-tools-1.52/man/de_DE/nisdomainname.1	Wed Apr 21 19:48:55 1999
++++ net-tools-1.52.new/man/de_DE/nisdomainname.1	Mon Apr 26 20:41:43 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1
+diff -rnu net-tools-1.52/man/de_DE/ypdomainname.1 net-tools-1.52.new/man/de_DE/ypdomainname.1
+--- net-tools-1.52/man/de_DE/ypdomainname.1	Wed Apr 21 19:48:55 1999
++++ net-tools-1.52.new/man/de_DE/ypdomainname.1	Mon Apr 26 20:41:54 1999
+@@ -1 +1 @@
+-.so man1/hostname.1
++.so hostname.1

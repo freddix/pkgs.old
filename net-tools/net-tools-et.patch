@@ -1,0 +1,21 @@
+--- net-tools-1.60/po/Makefile~	Sun May 19 23:20:20 2002
++++ net-tools-1.60/po/Makefile	Sun May 19 23:20:20 2002
+@@ -9,7 +9,7 @@
+ 
+ -include ../config.make
+ ifeq ($(I18N),1)
+-CATALOGS = de.mo fr.mo pt_BR.mo et_EE.mo cs.mo
++CATALOGS = de.mo fr.mo pt_BR.mo et.mo cs.mo
+ else
+ CATALOGS =
+ endif
+--- net-tools-1.60/po/et_EE.po~	Mon Sep  8 15:55:26 2003
++++ net-tools-1.60/po/et_EE.po	Mon Sep  8 15:55:26 2003
+@@ -2,7 +2,6 @@
+ # Copyright (C) 1999 Free Software Foundation, Inc.
+ # Meelis Roos <Meelis.Roos@mail.ee>, 1999.
+ #
+-#, fuzzy
+ msgid ""
+ msgstr ""
+ "Project-Id-Version: net-tools 1.58\n"

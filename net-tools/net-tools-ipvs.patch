@@ -1,0 +1,13 @@
+--- net-tools-1.54/lib/masq_info.c.orig	Sun Jun 13 07:04:49 1999
++++ net-tools-1.54/lib/masq_info.c	Tue Jun 27 10:37:09 2000
+@@ -118,7 +118,9 @@
+ 	ms->src.sin_family = AF_INET;
+ 	ms->dst.sin_family = AF_INET;
+ 
+-	if (strcmp("TCP", buf) == 0)
++	if (strcmp("IP", buf) == 0)
++	    ms->proto = "ip";
++	else if (strcmp("TCP", buf) == 0)
+ 	    ms->proto = "tcp";
+ 	else if (strcmp("UDP", buf) == 0)
+ 	    ms->proto = "udp";
