@@ -1,11 +1,11 @@
 Summary:	Font utilities
 Name:		xorg-font-util
-Version:	1.2.0
-Release:	1
+Version:	1.3.0
+Release:	2
 License:	BSD
 Group:		X11/Development/Tools
 Source0:	http://xorg.freedesktop.org/releases/individual/font/font-util-%{version}.tar.bz2
-# Source0-md5:	1bdd8ed070e02b2165d7b0f0ed93280b
+# Source0-md5:	ddfc8a89d597651408369d940d03d06b
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -24,6 +24,7 @@ Font utilities.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules	\
 	--with-mapdir=%{_fontsdir}/util
 %{__make}
 
