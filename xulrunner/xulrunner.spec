@@ -1,12 +1,12 @@
 Summary:	Mozilla Runtime Environment for XUL+XPCOM applications
 Name:		xulrunner
-Version:	9.0.1
-Release:	2
+Version:	11.0
+Release:	1
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	7cf2bd379792a9b232267c6a79680566
+# Source0-md5:	4b07acf47857aff72776d805409cdd1b
 Source1:	%{name}-freddix-prefs.js
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-pc.patch
@@ -26,8 +26,8 @@ BuildRequires:	libnotify-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libvpx-devel
-BuildRequires:	nspr-devel >= 1:4.8.9
-BuildRequires:	nss-devel >= 1:3.13.1
+BuildRequires:	nspr-devel >= 1:4.9
+BuildRequires:	nss-devel >= 1:3.13.3
 BuildRequires:	pango-devel
 BuildRequires:	perl-modules
 BuildRequires:	pkg-config
@@ -234,7 +234,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/chrome.manifest
 %{_libdir}/%{name}/components/binary.manifest
 %{_libdir}/%{name}/dependentlibs.list
-%{_libdir}/%{name}/omni.jar
+%{_libdir}/%{name}/omni.ja
 %{_libdir}/%{name}/platform.ini
 %{_sysconfdir}/ld.so.conf.d/%{name}.conf
 
