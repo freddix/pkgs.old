@@ -1,0 +1,48 @@
+diff -urN ORBit2-2.5.0.orig/test/Makefile.am ORBit2-2.5.0/test/Makefile.am
+--- ORBit2-2.5.0.orig/test/Makefile.am	Sat Oct 19 10:25:57 2002
++++ ORBit2-2.5.0/test/Makefile.am	Sat Oct 19 10:29:03 2002
+@@ -18,7 +18,7 @@
+ 
+ TESTS = test-dynany test-mem test-performance test-giop
+ 
+-LDADD = $(top_builddir)/src/orb/libORBit-2.la $(ORBIT_LIBS)
++LDADD = $(top_builddir)/src/orb/libORBit-2.la $(ORBIT_LIBS) -lpthread
+ 
+ test_mem_SOURCES=test-mem.c
+ 
+diff -urN ORBit2-2.5.0.orig/test/everything/Makefile.am ORBit2-2.5.0/test/everything/Makefile.am
+--- ORBit2-2.5.0.orig/test/everything/Makefile.am	Sat Oct 19 10:25:57 2002
++++ ORBit2-2.5.0/test/everything/Makefile.am	Sat Oct 19 10:29:57 2002
+@@ -28,7 +28,7 @@
+ LDADD = $(top_builddir)/src/orb/libORBit-2.la				\
+ 	$(top_builddir)/src/services/imodule/libORBit-imodule-2.la	\
+ 	$(ORBIT_IDL_LIBS)						\
+-	$(ORBIT_LIBS)
++	$(ORBIT_LIBS) -lpthread
+ 
+ #  -lefence
+ 
+diff -urN ORBit2-2.5.0.orig/test/inhibit/Makefile.am ORBit2-2.5.0/test/inhibit/Makefile.am
+--- ORBit2-2.5.0.orig/test/inhibit/Makefile.am	Sat Oct 19 10:25:57 2002
++++ ORBit2-2.5.0/test/inhibit/Makefile.am	Sat Oct 19 10:30:15 2002
+@@ -7,7 +7,7 @@
+ 	$(WARN_CFLAGS)               \
+ 	$(ORBIT_CFLAGS)
+ 
+-LDADD = $(top_builddir)/src/orb/libORBit-2.la $(ORBIT_LIBS)
++LDADD = $(top_builddir)/src/orb/libORBit-2.la $(ORBIT_LIBS) -lpthread
+ 
+ FOO_IDLOUT=foo.h foo-stubs.c foo-skels.c foo-common.c
+ BAA_IDLOUT=baa.h baa-stubs.c baa-skels.c baa-common.c
+diff -urN ORBit2-2.5.0.orig/test/poa/Makefile.am ORBit2-2.5.0/test/poa/Makefile.am
+--- ORBit2-2.5.0.orig/test/poa/Makefile.am	Sat Oct 19 10:25:57 2002
++++ ORBit2-2.5.0/test/poa/Makefile.am	Sat Oct 19 10:30:40 2002
+@@ -30,7 +30,7 @@
+ 
+ check_PROGRAMS = $(TESTS)
+ 
+-LDADD = $(top_builddir)/src/orb/libORBit-2.la $(ORBIT_LIBS)
++LDADD = $(top_builddir)/src/orb/libORBit-2.la $(ORBIT_LIBS) -lpthread
+ 
+ POATEST_IDLOUT = poatest.h poatest-common.c poatest-skels.c poatest-stubs.c
+ 
