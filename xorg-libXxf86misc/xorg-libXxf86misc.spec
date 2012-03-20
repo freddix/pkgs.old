@@ -1,7 +1,7 @@
 Summary:	Xxf86misc library
 Name:		xorg-libXxf86misc
 Version:	1.0.3
-Release:	1
+Release:	3
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXxf86misc-%{version}.tar.bz2
@@ -12,7 +12,7 @@ BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	xorg-libXext-devel
-BuildRequires:	xorg-proto
+BuildRequires:	xorg-proto >= 7.6
 BuildRequires:	xorg-util-macros
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -23,7 +23,6 @@ Xxf86misc library.
 Summary:	Header files for libXxf86misc library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto
 
 %description devel
 Xxf86misc library.
@@ -32,7 +31,7 @@ This package contains the header files needed to develop programs that
 use libXxf86misc.
 
 %prep
-%setup -q -n libXxf86misc-%{version}
+%setup -qn libXxf86misc-%{version}
 
 %build
 %{__libtoolize}
