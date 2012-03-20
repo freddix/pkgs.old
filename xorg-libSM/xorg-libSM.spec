@@ -1,11 +1,11 @@
 Summary:	Session Management library
 Name:		xorg-libSM
-Version:	1.2.0
-Release:	1
+Version:	1.2.1
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libSM-%{version}.tar.bz2
-# Source0-md5:	e78c447bf1790552b644eca81b542742
+# Source0-md5:	766de9d1e1ecf8bf74cebe2111d8e2bd
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -42,7 +42,8 @@ use libSM.
 %{__automake}
 %configure \
 	--disable-silent-rules	\
-	--disable-static
+	--disable-static	\
+	--enable-specs=no
 %{__make}
 
 %install
