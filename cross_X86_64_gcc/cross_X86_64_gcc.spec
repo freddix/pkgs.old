@@ -3,7 +3,7 @@
 Summary:	Cross GNU Compiler Collection for the x86_64 architecture
 Name:		cross_X86_64_gcc
 Version:	4.4.6
-Release:	1
+Release:	2
 License:	GPL v3+
 Group:		Development/Languages
 Source0:	ftp://gcc.gnu.org/pub/gcc/releases/gcc-%{version}/gcc-%{version}.tar.bz2
