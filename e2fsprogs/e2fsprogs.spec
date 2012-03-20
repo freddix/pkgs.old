@@ -1,11 +1,11 @@
 Summary:	Utilities for managing the second extended (ext2) filesystem
 Name:		e2fsprogs
-Version:	1.42
+Version:	1.42.1
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	http://heanet.dl.sourceforge.net/e2fsprogs/%{name}-%{version}.tar.gz
-# Source0-md5:	a3c4ffd7352310ab5e9412965d575610
+# Source0-md5:	8ed1501ae6746e2e735bdd1407211dc9
 URL:		http://e2fsprogs.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
