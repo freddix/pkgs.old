@@ -1,11 +1,11 @@
 Summary:	X Cursor library
 Name:		xorg-libXcursor
-Version:	1.1.12
-Release:	1
+Version:	1.1.13
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXcursor-%{version}.tar.bz2
-# Source0-md5:	a93b5a6f5b05976d2c0d3f8a07f6ac6a
+# Source0-md5:	52efa81b7f26c8eda13510a2fba98eea
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
