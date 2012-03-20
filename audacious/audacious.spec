@@ -1,7 +1,7 @@
 Summary:	Media player based on BMP
 Name:		audacious
 Version:	2.5.4
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Sound
 Source0:	http://distfiles.atheme.org/%{name}-%{version}.tar.gz
