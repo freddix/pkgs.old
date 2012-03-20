@@ -1,11 +1,11 @@
 Summary:	X extension library
 Name:		xorg-libXext
-Version:	1.3.0
-Release:	1
+Version:	1.3.1
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXext-%{version}.tar.bz2
-# Source0-md5:	161d200b690ace818db1cc7537e70ba9
+# Source0-md5:	71251a22bc47068d60a95f50ed2ec3cf
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -24,7 +24,6 @@ X extension library.
 Summary:	Header files for libXext library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 X extension library.
@@ -43,7 +42,8 @@ use libXext.
 %{__automake}
 %configure \
 	--disable-silent-rules	\
-	--disable-static
+	--disable-static	\
+	--enable-specs=no
 %{__make}
 
 %install
