@@ -2,15 +2,15 @@
 
 Summary:	X.org server
 Name:		xorg-xserver-server
-Version:	1.11.3
+Version:	1.12.0
 %if "%{gitver}" != "%{nil}"
 Release:	0.%{gitver}.1
 Source0:	http://cgit.freedesktop.org/xorg/xserver/snapshot/xserver-%{gitver}.tar.bz2
-# Source0-md5:	a7194c437963627e1db0dd2d6c1a1984
+# Source0-md5:	3a3c4281f32c8702749e8f129372a355
 %else
-Release:	1
+Release:	2
 Source0:	http://xorg.freedesktop.org/releases/individual/xserver/xorg-server-%{version}.tar.bz2
-# Source0-md5:	a7194c437963627e1db0dd2d6c1a1984
+# Source0-md5:	3a3c4281f32c8702749e8f129372a355
 %endif
 License:	MIT
 Group:		X11/Servers
@@ -29,16 +29,16 @@ BuildRequires:	automake
 BuildRequires:	cpp
 BuildRequires:	dbus-devel
 BuildRequires:	libdrm-devel
-BuildRequires:	libpciaccess-devel
+BuildRequires:	libpciaccess-devel >= 0.13
 BuildRequires:	libtool
 BuildRequires:	ncurses-devel
 BuildRequires:	perl-base
 BuildRequires:	pixman-devel
-BuildRequires:	pkgconfig
-BuildRequires:	xorg-app-mkfontscale
+BuildRequires:	pkg-config
 BuildRequires:	xorg-libX11-devel
 BuildRequires:	xorg-libXau-devel
 BuildRequires:	xorg-libXaw-devel
+BuildRequires:	xorg-libXdamage-devel
 BuildRequires:	xorg-libXdmcp-devel
 BuildRequires:	xorg-libXext-devel
 BuildRequires:	xorg-libXfont-devel
@@ -47,6 +47,7 @@ BuildRequires:	xorg-libXrender-devel
 BuildRequires:	xorg-libXres-devel
 BuildRequires:	xorg-libXt-devel
 BuildRequires:	xorg-libXtst-devel
+BuildRequires:	xorg-libXv-devel
 BuildRequires:	xorg-libXxf86dga-devel
 BuildRequires:	xorg-libXxf86misc-devel
 BuildRequires:	xorg-libXxf86vm-devel
@@ -121,7 +122,6 @@ Xephyr X server.
 	--disable-xfake				\
 	--disable-xfbdev			\
 	--disable-xvfb				\
-	--enable-builddocs			\
 	--enable-config-udev			\
 	--enable-glx-tls			\
 	--enable-kdrive				\
