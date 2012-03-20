@@ -1,7 +1,7 @@
 Summary:	Plugins for Audacious media player
 Name:		audacious-plugins
 Version:	2.5.4
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Sound
 Source0:	http://distfiles.atheme.org/%{name}-%{version}.tar.gz
@@ -50,10 +50,8 @@ Plugins for Audacious media player.
 %configure \
 	--disable-adplug	\
 	--disable-coreaudio	\
-	--disable-esd		\
 	--disable-modplug	\
 	--disable-oss		\
-	--disable-projectm	\
 	--disable-projectm-1.0	\
 	--disable-sid		\
 	--enable-amidiplug	\
@@ -136,7 +134,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/audacious/Output/sdlout.so
 
 %attr(755,root,root) %{_libdir}/audacious/Transport/gio.so
-%attr(755,root,root) %{_libdir}/audacious/Transport/mms.so
 %attr(755,root,root) %{_libdir}/audacious/Transport/neon.so
 %attr(755,root,root) %{_libdir}/audacious/Transport/unix-io.so
 
