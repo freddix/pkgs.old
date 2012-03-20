@@ -1,4 +1,7 @@
-#%PAM-1.0
-auth		include		system-auth
-account		include		system-auth
-session		include		system-auth
+# No PAM authentication called, auth modules not needed
+account	required	pam_access.so
+account	include		common-account
+session	required	pam_loginuid.so
+session	include		common-session-noninteractive
+auth	include		common-auth
+

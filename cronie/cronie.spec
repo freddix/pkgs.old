@@ -1,7 +1,7 @@
 Summary:	Cron daemon
 Name:		cronie
 Version:	1.4.8
-Release:	4
+Release:	5
 License:	MIT and BSD and GPL v2
 Group:		Daemons
 Source0:	https://fedorahosted.org/releases/c/r/cronie/%{name}-%{version}.tar.gz
@@ -103,25 +103,16 @@ rm -rf $RPM_BUILD_ROOT
 if [ ! -f /var/log/cron ]; then
 	install -m 660 -g crontab /dev/null /var/log/cron
 fi
-if [ "$1" = "1" ] ; then
-    # initial installation
-    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
-    /bin/systemctl enable crond.service >/dev/null 2>&1 || :
-fi
+%systemd_post crond.service
 
 %preun
-if [ "$1" = "0" ]; then
-    /bin/systemctl --no-reload disable crond.service >/dev/null 2>&1 || :
-    /bin/systemctl stop crond.service > /dev/null 2>&1 || :
-fi
+%systemd_preun crond.service
 
 %postun
 if [ "$1" = "0" ]; then
 	%groupremove crontab
 fi
-if [ "$1" -ge "1" ]; then
-    /bin/systemctl try-restart crond.service >/dev/null 2>&1 || :
-fi
+%systemd_reload
 
 %files
 %defattr(644,root,root,755)
