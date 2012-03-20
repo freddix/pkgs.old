@@ -1,11 +1,11 @@
 Summary:	Toolchain to create panoramic images
 Name:		hugin
-Version:	2011.2.0
-Release:	2
+Version:	2011.4.0
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/hugin/%{name}-%{version}.tar.bz2
-# Source0-md5:	3f5cc3c02a5763f268d674a0bc91cb95
+# Source0-md5:	3e4866dbbc7974972604aa18580eae0e
 Patch0:		%{name}-cppflags.patch
 Patch1:		%{name}-desktop.patch
 URL:		http://hugin.sourceforge.net/
@@ -83,12 +83,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/cpclean
 %attr(755,root,root) %{_bindir}/deghosting_mask
 %attr(755,root,root) %{_bindir}/fulla
+%attr(755,root,root) %{_bindir}/checkpto
+%attr(755,root,root) %{_bindir}/cpfind
 %attr(755,root,root) %{_bindir}/hugin
 %attr(755,root,root) %{_bindir}/hugin_hdrmerge
 %attr(755,root,root) %{_bindir}/hugin_stitch_project
-%attr(755,root,root) %{_bindir}/checkpto
-%attr(755,root,root) %{_bindir}/cpfind
 %attr(755,root,root) %{_bindir}/icpfind
+%attr(755,root,root) %{_bindir}/linefind
 %attr(755,root,root) %{_bindir}/matchpoint
 %attr(755,root,root) %{_bindir}/nona
 %attr(755,root,root) %{_bindir}/nona_gui
