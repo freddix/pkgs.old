@@ -1,0 +1,12 @@
+diff -aurN pygobject-2.26.0.orig/glib/Makefile.am pygobject-2.26.0/glib/Makefile.am
+--- pygobject-2.26.0.orig/glib/Makefile.am	2011-01-15 14:15:25.000000000 +0100
++++ pygobject-2.26.0/glib/Makefile.am	2011-01-15 14:24:40.000000000 +0100
+@@ -20,7 +20,7 @@
+ endif
+ 
+ libpyglib_2_0_@PYTHON_BASENAME@_la_CFLAGS = $(GLIB_CFLAGS)
+-libpyglib_2_0_@PYTHON_BASENAME@_la_LIBADD = $(GLIB_LIBS) $(FFI_LIBS)
++libpyglib_2_0_@PYTHON_BASENAME@_la_LIBADD = $(GLIB_LIBS) $(FFI_LIBS) -lpython2.6 
+ libpyglib_2_0_@PYTHON_BASENAME@_la_SOURCES = 	\
+ 	pyglib.c		\
+ 	pyglib.h		\

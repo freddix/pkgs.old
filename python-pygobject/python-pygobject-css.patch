@@ -1,0 +1,12 @@
+diff -aurN pygobject-2.15.4.orig/pygobject-2.0.pc.in pygobject-2.15.4/pygobject-2.0.pc.in
+--- pygobject-2.15.4.orig/pygobject-2.0.pc.in	2008-09-27 09:04:27.000000000 +0200
++++ pygobject-2.15.4/pygobject-2.0.pc.in	2008-09-27 09:05:19.000000000 +0200
+@@ -10,7 +10,7 @@
+ # install additional headers.
+ pygtkincludedir=${includedir}/pygtk-2.0
+ fixxref=${datadir}/pygobject/xsl/fixxref.py
+-pygdocs=${datadir}/gtk-doc/html/pygobject
++pygdocs=${datadir}/pygobject/css
+ defsdir=${datadir}/pygobject/2.0/defs
+ codegendir=${datadir}/pygobject/2.0/codegen
+ 
