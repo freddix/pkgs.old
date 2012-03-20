@@ -1,11 +1,11 @@
 Summary:	X Display Manager Control Protocol library
 Name:		xorg-libXdmcp
-Version:	1.1.0
-Release:	1
+Version:	1.1.1
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXdmcp-%{version}.tar.bz2
-# Source0-md5:	762b6bbaff7b7d0831ddb4f072f939a5
+# Source0-md5:	b94af6cef211cf3ee256f7e81f70fcd9
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -22,7 +22,6 @@ X Display Manager Control Protocol library.
 Summary:	Header files for libXdmcp library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 X Display Manager Control Protocol library.
@@ -40,7 +39,8 @@ use libXdmcp.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-static
+	--disable-static	\
+	--disable-silent-rules
 %{__make}
 
 %install
