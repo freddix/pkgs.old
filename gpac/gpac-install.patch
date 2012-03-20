@@ -1,0 +1,29 @@
+diff -aurN gpac.orig/Makefile gpac/Makefile
+--- gpac.orig/Makefile	2009-04-05 19:40:24.000000000 +0200
++++ gpac/Makefile	2009-04-05 19:57:28.000000000 +0200
+@@ -52,10 +52,10 @@
+ 	install -d "$(DESTDIR)$(prefix)/bin"
+ 	install $(INSTFLAGS) -m 755 bin/gcc/MP4Box "$(DESTDIR)$(prefix)/bin"
+ 	$(MAKE) -C applications install
+-	install -d "$(DESTDIR)$(moddir)"
+-	install bin/gcc/*.$(DYN_LIB_SUFFIX) "$(DESTDIR)$(moddir)"
+-	rm -f $(DESTDIR)$(moddir)/libgpac.$(DYN_LIB_SUFFIX)
+-	rm -f $(DESTDIR)$(moddir)/nposmozilla.$(DYN_LIB_SUFFIX)
++	install -d "$(DESTDIR)$(libdir)/gpac"
++	install bin/gcc/*.$(DYN_LIB_SUFFIX) "$(DESTDIR)$(libdir)/gpac"
++	rm -f $(DESTDIR)$(libdir)/gpac/libgpac.$(DYN_LIB_SUFFIX)
++	rm -f $(DESTDIR)$(libdir)/gpac/nposmozilla.$(DYN_LIB_SUFFIX)
+ ifeq ($(CONFIG_WIN32),yes)
+ 	install $(INSTFLAGS) -m 755 bin/gcc/libgpac.dll $(prefix)/$(libdir)
+ else
+@@ -66,8 +66,8 @@
+ 	install -m 755 bin/gcc/libgpac.$(DYN_LIB_SUFFIX) $(DESTDIR)$(prefix)/$(libdir)/libgpac-$(VERSION).$(DYN_LIB_SUFFIX)
+ 	ln -sf libgpac-$(VERSION).$(DYN_LIB_SUFFIX) $(DESTDIR)$(prefix)/$(libdir)/libgpac.$(DYN_LIB_SUFFIX)
+ else
+-	install $(INSTFLAGS) -m 755 bin/gcc/libgpac.$(DYN_LIB_SUFFIX) $(DESTDIR)$(prefix)/$(libdir)/libgpac-$(VERSION).$(DYN_LIB_SUFFIX)
+-	ln -sf libgpac-$(VERSION).$(DYN_LIB_SUFFIX) $(DESTDIR)$(prefix)/$(libdir)/libgpac.$(DYN_LIB_SUFFIX)
++	install $(INSTFLAGS) -m 755 bin/gcc/libgpac.$(DYN_LIB_SUFFIX) $(DESTDIR)$(libdir)/libgpac-$(VERSION).$(DYN_LIB_SUFFIX)
++	ln -sf libgpac-$(VERSION).$(DYN_LIB_SUFFIX) $(DESTDIR)$(libdir)/libgpac.$(DYN_LIB_SUFFIX)
+ 	ldconfig || true
+ endif
+ endif
