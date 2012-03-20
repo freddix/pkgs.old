@@ -1,7 +1,7 @@
 Summary:	MLT - Media Lovin' Toolkit
 Name:		mlt
 Version:	0.7.6
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications/Multimedia
 Source0:	http://downloads.sourceforge.net/mlt/%{name}-%{version}.tar.gz
