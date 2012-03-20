@@ -7,7 +7,7 @@ Version:	8.0.1
 Release:	6.%{gitver}.1
 Source:		http://cgit.freedesktop.org/mesa/mesa/snapshot/mesa-%{gitver}.tar.bz2
 %else
-Release:	1
+Release:	3
 Source0:	ftp://ftp.freedesktop.org/pub/mesa/%{version}/MesaLib-%{version}.tar.gz
 # Source0-md5:	4855c2d93bd2ebd43f384bdcc92c9a27
 %endif
@@ -157,6 +157,7 @@ X.org DRI software rasterizer driver.
 	--enable-gallium-llvm		\
 	--enable-glx-tls		\
 	--enable-texture-float		\
+	--enable-xa			\
 	--with-dri-driverdir=%{dridir}	\
 	--with-dri-drivers="i915,i965,r200,swrast"	\
 	--with-gallium-drivers="r300,r600,swrast"
