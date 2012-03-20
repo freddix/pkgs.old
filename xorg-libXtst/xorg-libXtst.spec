@@ -1,17 +1,18 @@
 Summary:	X tst library
 Name:		xorg-libXtst
-Version:	1.2.0
-Release:	1
+Version:	1.2.1
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXtst-%{version}.tar.bz2
-# Source0-md5:	7c592c72da6676f8b0aeec9133b81686
+# Source0-md5:	e8abc5c00c666f551cf26aa53819d592
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	xorg-libXext-devel
+BuildRequires:	xorg-libXi-devel
 BuildRequires:	xorg-proto >= 7.6
 BuildRequires:	xorg-util-macros
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -23,7 +24,6 @@ X tst extension library.
 Summary:	Header files for libXtst library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 X extension library.
