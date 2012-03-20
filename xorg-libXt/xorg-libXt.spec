@@ -1,11 +1,11 @@
 Summary:	X Toolkit library
 Name:		xorg-libXt
-Version:	1.1.1
+Version:	1.1.3
 Release:	1
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXt-%{version}.tar.bz2
-# Source0-md5:	eb22c0a1f172b06b97a3f5ae89768412
+# Source0-md5:	a6f137ae100e74ebe3b71eb4a38c40b3
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -42,7 +42,8 @@ use libXt.
 %{__automake}
 %configure \
 	--disable-silent-rules	\
-	--disable-static
+	--disable-static	\
+	--enable-specs=no
 %{__make}
 
 %install
