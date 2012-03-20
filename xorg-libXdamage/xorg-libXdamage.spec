@@ -1,7 +1,7 @@
 Summary:	X Damage extension library
 Name:		xorg-libXdamage
 Version:	1.1.3
-Release:	1
+Release:	3
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXdamage-%{version}.tar.bz2
@@ -23,7 +23,6 @@ X Damage extension library.
 Summary:	Header files for libXdamage library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 X Damage extension library.
