@@ -1,0 +1,14 @@
+diff -aurN libgsf-1.14.21.orig/configure.in libgsf-1.14.21/configure.in
+--- libgsf-1.14.21.orig/configure.in	2012-03-15 11:44:03.369680709 +0100
++++ libgsf-1.14.21/configure.in	2012-03-15 11:47:38.539990710 +0100
+@@ -523,8 +523,8 @@
+         [AC_MSG_ERROR([gconf support requested, but not available.])])
+     ])
+ 
+-AM_GCONF_SOURCE_2
+-AM_CONDITIONAL(WITH_GCONF, test "$have_gconf" = "yes")
++AM_CONDITIONAL(WITH_GCONF, "no")
++AM_CONDITIONAL(GCONF_SCHEMAS_INSTALL, "no")
+ 
+ # ===================
+ 
