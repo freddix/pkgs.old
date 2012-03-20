@@ -1,11 +1,11 @@
 Summary:	Inter Client Exchange library
 Name:		xorg-libICE
-Version:	1.0.7
-Release:	1
+Version:	1.0.8
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libICE-%{version}.tar.bz2
-# Source0-md5:	bb72a732b15e9dc25c3036559387eed5
+# Source0-md5:	471b5ca9f5562ac0d6eac7a0bf650738
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -13,6 +13,7 @@ BuildRequires:	libtool
 BuildRequires:	pkg-config
 BuildRequires:	xorg-proto >= 7.6
 BuildRequires:	xorg-util-macros
+BuildRequires:	xorg-xtrans-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -41,7 +42,8 @@ use libICE.
 %{__automake}
 %configure \
 	--disable-silent-rules	\
-	--disable-static
+	--disable-static	\
+	--enable-specs=no
 %{__make}
 
 %install
