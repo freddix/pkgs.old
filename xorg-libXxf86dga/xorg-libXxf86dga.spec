@@ -1,11 +1,11 @@
 Summary:	Xxf86dga library
 Name:		xorg-libXxf86dga
-Version:	1.1.2
-Release:	1
+Version:	1.1.3
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXxf86dga-%{version}.tar.bz2
-# Source0-md5:	bbd5fdf63d4c107c8cb710d4df2012b4
+# Source0-md5:	b7f38465c46e7145782d37dbb9da8c09
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -23,7 +23,6 @@ Xxf86dga library.
 Summary:	Header files for libXxf86dga library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 Xxf86dga library.
@@ -32,7 +31,7 @@ This package contains the header files needed to develop programs that
 use libXxf86dga.
 
 %prep
-%setup -q -n libXxf86dga-%{version}
+%setup -qn libXxf86dga-%{version}
 
 %build
 %{__libtoolize}
