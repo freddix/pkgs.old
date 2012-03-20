@@ -1,0 +1,32 @@
+--- sane-backends-1.0.4/tools/mustek600iin-off.c.orig	Mon Aug  9 20:06:01 1999
++++ sane-backends-1.0.4/tools/mustek600iin-off.c	Sat Feb 10 20:29:19 2001
+@@ -28,7 +28,7 @@
+ #include <sane/config.h>
+ #include <sane/sanei.h>
+ 
+-#define MUSTEK_CONF	STRINGIFY(PATH_SANE_CONFIG_DIR) "/mustek.conf"
++#define MUSTEK_CONF	"/etc/sane.d/mustek.conf"
+ #define PORT_DEV	"/dev/port"
+ 
+ #include <stdio.h>
+@@ -122,19 +122,13 @@
+   FILE *fp;
+   int pfd;
+ 
+-  /* get config file name from environment if variable is set */
+-  if (NULL != (cp = getenv ("MUSTEK_CONF")))
+-    {
+-      Mustek_Conf = cp;
+-    }
+-
+   /* if port is explicitly given, try this one */
+   if (argc > 1)
+     {
+       portaddr = str2int (argv[1]);
+     }
+   /* else try to look it up from SANE's mustek.conf file */
+-  else if (NULL != (fp = fopen (MUSTEK_CONF, "r")))
++  else if (NULL != (fp = fopen (Mustek_Conf, "r")))
+     {
+       char line[256];
+ 

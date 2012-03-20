@@ -1,0 +1,48 @@
+diff -up sane-backends-1.0.19/backend/mustek_pp.c.glibc-2.7 sane-backends-1.0.19/backend/mustek_pp.c
+--- sane-backends-1.0.19/backend/mustek_pp.c.glibc-2.7	2005-04-10 13:53:16.000000000 +0200
++++ sane-backends-1.0.19/backend/mustek_pp.c	2008-09-03 17:15:12.000000000 +0200
+@@ -1152,7 +1152,7 @@ sane_open (SANE_String_Const devicename,
+ 
+ 	}
+ 	
+-	if ((status = dev->func->open (dev->port, dev->caps, &fd)) != SANE_STATUS_GOOD) {
++	if ((status = (dev->func->open) (dev->port, dev->caps, &fd)) != SANE_STATUS_GOOD) {
+ 
+ 		DBG (1, "sane_open: could not open device (%s)\n",
+ 				sane_strstatus (status));
+diff -up sane-backends-1.0.19/backend/pixma_common.c.glibc-2.7 sane-backends-1.0.19/backend/pixma_common.c
+--- sane-backends-1.0.19/backend/pixma_common.c.glibc-2.7	2007-04-09 22:41:25.000000000 +0200
++++ sane-backends-1.0.19/backend/pixma_common.c	2008-09-03 17:20:36.000000000 +0200
+@@ -500,7 +500,7 @@ pixma_open (unsigned devnr, pixma_t ** h
+   strncpy (s->id, pixma_get_device_id (devnr), sizeof (s->id) - 1);
+   s->ops = s->cfg->ops;
+   s->scanning = 0;
+-  error = s->ops->open (s);
++  error = (s->ops->open) (s);
+   if (error < 0)
+     goto rollback;
+   *handle = s;
+diff -up sane-backends-1.0.19/backend/plustek_pp.c.glibc-2.7 sane-backends-1.0.19/backend/plustek_pp.c
+--- sane-backends-1.0.19/backend/plustek_pp.c.glibc-2.7	2007-11-18 11:59:18.000000000 +0100
++++ sane-backends-1.0.19/backend/plustek_pp.c	2008-09-03 17:15:12.000000000 +0200
+@@ -258,7 +258,7 @@ static int drvopen(	Plustek_Device *dev 
+ 
+     DBG( _DBG_INFO, "drvopen()\n" );
+ 
+-	handle = dev->open((const char*)dev->name, (void *)dev );
++	handle = (dev->open)((const char*)dev->name, (void *)dev );
+ 
+ 	tsecs = 0;
+ 
+diff -up sane-backends-1.0.19/sanei/sanei_scsi.c.glibc-2.7 sane-backends-1.0.19/sanei/sanei_scsi.c
+--- sane-backends-1.0.19/sanei/sanei_scsi.c.glibc-2.7	2007-11-16 19:37:07.000000000 +0100
++++ sane-backends-1.0.19/sanei/sanei_scsi.c	2008-09-03 17:15:12.000000000 +0200
+@@ -5072,7 +5072,7 @@ sanei_scsi_find_devices (const char *fin
+     (*plugInInterface)->Release (plugInInterface);
+     IOObjectRelease (scsiDevice);
+ 
+-    ioReturnValue = (*scsiDeviceInterface)->open (scsiDeviceInterface);
++    ioReturnValue = ((*scsiDeviceInterface)->open) (scsiDeviceInterface);
+     if (ioReturnValue != kIOReturnSuccess)
+       {
+ 	DBG (5, "Error opening SCSI interface (0x%08x)\n", ioReturnValue);
