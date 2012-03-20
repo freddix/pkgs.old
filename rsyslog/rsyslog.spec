@@ -1,11 +1,11 @@
 Summary:	Linux system and kernel logger
 Name:		rsyslog
-Version:	5.8.7
+Version:	5.8.8
 Release:	1
 License:	GPL v3+
 Group:		Daemons
 Source0:	http://www.rsyslog.com/files/download/rsyslog/%{name}-%{version}.tar.gz
-# Source0-md5:	d806a91de534d6e33d7d1c1138cfdd37
+# Source0-md5:	bbce9d3c4ef68ccb945efb4e856e0eaf
 Source1:	%{name}.logrotate
 Source2:	%{name}.conf
 URL:		http://www.rsyslog.com/
