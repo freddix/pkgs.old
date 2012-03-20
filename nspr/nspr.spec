@@ -1,18 +1,18 @@
 Summary:	Netscape Portable Runtime (NSPR)
 Name:		nspr
-Version:	4.8.9
+Version:	4.9
 Release:	1
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		Libraries
 Source0:	ftp://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v%{version}/src/%{name}-%{version}.tar.gz
-# Source0-md5:	60770d45dc08c0f181b22cdfce5be3e8
+# Source0-md5:	aa0c960b23a9d66a3c30c3e6ba80a99a
 Source1:	%{name}-mozilla-nspr.pc
 Patch0:		%{name}-acfix.patch
 URL:		http://www.mozilla.org/projects/nspr/
-BuildRequires:	autoconf >= 2.12
+BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	sed >= 4.0
+BuildRequires:	sed
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
