@@ -7,18 +7,20 @@
 #
 Summary:	A System and Service Manager
 Name:		systemd
-Version:	38
+Version:	44
 Release:	0.1
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.xz
-# Source0-md5:	68c66dce5a28c0efd7c210af5d11efed
+# Source0-md5:	11f44ff74c87850064e4351518bcff17
 Source10:	%{name}-locale.conf
 Source11:	%{name}-loop.conf
 Source12:	%{name}-sysctl.conf
 Source13:	%{name}-vconsole.conf
 Source14:	%{name}-os-release
 Source15:	%{name}-timezone
+# for rsyslog
+Source20:	listen.conf
 Patch0:		%{name}-freddix.patch
 Patch1:		%{name}-machine_id_writable.patch
 Patch2:		%{name}-autofs4_bug.patch
@@ -28,6 +30,7 @@ BuildRequires:	automake
 BuildRequires:	cryptsetup-devel
 BuildRequires:	dbus-devel
 BuildRequires:	docbook-style-xsl
+BuildRequires:	kmod-devel
 BuildRequires:	libcap-devel
 #BuildRequires:	libnotify-devel
 BuildRequires:	libtool
@@ -39,15 +42,17 @@ BuildRequires:	pkg-config
 BuildRequires:	udev-devel
 BuildRequires:	vala
 Requires(post,postun):	/sbin/ldconfig
+Requires:       %{name}-libs = %{version}-%{release}
 Requires:	%{name}-units = %{version}-%{release}
 Provides:	virtual(init-daemon)
 Requires:	agetty
 Requires:	dbus
 Requires:	kbd
+Requires:	kmod
 Requires:	python-dbus
 Requires:	terminus-font-console
 Requires:	udev
-Requires:	util-linux >= 2.20
+Requires:	util-linux
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -59,6 +64,21 @@ Linux cgroups, supports snapshotting and restoring of the system
 state, maintains mount and automount points and implements an
 elaborate transactional dependency-based service control logic. It can
 work as a drop-in replacement for sysvinit.
+
+%package libs
+Summary:        systemd libraries
+Group:          Libraries
+
+%description libs
+systemd libraries.
+
+%package devel
+Summary:        Header files for systemd libraries
+Group:          Development/Libraries
+Requires:       %{name}-libs = %{version}-%{release}
+
+%description devel
+Header files for systemd libraries.
 
 %package units
 Summary:	Configuration files, directories and installation tool for systemd
@@ -104,6 +124,7 @@ Graphical front-end for systemd.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig \
+	$RPM_BUILD_ROOT%{_sysconfdir}/rsyslog.d	\
 	$RPM_BUILD_ROOT/sbin
 
 %{__make} install \
@@ -130,20 +151,25 @@ install %{SOURCE13} $RPM_BUILD_ROOT/etc/vconsole.conf
 install %{SOURCE14} $RPM_BUILD_ROOT/etc/os-release
 install %{SOURCE15} $RPM_BUILD_ROOT/etc/timezone
 
-ln -s ../bin/systemd $RPM_BUILD_ROOT/sbin/init
-ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/reboot
+install %{SOURCE20} $RPM_BUILD_ROOT%{_sysconfdir}/rsyslog.d
+
+install -d $RPM_BUILD_ROOT/sbin
+ln -s ../lib/systemd/systemd $RPM_BUILD_ROOT/sbin/init
+ln -s ../lib/systemd/systemd $RPM_BUILD_ROOT/bin/systemd
+
 ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/halt
 ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/poweroff
+ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/reboot
+ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/runlevel
 ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/shutdown
 ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/telinit
-ln -s ../bin/systemctl $RPM_BUILD_ROOT/sbin/runlevel
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/ldconfig
 /bin/systemd-machine-id-setup > /dev/null 2>&1 || :
+/usr/lib/systemd/systemd-random-seed save > /dev/null 2>&1 || :
 /bin/systemctl daemon-reexec > /dev/null 2>&1 || :
 
 %post units
@@ -166,10 +192,13 @@ if [ "$1" = "0" ]; then
 fi
 
 %postun
-/sbin/ldconfig
 if [ "$1" -ge "1" ] ; then
 	/bin/systemctl daemon-reload > /dev/null 2>&1 || :
+	/bin/systemctl try-restart systemd-logind.service >/dev/null 2>&1 || :
 fi
+
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -184,22 +213,16 @@ fi
 %attr(755,root,root) /bin/systemd-tty-ask-password-agent
 
 %attr(755,root,root) %{_bindir}/systemd-analyze
+%attr(755,root,root) %{_bindir}/systemd-cat
 %attr(755,root,root) %{_bindir}/systemd-cgls
+%attr(755,root,root) %{_bindir}/systemd-cgtop
 %attr(755,root,root) %{_bindir}/systemd-nspawn
 %attr(755,root,root) %{_bindir}/systemd-stdio-bridge
 
 %attr(755,root,root) /%{_lib}/systemd/system-generators/systemd-cryptsetup-generator
 %attr(755,root,root) /%{_lib}/systemd/system-generators/systemd-getty-generator
 %attr(755,root,root) /%{_lib}/systemd/systemd-*
-
-%attr(755,root,root) %ghost /%{_lib}/libsystemd-daemon.so.?
-%attr(755,root,root) %ghost /%{_lib}/libsystemd-id128.so.?
-%attr(755,root,root) %ghost /%{_lib}/libsystemd-journal.so.?
-%attr(755,root,root) %ghost /%{_lib}/libsystemd-login.so.?
-%attr(755,root,root) /%{_lib}/libsystemd-daemon.so.*.*.*
-%attr(755,root,root) /%{_lib}/libsystemd-id128.so.*.*.*
-%attr(755,root,root) /%{_lib}/libsystemd-journal.so.*.*.*
-%attr(755,root,root) /%{_lib}/libsystemd-login.so.*.*.*
+%attr(755,root,root) /%{_lib}/systemd/systemd
 
 %attr(755,root,root) /sbin/halt
 %attr(755,root,root) /sbin/init
@@ -213,6 +236,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/systemd-journald.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/systemd-logind.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/user.conf
+%{_sysconfdir}/rsyslog.d/listen.conf
 
 %config(noreplace) %verify(not md5 mtime size) /etc/hostname
 %config(noreplace) %verify(not md5 mtime size) /etc/locale.conf
@@ -262,61 +286,36 @@ fi
 %{_prefix}/lib/tmpfiles.d/systemd.conf
 %{_prefix}/lib/tmpfiles.d/tmp.conf
 %{_prefix}/lib/tmpfiles.d/x11.conf
+%{_prefix}/lib/sysctl.d/coredump.conf
 
-%{_mandir}/man1/init.1
-%{_mandir}/man1/systemadm.1.*
-%{_mandir}/man1/systemd-ask-password.1*
-%{_mandir}/man1/systemd-cgls.1*
-%{_mandir}/man1/systemd-loginctl.1.*
-%{_mandir}/man1/systemd-notify.1*
-%{_mandir}/man1/systemd-nspawn.1*
-%{_mandir}/man1/systemd.1*
-%{_mandir}/man3/sd_booted.3*
-%{_mandir}/man3/sd_is_fifo.3*
-%{_mandir}/man3/sd_is_socket.3
-%{_mandir}/man3/sd_is_socket_inet.3
-%{_mandir}/man3/sd_is_socket_unix.3
-%{_mandir}/man3/sd_listen_fds.3*
-%{_mandir}/man3/sd_notify.3*
-%{_mandir}/man3/sd_notifyf.3
-%{_mandir}/man3/sd_readahead.3*
-%{_mandir}/man5/binfmt.d.5*
-%{_mandir}/man5/hostname.5*
-%{_mandir}/man5/locale.conf.5*
-%{_mandir}/man5/machine-id.5*
-%{_mandir}/man5/machine-info.5*
-%{_mandir}/man5/modules-load.d.5*
-%{_mandir}/man5/os-release.5*
-%{_mandir}/man5/sysctl.d.5*
-%{_mandir}/man5/systemd-logind.conf.5.*
-%{_mandir}/man5/systemd.automount.5*
-%{_mandir}/man5/systemd.conf.5*
-%{_mandir}/man5/systemd.device.5*
-%{_mandir}/man5/systemd.exec.5*
-%{_mandir}/man5/systemd.mount.5*
-%{_mandir}/man5/systemd.path.5*
-%{_mandir}/man5/systemd.service.5*
-%{_mandir}/man5/systemd.snapshot.5*
-%{_mandir}/man5/systemd.socket.5*
-%{_mandir}/man5/systemd.swap.5*
-%{_mandir}/man5/systemd.target.5*
-%{_mandir}/man5/systemd.timer.5*
-%{_mandir}/man5/systemd.unit.5*
-%{_mandir}/man5/timezone.5*
-%{_mandir}/man5/vconsole.conf.5*
-%{_mandir}/man7/daemon.7*
-%{_mandir}/man7/sd-daemon.7*
-%{_mandir}/man7/sd-readahead.7*
-%{_mandir}/man7/systemd.special.7*
-%{_mandir}/man8/halt.8*
-%{_mandir}/man8/poweroff.8
-%{_mandir}/man8/reboot.8
-%{_mandir}/man8/runlevel.8*
-%{_mandir}/man8/shutdown.8*
-%{_mandir}/man8/telinit.8*
+%{_mandir}/man1/*.1*
+%{_mandir}/man5/*.5*
+%{_mandir}/man7/*.7*
+%{_mandir}/man8/*.8*
+%exclude %{_mandir}/man1/systemctl.1*
+%exclude %{_mandir}/man5/tmpfiles.d.5*
+%exclude %{_mandir}/man8/systemd-tmpfiles.8*
 
 %attr(755,root,root) /%{_lib}/security/pam_systemd.so
-%{_mandir}/man8/pam_systemd.8*
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-daemon.so.?
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-id128.so.?
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-journal.so.?
+%attr(755,root,root) %ghost /%{_lib}/libsystemd-login.so.?
+%attr(755,root,root) /%{_lib}/libsystemd-daemon.so.*.*.*
+%attr(755,root,root) /%{_lib}/libsystemd-id128.so.*.*.*
+%attr(755,root,root) /%{_lib}/libsystemd-journal.so.*.*.*
+%attr(755,root,root) /%{_lib}/libsystemd-login.so.*.*.*
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libsystemd-*.so
+%{_datadir}/dbus-1/interfaces/*.xml
+%{_includedir}/systemd
+%{_pkgconfigdir}/libsystemd-*.pc
+%{_mandir}/man3/*.3*
 
 %files units
 %defattr(644,root,root,755)
