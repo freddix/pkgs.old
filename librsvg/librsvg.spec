@@ -1,7 +1,7 @@
 Summary:	SVG Rendering Library
 Name:		librsvg
 Version:	2.34.2
-Release:	1
+Release:	3
 Epoch:		1
 License:	GPL v2+
 Group:		Libraries
@@ -108,7 +108,6 @@ umask 022
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
 %{_pkgconfigdir}/*.pc
 %{_includedir}/librsvg-2.0
 
