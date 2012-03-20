@@ -1,11 +1,11 @@
 Summary:	A framework for defining policy for system-wide components
 Name:		polkit
-Version:	0.102
+Version:	0.104
 Release:	3
 License:	MIT
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	a3726bdb9728c103e58f62131e26693a
+# Source0-md5:	e380b4c6fb1e7bccf854e92edc0a8ce1
 URL:		http://people.freedesktop.org/~david/polkit-spec.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -71,10 +71,10 @@ GObject introspection data for %{name}.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-silent-rules		\
-	--disable-static		\
-	--with-html-dir=%{_gtkdocdir}	\
-	--with-pam-include=system-auth	\
+	--disable-silent-rules				\
+	--disable-static				\
+	--with-html-dir=%{_gtkdocdir}			\
+	--with-os-type=suse				\
 	--with-pam-module-dir=/%{_lib}/security
 %{__make}
 
@@ -173,9 +173,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libpolkit-agent-1.so
 %attr(755,root,root) %{_libdir}/libpolkit-backend-1.so
 %attr(755,root,root) %{_libdir}/libpolkit-gobject-1.so
-%{_libdir}/libpolkit-agent-1.la
-%{_libdir}/libpolkit-backend-1.la
-%{_libdir}/libpolkit-gobject-1.la
 %{_includedir}/polkit-1
 %{_pkgconfigdir}/polkit-agent-1.pc
 %{_pkgconfigdir}/polkit-backend-1.pc
