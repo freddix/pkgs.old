@@ -1,0 +1,20 @@
+diff -aurN libpciaccess-0.10.9.orig/src/linux_sysfs.c libpciaccess-0.10.9/src/linux_sysfs.c
+--- libpciaccess-0.10.9.orig/src/linux_sysfs.c	2009-10-24 12:40:16.000000000 +0200
++++ libpciaccess-0.10.9/src/linux_sysfs.c	2009-10-24 12:41:54.000000000 +0200
+@@ -572,7 +572,7 @@
+     /* For WC mappings, try sysfs resourceN_wc file first */
+     if ((map->flags & PCI_DEV_MAP_FLAG_WRITE_COMBINE) &&
+ 	!pci_device_linux_sysfs_map_range_wc(dev, map))
+-	    return 0;
++	    goto mmap_done;
+ 
+     snprintf(name, 255, "%s/%04x:%02x:%02x.%1u/resource%u",
+              SYS_BUS_PCI,
+@@ -595,6 +595,7 @@
+ 	return errno;
+     }
+ 
++mmap_done:
+ #ifdef HAVE_MTRR
+     if ((map->flags & PCI_DEV_MAP_FLAG_CACHABLE) != 0) {
+         sentry.type = MTRR_TYPE_WRBACK;
