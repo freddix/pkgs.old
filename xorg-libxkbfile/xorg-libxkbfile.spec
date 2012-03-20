@@ -1,11 +1,11 @@
 Summary:	xkbfile library
 Name:		xorg-libxkbfile
-Version:	1.0.7
-Release:	1
+Version:	1.0.8
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libxkbfile-%{version}.tar.bz2
-# Source0-md5:	59b4fe0bdf8d9b05e45b59e8fe9e7516
+# Source0-md5:	19e6533ae64abba0773816a23f2b9507
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
