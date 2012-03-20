@@ -1,15 +1,15 @@
 Summary:	Web browser
 Name:		firefox
-Version:	9.0.1
-Release:	5
+Version:	11.0
+Release:	1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	7cf2bd379792a9b232267c6a79680566
+# Source0-md5:	4b07acf47857aff72776d805409cdd1b
 Source1:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/linux-i686/xpi/de.xpi
-# Source1-md5:	77e98b3925c53e04d5a28fed0210b40f
+# Source1-md5:	02321790ce5cb8edbf97c6272fa5ea3c
 Source2:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/linux-i686/xpi/pl.xpi
-# Source2-md5:	6f6a026f06f7892dd08902acafdf63ae
+# Source2-md5:	e7487c9657d9c555d35527630e7c15a9
 Patch0:		%{name}-version.patch
 Patch1:		%{name}-freddix.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
@@ -29,7 +29,7 @@ BuildRequires:	perl-modules
 BuildRequires:	pkg-config
 BuildRequires:	sed
 BuildRequires:	xorg-libXcursor-devel
-BuildRequires:	xulrunner-devel >= 9.0.1
+BuildRequires:	xulrunner-devel >= 11.0
 BuildRequires:	zip
 BuildRequires:	zlib-devel
 Requires(post,postun):	desktop-file-utils
@@ -218,7 +218,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}-%{app_version}/defaults/preferences
 %{_libdir}/%{name}-%{app_version}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
 %{_libdir}/%{name}-%{app_version}/icons
-%{_libdir}/%{name}-%{app_version}/omni.jar
+%{_libdir}/%{name}-%{app_version}/omni.ja
 %{_libdir}/%{name}-%{app_version}/searchplugins
 %{_libdir}/%{name}-%{app_version}/xulrunner
 
