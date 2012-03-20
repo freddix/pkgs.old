@@ -1,0 +1,21 @@
+--- libcap/Make.Rules~	2008-07-10 08:22:22.000000000 +0200
++++ libcap/Make.Rules	2008-07-27 11:50:06.884836635 +0200
+@@ -43,7 +43,7 @@
+ # Compilation specifics
+ 
+ CC := gcc
+-CFLAGS := -O2
++CFLAGS := $(OPT_CFLAGS)
+ BUILD_CC := $(CC)
+ BUILD_CFLAGS := $(CFLAGS)
+ AR := ar
+@@ -54,7 +54,7 @@
+         -Wstrict-prototypes -Wmissing-prototypes \
+         -Wnested-externs -Winline -Wshadow
+ LD=$(CC) -Wl,-x -shared
+-LDFLAGS := #-g
++LDFLAGS := $(OPT_LDFLAGS) #-g
+ 
+ KERNEL_HEADERS := $(topdir)/libcap/include
+ SYSTEM_HEADERS = /usr/include
+
