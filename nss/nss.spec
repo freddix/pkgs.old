@@ -2,20 +2,20 @@
 
 Summary:	Network Security Services
 Name:		nss
-Version:	3.13.1
+Version:	3.13.3
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_%{foover}_RTM/src/%{name}-%{version}.tar.gz
-# Source0-md5:	c500f96d33ba1390c8a35c667e05e542
+# Source0-md5:	006cb82fa900e9e664b4b14a9b7810ca
 Source1:	%{name}-mozilla-nss.pc
 Source2:	%{name}-config.in
 Source3:	http://www.cacert.org/certs/root.der
 # Source3-md5:	a61b375e390d9c3654eebd2031461f6b
 Patch0:		%{name}-makefile.patch
 URL:		http://www.mozilla.org/projects/security/pki/nss/
-BuildRequires:	nspr-devel >= 1:4.8.9
+BuildRequires:	nspr-devel >= 1:4.9
 BuildRequires:	sqlite3-devel
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
