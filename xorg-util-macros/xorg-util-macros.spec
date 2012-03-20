@@ -1,11 +1,11 @@
 Summary:	Autoconf macros for xorg
 Name:		xorg-util-macros
-Version:	1.16.2
+Version:	1.17
 Release:	1
 License:	MIT
 Group:		X11/Development/Tools
 Source0:	http://xorg.freedesktop.org/releases/individual/util/util-macros-%{version}.tar.bz2
-# Source0-md5:	b54342201bb8fef7bafaf335ce8c9c52
+# Source0-md5:	4f41667e1bf4938bb2b24fa09d517f77
 Patch0:		%{name}-x.patch
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
