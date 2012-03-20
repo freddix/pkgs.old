@@ -1,7 +1,7 @@
 Summary:	A utility for determining file types
 Name:		file
 Version:	5.11
-Release:	1
+Release:	2
 License:	distributable
 Group:		Applications/File
 Source0:	ftp://ftp.astron.com/pub/file/%{name}-%{version}.tar.gz
@@ -111,16 +111,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	-n libmagic -p /sbin/ldconfig
 %postun	-n libmagic -p /sbin/ldconfig
-
-%pretrans
-# it used to be directory
-if [ -d %{_datadir}/file ]; then
-	mv -b %{_datadir}/file{,.dir}
-	ln -s misc %{_datadir}/file
-%banner -e %{name} <<EOF
-Check %{_datadir}/file.dir for your own files and remove it when done.
-EOF
-fi
 
 %files
 %defattr(644,root,root,755)
