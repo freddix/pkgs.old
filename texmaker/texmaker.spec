@@ -1,11 +1,11 @@
 Summary:	LaTeX development environment
 Name:		texmaker
-Version:	3.3
+Version:	3.3.2
 Release:	1
 License:	GPL
 Group:		X11/Applications/Publishing
 Source0:	http://www.xm1math.net/texmaker/%{name}-%{version}.tar.bz2
-# Source0-md5:	cefdedca06ba9396c033bbb18f0e46a6
+# Source0-md5:	c10b85dadc8b4205e1fd7baeaad97e7f
 Patch0:		%{name}-spelldir.patch
 URL:		http://www.xm1math.net/texmaker/
 BuildRequires:	QtDBus-devel
