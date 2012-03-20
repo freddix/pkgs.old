@@ -1,0 +1,11 @@
+--- giflib-4.1.6/util/gif2rle.c~	2007-11-10 19:46:31.000000000 +0100
++++ giflib-4.1.6/util/gif2rle.c	2009-04-08 16:26:05.000000000 +0200
+@@ -73,7 +73,7 @@
+     ColorMapSize = 0,
+     InterlacedOffset[] = { 0, 4, 2, 1 }, /* The way Interlaced image should. */
+     InterlacedJumps[] = { 8, 8, 4, 2 };    /* be read - offsets and jumps... */
+-static GifColorType
++static ColorMapObject
+     *ColorMap;
+ 
+ static void DumpScreen2Rle(GifRowType *ScreenBuffer,
