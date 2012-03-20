@@ -1,17 +1,17 @@
 Summary:	A userspace implementation of devfs
 Name:		udev
-Version:	175
+Version:	181
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Base
-#Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
-Source0:	http://people.freedesktop.org/~kay/udev/%{name}-%{version}.tar.bz2
-# Source0-md5:	2fc9c1efcbde98e3d73ffee7a77aea47
+Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
+# Source0-md5:	135c5acfd371febc5ed8326d48028922
 Source1:	%{name}-65-permissions.rules
 URL:		http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html
 BuildRequires:	device-mapper-devel
 BuildRequires:	gobject-introspection-devel
+BuildRequires:	kmod-devel
 BuildRequires:	libusb-compat-devel
 BuildRequires:	usbutils
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
@@ -84,14 +84,16 @@ GObject introspection data for udev.
 %{__automake}
 %{__autoconf}
 %configure \
+	--bindir=%{_sbindir}			\
 	--disable-silent-rules			\
 	--disable-static			\
 	--enable-logging			\
 	--enable-shared				\
-	--libexecdir=/lib/udev			\
+	--libexecdir=/lib			\
 	--with-html-dir=%{_gtkdocdir}		\
 	--with-pci-ids-path=/etc/pci.ids	\
 	--with-rootlibdir=/%{_lib}		\
+	--with-rootprefix=""			\
 	--with-systemdsystemunitdir=/lib/systemd/system	\
 	--with-usb-ids-path=/etc/usb.ids	\
 	--without-selinux
@@ -118,7 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog README TODO
-%doc extras/keymap/README.keymap.txt
+%doc src/extras/keymap/README.keymap.txt
 
 # dirs
 %dir %{_sysconfdir}/udev
@@ -133,12 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /%{_lib}/udev/accelerometer
 %attr(755,root,root) /%{_lib}/udev/collect
 %attr(755,root,root) /%{_lib}/udev/findkeyboards
-%attr(755,root,root) /%{_lib}/udev/firmware
 %attr(755,root,root) /%{_lib}/udev/keyboard-force-release.sh
 %attr(755,root,root) /%{_lib}/udev/keymap
 %attr(755,root,root) /%{_lib}/udev/mtd_probe
-%attr(755,root,root) /%{_lib}/udev/pci-db
-%attr(755,root,root) /%{_lib}/udev/usb-db
 
 %attr(755,root,root) /%{_lib}/udev/ata_id
 %attr(755,root,root) /%{_lib}/udev/cdrom_id
@@ -147,7 +146,6 @@ rm -rf $RPM_BUILD_ROOT
 
 # rules
 /%{_lib}/udev/rules.d/42-qemu-usb.rules
-/%{_lib}/udev/rules.d/50-firmware.rules
 /%{_lib}/udev/rules.d/50-udev-default.rules
 /%{_lib}/udev/rules.d/60-cdrom_id.rules
 /%{_lib}/udev/rules.d/60-persistent-alsa.rules
@@ -200,10 +198,10 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libudev.so
-%{_libdir}/libudev.la
-%{_includedir}/libudev.h
-%{_pkgconfigdir}/libudev.pc
 %{_datadir}/gir-1.0/GUdev-1.0.gir
+%{_includedir}/libudev.h
+%{_npkgconfigdir}/udev.pc
+%{_pkgconfigdir}/libudev.pc
 
 %files glib
 %defattr(644,root,root,755)
@@ -213,7 +211,6 @@ rm -rf $RPM_BUILD_ROOT
 %files glib-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libgudev-1.0.so
-%{_libdir}/libgudev-1.0.la
 %{_includedir}/gudev-1.0
 %{_pkgconfigdir}/gudev-1.0.pc
 
