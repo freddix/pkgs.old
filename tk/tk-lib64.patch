@@ -1,0 +1,12 @@
+diff -urN tk8.5a3.org/unix/Makefile.in tk8.5a3/unix/Makefile.in
+--- tk8.5a3.org/unix/Makefile.in	2005-06-04 23:00:25.000000000 +0200
++++ tk8.5a3/unix/Makefile.in	2005-06-17 23:59:45.195045312 +0200
+@@ -47,7 +47,7 @@
+ # Directory from which applications will reference the library of Tcl
+ # scripts (note: you can set the TK_LIBRARY environment variable at
+ # run-time to override the compiled-in location):
+-TK_LIBRARY		= @TK_LIBRARY@
++TK_LIBRARY		= $(libdir)/tk$(VERSION)
+ 
+ # Path to use at runtime to refer to LIB_INSTALL_DIR:
+ LIB_RUNTIME_DIR		= $(libdir)

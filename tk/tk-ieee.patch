@@ -1,0 +1,15 @@
+--- tk8.5a2/unix/tcl.m4.orig	2005-04-05 21:33:01.645942000 +0200
++++ tk8.5a2/unix/tcl.m4	2005-06-18 21:09:27.278392960 +0200
+@@ -2397,12 +2397,9 @@
+     #--------------------------------------------------------------------
+     # On a few very rare systems, all of the libm.a stuff is
+     # already in libc.a.  Set compiler flags accordingly.
+-    # Also, Linux requires the "ieee" library for math to work
+-    # right (and it must appear before "-lm").
+     #--------------------------------------------------------------------
+ 
+     AC_CHECK_FUNC(sin, MATH_LIBS="", MATH_LIBS="-lm")
+-    AC_CHECK_LIB(ieee, main, [MATH_LIBS="-lieee $MATH_LIBS"])
+ 
+     #--------------------------------------------------------------------
+     # Interactive UNIX requires -linet instead of -lsocket, plus it

@@ -1,0 +1,12 @@
+diff -Nru tk8.3.2/unix/tcl.m4 tk8.3.2.new/unix/tcl.m4
+--- tk8.3.2/unix/tcl.m4	Tue Aug  8 21:19:32 2000
++++ tk8.3.2.new/unix/tcl.m4	Thu Nov 16 22:01:37 2000
+@@ -587,7 +587,7 @@
+     ECHO_VERSION='`echo ${VERSION}`'
+     TCL_LIB_VERSIONS_OK=ok
+     CFLAGS_DEBUG=-g
+-    CFLAGS_OPTIMIZE=-O
++    CFLAGS_OPTIMIZE="${CFLAGS}"
+     AS_IF([test "$GCC" = yes], [
+ 	CFLAGS_WARNING="-Wall -Wno-implicit-int"
+     ], [CFLAGS_WARNING=""])

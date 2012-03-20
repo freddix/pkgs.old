@@ -1,0 +1,242 @@
+diff -ru tk/unix/tkUnixScrlbr.c tk-scrollbars/unix/tkUnixScrlbr.c
+--- tk/unix/tkUnixScrlbr.c	2000-11-21 19:49:38.000000000 -0600
++++ tk-scrollbars/unix/tkUnixScrlbr.c	2003-08-17 20:29:40.043125688 -0500
+@@ -101,6 +101,8 @@
+     Tk_3DBorder border;
+     int relief, width, elementBorderWidth;
+     Pixmap pixmap;
++    XColor *black;
++    GC blackGC;
+ 
+     if ((scrollPtr->tkwin == NULL) || !Tk_IsMapped(tkwin)) {
+ 	goto done;
+@@ -115,6 +117,7 @@
+     if (elementBorderWidth < 0) {
+ 	elementBorderWidth = scrollPtr->borderWidth;
+     }
++    elementBorderWidth = 1;
+ 
+     /*
+      * In order to avoid screen flashes, this procedure redraws
+@@ -126,6 +129,9 @@
+     pixmap = Tk_GetPixmap(scrollPtr->display, Tk_WindowId(tkwin),
+ 	    Tk_Width(tkwin), Tk_Height(tkwin), Tk_Depth(tkwin));
+ 
++    black = Tk_GetColor(NULL, tkwin, "Black");
++    blackGC = Tk_GCForColor(black, pixmap);
++
+     if (scrollPtr->highlightWidth != 0) {
+ 	GC gc;
+ 
+@@ -140,7 +146,7 @@
+ 	    scrollPtr->highlightWidth, scrollPtr->highlightWidth,
+ 	    Tk_Width(tkwin) - 2*scrollPtr->highlightWidth,
+ 	    Tk_Height(tkwin) - 2*scrollPtr->highlightWidth,
+-	    scrollPtr->borderWidth, scrollPtr->relief);
++	    1, scrollPtr->relief);
+     XFillRectangle(scrollPtr->display, pixmap,
+ 	    ((UnixScrollbar*)scrollPtr)->troughGC,
+ 	    scrollPtr->inset, scrollPtr->inset,
+@@ -163,24 +169,42 @@
+ 	border = scrollPtr->bgBorder;
+ 	relief = TK_RELIEF_RAISED;
+     }
++
++    XFillRectangle(scrollPtr->display, pixmap, blackGC,
++            scrollPtr->inset, scrollPtr->inset,
++            width, scrollPtr->arrowLength);
++
++    Tk_Fill3DRectangle(tkwin, pixmap, border,
++            scrollPtr->inset, scrollPtr->inset,
++            width - 1, scrollPtr->arrowLength - 1,
++		elementBorderWidth, relief);
++
+     if (scrollPtr->vertical) {
+-	points[0].x = scrollPtr->inset - 1;
+-	points[0].y = scrollPtr->arrowLength + scrollPtr->inset - 1;
+-	points[1].x = width + scrollPtr->inset;
++        int centerX = (width-1)/2 + scrollPtr->inset;
++        int centerY = 8;
++
++	points[0].x = centerX - 4;
++	points[0].y = centerY + 2;
++	points[1].x = centerX + 4;
+ 	points[1].y = points[0].y;
+-	points[2].x = width/2 + scrollPtr->inset;
+-	points[2].y = scrollPtr->inset - 1;
+-	Tk_Fill3DPolygon(tkwin, pixmap, border, points, 3,
+-		elementBorderWidth, relief);
++	points[2].x = centerX;
++	points[2].y = centerY - 3;
++
++        XFillPolygon(scrollPtr->display, pixmap, blackGC, points, 3,
++                Convex, CoordModeOrigin);
+     } else {
+-	points[0].x = scrollPtr->arrowLength + scrollPtr->inset - 1;
+-	points[0].y = scrollPtr->inset - 1;
+-	points[1].x = scrollPtr->inset;
+-	points[1].y = width/2 + scrollPtr->inset;
+-	points[2].x = points[0].x;
+-	points[2].y = width + scrollPtr->inset;
+-	Tk_Fill3DPolygon(tkwin, pixmap, border, points, 3,
+-		elementBorderWidth, relief);
++        int centerX = 8;
++        int centerY = (width-1)/2 + scrollPtr->inset;
++
++	points[0].x = centerX + 2;
++	points[0].y = centerY - 4;
++	points[1].x = points[0].x;
++	points[1].y = centerY + 4;
++	points[2].x = centerX - 2;
++	points[2].y = centerY;
++
++        XFillPolygon(scrollPtr->display, pixmap, blackGC, points, 3,
++                Convex, CoordModeOrigin);
+     }
+ 
+     /*
+@@ -195,26 +219,57 @@
+ 	border = scrollPtr->bgBorder;
+ 	relief = TK_RELIEF_RAISED;
+     }
++
+     if (scrollPtr->vertical) {
+-	points[0].x = scrollPtr->inset;
+-	points[0].y = Tk_Height(tkwin) - scrollPtr->arrowLength
+-		- scrollPtr->inset + 1;
+-	points[1].x = width/2 + scrollPtr->inset;
+-	points[1].y = Tk_Height(tkwin) - scrollPtr->inset;
+-	points[2].x = width + scrollPtr->inset;
+-	points[2].y = points[0].y;
+-	Tk_Fill3DPolygon(tkwin, pixmap, border,
+-		points, 3, elementBorderWidth, relief);
++        int centerX = (width-1)/2 + scrollPtr->inset;
++        int centerY = Tk_Height(tkwin) - 8 - scrollPtr->inset;
++
++        XFillRectangle(scrollPtr->display, pixmap, blackGC,
++                scrollPtr->inset, 
++                Tk_Height(tkwin) - scrollPtr->arrowLength - scrollPtr->inset,
++                width, scrollPtr->arrowLength);
++
++        Tk_Fill3DRectangle(tkwin, pixmap, border,
++                scrollPtr->inset, 
++                Tk_Height(tkwin) - scrollPtr->arrowLength - scrollPtr->inset,
++                width - 1,
++                scrollPtr->arrowLength - 1,
++                elementBorderWidth, relief);
++
++	points[0].x = centerX - 3;
++	points[0].y = centerY - 2;
++	points[1].x = centerX + 4;
++	points[1].y = points[0].y;
++	points[2].x = centerX;
++	points[2].y = centerY + 2;
++
++        XFillPolygon(scrollPtr->display, pixmap, blackGC, points, 3,
++                Convex, CoordModeOrigin);
+     } else {
+-	points[0].x = Tk_Width(tkwin) - scrollPtr->arrowLength
+-		- scrollPtr->inset + 1;
+-	points[0].y = scrollPtr->inset - 1;
++        int centerX = Tk_Width(tkwin) - 7 - scrollPtr->inset;
++        int centerY = (width-1)/2 + scrollPtr->inset;
++
++        XFillRectangle(scrollPtr->display, pixmap, blackGC,
++                Tk_Width(tkwin) - scrollPtr->arrowLength - scrollPtr->inset,
++                scrollPtr->inset, 
++                width, scrollPtr->arrowLength);
++
++        Tk_Fill3DRectangle(tkwin, pixmap, border,
++                Tk_Width(tkwin) - scrollPtr->arrowLength - scrollPtr->inset,
++                scrollPtr->inset, 
++                width - 1,
++                scrollPtr->arrowLength - 1,
++                elementBorderWidth, relief);
++
++	points[0].x = centerX - 2;
++	points[0].y = centerY + 4;
+ 	points[1].x = points[0].x;
+-	points[1].y = width + scrollPtr->inset;
+-	points[2].x = Tk_Width(tkwin) - scrollPtr->inset;
+-	points[2].y = width/2 + scrollPtr->inset;
+-	Tk_Fill3DPolygon(tkwin, pixmap, border,
+-		points, 3, elementBorderWidth, relief);
++	points[1].y = centerY - 4;
++	points[2].x = centerX + 2;
++	points[2].y = centerY;
++
++        XFillPolygon(scrollPtr->display, pixmap, blackGC, points, 3,
++                Convex, CoordModeOrigin);
+     }
+ 
+     /*
+@@ -223,22 +278,25 @@
+ 
+     if (scrollPtr->activeField == SLIDER) {
+ 	border = scrollPtr->activeBorder;
+-	relief = scrollPtr->activeField == SLIDER ? scrollPtr->activeRelief
+-		: TK_RELIEF_RAISED;
+     } else {
+ 	border = scrollPtr->bgBorder;
+-	relief = TK_RELIEF_RAISED;
+     }
+     if (scrollPtr->vertical) {
++        XFillRectangle(scrollPtr->display, pixmap, blackGC,
++                scrollPtr->inset, scrollPtr->sliderFirst,
++                width, scrollPtr->sliderLast - scrollPtr->sliderFirst);
+ 	Tk_Fill3DRectangle(tkwin, pixmap, border,
+ 		scrollPtr->inset, scrollPtr->sliderFirst,
+-		width, scrollPtr->sliderLast - scrollPtr->sliderFirst,
+-		elementBorderWidth, relief);
++		width - 1, scrollPtr->sliderLast - scrollPtr->sliderFirst - 1,
++		elementBorderWidth, TK_RELIEF_RAISED);
+     } else {
++        XFillRectangle(scrollPtr->display, pixmap, blackGC,
++                scrollPtr->sliderFirst, scrollPtr->inset,
++                scrollPtr->sliderLast - scrollPtr->sliderFirst, width);
+ 	Tk_Fill3DRectangle(tkwin, pixmap, border,
+ 		scrollPtr->sliderFirst, scrollPtr->inset,
+-		scrollPtr->sliderLast - scrollPtr->sliderFirst, width,
+-		elementBorderWidth, relief);
++		scrollPtr->sliderLast - scrollPtr->sliderFirst - 1, width - 1,
++		elementBorderWidth, TK_RELIEF_RAISED);
+     }
+ 
+     /*
+@@ -250,6 +308,8 @@
+ 	    ((UnixScrollbar*)scrollPtr)->copyGC, 0, 0,
+ 	    (unsigned) Tk_Width(tkwin), (unsigned) Tk_Height(tkwin), 0, 0);
+     Tk_FreePixmap(scrollPtr->display, pixmap);
++    
++    Tk_FreeColor(black);
+ 
+     done:
+     scrollPtr->flags &= ~REDRAW_PENDING;
+@@ -286,7 +346,7 @@
+     scrollPtr->inset = scrollPtr->highlightWidth + scrollPtr->borderWidth;
+     width = (scrollPtr->vertical) ? Tk_Width(scrollPtr->tkwin)
+ 	    : Tk_Height(scrollPtr->tkwin);
+-    scrollPtr->arrowLength = width - 2*scrollPtr->inset + 1;
++    scrollPtr->arrowLength = 14;
+     fieldLength = (scrollPtr->vertical ? Tk_Height(scrollPtr->tkwin)
+ 	    : Tk_Width(scrollPtr->tkwin))
+ 	    - 2*(scrollPtr->arrowLength + scrollPtr->inset);
+@@ -409,6 +469,18 @@
+ 	unixScrollPtr->copyGC = Tk_GetGC(scrollPtr->tkwin, GCGraphicsExposures,
+ 	    &gcValues);
+     }
++
++    /*
++     * Borders are always 1 pixel wide now.
++     */
++    scrollPtr->elementBorderWidth = 1;
++    scrollPtr->borderWidth = 1;
++
++    if (scrollPtr->width % 2 == 0)
++        scrollPtr->width--;
++
++    if (scrollPtr->width < 14) 
++        scrollPtr->width = 14;
+ }
+ 
+ /*

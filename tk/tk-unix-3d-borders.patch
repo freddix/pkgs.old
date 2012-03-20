@@ -1,0 +1,123 @@
+--- tk8.5a4/unix/tkUnix3d.c.orig	2005-11-13 22:00:17.000000000 +0100
++++ tk8.5a4/unix/tkUnix3d.c	2006-05-24 01:21:30.399824500 +0200
+@@ -26,6 +26,7 @@
+ typedef struct {
+     TkBorder info;
+     GC solidGC;		/* Used to draw solid relief. */
++    GC blackGC;         /* Used to draw more rounded 3d border. */
+ } UnixBorder;
+ 
+ /*
+@@ -49,6 +50,7 @@
+ {
+     UnixBorder *borderPtr = (UnixBorder *) ckalloc(sizeof(UnixBorder));
+     borderPtr->solidGC = None;
++    borderPtr->blackGC = None;     
+     return (TkBorder *) borderPtr;
+ }
+ 
+@@ -79,6 +81,9 @@
+     if (unixBorderPtr->solidGC != None) {
+ 	Tk_FreeGC(display, unixBorderPtr->solidGC);
+     }
++    if (unixBorderPtr->blackGC != None) {
++	Tk_FreeGC(display, unixBorderPtr->blackGC);
++    }
+ }
+ /*
+  *--------------------------------------------------------------
+@@ -121,6 +126,7 @@
+ 				 * should appear higher than exterior. */
+ {
+     TkBorder *borderPtr = (TkBorder *) border;
++    UnixBorder *unixBorderPtr = ((UnixBorder *)borderPtr);
+     GC left, right;
+     Display *display = Tk_Display(tkwin);
+ 
+@@ -129,13 +135,34 @@
+     }
+ 
+     if (relief == TK_RELIEF_RAISED) {
++        int half;
++
++        half = width/2;
++        if (!leftBevel && (width & 1)) {
++            half++;
++        }
++
+ 	XFillRectangle(display, drawable,
+ 		(leftBevel) ? borderPtr->lightGC : borderPtr->darkGC,
+ 		x, y, (unsigned) width, (unsigned) height);
++	XFillRectangle(display, drawable, 
++		(leftBevel) ? borderPtr->bgGC : 
++                unixBorderPtr->blackGC,
++		x+half, y, (unsigned) (width-half), (unsigned) height);
+     } else if (relief == TK_RELIEF_SUNKEN) {
++        int half;
++
++        half = width/2;
++        if (leftBevel && (width & 1)) {
++            half++;
++        }
++
+ 	XFillRectangle(display, drawable,
+-		(leftBevel) ? borderPtr->darkGC : borderPtr->lightGC,
++		(leftBevel) ? borderPtr->darkGC : borderPtr->bgGC,
+ 		x, y, (unsigned) width, (unsigned) height);
++	XFillRectangle(display, drawable, 
++		(leftBevel) ? unixBorderPtr->blackGC : borderPtr->lightGC,
++		x+half, y, (unsigned) (width-half), (unsigned) height);
+     } else if (relief == TK_RELIEF_RIDGE) {
+ 	int half;
+ 
+@@ -239,7 +266,8 @@
+ 	bottomGC = borderPtr->lightGC;
+ 	break;
+     case TK_RELIEF_RAISED:
+-	topGC = bottomGC = (topBevel? borderPtr->lightGC : borderPtr->darkGC);
++	    topGC = (topBevel) ? borderPtr->lightGC : borderPtr->darkGC,
++	    bottomGC = (topBevel) ? borderPtr->bgGC : unixBorderPtr->blackGC;
+ 	break;
+     case TK_RELIEF_RIDGE:
+ 	topGC = borderPtr->lightGC;
+@@ -256,7 +284,9 @@
+ 		(unsigned) width, (unsigned) height);
+ 	return;
+     case TK_RELIEF_SUNKEN:
+-	topGC = bottomGC = (topBevel? borderPtr->darkGC : borderPtr->lightGC);
++	    bottomGC = (topBevel) ? unixBorderPtr->blackGC : borderPtr->lightGC;
++	    topGC = (topBevel) ? borderPtr->darkGC
++		: borderPtr->bgGC;
+ 	break;
+     }
+ 
+@@ -275,7 +305,10 @@
+     x1Delta = (leftIn) ? 1 : -1;
+     x2Delta = (rightIn) ? -1 : 1;
+     halfway = y + height/2;
+-    if (!topBevel && (height & 1)) {
++    if (((relief == TK_RELIEF_SUNKEN) || (relief == TK_RELIEF_RAISED)) &&
++            topBevel && (height & 1)) {
++	halfway++;
++    } else if (!topBevel && (height & 1)) {
+ 	halfway++;
+     }
+     bottom = y + height;
+@@ -403,6 +436,9 @@
+ 	gcValues.foreground = borderPtr->darkColorPtr->pixel;
+ 	borderPtr->darkGC = Tk_GetGC(tkwin, GCForeground, &gcValues);
+ 
++        gcValues.foreground = BlackPixelOfScreen(borderPtr->screen);
++        ((UnixBorder *)borderPtr)->blackGC = Tk_GetGC(tkwin, GCForeground, &gcValues);
++
+ 	/*
+ 	 * Compute the light shadow color
+ 	 */
+@@ -439,6 +475,7 @@
+ 	borderPtr->lightColorPtr = Tk_GetColorByValue(tkwin, &lightColor);
+ 	gcValues.foreground = borderPtr->lightColorPtr->pixel;
+ 	borderPtr->lightGC = Tk_GetGC(tkwin, GCForeground, &gcValues);
++
+ 	return;
+     }
+ 

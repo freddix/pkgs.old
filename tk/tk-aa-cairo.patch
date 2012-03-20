@@ -1,0 +1,446 @@
+--- tk/generic/tkCanvLine.c	2003-02-09 01:48:22.000000000 -0600
++++ tk-working/generic/tkCanvLine.c	2003-08-12 08:27:24.000000000 -0500
+@@ -924,8 +924,48 @@
+ 	Tk_CanvasSetOffset(canvas, linePtr->arrowGC, &linePtr->outline.tsoffset);
+     }
+     if (numPoints>1) {
++#ifdef HAVE_CAIRO
++        if (linePtr->outline.stipple == None) {
++            XGCValues gc;
++            cairo_t *cr = ((TkCanvas *) canvas)->cairo;
++            int i;
++
++            XGetGCValues(display, linePtr->outline.gc, GCJoinStyle|GCCapStyle|GCLineWidth, &gc);
++
++            cairo_set_target_drawable(cr, display, drawable);
++            cairo_set_line_width(cr, (double) linePtr->outline.width);
++            cairo_set_rgb_color(cr, 
++                    (double) linePtr->outline.color->red / 65535,
++                    (double) linePtr->outline.color->green / 65535,
++                    (double) linePtr->outline.color->blue / 65535);
++
++            switch (gc.cap_style) {
++                case CapButt: cairo_set_line_cap(cr, CAIRO_LINE_CAP_BUTT); break;
++                case CapRound: cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND); break;
++            }
++
++            switch (gc.join_style) {
++                case JoinRound: cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND); break;
++                case JoinBevel: cairo_set_line_join(cr, CAIRO_LINE_JOIN_BEVEL); break;
++                default:        cairo_set_line_join(cr, CAIRO_LINE_JOIN_MITER);
++            }
++
++            cairo_new_path(cr);
++            cairo_move_to (cr, (double) pointPtr[0].x, (double) pointPtr[0].y);
++
++            for(i = 0; i < numPoints; i++) {
++                cairo_line_to (cr, (double) pointPtr[i].x, (double) pointPtr[i].y);
++            }
++
++            cairo_stroke(cr);
++        } else {
++            XDrawLines(display, drawable, linePtr->outline.gc, pointPtr, numPoints,
++                CoordModeOrigin);
++        }
++#else
+ 	XDrawLines(display, drawable, linePtr->outline.gc, pointPtr, numPoints,
+ 	    CoordModeOrigin);
++#endif
+     } else {
+ 	int intwidth = (int) (linewidth + 0.5);
+         if (intwidth<1) {
+diff --ignore-matching-lines=RCS --exclude=CVS -ru tk/generic/tkCanvPoly.c tk-working/generic/tkCanvPoly.c
+--- tk/generic/tkCanvPoly.c	2003-05-10 19:52:41.000000000 -0500
++++ tk-working/generic/tkCanvPoly.c	2003-08-12 08:27:24.000000000 -0500
+@@ -846,12 +846,79 @@
+      */
+ 
+     if (gc != None && numPoints>3) {
++#ifdef HAVE_CAIRO
++        XGCValues lgc;
++        XColor fg;
++        cairo_t *cr = ((TkCanvas *) canvas)->cairo;
++        int i;
++
++        XGetGCValues(display, gc, GCStipple|GCForeground|GCLineWidth, &lgc);
++
++        if (lgc.stipple == None) {
++            fg.pixel = lgc.foreground;
++            
++            XQueryColor(display, 
++                    XDefaultColormapOfScreen(XDefaultScreenOfDisplay(display)),
++                    &fg);
++
++            cairo_set_target_drawable(cr, display, drawable);
++            cairo_set_line_width(cr, (double) lgc.line_width);
++            cairo_set_rgb_color(cr, 
++                    (double) fg.red / 65535,
++                    (double) fg.green / 65535,
++                    (double) fg.blue / 65535);
++
++            cairo_new_path(cr);
++            cairo_move_to (cr, (double) pointPtr[0].x, (double) pointPtr[0].y);
++
++            for(i = 0; i < numPoints; i++) {
++                cairo_line_to (cr, (double) pointPtr[i].x, (double) pointPtr[i].y);
++            }
++
++            cairo_fill(cr);
++        } else {
++            XFillPolygon(display, drawable, gc, pointPtr, numPoints, Complex,
++                    CoordModeOrigin);
++        }
++#else
+ 	XFillPolygon(display, drawable, gc, pointPtr, numPoints, Complex,
+ 		CoordModeOrigin);
++#endif
+     }
+     if (outlineGC != None) {
++#ifdef HAVE_CAIRO
++        XGCValues lgc;
++        XColor fg;
++        cairo_t *cr = ((TkCanvas *) canvas)->cairo;
++        int i;
++
++        XGetGCValues(display, outlineGC, GCForeground|GCLineWidth, &lgc);
++
++        fg.pixel = lgc.foreground;
++        
++        XQueryColor(display, 
++                XDefaultColormapOfScreen(XDefaultScreenOfDisplay(display)),
++                &fg);
++
++        cairo_set_target_drawable(cr, display, drawable);
++        cairo_set_line_width(cr, (double) lgc.line_width);
++        cairo_set_rgb_color(cr, 
++                (double) fg.red / 65535,
++                (double) fg.green / 65535,
++                (double) fg.blue / 65535);
++
++        cairo_new_path(cr);
++        cairo_move_to (cr, (double) pointPtr[0].x, (double) pointPtr[0].y);
++
++        for(i = 0; i < numPoints; i++) {
++            cairo_line_to (cr, (double) pointPtr[i].x, (double) pointPtr[i].y);
++        }
++
++        cairo_stroke(cr);
++#else
+ 	XDrawLines(display, drawable, outlineGC, pointPtr,
+ 	    numPoints, CoordModeOrigin);
++#endif
+     }
+     if (pointPtr != staticPoints) {
+ 	ckfree((char *) pointPtr);
+@@ -984,12 +1051,65 @@
+ 		polyPtr->numPoints, polyPtr->splineSteps, pointPtr,
+ 		(double *) NULL);
+ 	if (polyPtr->fillGC != None) {
++#ifdef HAVE_CAIRO
++                XGCValues gc;
++                cairo_t *cr = ((TkCanvas *) canvas)->cairo;
++                int i;
++
++                XGetGCValues(display, polyPtr->fillGC, GCLineWidth, &gc);
++
++                cairo_set_target_drawable(cr, display, drawable);
++                cairo_set_line_width(cr, (double) gc.line_width);
++                cairo_set_rgb_color(cr, 
++                        (double) polyPtr->fillColor->red / 65535,
++                        (double) polyPtr->fillColor->green / 65535,
++                        (double) polyPtr->fillColor->blue / 65535);
++
++                cairo_new_path(cr);
++                cairo_move_to (cr, (double) pointPtr[0].x, (double) pointPtr[0].y);
++
++                for(i = 0; i < numPoints; i++) {
++                    cairo_line_to (cr, (double) pointPtr[i].x, (double) pointPtr[i].y);
++                }
++
++                cairo_fill(cr);
++#else
+ 	    XFillPolygon(display, drawable, polyPtr->fillGC, pointPtr,
+ 		    numPoints, Complex, CoordModeOrigin);
++#endif
+ 	}
+ 	if (polyPtr->outline.gc != None) {
++#ifdef HAVE_CAIRO
++            if (polyPtr->outline.stipple == None) {
++                XGCValues gc;
++                cairo_t *cr = ((TkCanvas *) canvas)->cairo;
++                int i;
++
++                XGetGCValues(display, polyPtr->outline.gc, GCLineWidth, &gc);
++
++                cairo_set_target_drawable(cr, display, drawable);
++                cairo_set_line_width(cr, (double) gc.line_width);
++                cairo_set_rgb_color(cr, 
++                        (double) polyPtr->outline.color->red / 65535,
++                        (double) polyPtr->outline.color->green / 65535,
++                        (double) polyPtr->outline.color->blue / 65535);
++
++                cairo_new_path(cr);
++                cairo_move_to (cr, (double) pointPtr[0].x, (double) pointPtr[0].y);
++
++                for(i = 0; i < numPoints; i++) {
++                    cairo_line_to (cr, (double) pointPtr[i].x, (double) pointPtr[i].y);
++                }
++
++                cairo_stroke(cr);
++            } else {
++                XDrawLines(display, drawable, polyPtr->outline.gc, pointPtr,
++                        numPoints, CoordModeOrigin);
++            }
++#else
+ 	    XDrawLines(display, drawable, polyPtr->outline.gc, pointPtr,
+ 		    numPoints, CoordModeOrigin);
++#endif
+ 	}
+ 	if (pointPtr != staticPoints) {
+ 	    ckfree((char *) pointPtr);
+diff --ignore-matching-lines=RCS --exclude=CVS -ru tk/generic/tkCanvas.c tk-working/generic/tkCanvas.c
+--- tk/generic/tkCanvas.c	2003-05-19 08:04:23.000000000 -0500
++++ tk-working/generic/tkCanvas.c	2003-08-12 07:23:58.000000000 -0500
+@@ -462,6 +462,9 @@
+ #ifndef USE_OLD_TAG_SEARCH
+     canvasPtr->bindTagExprs = NULL;
+ #endif
++#ifdef HAVE_CAIRO
++    canvasPtr->cairo = cairo_create();
++#endif
+     Tcl_InitHashTable(&canvasPtr->idTable, TCL_ONE_WORD_KEYS);
+ 
+     Tk_SetClass(canvasPtr->tkwin, "Canvas");
+@@ -1973,6 +1976,9 @@
+ 	expr = next;
+     }
+ #endif
++#ifdef HAVE_CAIRO
++    cairo_destroy(canvasPtr->cairo);
++#endif
+     Tcl_DeleteTimerHandler(canvasPtr->insertBlinkHandler);
+     if (canvasPtr->bindingTable != NULL) {
+ 	Tk_DeleteBindingTable(canvasPtr->bindingTable);
+diff --ignore-matching-lines=RCS --exclude=CVS -ru tk/generic/tkCanvas.h tk-working/generic/tkCanvas.h
+--- tk/generic/tkCanvas.h	2003-01-08 17:02:33.000000000 -0600
++++ tk-working/generic/tkCanvas.h	2003-08-12 07:24:00.000000000 -0500
+@@ -21,6 +21,10 @@
+ #include "tk.h"
+ #endif
+ 
++#ifdef HAVE_CAIRO
++#include <cairo.h>
++#endif
++
+ #ifndef USE_OLD_TAG_SEARCH
+ typedef struct TagSearchExpr_s TagSearchExpr;
+ 
+@@ -235,6 +239,9 @@
+ #ifndef USE_OLD_TAG_SEARCH
+     TagSearchExpr *bindTagExprs; /* linked list of tag expressions used in bindings */
+ #endif
++#ifdef HAVE_CAIRO
++    cairo_t *cairo;              /* Cairo drawable */
++#endif
+ } TkCanvas;
+ 
+ /*
+diff --ignore-matching-lines=RCS --exclude=CVS -ru tk/generic/tkRectOval.c tk-working/generic/tkRectOval.c
+--- tk/generic/tkRectOval.c	2003-02-09 01:48:22.000000000 -0600
++++ tk-working/generic/tkRectOval.c	2003-08-12 07:23:58.000000000 -0500
+@@ -805,9 +805,41 @@
+ 	    XFillRectangle(display, drawable, rectOvalPtr->fillGC,
+ 		    x1, y1, (unsigned int) (x2-x1), (unsigned int) (y2-y1));
+ 	} else {
++#ifdef HAVE_CAIRO
++#define ARC_MAGIC ((double) 0.5522847498)
++            cairo_t *cr = ((TkCanvas *) canvas)->cairo;
++            double cx, cy, rx, ry;
++            XGCValues gc;
++
++            XGetGCValues(display, rectOvalPtr->fillGC, GCLineWidth, &gc);
++ 
++            cx = ((x2-x1)/2)+x1;
++            cy = ((y2-y1)/2)+y1;
++            rx = (x2-x1)/2;
++            ry = (y2-y1)/2;
++
++            cairo_set_target_drawable (cr, display, drawable);
++            cairo_set_rgb_color(cr, 
++                    (double) rectOvalPtr->fillColor->red / 65535,
++                    (double) rectOvalPtr->fillColor->green / 65535,
++                    (double) rectOvalPtr->fillColor->blue / 65535);
++            cairo_set_line_width(cr, (double) gc.line_width);
++
++            cairo_new_path(cr);
++            cairo_move_to (cr, cx + rx, cy);
++
++            cairo_curve_to (cr, cx + rx, cy + ry * ARC_MAGIC, cx + rx * ARC_MAGIC, cy + ry, cx, cy + ry);
++            cairo_curve_to (cr, cx - rx * ARC_MAGIC, cy + ry, cx - rx, cy + ry * ARC_MAGIC, cx - rx, cy);
++            cairo_curve_to (cr, cx - rx, cy - ry * ARC_MAGIC, cx - rx * ARC_MAGIC, cy - ry, cx, cy - ry);
++            cairo_curve_to (cr, cx + rx * ARC_MAGIC, cy - ry, cx + rx, cy - ry * ARC_MAGIC, cx + rx, cy);
++
++            cairo_fill(cr);
++            cairo_stroke(cr);
++#else
+ 	    XFillArc(display, drawable, rectOvalPtr->fillGC,
+ 		    x1, y1, (unsigned) (x2-x1), (unsigned) (y2-y1),
+ 		    0, 360*64);
++#endif
+ 	}
+ 	if (fillStipple != None) {
+ 	    XSetTSOrigin(display, rectOvalPtr->fillGC, 0, 0);
+@@ -819,8 +851,38 @@
+ 	    XDrawRectangle(display, drawable, rectOvalPtr->outline.gc,
+ 		    x1, y1, (unsigned) (x2-x1), (unsigned) (y2-y1));
+ 	} else {
++#ifdef HAVE_CAIRO
++            cairo_t *cr = ((TkCanvas *) canvas)->cairo;
++            double cx, cy, rx, ry;
++            XGCValues gc;
++
++            XGetGCValues(display, rectOvalPtr->outline.gc, GCLineWidth, &gc);
++ 
++            cx = ((x2-x1)/2)+x1;
++            cy = ((y2-y1)/2)+y1;
++            rx = (x2-x1)/2;
++            ry = (y2-y1)/2;
++
++            cairo_set_target_drawable (cr, display, drawable);
++            cairo_set_rgb_color(cr, 
++                    (double) rectOvalPtr->outline.color->red / 65535,
++                    (double) rectOvalPtr->outline.color->green / 65535,
++                    (double) rectOvalPtr->outline.color->blue / 65535);
++            cairo_set_line_width(cr, (double) gc.line_width);
++
++            cairo_new_path(cr);
++            cairo_move_to (cr, cx + rx, cy);
++
++            cairo_curve_to (cr, cx + rx, cy + ry * ARC_MAGIC, cx + rx * ARC_MAGIC, cy + ry, cx, cy + ry);
++            cairo_curve_to (cr, cx - rx * ARC_MAGIC, cy + ry, cx - rx, cy + ry * ARC_MAGIC, cx - rx, cy);
++            cairo_curve_to (cr, cx - rx, cy - ry * ARC_MAGIC, cx - rx * ARC_MAGIC, cy - ry, cx, cy - ry);
++            cairo_curve_to (cr, cx + rx * ARC_MAGIC, cy - ry, cx + rx, cy - ry * ARC_MAGIC, cx + rx, cy);
++
++            cairo_stroke(cr);
++#else
+ 	    XDrawArc(display, drawable, rectOvalPtr->outline.gc,
+ 		    x1, y1, (unsigned) (x2-x1), (unsigned) (y2-y1), 0, 360*64);
++#endif
+ 	}
+ 	Tk_ResetOutlineGC(canvas, itemPtr, &(rectOvalPtr->outline));
+     }
+diff --ignore-matching-lines=RCS --exclude=CVS -ru tk/unix/Makefile.in tk-working/unix/Makefile.in
+--- tk/unix/Makefile.in	2003-05-31 13:32:20.000000000 -0500
++++ tk-working/unix/Makefile.in	2003-08-12 07:23:56.000000000 -0500
+@@ -129,7 +129,7 @@
+ # Linker switch(es) to use to link with the X11 library archive (the
+ # configure script will try to set this value automatically, but you
+ # can override it).
+-X11_LIB_SWITCHES	= @XLIBSW@ $(XFT_LIBS)
++X11_LIB_SWITCHES	= @XLIBSW@ $(XFT_LIBS) $(CAIRO_LIBS)
+ 
+ 
+ # To turn off the security checks that disallow incoming sends when
+@@ -251,6 +251,10 @@
+ XFT_CFLAGS		= @XFT_CFLAGS@
+ XFT_LIBS		= @XFT_LIBS@
+ 
++# support for Cairo:
++CAIRO_CFLAGS            = @CAIRO_CFLAGS@
++CAIRO_LIBS              = @CAIRO_LIBS@
++
+ #----------------------------------------------------------------
+ # The information below is modified by the configure script when
+ # Makefile is generated from Makefile.in.  You shouldn't normally
+@@ -836,40 +840,40 @@
+ 	$(CC) -c $(CC_SWITCHES_NO_STUBS) $(GENERIC_DIR)/tkSquare.c
+ 
+ tkCanvas.o: $(GENERIC_DIR)/tkCanvas.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvas.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvas.c
+ 
+ tkCanvArc.o: $(GENERIC_DIR)/tkCanvArc.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvArc.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvArc.c
+ 
+ tkCanvBmap.o: $(GENERIC_DIR)/tkCanvBmap.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvBmap.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvBmap.c
+ 
+ tkCanvImg.o: $(GENERIC_DIR)/tkCanvImg.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvImg.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvImg.c
+ 
+ tkCanvLine.o: $(GENERIC_DIR)/tkCanvLine.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvLine.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvLine.c
+ 
+ tkCanvPoly.o: $(GENERIC_DIR)/tkCanvPoly.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvPoly.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvPoly.c
+ 
+ tkCanvPs.o: $(GENERIC_DIR)/tkCanvPs.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvPs.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvPs.c
+ 
+ tkCanvText.o: $(GENERIC_DIR)/tkCanvText.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvText.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvText.c
+ 
+ tkCanvUtil.o: $(GENERIC_DIR)/tkCanvUtil.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvUtil.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvUtil.c
+ 
+ tkCanvWind.o: $(GENERIC_DIR)/tkCanvWind.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkCanvWind.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkCanvWind.c
+ 
+ tkRectOval.o: $(GENERIC_DIR)/tkRectOval.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkRectOval.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkRectOval.c
+ 
+ tkTrig.o: $(GENERIC_DIR)/tkTrig.c
+-	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkTrig.c
++	$(CC) -c $(CC_SWITCHES) $(CAIRO_CFLAGS) $(GENERIC_DIR)/tkTrig.c
+ 
+ tkImage.o: $(GENERIC_DIR)/tkImage.c
+ 	$(CC) -c $(CC_SWITCHES) $(GENERIC_DIR)/tkImage.c
+diff --ignore-matching-lines=RCS --exclude=CVS -ru tk/unix/configure.in tk-working/unix/configure.in
+--- tk/unix/configure.in	2003-06-02 11:13:13.000000000 -0500
++++ tk-working/unix/configure.in	2003-08-12 07:23:56.000000000 -0500
+@@ -282,6 +282,35 @@
+ fi
+ 
+ #--------------------------------------------------------------------
++#	Check for cairo
++#--------------------------------------------------------------------
++AC_ARG_ENABLE(cairo,
++    [  --enable-cairo          Use cairo [--disable-cairo]],
++    [enable_cairo=$enableval],
++    [enable_cairo="no"])
++
++CAIRO_CFLAGS=""
++CAIRO_LIBS=""
++
++if test "$enable_cairo" = "yes" ; then
++    AC_MSG_CHECKING([for cairo configuration])
++    CAIRO_CFLAGS=`pkg-config --cflags cairo` || enable_cairo="no"
++    CAIRO_LIBS=`pkg-config --libs cairo` || enable_cairo="no"
++    if test "$enable_cairo" = "yes" ; then
++    	AC_MSG_RESULT([ok])
++    else
++    	AC_MSG_WARN([Can't find cairo configuration])
++    fi
++fi
++
++if test $enable_cairo = "yes" ; then
++    AC_DEFINE(HAVE_CAIRO)
++fi
++
++AC_SUBST(CAIRO_CFLAGS)
++AC_SUBST(CAIRO_LIBS)
++
++#--------------------------------------------------------------------
+ #	Check for freetype / fontconfig / Xft support.
+ #--------------------------------------------------------------------
+ 

@@ -1,0 +1,13 @@
+--- tk8.4.19/unix/configure.in.orig	2008-04-17 17:14:08.000000000 +0200
++++ tk8.4.19/unix/configure.in	2008-06-02 11:29:43.000000000 +0200
+@@ -417,8 +417,8 @@
+ eval "TK_LIB_FILE=${TK_LIB_FILE}"
+ 
+ if test "${SHARED_BUILD}" = "1" -a "${SHLIB_SUFFIX}" != ""; then
+-    SHLIB_LD_LIBS="${SHLIB_LD_LIBS} \${TCL_STUB_LIB_SPEC}"
+-    TCL_STUB_FLAGS="-DUSE_TCL_STUBS"
++    SHLIB_LD_LIBS="${SHLIB_LD_LIBS} \${TCL_LIB_SPEC}"
++    TCL_STUB_FLAGS=""
+ fi
+ 
+ TK_LIBRARY='$(prefix)/lib/tk$(VERSION)'
