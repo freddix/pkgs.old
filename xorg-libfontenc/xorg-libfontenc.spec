@@ -1,16 +1,17 @@
 Summary:	fontenc library
 Name:		xorg-libfontenc
-Version:	1.1.0
-Release:	1
+Version:	1.1.1
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libfontenc-%{version}.tar.bz2
-# Source0-md5:	11d3c292f05a90f6f67840a9e9c3d9b8
+# Source0-md5:	a2a861f142c3b4367f14fc14239fc1f7
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	pkg-config
+BuildRequires:	xorg-font-util
 BuildRequires:	xorg-proto
 BuildRequires:	xorg-util-macros
 BuildRequires:	zlib-devel
@@ -23,8 +24,6 @@ fontenc library.
 Summary:	Header files for libfontenc library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-# just for dirs
-Requires:	xorg-proto
 
 %description devel
 fontenc library.
