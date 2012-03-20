@@ -1,7 +1,7 @@
 Summary:	X Athena Widgets library
 Name:		xorg-libXaw
 Version:	1.0.9
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXaw-%{version}.tar.bz2
@@ -43,7 +43,8 @@ use libXaw.
 %{__automake}
 %configure \
 	--disable-silent-rules	\
-	--disable-static
+	--disable-static	\
+	--enable-specs=no
 %{__make}
 
 %install
@@ -74,8 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libXaw6.so
 %attr(755,root,root) %{_libdir}/libXaw7.so
 %attr(755,root,root) %{_libdir}/libXaw.so
-%{_libdir}/libXaw6.la
-%{_libdir}/libXaw7.la
+%{_libdir}/libXaw*.la
 %dir %{_includedir}/X11/Xaw
 %{_includedir}/X11/Xaw/*.h
 %{_includedir}/X11/Xaw/Template.c
