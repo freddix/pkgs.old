@@ -1,0 +1,14 @@
+diff -aurN gnome-doc-utils-0.18.0.orig/tools/gnome-doc-utils.make gnome-doc-utils-0.18.0/tools/gnome-doc-utils.make
+--- gnome-doc-utils-0.18.0.orig/tools/gnome-doc-utils.make	2009-09-24 09:16:10.000000000 +0200
++++ gnome-doc-utils-0.18.0/tools/gnome-doc-utils.make	2009-09-24 09:17:19.000000000 +0200
+@@ -595,10 +595,6 @@
+ 	  echo "$(INSTALL_DATA) $$omf $(DESTDIR)$(OMF_DIR)/$(_doc_install_dir)/$$omf"; \
+ 	  $(INSTALL_DATA) $$omf $(DESTDIR)$(OMF_DIR)/$(_doc_install_dir)/$$omf; \
+ 	done
+-	@if test "x$(_ENABLE_SK)" = "xtrue"; then \
+-	  echo "scrollkeeper-update -p $(DESTDIR)$(_sklocalstatedir) -o $(DESTDIR)$(OMF_DIR)/$(_doc_install_dir)"; \
+-	  scrollkeeper-update -p "$(DESTDIR)$(_sklocalstatedir)" -o "$(DESTDIR)$(OMF_DIR)/$(_doc_install_dir)"; \
+-	fi;
+ 
+ install-doc-dsk:
+ 	echo install-dsk
