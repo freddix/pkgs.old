@@ -1,11 +1,11 @@
 Summary:	Realtime audio/video encoder and streaming server
 Name:		ffmpeg
-Version:	0.7.11
+Version:	0.10.2
 Release:	1
 License:	GPL with LGPL parts
 Group:		Applications/Multimedia
 Source0:	http://ffmpeg.org/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	fb3de74e8a92152698aba429435ab73c
+# Source0-md5:	de1bd5fc4bbf3ef730a5361ee596fedd
 URL:		http://ffmpeg.org/
 BuildRequires:	SDL-devel
 BuildRequires:	dirac-devel
@@ -120,7 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README doc/RELEASE_NOTES doc/TODO
+%doc README doc/RELEASE_NOTES
 # BR tetex doc/*.html
 %attr(755,root,root) %{_bindir}/ffmpeg
 %attr(755,root,root) %{_bindir}/ffprobe
@@ -137,6 +137,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libavformat.so.??
 %attr(755,root,root) %ghost %{_libdir}/libavutil.so.??
 %attr(755,root,root) %ghost %{_libdir}/libpostproc.so.??
+%attr(755,root,root) %ghost %{_libdir}/libswresample.so.?
 %attr(755,root,root) %ghost %{_libdir}/libswscale.so.?
 %attr(755,root,root) %{_libdir}/libavcodec.so.*.*.*
 %attr(755,root,root) %{_libdir}/libavdevice.so.*.*.*
@@ -144,9 +145,11 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libavformat.so.*.*.*
 %attr(755,root,root) %{_libdir}/libavutil.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpostproc.so.*.*.*
+%attr(755,root,root) %{_libdir}/libswresample.so.*.*.*
 %attr(755,root,root) %{_libdir}/libswscale.so.*.*.*
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.ffpreset
+%{_datadir}/%{name}/*.xsd
 
 %files devel
 %defattr(644,root,root,755)
@@ -157,6 +160,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libavformat.so
 %attr(755,root,root) %{_libdir}/libavutil.so
 %attr(755,root,root) %{_libdir}/libpostproc.so
+%attr(755,root,root) %{_libdir}/libswresample.so
 %attr(755,root,root) %{_libdir}/libswscale.so
 %{_includedir}/libavcodec
 %{_includedir}/libavdevice
@@ -164,6 +168,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/libavformat
 %{_includedir}/libavutil
 %{_includedir}/libpostproc
+%{_includedir}/libswresample
 %{_includedir}/libswscale
 %{_pkgconfigdir}/*.pc
 
