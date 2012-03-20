@@ -1,0 +1,11 @@
+diff -aurN cuneiform-linux-1.1.0.orig/cuneiform_src/Kern/leo/CMakeLists.txt cuneiform-linux-1.1.0/cuneiform_src/Kern/leo/CMakeLists.txt
+--- cuneiform-linux-1.1.0.orig/cuneiform_src/Kern/leo/CMakeLists.txt	2011-04-25 21:30:16.000000000 +0200
++++ cuneiform-linux-1.1.0/cuneiform_src/Kern/leo/CMakeLists.txt	2011-04-25 21:44:46.000000000 +0200
+@@ -23,6 +23,7 @@
+ msk32
+ r3532
+ std32
++m
+ )
+ 
+ library_hook(leo32)
