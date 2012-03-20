@@ -1,7 +1,7 @@
 Summary:	xkbui library
 Name:		xorg-libxkbui
 Version:	1.0.2
-Release:	11
+Release:	12
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libxkbui-%{version}.tar.bz2
