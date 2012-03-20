@@ -1,0 +1,77 @@
+diff -aurN shiki.orig/Shiki-Brave/gtk-2.0/gtkrc shiki/Shiki-Brave/gtk-2.0/gtkrc
+--- shiki.orig/Shiki-Brave/gtk-2.0/gtkrc	2010-04-13 18:39:59.000000000 +0200
++++ shiki/Shiki-Brave/gtk-2.0/gtkrc	2010-04-13 18:40:16.000000000 +0200
+@@ -123,7 +123,6 @@
+ 		roundness		= 2 # Overall roundness of the theme.
+ #		progressbarstyle	= 1 # 0 = nothing, 1 = striped, 2 = cells
+ 		animation		= TRUE  # FALSE disables progressbar animations.
+-                gradients		= TRUE # enables gradients.
+ 		reliefstyle		= 2 # shadows around widgets.
+ 		sliderstyle		= 1 # 0 = nothing added, 1 = handles.
+ 		menustyle		= 0 # removes stripes from menus.
+diff -aurN shiki.orig/Shiki-Dust/gtk-2.0/gtkrc shiki/Shiki-Dust/gtk-2.0/gtkrc
+--- shiki.orig/Shiki-Dust/gtk-2.0/gtkrc	2010-04-13 18:39:59.000000000 +0200
++++ shiki/Shiki-Dust/gtk-2.0/gtkrc	2010-04-13 18:40:42.000000000 +0200
+@@ -123,7 +123,6 @@
+ 		roundness		= 2 # Overall roundness of the theme.
+ #		progressbarstyle	= 1 # 0 = nothing, 1 = striped, 2 = cells
+ 		animation		= TRUE  # FALSE disables progressbar animations.
+-                gradients		= TRUE # enables gradients.
+ 		reliefstyle		= 2 # shadows around widgets.
+ 		sliderstyle		= 1 # 0 = nothing added, 1 = handles.
+ 		menustyle		= 0 # removes stripes from menus.
+diff -aurN shiki.orig/Shiki-Human/gtk-2.0/gtkrc shiki/Shiki-Human/gtk-2.0/gtkrc
+--- shiki.orig/Shiki-Human/gtk-2.0/gtkrc	2010-04-13 18:39:59.000000000 +0200
++++ shiki/Shiki-Human/gtk-2.0/gtkrc	2010-04-13 18:40:49.000000000 +0200
+@@ -123,7 +123,6 @@
+ 		roundness		= 2 # Overall roundness of the theme.
+ #		progressbarstyle	= 1 # 0 = nothing, 1 = striped, 2 = cells
+ 		animation		= TRUE  # FALSE disables progressbar animations.
+-                gradients		= TRUE # enables gradients.
+ 		reliefstyle		= 2 # shadows around widgets.
+ 		sliderstyle		= 1 # 0 = nothing added, 1 = handles.
+ 		menustyle		= 0 # removes stripes from menus.
+diff -aurN shiki.orig/Shiki-Illustrious/gtk-2.0/gtkrc shiki/Shiki-Illustrious/gtk-2.0/gtkrc
+--- shiki.orig/Shiki-Illustrious/gtk-2.0/gtkrc	2010-04-13 18:39:59.000000000 +0200
++++ shiki/Shiki-Illustrious/gtk-2.0/gtkrc	2010-04-13 18:40:53.000000000 +0200
+@@ -123,7 +123,6 @@
+ 		roundness		= 2 # Overall roundness of the theme.
+ #		progressbarstyle	= 1 # 0 = nothing, 1 = striped, 2 = cells
+ 		animation		= TRUE  # FALSE disables progressbar animations.
+-                gradients		= TRUE # enables gradients.
+ 		reliefstyle		= 2 # shadows around widgets.
+ 		sliderstyle		= 1 # 0 = nothing added, 1 = handles.
+ 		menustyle		= 0 # removes stripes from menus.
+diff -aurN shiki.orig/Shiki-Noble/gtk-2.0/gtkrc shiki/Shiki-Noble/gtk-2.0/gtkrc
+--- shiki.orig/Shiki-Noble/gtk-2.0/gtkrc	2010-04-13 18:39:59.000000000 +0200
++++ shiki/Shiki-Noble/gtk-2.0/gtkrc	2010-04-13 18:40:59.000000000 +0200
+@@ -123,7 +123,6 @@
+ 		roundness		= 2 # Overall roundness of the theme.
+ #		progressbarstyle	= 1 # 0 = nothing, 1 = striped, 2 = cells
+ 		animation		= TRUE  # FALSE disables progressbar animations.
+-                gradients		= TRUE # enables gradients.
+ 		reliefstyle		= 2 # shadows around widgets.
+ 		sliderstyle		= 1 # 0 = nothing added, 1 = handles.
+ 		menustyle		= 0 # removes stripes from menus.
+diff -aurN shiki.orig/Shiki-Wine/gtk-2.0/gtkrc shiki/Shiki-Wine/gtk-2.0/gtkrc
+--- shiki.orig/Shiki-Wine/gtk-2.0/gtkrc	2010-04-13 18:39:59.000000000 +0200
++++ shiki/Shiki-Wine/gtk-2.0/gtkrc	2010-04-13 18:41:07.000000000 +0200
+@@ -123,7 +123,6 @@
+ 		roundness		= 2 # Overall roundness of the theme.
+ #		progressbarstyle	= 1 # 0 = nothing, 1 = striped, 2 = cells
+ 		animation		= TRUE  # FALSE disables progressbar animations.
+-                gradients		= TRUE # enables gradients.
+ 		reliefstyle		= 2 # shadows around widgets.
+ 		sliderstyle		= 1 # 0 = nothing added, 1 = handles.
+ 		menustyle		= 0 # removes stripes from menus.
+diff -aurN shiki.orig/Shiki-Wise/gtk-2.0/gtkrc shiki/Shiki-Wise/gtk-2.0/gtkrc
+--- shiki.orig/Shiki-Wise/gtk-2.0/gtkrc	2010-04-13 18:39:59.000000000 +0200
++++ shiki/Shiki-Wise/gtk-2.0/gtkrc	2010-04-13 18:41:27.000000000 +0200
+@@ -123,7 +123,6 @@
+ 		roundness		= 2 # Overall roundness of the theme.
+ #		progressbarstyle	= 1 # 0 = nothing, 1 = striped, 2 = cells
+ 		animation		= TRUE  # FALSE disables progressbar animations.
+-                gradients		= TRUE # enables gradients.
+ 		reliefstyle		= 2 # shadows around widgets.
+ 		sliderstyle		= 1 # 0 = nothing added, 1 = handles.
+ 		menustyle		= 0 # removes stripes from menus.
