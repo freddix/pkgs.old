@@ -1,17 +1,17 @@
 Summary:	X font library used by the X server
 Name:		xorg-libXfont
-Version:	1.4.4
-Release:	1
+Version:	1.4.5
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXfont-%{version}.tar.bz2
-# Source0-md5:	f9942bc818d39094d7295b156a729393
+# Source0-md5:	6851da5dae0a6cf5f7c9b9e2b05dd3b4
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	freetype-devel
 BuildRequires:	libtool
-BuildRequires:	pkgconfig
+BuildRequires:	pkg-config
 BuildRequires:	xorg-libfontenc-devel
 BuildRequires:	xorg-xtrans-devel
 BuildRequires:	xorg-proto >= 7.6
@@ -25,7 +25,6 @@ X font library used by the X server.
 Summary:	Header files for libXfont library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 X font library used by the X server.
