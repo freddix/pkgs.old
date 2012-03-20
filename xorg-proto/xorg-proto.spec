@@ -27,15 +27,15 @@
 %define		xf86rushproto_version		1.1.2
 %define		xf86vidmodeproto_version	2.3.1
 %define		xineramaproto_version		1.2.1
-%define		xproto_version			7.0.22
+%define		xproto_version			7.0.23
 %define		xproxymanagementprotocol_version	1.0.3
 #
-%define		xcbproto_version		1.6
+%define		xcbproto_version		1.7
 #
 Summary:	Xorg headers
 Name:		xorg-proto
 Version:	7.6
-Release:	5
+Release:	7
 License:	MIT
 Group:		X11/Development/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/proto/bigreqsproto-%{bigreqsproto_version}.tar.bz2
@@ -95,11 +95,11 @@ Source26:	http://xorg.freedesktop.org/releases/individual/proto/xf86vidmodeproto
 Source27:	http://xorg.freedesktop.org/releases/individual/proto/xineramaproto-%{xineramaproto_version}.tar.bz2
 # Source27-md5:	9959fe0bfb22a0e7260433b8d199590a
 Source28:	http://xorg.freedesktop.org/releases/individual/proto/xproto-%{xproto_version}.tar.bz2
-# Source28-md5:	da0b0eb2f432b7cc1d665b05422a0457
+# Source28-md5:	d4d241a4849167e4e694fe73371c328c
 Source29:	http://xorg.freedesktop.org/releases/individual/proto/xproxymanagementprotocol-%{xproxymanagementprotocol_version}.tar.bz2
 # Source29-md5:	9de22ca1522008c28fb03dfc41ba2d30
 Source30:	http://xcb.freedesktop.org/dist/xcb-proto-%{xcbproto_version}.tar.bz2
-# Source30-md5:	04313e1d914b44d0e457f6c494fc178b
+# Source30-md5:	f5d73ec841ed055f5e80535819f18400
 Source31:	http://xorg.freedesktop.org/releases/individual/proto/dri2proto-%{dri2proto_version}.tar.bz2
 # Source31-md5:	2eb74959684f47c862081099059a11ab
 URL:		http://xorg.freedesktop.org/
@@ -120,14 +120,13 @@ Xorg headers.
 
 %build
 for dir in `ls -1` ; do
-
 cd $dir
 %{__aclocal}
 %{__autoconf}
 %{__automake}
-%configure
+%configure \
+	--enable-specs=no
 cd ..
-
 done
 
 %install
