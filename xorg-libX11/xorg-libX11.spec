@@ -1,11 +1,11 @@
 Summary:	X11 Base library
 Name:		xorg-libX11
-Version:	1.4.4
+Version:	1.4.99.901
 Release:	1
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libX11-%{version}.tar.bz2
-# Source0-md5:	ed7c382cbf8c13425b6a66bcac0ca5d9
+# Source0-md5:	520376557363da2df412beec9b4be749
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -13,8 +13,6 @@ BuildRequires:	cpp
 BuildRequires:	libtool
 BuildRequires:	libxcb-devel
 BuildRequires:	pkg-config
-BuildRequires:	xorg-libXau-devel
-BuildRequires:	xorg-libXdmcp-devel
 BuildRequires:	xorg-proto >= 7.6
 BuildRequires:	xorg-util-macros
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -26,7 +24,6 @@ X11 Base library.
 Summary:	Header files for libX11 library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 This package contains the header files needed to develop programs that
@@ -43,7 +40,8 @@ use libX11.
 %{__automake}
 %configure \
 	--disable-silent-rules	\
-	--disable-static
+	--disable-static	\
+	--enable-specs=no
 %{__make}
 
 %install
