@@ -1,9 +1,9 @@
 %include	/usr/lib/rpm/macros.perl
-#
+
 Summary:	A C++ interface for the GTK+
 Name:		gtkmm
 Version:	2.24.2
-Release:	1
+Release:	2
 License:	LGPL
 Group:		X11/Libraries
 Source0:	ftp://ftp.gnome.org/pub/GNOME/sources/gtkmm/2.24/%{name}-%{version}.tar.bz2
@@ -59,9 +59,7 @@ mm-common-prepare
 %{__aclocal} -I build
 %{__autoconf}
 %{__automake}
-%configure \
-	--disable-demos		\
-	--disable-examples
+%configure
 %{__make}
 
 %install
@@ -88,7 +86,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libg[dt]kmm*.so
-%{_libdir}/libg[dt]kmm*.la
 %{_libdir}/g[dt]kmm-%{apiver}
 %{_includedir}/g[dt]kmm-%{apiver}
 %{_pkgconfigdir}/g[dt]kmm*.pc
