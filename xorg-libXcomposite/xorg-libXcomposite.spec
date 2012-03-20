@@ -1,7 +1,7 @@
 Summary:	X Composite extension library
 Name:		xorg-libXcomposite
 Version:	0.4.3
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXcomposite-%{version}.tar.bz2
@@ -24,7 +24,6 @@ X Composite extension library.
 Summary:	Header files for libXcomposite library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto >= 7.6
 
 %description devel
 This package contains the header files needed to develop programs that
