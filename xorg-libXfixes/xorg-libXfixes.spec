@@ -1,7 +1,7 @@
 Summary:	X Fixes extension library
 Name:		xorg-libXfixes
 Version:	5.0
-Release:	1
+Release:	3
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXfixes-%{version}.tar.bz2
@@ -23,7 +23,6 @@ X Fixes extension library.
 Summary:	Header files for libXfixes library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto
 
 %description devel
 X Fixes extension library.
