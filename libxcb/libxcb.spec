@@ -1,7 +1,7 @@
 Summary:	X protocol C-language Binding library
 Name:		libxcb
 Version:	1.8.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 Source0:	http://xcb.freedesktop.org/dist/%{name}-%{version}.tar.gz
@@ -39,10 +39,6 @@ benefit from a native XCB port.
 Summary:	Header files for XCB library
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	pkgconfig(pthread-stubs)
-Requires:	pkgconfig(xau)
-Requires:	pkgconfig(xdmcp)
-Requires:	pkgconfig(xproto)
 
 %description devel
 Header files for XCB library.
@@ -86,6 +82,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libxcb-*.so
 %attr(755,root,root) %{_libdir}/libxcb.so
+%{_libdir}/libxcb*.la
 %{_includedir}/xcb
 %{_pkgconfigdir}/xcb-*.pc
 %{_pkgconfigdir}/xcb.pc
