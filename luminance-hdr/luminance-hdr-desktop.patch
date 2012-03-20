@@ -1,0 +1,31 @@
+diff -aurN luminance-hdr-2.2.1.orig/luminance-hdr.desktop luminance-hdr-2.2.1/luminance-hdr.desktop
+--- luminance-hdr-2.2.1.orig/luminance-hdr.desktop	2012-03-17 15:18:07.862117909 +0100
++++ luminance-hdr-2.2.1/luminance-hdr.desktop	2012-03-17 15:20:52.440060400 +0100
+@@ -1,12 +1,11 @@
+ [Desktop Entry]
+-Encoding=UTF-8
+ Name=Luminance HDR
+ GenericName=HDR imaging tool
+ GenericName[de]=Workflow für HDR-Bilder
+ GenericName[it]=Workflow per immagini HDR
+ GenericName[ru]=Работа с HDR-фотографией
+ GenericName[tr]=HDR Resim Düzenleyici
+-Categories=Graphics;RasterGraphics;Photography;Viewer;Qt;
++Categories=Graphics;Photography;Viewer;Qt;
+ Comment=Create and tonemap HDR images
+ Comment[de]=Luminance HDR ist eine grafische Benutzeroberfläche zur Erzeugung von HDR-Bildern und deren Dynamikkompression
+ Comment[en_US]=Luminance is a graphical user interface used to create and tonemap HDR images
+@@ -17,13 +16,8 @@
+ Exec=luminance-hdr --gui %F
+ Icon=luminance-hdr
+ MimeType=image/x-dcraw;image/tiff;image/jpeg;image/png;image/x-exr;image/x-hdr;image/x-pfs;
+-Path=
+ StartupNotify=true
+ StartupWMClass=luminance-hdr
+ Terminal=false
+ Type=Application
+-X-DCOP-ServiceType=
+-X-KDE-SubstituteUID=false
+-X-KDE-Username=
+-#X-StandardInstall=false
+ 
