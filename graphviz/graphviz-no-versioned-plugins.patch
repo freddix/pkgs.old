@@ -1,0 +1,204 @@
+diff -aurN graphviz-2.24.0.orig/plugin/core/Makefile.am graphviz-2.24.0/plugin/core/Makefile.am
+--- graphviz-2.24.0.orig/plugin/core/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/core/Makefile.am	2009-10-13 14:53:19.000000000 +0200
+@@ -35,7 +35,7 @@
+ 	gvloadimage_core.c \
+ 	ps.txt
+ 
+-libgvplugin_core_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_core_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_core_la_SOURCES = $(libgvplugin_core_C_la_SOURCES)
+ libgvplugin_core_la_LIBADD = $(top_builddir)/lib/gvc/libgvc.la \
+ 				$(top_builddir)/lib/$(GRAPH)/lib$(GRAPH).la \
+diff -aurN graphviz-2.24.0.orig/plugin/devil/Makefile.am graphviz-2.24.0/plugin/devil/Makefile.am
+--- graphviz-2.24.0.orig/plugin/devil/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/devil/Makefile.am	2009-10-13 14:53:30.000000000 +0200
+@@ -29,7 +29,7 @@
+ 	gvplugin_devil.c \
+ 	gvdevice_devil.c
+ 
+-libgvplugin_devil_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_devil_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_devil_la_SOURCES = $(libgvplugin_devil_C_la_SOURCES)
+ libgvplugin_devil_la_LIBADD = @DEVIL_LIBS@
+ 
+diff -aurN graphviz-2.24.0.orig/plugin/dot_layout/Makefile.am graphviz-2.24.0/plugin/dot_layout/Makefile.am
+--- graphviz-2.24.0.orig/plugin/dot_layout/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/dot_layout/Makefile.am	2009-10-13 14:53:40.000000000 +0200
+@@ -30,7 +30,7 @@
+ libgvplugin_dot_layout_C_la_LIBADD = \
+ 	$(top_builddir)/lib/dotgen/libdotgen_C.la
+ 
+-libgvplugin_dot_layout_la_LDFLAGS = -version-info $(GVPLUGIN_VERSION_INFO)
++libgvplugin_dot_layout_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_dot_layout_la_SOURCES = $(libgvplugin_dot_layout_C_la_SOURCES)
+ libgvplugin_dot_layout_la_LIBADD = $(libgvplugin_dot_layout_C_la_LIBADD) \
+ 	$(top_builddir)/lib/gvc/libgvc.la \
+diff -aurN graphviz-2.24.0.orig/plugin/gd/Makefile.am graphviz-2.24.0/plugin/gd/Makefile.am
+--- graphviz-2.24.0.orig/plugin/gd/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/gd/Makefile.am	2009-10-13 14:53:49.000000000 +0200
+@@ -32,7 +32,7 @@
+ 	gvloadimage_gd.c \
+ 	gvdevice_gd.c
+ 
+-libgvplugin_gd_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_gd_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_gd_la_SOURCES = $(libgvplugin_gd_C_la_SOURCES)
+ if WITH_MYLIBGD
+ libgvplugin_gd_la_LIBADD = \
+diff -aurN graphviz-2.24.0.orig/plugin/gdiplus/Makefile.am graphviz-2.24.0/plugin/gdiplus/Makefile.am
+--- graphviz-2.24.0.orig/plugin/gdiplus/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/gdiplus/Makefile.am	2009-10-13 14:54:10.000000000 +0200
+@@ -33,7 +33,7 @@
+ 	gvtextlayout_gdiplus.cpp
+ 
+ # libtool doesn't want to run with actual Windows import libs, so we force GdiPlus.lib through to the linker
+-libgvplugin_gdiplus_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@ -Wl,"$(PLATFORMSDKLIB)\GdiPlus.lib"
++libgvplugin_gdiplus_la_LDFLAGS = -module -avoid-version @LDFLAGS@ -Wl,"$(PLATFORMSDKLIB)\GdiPlus.lib"
+ nodist_libgvplugin_gdiplus_la_SOURCES = GdiPlus*.h
+ libgvplugin_gdiplus_la_SOURCES = $(libgvplugin_gdiplus_C_la_SOURCES)
+ libgvplugin_gdiplus_la_LIBADD = -lgdi32 -lole32 -lstdc++ -luuid $(top_builddir)/lib/gvc/libgvc.la
+diff -aurN graphviz-2.24.0.orig/plugin/gdk_pixbuf/Makefile.am graphviz-2.24.0/plugin/gdk_pixbuf/Makefile.am
+--- graphviz-2.24.0.orig/plugin/gdk_pixbuf/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/gdk_pixbuf/Makefile.am	2009-10-13 14:54:20.000000000 +0200
+@@ -31,7 +31,7 @@
+ 	gvplugin_gdk_pixbuf.c \
+ 	gvdevice_gdk_pixbuf.c
+ 
+-libgvplugin_gdk_pixbuf_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_gdk_pixbuf_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_gdk_pixbuf_la_SOURCES = $(libgvplugin_gdk_pixbuf_C_la_SOURCES)
+ libgvplugin_gdk_pixbuf_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @GDK_PIXBUF_LIBS@
+diff -aurN graphviz-2.24.0.orig/plugin/glitz/Makefile.am graphviz-2.24.0/plugin/glitz/Makefile.am
+--- graphviz-2.24.0.orig/plugin/glitz/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/glitz/Makefile.am	2009-10-13 14:54:29.000000000 +0200
+@@ -25,7 +25,7 @@
+ 	gvplugin_glitz.c \
+ 	gvdevice_glitz.c
+ 
+-libgvplugin_glitz_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_glitz_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_glitz_la_SOURCES = $(libgvplugin_glitz_C_la_SOURCES)
+ libgvplugin_glitz_la_LIBADD = @PANGOCAIRO_LIBS@ @GLITZ_LIBS@
+ 
+diff -aurN graphviz-2.24.0.orig/plugin/gs/Makefile.am graphviz-2.24.0/plugin/gs/Makefile.am
+--- graphviz-2.24.0.orig/plugin/gs/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/gs/Makefile.am	2009-10-13 14:54:38.000000000 +0200
+@@ -31,7 +31,7 @@
+ 	gvplugin_gs.c \
+ 	gvloadimage_gs.c
+ 
+-libgvplugin_gs_la_LDFLAGS = -version-info $(GVPLUGIN_VERSION_INFO)
++libgvplugin_gs_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_gs_la_SOURCES = $(libgvplugin_gs_C_la_SOURCES)
+ libgvplugin_gs_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la $(PANGOCAIRO_LIBS) $(GS_LIBS)
+diff -aurN graphviz-2.24.0.orig/plugin/gtk/Makefile.am graphviz-2.24.0/plugin/gtk/Makefile.am
+--- graphviz-2.24.0.orig/plugin/gtk/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/gtk/Makefile.am	2009-10-13 14:54:47.000000000 +0200
+@@ -35,7 +35,7 @@
+         interface.c \
+         callbacks.c 
+ 
+-libgvplugin_gtk_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_gtk_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_gtk_la_SOURCES = $(libgvplugin_gtk_C_la_SOURCES)
+ libgvplugin_gtk_la_LIBADD = $(GTK_LIBS)
+ 
+diff -aurN graphviz-2.24.0.orig/plugin/lasi/Makefile.am graphviz-2.24.0/plugin/lasi/Makefile.am
+--- graphviz-2.24.0.orig/plugin/lasi/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/lasi/Makefile.am	2009-10-13 14:54:56.000000000 +0200
+@@ -32,7 +32,7 @@
+ 	gvrender_lasi.cpp \
+ 	ps.txt
+ 
+-libgvplugin_lasi_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_lasi_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_lasi_la_SOURCES = $(libgvplugin_lasi_C_la_SOURCES)
+ libgvplugin_lasi_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @LASI_LIBS@ @PANGOCAIRO_LIBS@ @MATH_LIBS@
+diff -aurN graphviz-2.24.0.orig/plugin/ming/Makefile.am graphviz-2.24.0/plugin/ming/Makefile.am
+--- graphviz-2.24.0.orig/plugin/ming/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/ming/Makefile.am	2009-10-13 14:55:06.000000000 +0200
+@@ -24,7 +24,7 @@
+ 	gvplugin_ming.c \
+ 	gvrender_ming.c
+ 
+-libgvplugin_ming_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_ming_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_ming_la_SOURCES = $(libgvplugin_ming_C_la_SOURCES)
+ libgvplugin_ming_la_LIBADD = @MING_LIBS@ @MATH_LIBS@
+ 
+diff -aurN graphviz-2.24.0.orig/plugin/neato_layout/Makefile.am graphviz-2.24.0/plugin/neato_layout/Makefile.am
+--- graphviz-2.24.0.orig/plugin/neato_layout/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/neato_layout/Makefile.am	2009-10-13 14:55:15.000000000 +0200
+@@ -37,7 +37,7 @@
+ 	$(top_builddir)/lib/rbtree/librbtree_C.la \
+ 	$(top_builddir)/lib/circogen/libcircogen_C.la
+ 
+-libgvplugin_neato_layout_la_LDFLAGS = -version-info $(GVPLUGIN_VERSION_INFO)
++libgvplugin_neato_layout_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_neato_layout_la_SOURCES = $(libgvplugin_neato_layout_C_la_SOURCES)
+ libgvplugin_neato_layout_la_LIBADD = $(libgvplugin_neato_layout_C_la_LIBADD) \
+ 	$(top_builddir)/lib/gvc/libgvc.la \
+diff -aurN graphviz-2.24.0.orig/plugin/pango/Makefile.am graphviz-2.24.0/plugin/pango/Makefile.am
+--- graphviz-2.24.0.orig/plugin/pango/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/pango/Makefile.am	2009-10-13 14:55:24.000000000 +0200
+@@ -31,7 +31,7 @@
+ 	gvtextlayout_pango.c \
+ 	gvloadimage_pango.c
+ 
+-libgvplugin_pango_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_pango_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_pango_la_SOURCES = $(libgvplugin_pango_C_la_SOURCES)
+ libgvplugin_pango_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @PANGOCAIRO_LIBS@ @MATH_LIBS@
+diff -aurN graphviz-2.24.0.orig/plugin/quartz/Makefile.am graphviz-2.24.0/plugin/quartz/Makefile.am
+--- graphviz-2.24.0.orig/plugin/quartz/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/quartz/Makefile.am	2009-10-13 14:55:38.000000000 +0200
+@@ -29,7 +29,7 @@
+ 	gvtextlayout_quartz.c \
+ 	GVTextLayout.m
+ 
+-libgvplugin_quartz_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@ -framework CoreFoundation
++libgvplugin_quartz_la_LDFLAGS = -module -avoid-version @LDFLAGS@ -framework CoreFoundation
+ libgvplugin_quartz_la_SOURCES = $(libgvplugin_quartz_C_la_SOURCES)
+ libgvplugin_quartz_la_LIBADD = @QUARTZ_LIBS@
+ 
+diff -aurN graphviz-2.24.0.orig/plugin/rsvg/Makefile.am graphviz-2.24.0/plugin/rsvg/Makefile.am
+--- graphviz-2.24.0.orig/plugin/rsvg/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/rsvg/Makefile.am	2009-10-13 14:55:49.000000000 +0200
+@@ -29,7 +29,7 @@
+ 	gvplugin_rsvg.c \
+ 	gvloadimage_rsvg.c
+ 
+-libgvplugin_rsvg_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_rsvg_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_rsvg_la_SOURCES = $(libgvplugin_rsvg_C_la_SOURCES)
+ libgvplugin_rsvg_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @RSVG_LIBS@ @PANGOCAIRO_LIBS@
+diff -aurN graphviz-2.24.0.orig/plugin/visio/Makefile.am graphviz-2.24.0/plugin/visio/Makefile.am
+--- graphviz-2.24.0.orig/plugin/visio/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/visio/Makefile.am	2009-10-13 14:56:00.000000000 +0200
+@@ -34,7 +34,7 @@
+ 	VisioText.cpp \
+ 	gvrender_visio_vdx.cpp
+ 
+-libgvplugin_visio_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_visio_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_visio_la_SOURCES = $(libgvplugin_visio_C_la_SOURCES)
+ libgvplugin_visio_la_LIBADD = \
+ 	$(top_builddir)/lib/gvc/libgvc.la @VISIO_LIBS@ 
+diff -aurN graphviz-2.24.0.orig/plugin/xlib/Makefile.am graphviz-2.24.0/plugin/xlib/Makefile.am
+--- graphviz-2.24.0.orig/plugin/xlib/Makefile.am	2009-10-13 14:52:45.000000000 +0200
++++ graphviz-2.24.0/plugin/xlib/Makefile.am	2009-10-13 14:56:28.000000000 +0200
+@@ -32,7 +32,7 @@
+ 	gvplugin_xlib.c \
+ 	gvdevice_xlib.c
+ 
+-libgvplugin_xlib_la_LDFLAGS = -version-info @GVPLUGIN_VERSION_INFO@
++libgvplugin_xlib_la_LDFLAGS = -module -avoid-version @LDFLAGS@
+ libgvplugin_xlib_la_SOURCES = $(libgvplugin_xlib_C_la_SOURCES)
+ libgvplugin_xlib_la_LIBADD = @PANGOCAIRO_LIBS@ @X_LIBS@ -lX11 @SOCKET_LIBS@ @MATH_LIBS@
+ 

@@ -1,0 +1,26 @@
+Index: graphviz-2.26.3/plugin/ming/Makefile.am
+===================================================================
+--- graphviz-2.26.3.orig/plugin/ming/Makefile.am	2009-06-03 01:10:57.000000000 +0000
++++ graphviz-2.26.3/plugin/ming/Makefile.am	2012-03-13 10:38:44.945027975 +0000
+@@ -17,7 +17,7 @@
+ else
+ pkglib_LTLIBRARIES = libgvplugin_ming.la
+ endif
+-pkglib_DATA = Bitstream_Vera_Sans.fdb  Bitstream_Vera_Serif.fdb
++pkgdata_DATA = Bitstream_Vera_Sans.fdb  Bitstream_Vera_Serif.fdb
+ endif
+ 
+ libgvplugin_ming_C_la_SOURCES = \
+Index: graphviz-2.26.3/tclpkg/gv/Makefile.am
+===================================================================
+--- graphviz-2.26.3.orig/tclpkg/gv/Makefile.am	2012-03-13 10:37:56.000000000 +0000
++++ graphviz-2.26.3/tclpkg/gv/Makefile.am	2012-03-13 10:38:41.593029145 +0000
+@@ -242,7 +242,7 @@
+ gv_tcl.cpp: gv.i
+ 	$(SWIG) -c++ -tcl -namespace -o gv_tcl.cpp $(srcdir)/gv.i
+ 
+-pkginclude_DATA = gv.i gv.cpp
++pkgdata_DATA = gv.i gv.cpp
+ pkglib_LTLIBRARIES = 
+ man_MANS =
+ pdf_DATA = 
