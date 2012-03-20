@@ -21,3 +21,7 @@ session	required	pam_permit.so
 # and here are more per-package modules (the "Additional" block)
 session	required	pam_unix.so
 
+# load systemd and ck modules
+-session	optional	pam_systemd.so
+-session 	optional	pam_ck_connector.so nox11
+

@@ -1,8 +1,8 @@
 Summary:	Pluggable Authentication Modules: modular, incremental authentication
 Name:		pam
 Version:	1.1.5
-Release:	1
-License:	GPL or BSD
+Release:	3
+License:	requiredGPL or BSD
 Group:		Base
 #Source0:	http://ftp.kernel.org/pub/linux/libs/pam/library/Linux-PAM-%{version}.tar.bz2
 Source0:	https://fedorahosted.org/releases/l/i/linux-pam/Linux-PAM-%{version}.tar.bz2

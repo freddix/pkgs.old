@@ -1,5 +1,5 @@
 #
-# /etc/pam.d/common-auth - authentication settings common to all services
+# authentication settings common to all services
 #
 # This file is included from other service-specific PAM config files,
 # and should contain a list of the authentication modules that define

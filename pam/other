@@ -1,5 +1,5 @@
 #
-# /etc/pam.d/other - specify the PAM fallback behaviour
+# specify the PAM fallback behaviour
 #
 # Note that this file is used for any unspecified service; for example
 # if /etc/pam.d/cron  specifies no session modules but cron calls
