@@ -1,7 +1,7 @@
 Summary:	Panorama Tools library
 Name:		libpano13
 Version:	2.9.18
-Release:	1
+Release:	2
 License:	GPL
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/panotools/%{name}-%{version}.tar.gz
@@ -73,7 +73,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libpano13.so
-%{_libdir}/libpano13.la
 %{_includedir}/pano13
 %{_pkgconfigdir}/*.pc
 
