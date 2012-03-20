@@ -1,7 +1,7 @@
 Summary:	DtPrint extension library
 Name:		xorg-libXp
 Version:	1.0.1
-Release:	1
+Release:	3
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/libXp-%{version}.tar.bz2
@@ -23,7 +23,6 @@ DtPrint extension library.
 Summary:	Header files for libXp library
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	xorg-proto
 
 %description devel
 DtPrint extension library.
