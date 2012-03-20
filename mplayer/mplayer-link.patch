@@ -1,0 +1,20 @@
+diff -aurN mplayer.orig/configure mplayer/configure
+--- mplayer.orig/configure	2012-03-20 10:00:41.966266140 +0100
++++ mplayer/configure	2012-03-20 10:59:08.609427067 +0100
+@@ -4273,6 +4273,7 @@
+ fi
+ if test "$_x11" = yes ; then
+   def_x11='#define CONFIG_X11 1'
++  libs_mplayer="$libs_mplayer -lXext -lX11"
+   vomodules="x11 xover $vomodules"
+ else
+   _x11=no
+@@ -7468,7 +7469,7 @@
+   return exitvar;
+ }
+ EOF
+-    cc_check -lXext && _xshape=yes
++    cc_check -lXext -lX11 && _xshape=yes
+   fi
+   if test "$_xshape" = yes ; then
+     def_xshape='#define CONFIG_XSHAPE 1'
