@@ -1,11 +1,11 @@
 Summary:	Desktop notifications library
 Name:		libnotify
-Version:	0.5.0
+Version:	0.5.2
 Release:	1
 License:	LGPL v2.1+ (library), GPL v2+ (tools)
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/libnotify/0.5/%{name}-%{version}.tar.bz2
-# Source0-md5:	9aa027e78d3c0141600c659f02740100
+# Source0-md5:	4361058ae4e28a9ffce6764e7d03acd1
 URL:		http://developer.gnome.org/notification-spec/
 BuildRequires:	autoconf
 BuildRequires:	automake
