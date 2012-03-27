@@ -1,0 +1,44 @@
+diff -aurN slim-1.3.3.orig/CMakeLists.txt slim-1.3.3/CMakeLists.txt
+--- slim-1.3.3.orig/CMakeLists.txt	2012-03-22 19:57:39.794665596 +0100
++++ slim-1.3.3/CMakeLists.txt	2012-03-22 21:26:28.108052512 +0100
+@@ -18,12 +18,12 @@
+ # Version
+ set(SLIM_VERSION_MAJOR "1")
+ set(SLIM_VERSION_MINOR "3")
+-set(SLIM_VERSION_PATCH "2")
++set(SLIM_VERSION_PATCH "3")
+ set(SLIM_VERSION "${SLIM_VERSION_MAJOR}.${SLIM_VERSION_MINOR}.${SLIM_VERSION_PATCH}")
+ 
+ set(CMAKE_INSTALL_PREFIX "/usr/local" CACHE PATH "Installation Directory")
+ set(PKGDATADIR "${CMAKE_INSTALL_PREFIX}/share/slim")
+-set(SYSCONFDIR "/etc")
++set(SYSCONFDIR "/etc/slim")
+ set(MANDIR "${CMAKE_INSTALL_PREFIX}/share/man")
+ 
+ set(SLIM_DEFINITIONS)
+@@ -42,10 +42,10 @@
+ set(SLIM_DEFINITIONS ${SLIM_DEFINITIONS} "-DSYSCONFDIR=\"${SYSCONFDIR}\"")
+ 
+ # Flags
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -g -O2" )
+-set(CMAKE_CPP_FLAGS "${CMAKE_CPP_FLAGS} -Wall -g -O2" )
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall" )
++set(CMAKE_CPP_FLAGS "${CMAKE_CPP_FLAGS} -Wall" )
+ 
+-# source 
++# source
+ set(slim_srcs
+ 	main.cpp
+ 	app.cpp
+diff -aurN slim-1.3.3.orig/slim.1 slim-1.3.3/slim.1
+--- slim-1.3.3.orig/slim.1	2012-03-22 19:57:39.794665596 +0100
++++ slim-1.3.3/slim.1	2012-03-22 21:27:23.347361926 +0100
+@@ -43,7 +43,7 @@
+ Please refer to documentation of your Operating System to make \fBslim\fP
+ automatically startup after the system boots.
+ .SH CONFIGURATION
+-Global configuration is stored in the /etc/slim.conf file. See the comments
++Global configuration is stored in the /etc/slim/slim.conf file. See the comments
+ inside the file for a detailed explanation of the \fIoptions\fP.
+ .SH USAGE AND SPECIAL USERNAMES
+ When started, \fBslim\fP will show a login panel; enter the username and
