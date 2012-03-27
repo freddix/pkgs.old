@@ -1,10 +1,36 @@
-#%PAM-1.0
-auth		include		system-auth
-account		required	pam_shells.so
-account		required	pam_nologin.so
-account		required 	pam_access.so
-account		include		system-auth
-password	include		system-auth
-session		optional	pam_keyinit.so force revoke
-session		include		system-auth
-session		optional	pam_mail.so
+# Disallows other than root logins when /etc/nologin exists
+# (Replaces the `NOLOGINS_FILE' option from login.defs)
+auth       requisite    pam_nologin.so
+
+# This module parses environment configuration file(s)
+# and also allows you to use an extended config
+# file /etc/security/pam_env.conf.
+#
+# parsing /etc/environment needs "readenv=1"
+session    required     pam_env.so readenv=1
+# locale variables are also kept into /etc/locale.conf
+session    required     pam_env.so readenv=1 envfile=/etc/locale.conf
+
+# Standard Un*x authentication.
+auth       include      common-auth
+
+# Sets up user limits according to /etc/security/limits.conf
+# (Replaces the use of /etc/limits in old login)
+session    required     pam_limits.so
+
+# Sets the loginuid process attribute for the process
+# that was authenticated
+session    optional     pam_loginuid.so
+
+# This also defines the MAIL environment variable
+# However, userdel also needs MAIL_DIR and MAIL_FILE variables
+# in /etc/login.defs to make sure that removing a user
+# also removes the user's mail spool file.
+# See comments in /etc/login.defs
+session    optional     pam_mail.so standard
+
+# Standard Un*x account and session
+account    include      common-account
+password   include      common-password
+session    include      common-session
+
