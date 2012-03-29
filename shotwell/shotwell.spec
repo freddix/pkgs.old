@@ -1,7 +1,7 @@
 Summary:	Photo organizer
 Name:		shotwell
 Version:	0.11.6
-Release:	1
+Release:	2
 License:	LGPL
 Group:		X11/Applications
 Source0:	http://www.yorba.org/download/shotwell/0.11/%{name}-%{version}.tar.bz2
@@ -46,10 +46,11 @@ export CFLAGS="%{rpmcflags}"
 	--prefix=%{_prefix}		\
 	--release
 
-%{__make} \
-	CC="%{__cc}"		\
-	LDFLAGS="%{rpmldflags}"	\
-	OPTFLAGS="%{rpmcflags}"
+%{__make} -j1 \
+	CC="%{__cc}"				\
+	LDFLAGS="%{rpmcflags} %{rpmldflags}"	\
+	OPTFLAGS="%{rpmcflags}"			\
+	USER_VALAFLAGS="-X -O2 -X -march=i686 -X -mtune=pentium4 -X -fwrapv -X -fno-strict-aliasing -X -pipe"
 
 %install
 rm -rf $RPM_BUILD_ROOT
