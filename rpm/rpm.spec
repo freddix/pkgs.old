@@ -1,9 +1,9 @@
 %define		sover	4.5
-#
+
 Summary:	RPM Package Manager
 Name:		rpm
 Version:	4.5
-Release:	21
+Release:	22
 License:	LGPL
 Group:		Base
 Source0:	%{name}-%{version}.tar.gz

@@ -15,7 +15,7 @@
  
  %debugcflags	-O0 -g -Wall
 +%debugcppflags	%{nil}
-+%optldflags	-Wl,-O1 -Wl,--as-needed
++%optldflags	-Wl,-O1 -Wl,--as-needed -Wl,--no-copy-dt-needed-entries
 +%optcppflags	-Wall
  
  # Warning: those macros are overwritten by macros.build,
