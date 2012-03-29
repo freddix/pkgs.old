@@ -1,0 +1,12 @@
+diff -aurN gnome-desktop-2.32.1.orig/libgnome-desktop/Makefile.am gnome-desktop-2.32.1/libgnome-desktop/Makefile.am
+--- gnome-desktop-2.32.1.orig/libgnome-desktop/Makefile.am	2012-03-23 23:39:49.315227171 +0100
++++ gnome-desktop-2.32.1/libgnome-desktop/Makefile.am	2012-03-23 23:41:32.734934246 +0100
+@@ -30,7 +30,7 @@
+ 
+ libgnome_desktop_2_la_LIBADD =	\
+ 	$(XLIB_LIBS)		\
+-	$(GNOME_DESKTOP_LIBS)
++	$(GNOME_DESKTOP_LIBS) -lm
+ 
+ libgnome_desktop_2_la_LDFLAGS = \
+ 	-version-info $(LT_VERSION) \
