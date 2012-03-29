@@ -1,20 +1,20 @@
 Summary:	X.org Wacom input driver
 Name:		xorg-driver-input-wacom
-Version:	0.12.0
+Version:	0.14.0
 Release:	1
 License:	MIT
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/linuxwacom/xf86-input-wacom-%{version}.tar.bz2
-# Source0-md5:	e1c41d143d5040982ae050c7ef9039e3
+# Source0-md5:	23d19a2b50a86b848df17297c745144f
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	pkg-config
+BuildRequires:	xorg-libXrandr-devel
 BuildRequires:	xorg-proto >= 7.6
 BuildRequires:	xorg-util-macros
 BuildRequires:	xorg-xserver-server-devel
-Obsoletes:	linuxwacom
 Requires:	xorg-xserver-server
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
