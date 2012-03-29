@@ -1,7 +1,7 @@
 Summary:	General Window Manager interfacing for GNOME utilities
 Name:		libwnck
 Version:	2.30.7
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/libwnck/2.30/%{name}-%{version}.tar.bz2
@@ -25,7 +25,7 @@ is a part of the GNOME platform.
 %package devel
 Summary:	Header files and documentation for libwnck
 Group:		X11/Development/Libraries
-Requires:	%{name}-gir = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header, docs and development libraries for libwnck.
@@ -37,15 +37,6 @@ Requires:	gtk-doc-common
 
 %description apidocs
 libwnck API documentation.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for wnck library.
 
 %prep
 %setup -q
@@ -96,6 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/wnckprop
 %attr(755,root,root) %ghost %{_libdir}/libwnck-1.so.??
 %attr(755,root,root) %{_libdir}/libwnck-1.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
@@ -108,8 +100,4 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/%{name}
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 
