@@ -3,7 +3,7 @@
 Summary:	Document viewer for multiple document formats
 Name:		evince%{?with_simple:-simple}
 Version:	2.32.0
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evince/2.32/evince-%{version}.tar.bz2
@@ -28,6 +28,7 @@ BuildRequires:	libspectre-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	libxslt-progs
+BuildRequires:	nautilus-devel
 BuildRequires:	pkg-config
 BuildRequires:	poppler-glib-devel
 BuildRequires:	python-libxml2
@@ -114,7 +115,6 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 %{__automake}
 %configure \
 	--disable-comics		\
-	--disable-nautilus		\
 	--disable-schemas-compile	\
 	--disable-schemas-install 	\
 	--disable-scrollkeeper		\
@@ -135,6 +135,7 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 	--without-keyring		\
 %else
 	--enable-dbus			\
+	--enable-nautilus		\
 	--with-keyring			\
 	--without-gconf			\
 %endif
@@ -216,14 +217,13 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libev*.so
+%{_libdir}/libev*.la
 %{_includedir}/evince
 %{_pkgconfigdir}/*.pc
 
-%if 0
 %files -n nautilus-extension-evince
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/nautilus/extensions-2.0/*.so*
-%endif
 
 %files apidocs
 %defattr(644,root,root,755)
