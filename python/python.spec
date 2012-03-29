@@ -18,7 +18,7 @@
 Summary:	Very high level scripting language with X interface
 Name:		python
 Version:	%{py_ver}.8
-Release:	1.%{pre}.1
+Release:	1.%{pre}.2
 Epoch:		1
 License:	PSF
 Group:		Applications
@@ -172,8 +172,6 @@ install Makefile.pre.in $RPM_BUILD_ROOT%{py_libdir}/config
 ln -sf libpython%{py_ver}.so.1.0 $RPM_BUILD_ROOT%{_libdir}/libpython.so
 ln -sf libpython%{py_ver}.so.1.0 $RPM_BUILD_ROOT%{_libdir}/libpython%{py_ver}.so
 
-rm -f $RPM_BUILD_ROOT%{_bindir}/python%{py_ver}
-
 # just to cut the noise, as they are not packaged (now)
 # first tests
 rm -r $RPM_BUILD_ROOT%{py_scriptdir}/test
@@ -214,6 +212,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/python
+%attr(755,root,root) %{_bindir}/python%{py_ver}
 %{_mandir}/man1/python.1*
 
 %files modules
