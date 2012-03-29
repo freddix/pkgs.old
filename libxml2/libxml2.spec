@@ -1,7 +1,7 @@
 Summary:	libXML2 library
 Name:		libxml2
 Version:	2.7.7
-Release:	2
+Release:	3
 Epoch:		1
 License:	MIT
 Group:		Libraries
@@ -120,6 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_docdir}/%{name}-devel-%{version}
 %attr(755,root,root) %{_bindir}/xml2-config
 %attr(755,root,root) %{_libdir}/libxml2.so
+%{_libdir}/libxml2.la
 %{_aclocaldir}/*.m4
 %{_includedir}/libxml2
 %{_mandir}/man1/xml2-config.1*
