@@ -4,7 +4,7 @@
 Summary:	GStreamer Streaming-media framework plug-in using FFmpeg
 Name:		gstreamer-ffmpeg
 Version:	0.10.12
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-ffmpeg/%{gstname}-%{version}.tar.bz2
