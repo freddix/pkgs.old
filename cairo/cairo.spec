@@ -2,16 +2,16 @@
 
 Summary:	Cairo - multi-platform 2D graphics library
 Name:		cairo
-Version:	1.10.2
+Version:	1.12.0
 License:	LGPL v2.1 or MPL v1.1
 Group:		Libraries
 %if "%{gitver}" != "%{nil}"
 Release:	0.%{gitver}.1
 Source:		http://cgit.freedesktop.org/cairo/snapshot/cairo-%{gitver}.tar.bz2
 %else
-Release:	3
+Release:	4
 Source0:	http://cairographics.org/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	f101a9e88b783337b20b2e26dfd26d5f
+# Source0-md5:	e6c85575ba7094f88b637bdfd835a751
 %endif
 Patch0:		%{name}-link.patch
 URL:		http://cairographics.org/
@@ -101,7 +101,9 @@ Cairo API documentation.
 %endif
 
 sed -i -e 's/-no-undefined/-avoid-version -module -no-undefined/g' \
-	util/cairo-trace/Makefile.am
+	util/cairo-trace/Makefile.am	\
+	util/cairo-fdr/Makefile.am	\
+	util/cairo-sphinx/Makefile.am
 
 %patch0 -p1
 
@@ -178,6 +180,9 @@ rm -rf $RPM_BUILD_ROOT
 %files trace
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/cairo-trace
+%attr(755,root,root) %{_bindir}/cairo-sphinx
+%attr(755,root,root) %{_libdir}/cairo/cairo-fdr.so
+%attr(755,root,root) %{_libdir}/cairo/cairo-sphinx.so
 %attr(755,root,root) %{_libdir}/cairo/libcairo-trace.so
 
 %if "%{gitver}" == "%{nil}"
