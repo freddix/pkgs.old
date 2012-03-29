@@ -1,7 +1,7 @@
 Summary:	Mozilla Runtime Environment for XUL+XPCOM applications
 Name:		xulrunner
 Version:	11.0
-Release:	1
+Release:	2
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
