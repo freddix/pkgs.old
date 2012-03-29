@@ -1,7 +1,7 @@
 Summary:	QEMU CPU Emulator
 Name:		qemu
 Version:	1.0.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Emulators
 Source0:	http://wiki.qemu.org/download/%{name}-%{version}.tar.gz
@@ -16,7 +16,6 @@ BuildRequires:	alsa-lib-devel
 BuildRequires:	bluez-libs-devel
 BuildRequires:	gnutls-devel
 BuildRequires:	ncurses-devel
-BuildRequires:	perl-Encode
 BuildRequires:	perl-tools-pod
 BuildRequires:	pkgconfig
 BuildRequires:	sed >= 4.0
@@ -66,8 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -p -D %{SOURCE10} $RPM_BUILD_ROOT/etc/modules-load.d/kvm.conf
-install -p -D %{SOURCE11} $RPM_BUILD_ROOT/%{_lib}/udev/rules.d/80-kvm.rules
+install -p -D %{SOURCE10} $RPM_BUILD_ROOT/%{_lib}/udev/rules.d/80-kvm.rules
+install -p -D %{SOURCE11} $RPM_BUILD_ROOT/etc/modules-load.d/kvm.conf
 install -p -D %{SOURCE12} $RPM_BUILD_ROOT/%{_lib}/systemd/system/qemu-guest-agent.service
 install -p %{SOURCE13} $RPM_BUILD_ROOT/%{_lib}/udev/rules.d/99-qemu-guest-agent.rules
 
