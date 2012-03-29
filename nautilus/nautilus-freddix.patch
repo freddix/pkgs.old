@@ -1,0 +1,62 @@
+diff -aurN nautilus-2.28.4.orig/libnautilus-private/apps_nautilus_preferences.schemas.in nautilus-2.28.4/libnautilus-private/apps_nautilus_preferences.schemas.in
+--- nautilus-2.28.4.orig/libnautilus-private/apps_nautilus_preferences.schemas.in	2010-02-04 21:23:22.000000000 +0100
++++ nautilus-2.28.4/libnautilus-private/apps_nautilus_preferences.schemas.in	2010-02-07 22:26:53.000000000 +0100
+@@ -519,11 +519,11 @@
+       <applyto>/apps/nautilus/preferences/desktop_font</applyto>
+       <owner>nautilus</owner>
+       <type>string</type>
+-      <default>Sans 10</default>
++      <default>Droid Sans 9</default>
+       <locale name="C">
+          <default><!-- Translators: please note this can choose the size. e.g.
+ "Sans 15". Please do not change "Sans", only change the size if you need to. In
+-most cases, this should be left alone. -->Sans 10</default>
++most cases, this should be left alone. -->Droid Sans 9</default>
+          <short>Desktop font</short>
+ 	 <long>
+ 	  The font description used for the icons on the desktop.
+@@ -969,7 +969,7 @@
+       <applyto>/apps/nautilus/preferences/start_with_location_bar</applyto>
+       <owner>nautilus</owner>
+       <type>bool</type>
+-      <default>true</default>
++      <default>false</default>
+       <locale name="C">
+          <short>Show location bar in new windows</short>
+          <long>
+@@ -999,7 +999,7 @@
+       <applyto>/apps/nautilus/preferences/start_with_sidebar</applyto>
+       <owner>nautilus</owner>
+       <type>bool</type>
+-      <default>true</default>
++      <default>false</default>
+       <locale name="C">
+          <short>Show side pane in new windows</short>
+          <long>
+@@ -1059,7 +1059,7 @@
+       <applyto>/apps/nautilus/desktop/computer_icon_visible</applyto>
+       <owner>nautilus</owner>
+       <type>bool</type>
+-      <default>true</default>
++      <default>false</default>
+       <locale name="C">
+          <short>Computer icon visible on desktop</short>
+          <long>
+@@ -1074,7 +1074,7 @@
+       <applyto>/apps/nautilus/desktop/trash_icon_visible</applyto>
+       <owner>nautilus</owner>
+       <type>bool</type>
+-      <default>true</default>
++      <default>false</default>
+       <locale name="C">
+          <short>Trash icon visible on desktop</short>
+          <long>
+@@ -1089,7 +1089,7 @@
+       <applyto>/apps/nautilus/desktop/volumes_visible</applyto>
+       <owner>nautilus</owner>
+       <type>bool</type>
+-      <default>true</default>
++      <default>false</default>
+       <locale name="C">
+       	<short>Show mounted volumes on the desktop</short>
+ 	<long>

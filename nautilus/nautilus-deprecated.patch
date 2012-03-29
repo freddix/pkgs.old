@@ -1,0 +1,181 @@
+diff -Naur nautilus-2.32.2.1.orig/eel/eel-editable-label.c nautilus-2.32.2.1/eel/eel-editable-label.c
+--- nautilus-2.32.2.1.orig/eel/eel-editable-label.c	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/eel/eel-editable-label.c	2011-12-01 17:39:31.000000000 -0500
+@@ -682,7 +682,7 @@
+  * Return value: the text in the label widget. This is the internal
+  *   string used by the label, and must not be modified.
+  **/
+-G_CONST_RETURN gchar *
++const gchar *
+ eel_editable_label_get_text (EelEditableLabel *label)
+ {
+   g_return_val_if_fail (EEL_IS_EDITABLE_LABEL (label), NULL);
+@@ -4292,7 +4292,7 @@
+   atk_object_set_role (accessible, ATK_ROLE_TEXT);
+ }
+ 
+-static G_CONST_RETURN gchar*
++static const gchar*
+ eel_editable_label_accessible_get_name (AtkObject *accessible)
+ {
+   if (accessible->name != NULL)
+diff -Naur nautilus-2.32.2.1.orig/eel/eel-editable-label.h nautilus-2.32.2.1/eel/eel-editable-label.h
+--- nautilus-2.32.2.1.orig/eel/eel-editable-label.h	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/eel/eel-editable-label.h	2011-12-01 17:39:31.000000000 -0500
+@@ -112,7 +112,7 @@
+ GtkWidget*            eel_editable_label_new                  (const char       *str);
+ void                  eel_editable_label_set_text             (EelEditableLabel *label,
+ 							       const char       *str);
+-G_CONST_RETURN gchar* eel_editable_label_get_text             (EelEditableLabel *label);
++const gchar* eel_editable_label_get_text             (EelEditableLabel *label);
+ void                  eel_editable_label_set_justify          (EelEditableLabel *label,
+ 							       GtkJustification  jtype);
+ GtkJustification      eel_editable_label_get_justify          (EelEditableLabel *label);
+diff -Naur nautilus-2.32.2.1.orig/eel/eel-i18n.c nautilus-2.32.2.1/eel/eel-i18n.c
+--- nautilus-2.32.2.1.orig/eel/eel-i18n.c	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/eel/eel-i18n.c	2011-12-01 17:39:31.000000000 -0500
+@@ -32,7 +32,7 @@
+ 
+ 
+ 
+-G_CONST_RETURN char *
++const char *
+ _eel_gettext (const char *str)
+ {
+ 	static gboolean _eel_gettext_initialized = FALSE;
+diff -Naur nautilus-2.32.2.1.orig/eel/eel-i18n.h nautilus-2.32.2.1/eel/eel-i18n.h
+--- nautilus-2.32.2.1.orig/eel/eel-i18n.h	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/eel/eel-i18n.h	2011-12-01 17:39:31.000000000 -0500
+@@ -28,7 +28,7 @@
+ #ifdef ENABLE_NLS
+ #include <glib.h>
+ 
+-G_CONST_RETURN char *
++const char *
+ _eel_gettext (const char *str) G_GNUC_FORMAT (1);
+ 
+ #include <libintl.h>
+diff -Naur nautilus-2.32.2.1.orig/eel/eel-labeled-image.c nautilus-2.32.2.1/eel/eel-labeled-image.c
+--- nautilus-2.32.2.1.orig/eel/eel-labeled-image.c	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/eel/eel-labeled-image.c	2011-12-01 17:39:31.000000000 -0500
+@@ -2140,7 +2140,7 @@
+ 	return EEL_LABELED_IMAGE (widget);
+ }
+ 
+-static G_CONST_RETURN gchar *
++static const gchar *
+ eel_labeled_image_accessible_get_name (AtkObject *accessible)
+ {
+ 	EelLabeledImage *labeled_image;
+diff -Naur nautilus-2.32.2.1.orig/libnautilus-private/nautilus-icon-canvas-item.c nautilus-2.32.2.1/libnautilus-private/nautilus-icon-canvas-item.c
+--- nautilus-2.32.2.1.orig/libnautilus-private/nautilus-icon-canvas-item.c	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/libnautilus-private/nautilus-icon-canvas-item.c	2011-12-01 17:39:31.000000000 -0500
+@@ -2878,7 +2878,7 @@
+ 	iface->set_description = nautilus_icon_canvas_item_accessible_action_set_description;
+ }
+ 
+-static G_CONST_RETURN gchar *
++static const gchar *
+ nautilus_icon_canvas_item_accessible_get_name (AtkObject *accessible)
+ {
+ 	NautilusIconCanvasItem *item;
+@@ -2894,7 +2894,7 @@
+ 	return item->details->editable_text;
+ }
+ 
+-static G_CONST_RETURN gchar*
++static const gchar*
+ nautilus_icon_canvas_item_accessible_get_description (AtkObject *accessible)
+ {
+ 	NautilusIconCanvasItem *item;
+@@ -3055,7 +3055,7 @@
+ }
+ 
+ 
+-static G_CONST_RETURN gchar * 
++static const gchar * 
+ nautilus_icon_canvas_item_accessible_get_image_description
+ 	(AtkImage *image)
+ {
+diff -Naur nautilus-2.32.2.1.orig/libnautilus-private/nautilus-icon-info.c nautilus-2.32.2.1/libnautilus-private/nautilus-icon-info.c
+--- nautilus-2.32.2.1.orig/libnautilus-private/nautilus-icon-info.c	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/libnautilus-private/nautilus-icon-info.c	2011-12-01 17:39:31.000000000 -0500
+@@ -573,13 +573,13 @@
+ 	return icon->n_attach_points != 0;
+ }
+ 
+-G_CONST_RETURN char *
++const char *
+ nautilus_icon_info_get_display_name   (NautilusIconInfo  *icon)
+ {
+ 	return icon->display_name;
+ }
+ 
+-G_CONST_RETURN char *
++const char *
+ nautilus_icon_info_get_used_name (NautilusIconInfo  *icon)
+ {
+ 	return icon->icon_name;
+diff -Naur nautilus-2.32.2.1.orig/libnautilus-private/nautilus-icon-info.h nautilus-2.32.2.1/libnautilus-private/nautilus-icon-info.h
+--- nautilus-2.32.2.1.orig/libnautilus-private/nautilus-icon-info.h	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/libnautilus-private/nautilus-icon-info.h	2011-12-01 17:39:31.000000000 -0500
+@@ -72,8 +72,8 @@
+ gboolean              nautilus_icon_info_get_attach_points            (NautilusIconInfo  *icon,
+ 								       GdkPoint         **points,
+ 								       gint              *n_points);
+-G_CONST_RETURN char  *nautilus_icon_info_get_display_name             (NautilusIconInfo  *icon);
+-G_CONST_RETURN char  *nautilus_icon_info_get_used_name                (NautilusIconInfo  *icon);
++const char  *nautilus_icon_info_get_display_name             (NautilusIconInfo  *icon);
++const char  *nautilus_icon_info_get_used_name                (NautilusIconInfo  *icon);
+ 
+ void                  nautilus_icon_info_clear_caches                 (void);
+ 
+diff -Naur nautilus-2.32.2.1.orig/libnautilus-private/nautilus-search-engine-beagle.c nautilus-2.32.2.1/libnautilus-private/nautilus-search-engine-beagle.c
+--- nautilus-2.32.2.1.orig/libnautilus-private/nautilus-search-engine-beagle.c	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/libnautilus-private/nautilus-search-engine-beagle.c	2011-12-01 17:39:31.000000000 -0500
+@@ -69,7 +69,7 @@
+ static gboolean (*beagle_client_send_request_async) (BeagleClient  *client,
+                                                     BeagleRequest  *request,
+                                                     GError        **err) = NULL;
+-static G_CONST_RETURN char *(*beagle_hit_get_uri) (BeagleHit *hit) = NULL;
++static const char *(*beagle_hit_get_uri) (BeagleHit *hit) = NULL;
+ static GSList *(*beagle_hits_added_response_get_hits) (BeagleHitsAddedResponse *response) = NULL;
+ static BeagleQuery *(*beagle_query_new) (void) = NULL;
+ static void (*beagle_query_add_text) (BeagleQuery     *query,
+diff -Naur nautilus-2.32.2.1.orig/src/nautilus-zoom-control.c nautilus-2.32.2.1/src/nautilus-zoom-control.c
+--- nautilus-2.32.2.1.orig/src/nautilus-zoom-control.c	2011-12-01 17:39:07.000000000 -0500
++++ nautilus-2.32.2.1/src/nautilus-zoom-control.c	2011-12-01 17:39:31.000000000 -0500
+@@ -748,7 +748,7 @@
+ 	return NUM_ACTIONS;
+ }
+ 
+-static G_CONST_RETURN char *
++static const char *
+ nautilus_zoom_control_accessible_action_get_description (AtkAction *accessible, 
+ 							 int i)
+ {
+@@ -757,7 +757,7 @@
+ 	return _(nautilus_zoom_control_accessible_action_descriptions[i]);
+ }
+ 
+-static G_CONST_RETURN char *
++static const char *
+ nautilus_zoom_control_accessible_action_get_name (AtkAction *accessible, 
+ 						  int i)
+ {
+@@ -884,13 +884,13 @@
+ 	iface->set_current_value = nautilus_zoom_control_accessible_set_current_value;
+ }
+ 
+-static G_CONST_RETURN char *
++static const char *
+ nautilus_zoom_control_accessible_get_name (AtkObject *accessible)
+ {
+ 	return _("Zoom");
+ }
+ 
+-static G_CONST_RETURN char *
++static const char *
+ nautilus_zoom_control_accessible_get_description (AtkObject *accessible)
+ {
+ 	return _("Set the zoom level of the current view");
