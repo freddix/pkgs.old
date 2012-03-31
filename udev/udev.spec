@@ -1,12 +1,12 @@
 Summary:	A userspace implementation of devfs
 Name:		udev
-Version:	181
+Version:	182
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Base
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/%{name}-%{version}.tar.bz2
-# Source0-md5:	135c5acfd371febc5ed8326d48028922
+# Source0-md5:	e31c83159b017e8ab0fa2f4bca758a41
 Source1:	%{name}-65-permissions.rules
 URL:		http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev.html
 BuildRequires:	device-mapper-devel
@@ -120,7 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ChangeLog README TODO
-%doc src/extras/keymap/README.keymap.txt
+%doc src/keymap/README.keymap.txt
 
 # dirs
 %dir %{_sysconfdir}/udev
@@ -145,7 +145,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /%{_lib}/udev/v4l_id
 
 # rules
-/%{_lib}/udev/rules.d/42-qemu-usb.rules
+/%{_lib}/udev/rules.d/42-usb-hid-pm.rules
 /%{_lib}/udev/rules.d/50-udev-default.rules
 /%{_lib}/udev/rules.d/60-cdrom_id.rules
 /%{_lib}/udev/rules.d/60-persistent-alsa.rules
