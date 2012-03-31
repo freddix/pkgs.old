@@ -1,11 +1,11 @@
 Summary:	xinit scripts
 Name:		xorg-app-xinit
-Version:	1.3.1
-Release:	2
+Version:	1.3.2
+Release:	1
 License:	MIT
 Group:		X11/Applications
 Source0:	http://xorg.freedesktop.org/releases/individual/app/xinit-%{version}.tar.bz2
-# Source0-md5:	ee234056d8a3dbf37b61b4bcb35b88e4
+# Source0-md5:	9c0943cbd83e489ad1b05221b97efd44
 Source10:	%{name}-Xclients
 Source11:	%{name}-Xresources
 Source12:	%{name}-desktop
@@ -19,7 +19,6 @@ BuildRequires:	cpp
 BuildRequires:	pkg-config
 BuildRequires:	xorg-libX11-devel
 BuildRequires:	xorg-util-macros
-Requires:	ConsoleKit-x11
 Requires:	xorg-app-xauth
 Requires:	xorg-app-xmodmap
 Requires:	xorg-app-xrdb

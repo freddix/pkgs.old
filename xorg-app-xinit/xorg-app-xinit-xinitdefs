@@ -74,8 +74,3 @@ if [ -z "$SSH_AGENT_PID" ] && [ -x /usr/bin/ssh-agent ]; then
     fi
 fi
 
-CK_LAUNCH_SESSION=
-if [ -z "$XDG_SESSION_COOKIE" ] && [ -x /usr/bin/ck-launch-session ]; then
-    CK_LAUNCH_SESSION="/usr/bin/ck-launch-session"
-fi
-
