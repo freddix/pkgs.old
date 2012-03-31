@@ -1,11 +1,12 @@
 Summary:	A framework for defining policy for system-wide components
 Name:		polkit
 Version:	0.104
-Release:	3
+Release:	5
 License:	MIT
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
 # Source0-md5:	e380b4c6fb1e7bccf854e92edc0a8ce1
+Patch0:		%{name}-fixes.patch
 URL:		http://people.freedesktop.org/~david/polkit-spec.html
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -16,10 +17,10 @@ BuildRequires:	gtk-doc
 BuildRequires:	libtool
 BuildRequires:	pam-devel
 BuildRequires:	pkg-config
+BuildRequires:	systemd-devel
 BuildRequires:	xmlto
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	ConsoleKit
-Requires:	dbus
+Requires:	systemd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_libexecdir	%{_libdir}/%{name}
@@ -38,7 +39,7 @@ PolicyKit libraries.
 %package devel
 Summary:	Header files for PolicyKit
 Group:		Development/Libraries
-Requires:	%{name}-gir = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 Header files for PolicyKit.
@@ -51,17 +52,9 @@ Requires:	gtk-doc-common
 %description apidocs
 PolicyKit API documentation.
 
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for %{name}.
-
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -167,6 +160,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libpolkit-agent-1.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpolkit-backend-1.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpolkit-gobject-1.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
@@ -179,8 +173,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/polkit-gobject-1.pc
 %{_datadir}/gir-1.0/Polkit-1.0.gir
 %{_datadir}/gir-1.0/PolkitAgent-1.0.gir
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 

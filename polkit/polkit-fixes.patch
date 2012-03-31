@@ -1,0 +1,276 @@
+From 4aa6dd28476e12a5265d71b6bc19c730f1036785 Mon Sep 17 00:00:00 2001
+From: David Zeuthen <davidz@redhat.com>
+Date: Thu, 08 Mar 2012 20:36:30 +0000
+Subject: PolkitAgentSession: Don't leak file descriptors
+
+This was reported here
+
+ https://bugzilla.gnome.org/show_bug.cgi?id=671486
+
+Signed-off-by: David Zeuthen <davidz@redhat.com>
+---
+diff --git a/src/polkitagent/polkitagentsession.c b/src/polkitagent/polkitagentsession.c
+index ad3bbc3..8129cd9 100644
+--- a/src/polkitagent/polkitagentsession.c
++++ b/src/polkitagent/polkitagentsession.c
+@@ -130,6 +130,8 @@ G_DEFINE_TYPE (PolkitAgentSession, polkit_agent_session, G_TYPE_OBJECT);
+ static void
+ polkit_agent_session_init (PolkitAgentSession *session)
+ {
++  session->child_stdin = -1;
++  session->child_stdout = -1;
+ }
+ 
+ static void kill_helper (PolkitAgentSession *session);
+@@ -395,6 +397,18 @@ kill_helper (PolkitAgentSession *session)
+       session->child_stdout_channel = NULL;
+     }
+ 
++  if (session->child_stdout != -1)
++    {
++      g_warn_if_fail (close (session->child_stdout) == 0);
++      session->child_stdout = -1;
++    }
++
++  if (session->child_stdin != -1)
++    {
++      g_warn_if_fail (close (session->child_stdin) == 0);
++      session->child_stdin = -1;
++    }
++
+   session->helper_is_running = FALSE;
+ 
+  out:
+--
+cgit v0.9.0.2-2-gbebe
+From 5b11d5e0698e8ee00a96e16bc3547c6d571ef6e1 Mon Sep 17 00:00:00 2001
+From: Ryan Lortie <desrt@desrt.ca>
+Date: Sat, 07 Jan 2012 06:40:01 +0000
+Subject: Various builddir != srcdir fixes
+
+Fix autogen.sh to work when run from the builddir.
+
+Also: switch over to using the gobject-introspection Makefile (which is
+out-of-tree safe) instead of hardcoding our own version.
+
+https://bugs.freedesktop.org/show_bug.cgi?id=44599
+
+Signed-off-by: David Zeuthen <davidz@redhat.com>
+---
+diff --git a/autogen.sh b/autogen.sh
+index 462fc35..426e875 100755
+diff --git a/src/polkit/Makefile.am b/src/polkit/Makefile.am
+index 0c37151..1068ea1 100644
+--- a/src/polkit/Makefile.am
++++ b/src/polkit/Makefile.am
+@@ -103,33 +103,26 @@ libpolkit_gobject_1_la_LIBADD =                               		\
+ libpolkit_gobject_1_la_LDFLAGS = -export-symbols-regex '(^polkit_.*)'
+ 
+ if HAVE_INTROSPECTION
++
++INTROSPECTION_GIRS = Polkit-1.0.gir
++
+ girdir = $(INTROSPECTION_GIRDIR)
+ gir_DATA = Polkit-1.0.gir
+ 
+ typelibsdir = $(INTROSPECTION_TYPELIBDIR)
+ typelibs_DATA = Polkit-1.0.typelib
+ 
+-Polkit-1.0.gir: libpolkit-gobject-1.la $(INTROSPECTION_SCANNER) Makefile.am
+-	$(INTROSPECTION_SCANNER) -v 				\
+-		--warn-all					\
+-		--namespace Polkit 				\
+-		--nsversion=1.0 				\
+-		--include=Gio-2.0 				\
+-		--library=polkit-gobject-1 			\
+-		--output $@ 					\
+-		--pkg=glib-2.0 					\
+-		--pkg=gobject-2.0 				\
+-		--pkg=gio-2.0 					\
+-		--pkg-export=polkit-gobject-1			\
+-		--libtool=$(top_builddir)/libtool		\
+-		--c-include='polkit/polkit.h'			\
+-                -I$(top_srcdir)/src	 			\
+-	        -D_POLKIT_COMPILATION                   	\
+-		$(libpolkit_gobject_1_la_SOURCES)		\
+-		$(NULL)
+-
+-Polkit-1.0.typelib: Polkit-1.0.gir $(INTROSPECTION_COMPILER)
+-	$(INTROSPECTION_COMPILER) $< -o $@
++Polkit_1_0_gir_INCLUDES = Gio-2.0
++Polkit_1_0_gir_SCANNERFLAGS = --c-include='polkit/polkit.h'
++Polkit_1_0_gir_CFLAGS = \
++	$(libpolkit_gobject_1_la_CFLAGS)	\
++	-D_POLKIT_COMPILATION			\
++	-I.. -I$(top_srcdir)/src
++Polkit_1_0_gir_LIBS = libpolkit-gobject-1.la
++Polkit_1_0_gir_FILES = $(libpolkit_gobject_1_la_SOURCES)
++Polkit_1_0_gir_EXPORT_PACKAGES = polkit-gobject-1
++
++include $(INTROSPECTION_MAKEFILE)
+ 
+ endif # HAVE_INTROSPECTION
+ 
+diff --git a/src/polkitagent/Makefile.am b/src/polkitagent/Makefile.am
+index 4a6aa9b..e8c9fb1 100644
+--- a/src/polkitagent/Makefile.am
++++ b/src/polkitagent/Makefile.am
+@@ -102,37 +102,29 @@ polkit_agent_helper_1_LDADD = 						\
+ 	$(NULL)
+ 
+ if HAVE_INTROSPECTION
++
+ girdir = $(INTROSPECTION_GIRDIR)
+ gir_DATA = PolkitAgent-1.0.gir
+ 
+ typelibsdir = $(INTROSPECTION_TYPELIBDIR)
+ typelibs_DATA = PolkitAgent-1.0.typelib
+ 
+-PolkitAgent-1.0.gir: libpolkit-agent-1.la $(INTROSPECTION_SCANNER) Makefile.am
+-	$(INTROSPECTION_SCANNER) -v 				\
+-		--warn-all					\
+-		--namespace PolkitAgent				\
+-		--nsversion=1.0 				\
+-		--include=Gio-2.0 				\
+-		--include-uninstalled=$(top_builddir)/src/polkit/Polkit-1.0.gir	\
+-		--library=polkit-agent-1 			\
+-		--output $@ 					\
+-		--pkg=glib-2.0 					\
+-		--pkg=gobject-2.0 				\
+-		--pkg=gio-2.0 					\
+-		--pkg-export=polkit-agent-1			\
+-		--c-include='polkitagent/polkitagent.h'		\
+-		--libtool=$(top_builddir)/libtool		\
+-                -I$(top_srcdir)/src	 			\
+-	        -D_POLKIT_COMPILATION                   	\
+-	        -D_POLKIT_AGENT_COMPILATION                   	\
+-		$(libpolkit_agent_1_la_SOURCES)			\
+-		$(NULL)
+-
+-PolkitAgent-1.0.typelib: PolkitAgent-1.0.gir $(INTROSPECTION_COMPILER)
+-	$(INTROSPECTION_COMPILER) 				\
+-		--includedir $(top_builddir)/src/polkit		\
+-		$< -o $@
++INTROSPECTION_COMPILER_ARGS = --includedir=../../src/polkit
++INTROSPECTION_GIRS = PolkitAgent-1.0.gir
++PolkitAgent_1_0_gir_INCLUDES = Gio-2.0
++PolkitAgent_1_0_gir_SCANNERFLAGS = \
++	--include-uninstalled=../../src/polkit/Polkit-1.0.gir	\
++	--c-include='polkitagent/polkitagent.h'
++PolkitAgent_1_0_gir_CFLAGS = \
++        $(libpolkit_agent_1_la_CFLAGS)		\
++        -D_POLKIT_COMPILATION			\
++        -D_POLKIT_AGENT_COMPILATION		\
++        -I.. -I$(top_srcdir)/src
++PolkitAgent_1_0_gir_LIBS = libpolkit-agent-1.la
++PolkitAgent_1_0_gir_FILES = $(libpolkit_agent_1_la_SOURCES)
++PolkitAgent_1_0_gir_EXPORT_PACKAGES = polkit-agent-1
++
++include $(INTROSPECTION_MAKEFILE)
+ 
+ endif # HAVE_INTROSPECTION
+ 
+--
+cgit v0.9.0.2-2-gbebe
+From 8fb8b406bab50c5ef8c5d4f743e3f13924bd5f73 Mon Sep 17 00:00:00 2001
+From: David Zeuthen <davidz@redhat.com>
+Date: Mon, 06 Feb 2012 16:26:06 +0000
+Subject: PolkitUnixSession: Actually return TRUE if a session exists
+
+Also, don't treat the integer returned by sd_session_get_uid() as a
+boolean because that's just confusing.
+
+Signed-off-by: David Zeuthen <davidz@redhat.com>
+---
+diff --git a/src/polkit/polkitunixsession-systemd.c b/src/polkit/polkitunixsession-systemd.c
+index 94a7ee4..8a8bf65 100644
+--- a/src/polkit/polkitunixsession-systemd.c
++++ b/src/polkit/polkitunixsession-systemd.c
+@@ -361,17 +361,15 @@ polkit_unix_session_to_string (PolkitSubject *subject)
+ 
+ static gboolean
+ polkit_unix_session_exists_sync (PolkitSubject   *subject,
+-                                    GCancellable    *cancellable,
+-                                    GError         **error)
++                                 GCancellable    *cancellable,
++                                 GError         **error)
+ {
+   PolkitUnixSession *session = POLKIT_UNIX_SESSION (subject);
+-  gboolean ret;
++  gboolean ret = FALSE;
+   uid_t uid;
+ 
+-  ret = FALSE;
+-
+-  if (!sd_session_get_uid (session->session_id, &uid))
+-    ret = FALSE;
++  if (sd_session_get_uid (session->session_id, &uid) == 0)
++    ret = TRUE;
+ 
+   return ret;
+ }
+--
+cgit v0.9.0.2-2-gbebe
+From c46d2d13eac240d2a609b2dd8fc617ea18a78bfa Mon Sep 17 00:00:00 2001
+From: David Zeuthen <davidz@redhat.com>
+Date: Mon, 06 Feb 2012 16:24:53 +0000
+Subject: PolkitUnixSession: Set error if we cannot find a session for the given pid
+
+Also, don't treat the integer returned by sd_pid_get_session() as a
+boolean because that's just confusing. Also, don't confuse memory
+supposed to be freed by g_free() and free(3) with each other. See
+
+ https://bugzilla.redhat.com/show_bug.cgi?id=787222
+
+for more details.
+
+Signed-off-by: David Zeuthen <davidz@redhat.com>
+---
+diff --git a/src/polkit/polkitunixsession-systemd.c b/src/polkit/polkitunixsession-systemd.c
+index e7e913f..94a7ee4 100644
+--- a/src/polkit/polkitunixsession-systemd.c
++++ b/src/polkit/polkitunixsession-systemd.c
+@@ -23,6 +23,7 @@
+ #  include "config.h"
+ #endif
+ 
++#include <stdlib.h>
+ #include <string.h>
+ #include "polkitunixsession.h"
+ #include "polkitsubject.h"
+@@ -450,9 +451,8 @@ polkit_unix_session_initable_init (GInitable     *initable,
+                                    GError       **error)
+ {
+   PolkitUnixSession *session = POLKIT_UNIX_SESSION (initable);
+-  gboolean ret;
+-
+-  ret = FALSE;
++  gboolean ret = FALSE;
++  char *s;
+ 
+   if (session->session_id != NULL)
+     {
+@@ -461,8 +461,19 @@ polkit_unix_session_initable_init (GInitable     *initable,
+       goto out;
+     }
+ 
+-  if (!sd_pid_get_session (session->pid, &session->session_id))
+-    ret = TRUE;
++  if (sd_pid_get_session (session->pid, &s) == 0)
++    {
++      session->session_id = g_strdup (s);
++      free (s);
++      ret = TRUE;
++      goto out;
++    }
++
++  g_set_error (error,
++               POLKIT_ERROR,
++               POLKIT_ERROR_FAILED,
++               "No session for pid %d",
++               (gint) session->pid);
+ 
+ out:
+   return ret;
+--
+cgit v0.9.0.2-2-gbebe
