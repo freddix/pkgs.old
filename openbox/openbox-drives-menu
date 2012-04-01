@@ -1,0 +1,45 @@
+#!/usr/bin/python
+
+import gio
+
+sub_id = 0
+
+drives = gio.VolumeMonitor().get_connected_drives()
+
+print '<openbox_pipe_menu>'
+
+for drive in drives:
+
+    # get volumes on a drive
+    volumes = drive.get_volumes()
+    if volumes:
+    	# main menu entry
+	drive_name = drive.get_name()
+	print '<menu id="drives-sub-menu' + str(sub_id) + '\" label=\"' + drive_name + '\">'
+
+	for volume in volumes:
+	    volume_str = volume.get_name()
+	    volume_ident = volume.get_identifier("unix-device")
+	    mount = volume.get_mount()
+
+	    # volume label
+	    if mount:
+		print '<item label=\"[ ' + volume_str + ' ]\">'
+	    else:
+	    	print '<item label=\"' + volume_str + '\">'
+
+	    print '<action name="Execute">'
+
+	    if mount:
+	    	print '<command>udisks --unmount ' + volume_ident + '</command>'
+	    else:
+	    	print '<command>udisks --mount ' + volume_ident + '</command>'
+
+	    print '</action>'
+	    print '</item>'
+
+	sub_id = sub_id + 1
+	print '</menu>'
+
+print '</openbox_pipe_menu>'
+

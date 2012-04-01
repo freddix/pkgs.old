@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Openbox
+TryExec=openbox-session
+Exec=openbox-session
+NoDisplay=true
+

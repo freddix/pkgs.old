@@ -1,0 +1,71 @@
+diff -aurN openbox-3.5.0.orig/data/rc.xml openbox-3.5.0/data/rc.xml
+--- openbox-3.5.0.orig/data/rc.xml	2011-08-02 18:16:34.684268961 +0200
++++ openbox-3.5.0/data/rc.xml	2011-08-02 20:21:11.811792003 +0200
+@@ -15,14 +15,14 @@
+   <focusNew>yes</focusNew>
+   <!-- always try to focus new windows when they appear. other rules do
+        apply -->
+-  <followMouse>no</followMouse>
++  <followMouse>yes</followMouse>
+   <!-- move focus to a window when you move the mouse into it -->
+   <focusLast>yes</focusLast>
+   <!-- focus the last used window when changing desktops, instead of the one
+        under the mouse pointer. when followMouse is enabled -->
+   <underMouse>no</underMouse>
+   <!-- move focus under the mouse, even when the mouse is not moving -->
+-  <focusDelay>200</focusDelay>
++  <focusDelay>100</focusDelay>
+   <!-- when followMouse is enabled, the mouse must be inside the window for
+        this many milliseconds (1000 = 1 sec) before moving focus to it -->
+   <raiseOnFocus>no</raiseOnFocus>
+@@ -49,7 +49,7 @@
+ </placement>
+ 
+ <theme>
+-  <name>Clearlooks</name>
++  <name>Shiki-Brave</name>
+   <titleLayout>NLIMC</titleLayout>
+   <!--
+       available characters are NDSLIMC, each can occur at most once.
+@@ -131,10 +131,10 @@
+   <number>4</number>
+   <firstdesk>1</firstdesk>
+   <names>
+-    <!-- set names up here if you want to, like this:
+-    <name>desktop 1</name>
+-    <name>desktop 2</name>
+-    -->
++    <name>1</name>
++    <name>2</name>
++    <name>3</name>
++    <name>4</name>
+   </names>
+   <popupTime>875</popupTime>
+   <!-- The number of milliseconds to show the popup for when switching
+@@ -308,6 +308,26 @@
+       <command>kfmclient openProfile filemanagement</command>
+     </action>
+   </keybind>
++
++  <!-- added by Freddix -->
++	<keybind key="W-r">
++		<action name="Execute">
++			<command>gmrun -g 1</command>
++		</action>
++	</keybind>
++	<keybind key="A-F5">
++		<action name="ToggleMaximizeHorz"/>
++	</keybind>
++	<keybind key="A-F6">
++		<action name="ToggleMaximizeVert"/>
++	</keybind>
++	<keybind key="A-F10">
++		<action name="MaximizeFull"/>
++	</keybind>
++	<keybind key="W-F11">
++		<action name="ToggleFullscreen"/>
++	</keybind>
++
+ </keyboard>
+ 
+ <mouse>

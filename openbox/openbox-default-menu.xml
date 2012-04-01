@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu xmlns="http://openbox.org/3.4/menu">
+
+	<menu id="applications-menu" label="Applications"
+		execute="/usr/share/openbox/openbox-xdg-menu applications"/>
+	<menu id="settings-menu" label="Settings"
+		execute="/usr/share/openbox/openbox-xdg-menu settings"/>
+	<menu id="drives-menu" label="Drives"
+		execute="python /usr/share/openbox/openbox-drives-menu"/>
+	<menu id="terminals-menu" label="Terminals"
+		execute="/usr/share/openbox/openbox-xdg-menu terminals"/>
+
+	<menu id="root-menu" label="Openbox">
+	<separator label="Openbox"/>
+	<menu id="applications-menu"/>
+  <menu id="settings-menu"/>
+  <menu id="terminals-menu"/>
+  <menu id="drives-menu"/>
+  <separator/>
+
+  <item label="Reconfigure">
+    <action name="Reconfigure"/>
+  </item>
+  <separator/>
+
+  <item label="Log Out">
+    <action name="SessionLogout">
+      <prompt>yes</prompt>
+    </action>
+  </item>
+</menu>
+
+</openbox_menu>
+
