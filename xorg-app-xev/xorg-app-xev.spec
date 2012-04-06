@@ -1,11 +1,11 @@
 Summary:	xev application
 Name:		xorg-app-xev
-Version:	1.1.0
+Version:	1.2.0
 Release:	1
 License:	MIT
 Group:		X11/Applications
 Source0:	http://xorg.freedesktop.org/releases/individual/app/xev-%{version}.tar.bz2
-# Source0-md5:	515cfd1fe857b66abe43ec3343634954
+# Source0-md5:	2727c72f3eba0c23f8f6b2e618d195a2
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
