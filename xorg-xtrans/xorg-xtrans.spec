@@ -1,11 +1,11 @@
 Summary:	xtrans library - network API translation layer
 Name:		xorg-xtrans
-Version:	1.2.6
-Release:	2
+Version:	1.2.7
+Release:	1
 License:	MIT
 Group:		X11/Development/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/lib/xtrans-%{version}.tar.bz2
-# Source0-md5:	c66f9ffd2da4fb012220c6c40ebc7609
+# Source0-md5:	84c66908cf003ad8c272b0eecbdbaee3
 URL:		http://xorg.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
