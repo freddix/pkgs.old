@@ -1,13 +1,13 @@
 %define		abiver		2.10.0
-#
+
 Summary:	An image loading and scaling library
 Name:		gdk-pixbuf
-Version:	2.24.0
-Release:	3
+Version:	2.26.0
+Release:	4
 License:	LGPL v2+
 Group:		X11/Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.24/%{name}-%{version}.tar.bz2
-# Source0-md5:	d8ece3a4ade4a91c768328620e473ab8
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.26/%{name}-%{version}.tar.xz
+# Source0-md5:	1c186f9903a20e96587b9afb27944b40
 URL:		http://www.gtk.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -23,24 +23,17 @@ BuildRequires:	libxslt-progs
 BuildRequires:	perl-devel
 BuildRequires:	pkg-config
 BuildRequires:	xorg-libX11-devel
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	gtk+-rsvg
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 gdk-pixbuf is an image loading and scaling library that can be
 extended by loadable modules for new image formats.
 
-%package libs
-Summary:	gdk-pixbuf libraries
-Group:		X11/Development/Libraries
-
-%description libs
-gdk-pixbuf libraries.
-
 %package devel
 Summary:	Header files for gdk-pixbuf library
 Group:		X11/Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for gdk-pixbuf library.
@@ -62,10 +55,12 @@ API documentation for gdk-pixbuf library.
 %{__autoconf}
 %{__automake}
 %configure \
+	--disable-silent-rules		\
 	--enable-man			\
 	--with-html-dir=%{_gtkdocdir}	\
 	--with-included-loaders=png	\
-	--with-libjasper
+	--with-libjasper		\
+	--with-x11
 %{__make}
 
 %install
@@ -84,21 +79,24 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/io
 rm -rf $RPM_BUILD_ROOT
 
 %post
+/sbin/ldconfig
 umask 022
 %{_bindir}/gdk-pixbuf-query-loaders --update-cache || :
 
 %postun
+/sbin/ldconfig
 if [ "$1" != "0" ]; then
 	umask 022
 	%{_bindir}/gdk-pixbuf-query-loaders --update-cache || :
 fi
 
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
-
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS
+%attr(755,root,root) %ghost %{_libdir}/libgdk_pixbuf*.so.?
+%attr(755,root,root) %{_libdir}/libgdk_pixbuf-2.0.so.*.*.*
+%attr(755,root,root) %{_libdir}/libgdk_pixbuf_xlib-2.0.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %dir %{_libdir}/gdk-pixbuf-2.0
 %dir %{_libdir}/gdk-pixbuf-2.0/%{abiver}
@@ -109,16 +107,10 @@ fi
 %ghost %{_libdir}/gdk-pixbuf-2.0/%{abiver}/loaders.cache
 %{_mandir}/man1/gdk-pixbuf-query-loaders.1*
 
-%files libs
-%defattr(644,root,root,755)
-%attr(755,root,root) %ghost %{_libdir}/libgdk_pixbuf*.so.?
-%attr(755,root,root) %{_libdir}/libgdk_pixbuf-2.0.so.*.*.*
-%attr(755,root,root) %{_libdir}/libgdk_pixbuf_xlib-2.0.so.*.*.*
-%{_libdir}/girepository-1.0/*.typelib
-
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/gdk-pixbuf-csource
+%attr(755,root,root) %{_bindir}/gdk-pixbuf-pixdata
 %attr(755,root,root) %{_libdir}/libgdk_pixbuf*.so
 %{_libdir}/libgdk_pixbuf*.la
 %{_datadir}/gir-1.0/GdkPixbuf-2.0.gir
