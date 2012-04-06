@@ -1,12 +1,12 @@
 Summary:	System for layout and rendering of internationalized text
 Name:		pango
 Version:	1.29.4
-Release:	1
+Release:	2
 Epoch:		1
 License:	LGPL
 Group:		X11/Libraries
-Source0:	http://ftp.gnome.org/pub/gnome/sources/pango/1.29/%{name}-%{version}.tar.bz2
-# Source0-md5:	a5ee785f4f31d6bdd8625a09ea3f8b4b
+Source0:	http://ftp.gnome.org/pub/gnome/sources/pango/1.29/%{name}-%{version}.tar.xz
+# Source0-md5:	9d5aba73897d2e8e8115b3f4fddbc0af
 Patch0:		%{name}-xfonts.patch
 URL:		http://www.pango.org/
 BuildRequires:	autoconf
@@ -17,7 +17,7 @@ BuildRequires:	docbook-style-xsl
 BuildRequires:	fontconfig-devel
 BuildRequires:	freetype-devel
 BuildRequires:	glib-devel
-BuildRequires:	gobject-introspection-devel >= 0.9.5
+BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk-doc
 BuildRequires:	libtool
 BuildRequires:	perl-base
@@ -32,7 +32,7 @@ System for layout and rendering of internationalized text.
 %package devel
 Summary:	System for layout and rendering of internationalized text
 Group:		X11/Development/Libraries
-Requires:	%{name}-gir = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description devel
 Developer files for pango.
@@ -42,6 +42,7 @@ Summary:	System for layout and rendering of internationalized text
 Group:		X11/Development/Libraries
 Requires(post,postun):	%{name} = %{epoch}:%{version}-%{release}
 Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	cairo-devel
 
 %description modules
 System for layout and rendering of internationalized text.
@@ -56,16 +57,6 @@ Requires:	gtk-doc-common
 
 %description apidocs
 Pango API documentation.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for Pango.
-
 
 %prep
 %setup -q
@@ -83,7 +74,6 @@ GObject introspection data for Pango.
 	--disable-static		\
 	--enable-introspection=yes	\
 	--enable-man			\
-	--with-fribidi			\
 	--with-html-dir=%{_gtkdocdir}	\
 	--with-included-modules=basic-fc
 %{__make}
@@ -138,6 +128,7 @@ exit 0
 %attr(755,root,root) %{_libdir}/libpangoft2-1.0.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpangox-1.0.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpangoxft-1.0.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %dir %{_libdir}/pango
 %dir %{_libdir}/pango/1.6.0
@@ -153,6 +144,8 @@ exit 0
 %defattr(644,root,root,755)
 %doc ChangeLog
 %attr(755,root,root) %{_libdir}/libpango*-1.0.so
+# pkgconfig file missing deps
+%{_libdir}/libpango*-1.0.la
 %{_pkgconfigdir}/pango*.pc
 %{_includedir}/pango-1.0
 %{_datadir}/gir-1.0/*.gir
@@ -165,8 +158,4 @@ exit 0
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/pango
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 
