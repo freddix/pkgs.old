@@ -1,9 +1,9 @@
 %define		shiki_ver	4.6
-#
+
 Summary:	GNOME Colors icon theme
 Name:		gnome-theme-colors
 Version:	5.5.1
-Release:	6
+Release:	8
 License:	GPL v2
 Group:		X11/Amusements
 Source0:	http://gnome-colors.googlecode.com/files/gnome-colors-%{version}.tar.gz
@@ -16,7 +16,7 @@ Source3:	http://www.deviantart.com/download/149966599/Shiki_Colors_for_Openbox_b
 # Source3-md5:	9bfdc470810ef2b72e107d7edae86661
 Patch0:		%{name}-gradients.patch
 URL:		http://code.google.com/p/gnome-colors/
-BuildRequires:  gtk+
+BuildRequires:  gtk+-update-icon-cache
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -110,6 +110,7 @@ Provides:	xdg-icon-theme
 %package -n metacity-theme-shiki-colors
 Summary:	Shiki Colors for Metacity
 Group:		Themes
+Requires:	%{name} = %{version}-%{release}
 
 %description -n metacity-theme-shiki-colors
 Shiki Colors for Metacity.
@@ -117,6 +118,7 @@ Shiki Colors for Metacity.
 %package -n xfwm4-theme-shiki-colors
 Summary:	Shiki Colors for XFWM4
 Group:		Themes
+Requires:	%{name} = %{version}-%{release}
 
 %description -n xfwm4-theme-shiki-colors
 Shiki Colors for Metacity.
@@ -183,6 +185,7 @@ Murrine Wise GTK+ theme.
 %package -n openbox-theme-colors
 Summary:	Openbox themes
 Group:		Themes
+Requires:	%{name} = %{version}-%{release}
 Requires:	openbox
 
 %description -n openbox-theme-colors
@@ -312,5 +315,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n openbox-theme-colors
 %defattr(644,root,root,755)
-%{_datadir}/themes/*/openbox-3
+%{_datadir}/themes/Shiki-Brave/openbox-3
+%{_datadir}/themes/Shiki-Dust/openbox-3
+%{_datadir}/themes/Shiki-Human/openbox-3
+%{_datadir}/themes/Shiki-Illustrious/openbox-3
+%{_datadir}/themes/Shiki-Noble/openbox-3
+%{_datadir}/themes/Shiki-Wine/openbox-3
+%{_datadir}/themes/Shiki-Wise/openbox-3
 
