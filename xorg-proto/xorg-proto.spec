@@ -1,4 +1,4 @@
-%define		bigreqsproto_version		1.1.1
+%define		bigreqsproto_version		1.1.2
 %define		compositeproto_version		0.4.2
 %define		damageproto_version		1.2.1
 %define		dmxproto_version		2.3.1
@@ -6,20 +6,20 @@
 %define		evieext_version			1.1.1
 %define		fixesproto_version		5.0
 %define		fontcacheproto_version		0.1.3
-%define		fontsproto_version		2.1.1
+%define		fontsproto_version		2.1.2
 %define		glproto_version			1.4.14
 %define		inputproto_version		2.2
-%define		kbproto_version			1.0.5
+%define		kbproto_version			1.0.6
 %define		printproto_version		1.0.4
 %define		randrproto_version		1.3.2
-%define		recordproto_version		1.14.1
+%define		recordproto_version		1.14.2
 %define		renderproto_version		0.11.1
 %define		resourceproto_version		1.2.0
-%define		scrnsaverproto_version		1.2.1
+%define		scrnsaverproto_version		1.2.2
 %define		trapproto_version		3.4.3
 %define		videoproto_version		2.3.1
-%define		xcmiscproto_version		1.2.1
-%define		xextproto_version		7.2.0
+%define		xcmiscproto_version		1.2.2
+%define		xextproto_version		7.2.1
 %define		xf86bigfontproto_version	1.2.0
 %define		xf86dgaproto_version		2.1
 %define		xf86driproto_version		2.1.1
@@ -35,11 +35,11 @@
 Summary:	Xorg headers
 Name:		xorg-proto
 Version:	7.6
-Release:	7
+Release:	8
 License:	MIT
 Group:		X11/Development/Libraries
 Source0:	http://xorg.freedesktop.org/releases/individual/proto/bigreqsproto-%{bigreqsproto_version}.tar.bz2
-# Source0-md5:	6f6c24436c2b3ab235eb14a85b9aaacf
+# Source0-md5:	1a05fb01fa1d5198894c931cf925c025
 Source1:	http://xorg.freedesktop.org/releases/individual/proto/compositeproto-%{compositeproto_version}.tar.bz2
 # Source1-md5:	98482f65ba1e74a08bf5b056a4031ef0
 Source2:	http://xorg.freedesktop.org/releases/individual/proto/damageproto-%{damageproto_version}.tar.bz2
@@ -53,33 +53,33 @@ Source5:	http://xorg.freedesktop.org/releases/individual/proto/fixesproto-%{fixe
 Source6:	http://xorg.freedesktop.org/releases/individual/proto/fontcacheproto-%{fontcacheproto_version}.tar.bz2
 # Source6-md5:	a8a50e5e995bfacb0359575faf7f6906
 Source7:	http://xorg.freedesktop.org/releases/individual/proto/fontsproto-%{fontsproto_version}.tar.bz2
-# Source7-md5:	37102ffcaa73f77d700acd6f7a25d8f0
+# Source7-md5:	c5f4f1fb4ba7766eedbc9489e81f3be2
 Source8:	http://xorg.freedesktop.org/releases/individual/proto/glproto-%{glproto_version}.tar.bz2
 # Source8-md5:	f48257daf0017f7a7667e5bf48ca3578
 Source9:	http://xorg.freedesktop.org/releases/individual/proto/inputproto-%{inputproto_version}.tar.bz2
 # Source9-md5:	13c8aedaf98a92e282b7e456c0a5bed9
 Source10:	http://xorg.freedesktop.org/releases/individual/proto/kbproto-%{kbproto_version}.tar.bz2
-# Source10-md5:	e7edb59a3f54af15f749e8f3e314ee62
+# Source10-md5:	677ea8523eec6caca86121ad2dca0b71
 Source11:	http://xorg.freedesktop.org/releases/individual/proto/printproto-%{printproto_version}.tar.bz2
 # Source11-md5:	7321847a60748b4d2f1fa16db4b6ede8
 Source12:	http://xorg.freedesktop.org/releases/individual/proto/randrproto-%{randrproto_version}.tar.bz2
 # Source12-md5:	597491c0d8055e2a66f11350c4985775
 Source13:	http://xorg.freedesktop.org/releases/individual/proto/recordproto-%{recordproto_version}.tar.bz2
-# Source13-md5:	24541a30b399213def35f48efd926c63
+# Source13-md5:	1b4e5dede5ea51906f1530ca1e21d216
 Source14:	http://xorg.freedesktop.org/releases/individual/proto/renderproto-%{renderproto_version}.tar.bz2
 # Source14-md5:	a914ccc1de66ddeb4b611c6b0686e274
 Source15:	http://xorg.freedesktop.org/releases/individual/proto/resourceproto-%{resourceproto_version}.tar.bz2
 # Source15-md5:	cfdb57dae221b71b2703f8e2980eaaf4
 Source16:	http://xorg.freedesktop.org/releases/individual/proto/scrnsaverproto-%{scrnsaverproto_version}.tar.bz2
-# Source16-md5:	6af0f2e3369f5f74e69345e214f5fd0d
+# Source16-md5:	edd8a73775e8ece1d69515dd17767bfb
 Source17:	http://xorg.freedesktop.org/releases/individual/proto/trapproto-%{trapproto_version}.tar.bz2
 # Source17-md5:	3b713239e5e6b269b31cb665563358df
 Source18:	http://xorg.freedesktop.org/releases/individual/proto/videoproto-%{videoproto_version}.tar.bz2
 # Source18-md5:	c3b348c6e2031b72b11ae63fc7f805c2
 Source19:	http://xorg.freedesktop.org/releases/individual/proto/xcmiscproto-%{xcmiscproto_version}.tar.bz2
-# Source19-md5:	cd7372cd827bfd7ca7e9238f2ce274b1
+# Source19-md5:	5f4847c78e41b801982c8a5e06365b24
 Source20:	http://xorg.freedesktop.org/releases/individual/proto/xextproto-%{xextproto_version}.tar.bz2
-# Source20-md5:	220732210ceffb01bf1caf970e3b1bfb
+# Source20-md5:	eaac343af094e6b608cf15cfba0f77c5
 Source21:	http://xorg.freedesktop.org/releases/individual/proto/xf86bigfontproto-%{xf86bigfontproto_version}.tar.bz2
 # Source21-md5:	120e226ede5a4687b25dd357cc9b8efe
 Source22:	http://xorg.freedesktop.org/releases/individual/proto/xf86dgaproto-%{xf86dgaproto_version}.tar.bz2
