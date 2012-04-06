@@ -1,11 +1,11 @@
 Summary:	Compiler for the GObject type system
 Name:		vala
-Version:	0.12.1
-Release:	3
+Version:	0.16.0
+Release:	1
 License:	LGPL v2.1
 Group:		Applications
-Source0:	http://download.gnome.org/sources/vala/0.14/%{name}-%{version}.tar.xz
-# Source0-md5:	f05263a56c1e328637e4c97a61befdad
+Source0:	http://download.gnome.org/sources/vala/0.16/%{name}-%{version}.tar.xz
+# Source0-md5:	84b742e9cca4c90fde3026c3793c03c1
 URL:		http://live.gnome.org/Vala
 BuildRequires:	glib-devel
 BuildRequires:	pkg-config
@@ -14,7 +14,7 @@ Requires:	glib-devel
 Requires:	pkg-config
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		apiver	0.12
+%define		apiver	0.16
 
 %description
 Vala is a new programming language that aims to bring modern programming
@@ -104,6 +104,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/vapigen
 %attr(755,root,root) %{_bindir}/vapigen-%{apiver}
 %attr(755,root,root) %{_libdir}/vala-%{apiver}/gen-introspect-%{apiver}
+%{_aclocaldir}/vapigen.m4
+%{_datadir}/vala/*.vapigen
+%{_npkgconfigdir}/vapigen*.pc
 %{_mandir}/man1/vala-gen-introspect-*.*
 %{_mandir}/man1/vapigen-*.*
 
