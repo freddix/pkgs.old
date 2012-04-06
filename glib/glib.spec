@@ -1,12 +1,12 @@
 Summary:	Cross-platform software utility library
 Name:		glib
-Version:	2.30.3
-Release:	1
+Version:	2.32.0
+Release:	2
 Epoch:		1
 License:	LGPL
 Group:		Libraries
-Source0:	http://download.gnome.org/sources/glib/2.30/%{name}-%{version}.tar.xz
-# Source0-md5:	0f9fa329c6c1012d0fd861ad3d8a4520
+Source0:	http://download.gnome.org/sources/glib/2.32/%{name}-%{version}.tar.xz
+# Source0-md5:	c5fa76fbf9184d20dfb04af66b598190
 Patch0:		%{name}-makefile.patch
 URL:		http://www.gtk.org/
 BuildRequires:	autoconf
@@ -184,6 +184,10 @@ umask 022
 %attr(755,root,root) %{_libdir}/libgmodule-2.0.so
 %attr(755,root,root) %{_libdir}/libgobject-2.0.so
 %attr(755,root,root) %{_libdir}/libgthread-2.0.so
+%{_libdir}/libglib-2.0.la
+%{_libdir}/libgmodule-2.0.la
+%{_libdir}/libgobject-2.0.la
+%{_libdir}/libgthread-2.0.la
 
 %{_libdir}/glib-2.0
 %dir %{_datadir}/glib-2.0/gettext
@@ -204,10 +208,9 @@ umask 022
 %{_libdir}/gdbus-2.0/codegen/*.py[co]
 %{_mandir}/man1/gdbus-codegen.1*
 
-%{_includedir}/*
-%{_aclocaldir}/*
+%{_includedir}/glib-2.0
+%{_aclocaldir}/*.m4
 
-%{_mandir}/man1/gio-querymodules.1*
 %{_mandir}/man1/glib-genmarshal.1*
 %{_mandir}/man1/glib-gettextize.1*
 %{_mandir}/man1/glib-mkenums.1*
@@ -251,9 +254,15 @@ umask 022
 
 %files gio-devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/glib-compile-resources
+%attr(755,root,root) %{_bindir}/gresource
 %attr(755,root,root) %{_libdir}/libgio-2.0.so
+%{_includedir}/gio-unix-2.0
+%{_libdir}/libgio-2.0.la
 %{_pkgconfigdir}/gio-2.0.pc
 %{_pkgconfigdir}/gio-unix-2.0.pc
+%{_mandir}/man1/glib-compile-resources.1*
+%{_mandir}/man1/gresource.1*
 
 %files gio-static
 %defattr(644,root,root,755)
