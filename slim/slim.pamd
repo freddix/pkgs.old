@@ -15,7 +15,7 @@ session    required     pam_env.so readenv=1 envfile=/etc/locale.conf
 auth       include      common-auth
 
 # optionally include gnome-keyring module
-auth       optional     pam_gnome_keyring.so
+-auth       optional     pam_gnome_keyring.so
 
 # Sets up user limits according to /etc/security/limits.conf
 # (Replaces the use of /etc/limits in old login)
@@ -27,5 +27,5 @@ password   include      common-password
 session    include      common-session
 
 # start gnome-keyring
-session    optional     pam_gnome_keyring.so auto_start
+-session    optional     pam_gnome_keyring.so auto_start
 

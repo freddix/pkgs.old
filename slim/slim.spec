@@ -1,7 +1,7 @@
 Summary:	SLiM - a desktop-independent graphical login managaer
 Name:		slim
 Version:	1.3.3
-Release:	4
+Release:	5
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://download.berlios.de/slim/%{name}-%{version}.tar.gz
