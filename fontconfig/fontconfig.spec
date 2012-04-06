@@ -1,12 +1,12 @@
 Summary:	Font configuration and customization tools
 Name:		fontconfig
-Version:	2.8.0
-Release:	4
+Version:	2.9.0
+Release:	1
 Epoch:		1
 License:	MIT
 Group:		Libraries
 Source0:	http://fontconfig.org/release/%{name}-%{version}.tar.gz
-# Source0-md5:	77e15a92006ddc2adbb06f840d591c0e
+# Source0-md5:	26c83855ed256b5c032baae032fadc4f
 Source1:	%{name}-lcd-filter.conf
 Patch0:		%{name}-blacklist.patch
 URL:		http://fontconfig.org/
@@ -56,7 +56,8 @@ use these fontconfig.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-docs \
+	--disable-docs		\
+	--disable-silent-rules	\
 	--disable-static
 %{__make}
 
@@ -68,6 +69,10 @@ install -d $RPM_BUILD_ROOT{%{_mandir}/man{1,3,5},/var/cache/fontconfig}
 	DESTDIR=$RPM_BUILD_ROOT
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/fonts/conf.avail/10-lcd-filter.conf
+
+# enable lcdfilter by default
+ln -s ../conf.avail/10-lcd-filter.conf \
+	$RPM_BUILD_ROOT%{_sysconfdir}/fonts/conf.d/10-lcd-filter.conf
 
 install doc/*.3 $RPM_BUILD_ROOT%{_mandir}/man3
 install doc/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
