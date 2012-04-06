@@ -1,7 +1,7 @@
 Summary:	Accessibility Toolkit
 Name:		atk
 Version:	2.2.0
-Release:	1
+Release:	2
 Epoch:		1
 License:	LGPL v2+
 Group:		X11/Libraries
@@ -29,7 +29,7 @@ devices.
 %package devel
 Summary:	ATK - header and development documentation
 Group:		X11/Development/Libraries
-Requires:	%{name}-gir = %{epoch}:%{version}-%{release}
+Requires:	%{name} = %{epoch}:%{version}-%{release}
 
 %description devel
 ATK - header and development documentation.
@@ -41,15 +41,6 @@ Requires:	gtk-doc-common
 
 %description apidocs
 ATK API documentation.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for ATK.
 
 %prep
 %setup -q
@@ -88,6 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS NEWS README
 %attr(755,root,root) %ghost %{_libdir}/lib*.so.?
 %attr(755,root,root) %{_libdir}/lib*.so.*.*.*
+%{_libdir}/girepository-1.0/Atk-1.0.typelib
 
 %files devel
 %defattr(644,root,root,755)
@@ -100,8 +92,4 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/atk
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/Atk-1.0.typelib
 
