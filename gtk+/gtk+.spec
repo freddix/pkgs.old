@@ -1,7 +1,7 @@
 Summary:	The Gimp Toolkit
 Name:		gtk+
 Version:	2.24.10
-Release:	1
+Release:	4
 Epoch:		2
 License:	LGPL
 Group:		X11/Libraries
@@ -39,7 +39,9 @@ BuildRequires:	xorg-libXi-devel
 BuildRequires:	xorg-libXinerama-devel
 BuildRequires:	xorg-libXrandr-devel
 BuildRequires:	xorg-libXrender-devel
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	shared-mime-info
+Requires:	gdk-pixbuf
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		abivers		2.10.0
@@ -50,10 +52,17 @@ graphical user interfaces for the X Window System. It is designed to
 be small, efficient, and flexible. GTK+ is written in C with a very
 object-oriented approach.
 
+%package libs
+Summary:	GTK+ libraries
+Group:		X11/Libraries
+
+%description libs
+GTK+ libraries.
+
 %package devel
 Summary:	GTK+ header files and development documentation
 Group:		X11/Development/Libraries
-Requires:	%{name}-gir = %{epoch}:%{version}-%{release}
+Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 
 %description devel
 Header files and development documentation for the GTK+ libraries.
@@ -66,14 +75,12 @@ Requires:	gtk-doc-common
 %description apidocs
 GTK+ API documentation.
 
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	%{name} = %{epoch}:%{version}-%{release}
-Requires:	gobject-introspection-data
+%package update-icon-cache
+Summary:	Utility to update icon cache used by GTK+ library
+Group:		Applications/System
 
-%description gir
-GObject introspection data for GTK+.
+%description update-icon-cache
+Utility to update icon cache used by GTK+ library.
 
 %prep
 %setup -q
@@ -123,56 +130,59 @@ rm -r $RPM_BUILD_ROOT%{_datadir}/locale/{az_IR,ca@valencia,crh,io,my,ps}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/ldconfig
 umask 022
 %{_bindir}/gtk-query-immodules-2.0 >%{_sysconfdir}/gtk-2.0/gtk.immodules
 exit 0
 
 %postun
-/sbin/ldconfig
 if [ "$1" != "0" ]; then
 	umask 022
 	%{_bindir}/gtk-query-immodules-2.0 >%{_sysconfdir}/gtk-2.0/gtk.immodules
 fi
 exit 0
 
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
+
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README
 %attr(755,root,root) %{_bindir}/gtk-builder-convert
 %attr(755,root,root) %{_bindir}/gtk-query*
-%attr(755,root,root) %{_bindir}/gtk-update-icon-cache
 
-%attr(755,root,root) %ghost %{_libdir}/libgailutil.so.??
-%attr(755,root,root) %ghost %{_libdir}/libg*-x11-2.0.so.?
-%attr(755,root,root) %{_libdir}/libgailutil.so.*.*.*
-%attr(755,root,root) %{_libdir}/libg*-x11-2.0.so.*.*.*
-
-%dir %{_libdir}/gtk-*
-%dir %{_libdir}/gtk-*/modules
-%dir %{_libdir}/gtk-*/%{abivers}
-%dir %{_libdir}/gtk-*/%{abivers}/engines
-%dir %{_libdir}/gtk-*/%{abivers}/filesystems
-%dir %{_libdir}/gtk-*/%{abivers}/immodules
-%dir %{_libdir}/gtk-*/%{abivers}/printbackends
+%dir %{_libdir}/gtk-2.0/modules
+%dir %{_libdir}/gtk-2.0/%{abivers}
+%dir %{_libdir}/gtk-2.0/%{abivers}/engines
+%dir %{_libdir}/gtk-2.0/%{abivers}/filesystems
+%dir %{_libdir}/gtk-2.0/%{abivers}/immodules
+%dir %{_libdir}/gtk-2.0/%{abivers}/printbackends
 %attr(755,root,root) %{_libdir}/gtk-2.0/modules/libferret.so
 %attr(755,root,root) %{_libdir}/gtk-2.0/modules/libgail.so
 %attr(755,root,root) %{_libdir}/gtk-2.0/%{abivers}/engines/libpixmap.so
 %attr(755,root,root) %{_libdir}/gtk-2.0/%{abivers}/immodules/*.so
 %attr(755,root,root) %{_libdir}/gtk-2.0/%{abivers}/printbackends/*.so
 
-%dir %{_datadir}/gtk-*
+%dir %{_datadir}/gtk-2.0
 %dir %{_datadir}/themes/Default/gtk-*
 %dir %{_datadir}/themes/Emacs
 %dir %{_datadir}/themes/Emacs/gtk-*
 %dir %{_datadir}/themes/Raleigh
 %dir %{_datadir}/themes/Raleigh/gtk-*
-%dir %{_sysconfdir}/gtk-*
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gtk-*/im-multipress.conf
-%ghost %{_sysconfdir}/gtk-*/gtk.immodules
+%dir %{_sysconfdir}/gtk-2.0
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gtk-2.0/im-multipress.conf
+%ghost %{_sysconfdir}/gtk-2.0/gtk.immodules
 %{_datadir}/themes/Default/gtk-*/gtkrc
 %{_datadir}/themes/Emacs/gtk-*/gtkrc
 %{_datadir}/themes/Raleigh/gtk-*/gtkrc
+
+%files libs
+%defattr(644,root,root,755)
+%dir %{_libdir}/gtk-2.0
+%attr(755,root,root) %ghost %{_libdir}/libgailutil.so.??
+%attr(755,root,root) %ghost %{_libdir}/libg*-x11-2.0.so.?
+%attr(755,root,root) %{_libdir}/libgailutil.so.*.*.*
+%attr(755,root,root) %{_libdir}/libg*-x11-2.0.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
@@ -197,7 +207,7 @@ exit 0
 %{_gtkdocdir}/gdk
 %{_gtkdocdir}/gtk
 
-%files gir
+%files update-icon-cache
 %defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
+%attr(755,root,root) %{_bindir}/gtk-update-icon-cache
 
