@@ -1,7 +1,7 @@
 Summary:	A userspace implementation of devfs
 Name:		udev
 Version:	182
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL
 Group:		Base
@@ -51,7 +51,6 @@ gudev library.
 %package glib-devel
 Summary:	Header files for libvolume_id library
 Group:		Development/Libraries
-Requires:	%{name}-gir = %{epoch}:%{version}-%{release}
 Requires:	%{name}-glib = %{epoch}:%{version}-%{release}
 
 %description glib-devel
@@ -64,14 +63,6 @@ Requires:	gtk-doc-common
 
 %description apidocs
 udev API documentation.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for udev.
 
 %prep
 %setup -q
@@ -207,6 +198,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %ghost /%{_lib}/libgudev-1.0.so.?
 %attr(755,root,root) /%{_lib}/libgudev-1.0.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %files glib-devel
 %defattr(644,root,root,755)
@@ -218,8 +210,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_gtkdocdir}/gudev
 %{_gtkdocdir}/libudev
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 
