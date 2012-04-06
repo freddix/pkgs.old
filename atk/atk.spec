@@ -1,12 +1,12 @@
 Summary:	Accessibility Toolkit
 Name:		atk
-Version:	2.2.0
-Release:	2
+Version:	2.4.0
+Release:	1
 Epoch:		1
 License:	LGPL v2+
 Group:		X11/Libraries
-Source0:	http://ftp.gnome.org/pub/gnome/sources/atk/2.2/%{name}-%{version}.tar.xz
-# Source0-md5:	377ab03f5a1c32141fd9dfa86c6a714a
+Source0:	http://ftp.gnome.org/pub/gnome/sources/atk/2.4/%{name}-%{version}.tar.xz
+# Source0-md5:	2184a140f71d50276669d6eda5cce5db
 URL:		http://developer.gnome.org/projects/gap/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -53,6 +53,7 @@ ATK API documentation.
 %{__automake}
 %configure \
 	--disable-static	\
+	--disable-silent-rules	\
 	--enable-introspection	\
 	--enable-shared		\
 	--with-html-dir=%{_gtkdocdir}
@@ -85,6 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc ChangeLog
 %attr(755,root,root) %{_libdir}/lib*.so
+%{_libdir}/lib*.la
 %{_includedir}/atk*
 %{_datadir}/gir-1.0/Atk-1.0.gir
 %{_pkgconfigdir}/atk*
