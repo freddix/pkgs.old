@@ -8,7 +8,7 @@
 Summary:	A System and Service Manager
 Name:		systemd
 Version:	44
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.xz
@@ -21,6 +21,9 @@ Source14:	%{name}-os-release
 Source15:	%{name}-timezone
 # for rsyslog
 Source20:	listen.conf
+# for rescue target, borrowed from sysvinit
+# to be removed after upgrade to util-linux-2.22
+Source21:	sulogin.c
 Patch0:		%{name}-freddix.patch
 Patch1:		%{name}-machine_id_writable.patch
 URL:		http://www.freedesktop.org/wiki/Software/systemd
@@ -119,6 +122,8 @@ Graphical front-end for systemd.
 	--with-udevrulesdir=/lib/udev/rules.d
 %{__make}
 
+%{__cc} %{rpmcflags} %{rpmldflags} %{SOURCE21} -lcrypt -o sulogin
+
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig \
@@ -150,6 +155,8 @@ install %{SOURCE14} $RPM_BUILD_ROOT/etc/os-release
 install %{SOURCE15} $RPM_BUILD_ROOT/etc/timezone
 
 install %{SOURCE20} $RPM_BUILD_ROOT%{_sysconfdir}/rsyslog.d
+
+install sulogin $RPM_BUILD_ROOT/sbin
 
 install -d $RPM_BUILD_ROOT/sbin
 ln -s ../lib/systemd/systemd $RPM_BUILD_ROOT/sbin/init
@@ -229,6 +236,9 @@ fi
 %attr(755,root,root) /sbin/runlevel
 %attr(755,root,root) /sbin/shutdown
 %attr(755,root,root) /sbin/telinit
+
+# rescue.service & emergency.service dependency
+%attr(755,root,root) /sbin/sulogin
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/system.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/systemd/systemd-journald.conf
