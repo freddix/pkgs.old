@@ -1,11 +1,11 @@
 Summary:	X Keyboard Configuration Database
 Name:		xkeyboard-config
-Version:	2.3
+Version:	2.5.1
 Release:	1
 License:	MIT
 Group:		X11/Development/Libraries
-Source0:	http://www.x.org/releases/individual/data/xkeyboard-config/%{name}-%{version}.tar.bz2
-# Source0-md5:	0be9fbddcb19ac62a23e08fead5df8be
+Source0:	http://xorg.freedesktop.org/archive/individual/data/%{name}-%{version}.tar.bz2
+# Source0-md5:	29cbf3980bbe94c3ffc9c233ea638059
 URL:		http://www.freedesktop.org/wiki/Software_2fXKeyboardConfig
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -28,6 +28,8 @@ is targeted to XKB-based systems.
 %{__automake}
 %{__autoconf}
 %configure \
+	--host=%{_host}				\
+        --build=%{_host}			\
 	--enable-compat-rules			\
 	--with-xkb-base=%{_datadir}/X11/xkb	\
 	--with-xkb-rules-symlink=xorg
@@ -39,7 +41,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -rf $RPM_BUILD_ROOT%{_datadir}/X11/xkb/compiled
 ln -s /var/lib/xkb $RPM_BUILD_ROOT%{_datadir}/X11/xkb/compiled
 
 %find_lang %{name}
