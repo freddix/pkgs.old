@@ -1,16 +1,17 @@
 Summary:	GObject introspection library
 Name:		gobject-introspection
-Version:	0.10.8
-Release:	2
+Version:	1.32.0
+Release:	1
 License:	LGPL v2+ (giscanner) and GPL v2+ (tools)
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/0.10/%{name}-%{version}.tar.bz2
-# Source0-md5:	b5da58a5327d13b4d1e08b8e42b2456d
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.32/%{name}-%{version}.tar.xz
+# Source0-md5:	d0e8266f14063160770aece127211772
 Patch0:		%{name}-libtool.patch
 URL:		http://live.gnome.org/GObjectIntrospection
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bison
+BuildRequires:	cairo-gobject-devel
 BuildRequires:	glib-gio-devel
 BuildRequires:	libffi-devel
 BuildRequires:	libtool
@@ -25,20 +26,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 GObject introspection library.
 
-%package data
-Summary:	GObject introspection data
-Group:		Development/Libraries
-Obsoletes:	gir-repository
-Provides:	gir-repository = %{version}-%{release}
-Requires:	%{name} = %{version}-%{release}
-
-%description data
-This package contains introspection data.
-
 %package devel
 Summary:	Header files for gobject-introspection library
 Group:		Development/Libraries
-Requires:	%{name}-data = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for gobject-introspection library.
@@ -82,18 +73,12 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%post	data -p /sbin/ldconfig
-%postun	data -p /sbin/ldconfig
-
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
 %dir %{_libdir}/girepository-1.0
 %attr(755,root,root) %ghost %{_libdir}/libgirepository-1.0.so.?
 %attr(755,root,root) %{_libdir}/libgirepository-1.0.so.*.*.*
-
-%files data
-%defattr(644,root,root,755)
 %{_libdir}/girepository-1.0/*.typelib
 
 %files devel
@@ -120,6 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/*.pc
 
 %{_libdir}/gobject-introspection/giscanner/*.py[co]
+%{_libdir}/gobject-introspection/giscanner/*.tmpl
 %attr(755,root,root) %{_libdir}/gobject-introspection/giscanner/*.so
 
 %{_mandir}/man1/g-ir-compiler.1*
