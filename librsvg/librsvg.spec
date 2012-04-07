@@ -1,29 +1,30 @@
 Summary:	SVG Rendering Library
 Name:		librsvg
-Version:	2.34.2
-Release:	4
+Version:	2.36.0
+Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/gnome/sources/librsvg/2.34/%{name}-%{version}.tar.bz2
-# Source0-md5:	4a7eda78019cb89d4e7ae7c841480399
+Source0:	http://ftp.gnome.org/pub/gnome/sources/librsvg/2.36/%{name}-%{version}.tar.xz
+# Source0-md5:	1dbd07bbc870433ce6c5edcfba13a102
 Patch0:		%{name}-parse-path-crash.patch
 URL:		http://librsvg.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk+-devel
+BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc
 BuildRequires:	libcroco-devel
-BuildRequires:	libgsf-devel
 BuildRequires:	libtool
 BuildRequires:	libxml2-devel
-BuildRequires:	popt-devel
 BuildRequires:	pkg-config
+BuildRequires:	popt-devel
 BuildRequires:	rpm-pythonprov
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-An library to render SVG (scalable vector graphics), databased upon libart.
+A library to render SVG files using cairo.
 
 %package devel
 Summary:	Include files for developing with librsvg
@@ -104,10 +105,12 @@ umask 022
 %doc ChangeLog AUTHORS NEWS
 %attr(755,root,root) %ghost %{_libdir}/lib*.so.?
 %attr(755,root,root) %{_libdir}/lib*.so.*.*.*
+%{_libdir}/girepository-1.0/Rsvg-2.0.typelib
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
+%{_datadir}/gir-1.0/Rsvg-2.0.gir
 %{_pkgconfigdir}/*.pc
 %{_includedir}/librsvg-2.0
 
@@ -117,10 +120,10 @@ umask 022
 
 %files -n rsvg
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/rsvg-convert
+%{_mandir}/man1/rsvg.1*
 
 %files -n gtk+-rsvg
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/gdk-pixbuf-2.0/2.*.*/loaders/libpixbufloader-svg.so
-%{_pixmapsdir}/*
 
