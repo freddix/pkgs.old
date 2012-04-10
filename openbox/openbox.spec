@@ -3,7 +3,7 @@
 Summary:	Small and fast window manger for the X Window
 Name:		openbox
 Version:	3.5.0
-Release:	13
+Release:	14
 Epoch:		1
 License:	GPL
 Group:		X11/Window Managers
@@ -36,7 +36,7 @@ Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	openbox-theme-colors
 Requires:	python-pygobject
 Requires:	python-pyxdg
-Requires:	udisks
+Requires:	udisks2
 Requires:	xdg-menus
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 

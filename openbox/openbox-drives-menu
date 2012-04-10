@@ -22,18 +22,24 @@ for drive in drives:
 	    volume_ident = volume.get_identifier("unix-device")
 	    mount = volume.get_mount()
 
-	    # volume label
-	    if mount:
-		print '<item label=\"[ ' + volume_str + ' ]\">'
+	    icon = volume.get_icon()
+	    if isinstance(icon, gio.ThemedIcon):
+		icon_name = icon.get_names()[0]
 	    else:
-	    	print '<item label=\"' + volume_str + '\">'
+		icon_name = ""
+
+	    # volume icon & label
+	    if mount:
+		print '<item label=\"[ ' + volume_str + ' ]\" icon=\"' + icon_name + '\">'
+	    else:
+		print '<item label=\"' + volume_str + '\" icon=\"' + icon_name + '\">'
 
 	    print '<action name="Execute">'
 
 	    if mount:
-	    	print '<command>udisks --unmount ' + volume_ident + '</command>'
+	    	print '<command>udisksctl unmount -b ' + volume_ident + '</command>'
 	    else:
-	    	print '<command>udisks --mount ' + volume_ident + '</command>'
+	    	print '<command>udisksctl mount -b ' + volume_ident + '</command>'
 
 	    print '</action>'
 	    print '</item>'
