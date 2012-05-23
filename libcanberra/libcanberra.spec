@@ -1,7 +1,7 @@
 Summary:	libcanberra - the portable sound event library
 Name:		libcanberra
 Version:	0.28
-Release:	3
+Release:	6
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
@@ -12,6 +12,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gstreamer-devel
 BuildRequires:	gtk+-devel
+BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc
 BuildRequires:	libltdl-devel
 BuildRequires:	libtool
@@ -47,6 +48,25 @@ Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk = %{version}-%{release}
 
 %description gtk-devel
+Header files for libcanberra-gtk library.
+
+%package gtk3
+Summary:	GTK+3 bindings for libcanberra library
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description gtk3
+GTK+3 bindings for libcanberra library.
+
+%package gtk3-devel
+Summary:	Header files for libcanberra-gtk3 library
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+# .h is needed by both libraries
+Requires:	%{name}-gtk-devel = %{version}-%{release}
+Requires:	%{name}-gtk3 = %{version}-%{release}
+
+%description gtk3-devel
 Header files for libcanberra-gtk library.
 
 %package runtime
@@ -105,6 +125,10 @@ rm -rf $RPM_BUILD_ROOT
 %post	gtk -p /sbin/ldconfig
 %postun	gtk -p /sbin/ldconfig
 
+
+%post	gtk3 -p /sbin/ldconfig
+%postun	gtk3 -p /sbin/ldconfig
+
 %post runtime
 %gconf_schema_install libcanberra.schemas
 
@@ -129,6 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcanberra.la
 %{_includedir}/canberra.h
 %{_pkgconfigdir}/libcanberra.pc
+%{_datadir}/vala/vapi/libcanberra.vapi
 
 %files gtk
 %defattr(644,root,root,755)
@@ -141,12 +166,29 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libcanberra-gtk.la
 %{_includedir}/canberra-gtk.h
 %{_pkgconfigdir}/libcanberra-gtk.pc
+%{_datadir}/vala/vapi/libcanberra-gtk.vapi
+
+%files gtk3
+%defattr(644,root,root,755)
+%attr(755,root,root) %ghost %{_libdir}/libcanberra-gtk3.so.?
+%attr(755,root,root) %{_libdir}/libcanberra-gtk3.so.*.*.*
+
+%files gtk3-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libcanberra-gtk3.so
+%{_libdir}/libcanberra-gtk3.la
+%{_pkgconfigdir}/libcanberra-gtk3.pc
 
 %files runtime
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/canberra-boot
 %attr(755,root,root) %{_bindir}/canberra-gtk-play
 %attr(755,root,root) %{_libdir}/gtk-2.0/modules/libcanberra-gtk-module.so
+%attr(755,root,root) %{_libdir}/gtk-3.0/modules/libcanberra-gtk-module.so
+%attr(755,root,root) %{_libdir}/gtk-3.0/modules/libcanberra-gtk3-module.so
+%attr(755,root,root) %{_datadir}/gnome/shutdown/libcanberra-logout-sound.sh
+%{_datadir}/gnome/autostart/libcanberra-login-sound.desktop
+%{_libdir}/gnome-settings-daemon-3.0/gtk-modules/canberra-gtk-module.desktop
 %{_sysconfdir}/gconf/schemas/libcanberra.schemas
 
 %files apidocs
