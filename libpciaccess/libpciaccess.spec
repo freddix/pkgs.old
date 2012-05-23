@@ -1,11 +1,11 @@
 Summary:	libpciaccess library to access PCI bus and devices
 Name:		libpciaccess
-Version:	0.13
+Version:	0.13.1
 Release:	1
 License:	MIT
 Group:		X11/Libraries
 Source0:	http://xorg.freedesktop.org/archive/individual/lib/%{name}-%{version}.tar.bz2
-# Source0-md5:	2604307ba43c76ee8aec11ea137ae1e8
+# Source0-md5:	399a419ac6a54f0fc07c69c9bdf452dc
 # http://lists.freedesktop.org/archives/intel-gfx/2009-April/002093.html
 Patch0:		%{name}-mtrr-fix.patch
 URL:		http://xorg.freedesktop.org/
