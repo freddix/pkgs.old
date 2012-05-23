@@ -1,7 +1,7 @@
 Summary:	GNU libc
 Name:		glibc
 Version:	2.12.2
-Release:	3
+Release:	4
 Epoch:		6
 License:	LGPL v2.1+
 Group:		Libraries
@@ -425,7 +425,7 @@ done
 #   sv tr zh_CN zh_TW
 #
 for i in aa aa@saaho af am an ang ar ar_TN as ast az be@alternative be@latin \
-	bg bn bn_IN br bs byn ca@valencia crh csb cy de_AT de_CH dv dz en \
+	bg bn bn_IN bo br bs byn ca@valencia crh csb cy de_AT de_CH dv dz en \
 	en@boldquot en@quot en@shaw en_AU en_CA en_NZ en_US eo es_AR es_CL es_CO es_CR \
 	es_DO es_EC es_GT es_HN es_MX es_NI es_PA es_PE es_PR es_SV es_UY \
 	es_VE et eu fa fil fo fr_BE fr_CA fr_CH fur fy ga gd gez gu gv ha he \
