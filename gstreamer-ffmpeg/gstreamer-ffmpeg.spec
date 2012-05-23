@@ -1,10 +1,10 @@
 %define		gstname		gst-ffmpeg
 %define		gst_major_ver	0.10
-#
+
 Summary:	GStreamer Streaming-media framework plug-in using FFmpeg
 Name:		gstreamer-ffmpeg
 Version:	0.10.12
-Release:	2
+Release:	3
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-ffmpeg/%{gstname}-%{version}.tar.bz2
@@ -33,7 +33,6 @@ popular multimedia formats.
 %prep
 %setup -qn %{gstname}-%{version}
 
-# I know better anyway
 sed -i -e 's|sleep 15||' configure.ac
 
 %build
