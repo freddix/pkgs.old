@@ -1,11 +1,11 @@
 Summary:	D-Bus interface for user accounts management
 Name:		accountsservice
-Version:	0.6.17
+Version:	0.6.21
 Release:	1
 License:	GPL v3
 Group:		Applications/System
 Source0:	http://cgit.freedesktop.org/accountsservice/snapshot/%{name}-%{version}.tar.xz
-# Source0-md5:	684ee758685fe9af4f579023172246c5
+# Source0-md5:	b501d48963b70983170983258c19cc2c
 URL:		http://cgit.freedesktop.org/accountsservice/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -22,6 +22,8 @@ BuildRequires:	systemd-devel
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	systemd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		_libexecdir	%{_libdir}/accounts-service
 
 %description
 The AccountsService project provides:
@@ -58,6 +60,7 @@ accountsservice includes, and more
 %configure \
 	--disable-silent-rules	\
 	--disable-static	\
+	--enable-systemd	\
 	--with-systemdsystemunitdir=%{systemdunitdir}
 %{__make}
 
@@ -81,9 +84,13 @@ rm -rf $RPM_BUILD_ROOT
 %postun
 %systemd_reload
 
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
+
 %files -f accounts-service.lang
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README TODO
+%dir %{_libexecdir}
 %attr(755,root,root) %{_libexecdir}/accounts-daemon
 /etc/dbus-1/system.d/org.freedesktop.Accounts.conf
 %{systemdunitdir}/accounts-daemon.service
