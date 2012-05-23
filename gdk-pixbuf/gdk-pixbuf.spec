@@ -2,12 +2,12 @@
 
 Summary:	An image loading and scaling library
 Name:		gdk-pixbuf
-Version:	2.26.0
-Release:	4
+Version:	2.26.1
+Release:	1
 License:	LGPL v2+
 Group:		X11/Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.26/%{name}-%{version}.tar.xz
-# Source0-md5:	1c186f9903a20e96587b9afb27944b40
+# Source0-md5:	82197921c651a81ae28178aa9adfc0e6
 URL:		http://www.gtk.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
