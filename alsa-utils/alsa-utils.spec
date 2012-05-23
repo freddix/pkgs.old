@@ -1,15 +1,13 @@
 Summary:	Advanced Linux Sound Architecture (ALSA) - Utils
 Name:		alsa-utils
-Version:	1.0.24.2
-Release:	4
+Version:	1.0.25
+Release:	1
 License:	GPL
 Group:		Applications/Sound
 Source0:	ftp://ftp.alsa-project.org/pub/utils/%{name}-%{version}.tar.bz2
-# Source0-md5:	8238cd57cb301d1c36bcf0ecb59ce6b2
-Source1:	alsa-restore.service
-Source2:	alsa-store.service
-Source3:	alsactl.conf
-Source4:	snd-seq-midi.conf
+# Source0-md5:	f81f9dcb9a014fd32cb3a70066a5b9a9
+Source1:	alsactl.conf
+Source2:	snd-seq-midi.conf
 URL:		http://www.alsa-project.org/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf
@@ -40,7 +38,8 @@ CFLAGS="%{rpmcflags} -I/usr/include/ncurses"
 CXXFLAGS="%{rpmcxxflags} -fno-rtti -fno-exceptions"
 %configure \
 	--disable-alsaconf	\
-	--sbindir=/sbin
+	--sbindir=/sbin		\
+	--with-systemdsystemunitdir=%{systemdunitdir}
 %{__make}
 
 %install
@@ -53,10 +52,10 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/alsa
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/arecord.1
 echo ".so aplay.1" > $RPM_BUILD_ROOT%{_mandir}/man1/arecord.1
 
-install -D %{SOURCE1} $RPM_BUILD_ROOT/%{_lib}/systemd/system/basic.target.wants/alsa-restore.service
-install -D %{SOURCE2} $RPM_BUILD_ROOT/%{_lib}/systemd/system/shutdown.target.wants/alsa-store.service
-install -D %{SOURCE3} $RPM_BUILD_ROOT%{_sysconfdir}/alsa/alsactl.conf
-install -D %{SOURCE4} $RPM_BUILD_ROOT%{_sysconfdir}/modules-load.d/snd-seq-midi.conf
+#install -D %{SOURCE1} $RPM_BUILD_ROOT/%{_lib}/systemd/system/basic.target.wants/alsa-restore.service
+#install -D %{SOURCE2} $RPM_BUILD_ROOT/%{_lib}/systemd/system/shutdown.target.wants/alsa-store.service
+install -D %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/alsa/alsactl.conf
+install -D %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/modules-load.d/snd-seq-midi.conf
 
 install -d $RPM_BUILD_ROOT/%{_lib}/alsa
 mv $RPM_BUILD_ROOT%{_datadir}/alsa/init $RPM_BUILD_ROOT/%{_lib}/alsa
@@ -99,8 +98,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_sysconfdir}/alsa/alsactl.conf
 %{_sysconfdir}/modules-load.d/snd-seq-midi.conf
-/%{_lib}/systemd/system/basic.target.wants/alsa-restore.service
-/%{_lib}/systemd/system/shutdown.target.wants/alsa-store.service
+%{systemdunitdir}/alsa-restore.service
+%{systemdunitdir}/alsa-store.service
+%{systemdunitdir}/basic.target.wants/alsa-restore.service
+%{systemdunitdir}/shutdown.target.wants/alsa-store.service
+/lib/udev/rules.d/90-alsa-restore.rules
 
 %{_datadir}/alsa/speaker-test
 %{_datadir}/sounds/alsa
