@@ -1,13 +1,14 @@
 Summary:	Cross-platform software utility library
 Name:		glib
-Version:	2.32.0
-Release:	2
+Version:	2.32.2
+Release:	1
 Epoch:		1
 License:	LGPL
 Group:		Libraries
 Source0:	http://download.gnome.org/sources/glib/2.32/%{name}-%{version}.tar.xz
-# Source0-md5:	c5fa76fbf9184d20dfb04af66b598190
+# Source0-md5:	5bfdb6197afb90e4dbc7b1bb98f0eae0
 Patch0:		%{name}-makefile.patch
+Patch1:		%{name}-warn_about_bad_dconf_paths.patch
 URL:		http://www.gtk.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -109,6 +110,9 @@ Glib GIO API documetation.
 %prep
 %setup -q
 %patch0 -p1
+# stop spamming about broken paths
+# when updating gsettings cache
+%patch1 -p1 -R
 
 sed -i -e 's|])dnl|])|g' acglib.m4
 
@@ -241,8 +245,9 @@ umask 022
 %dir %{_libdir}/gio/modules
 %ghost %{_libdir}/gio/modules/giomodule.cache
 %attr(755,root,root) %{_bindir}/gio-querymodules
-%attr(755,root,root) %ghost %{_libdir}/libgio-2.0.so.0
+%attr(755,root,root) %ghost %{_libdir}/libgio-2.0.so.?
 %attr(755,root,root) %{_libdir}/libgio-2.0.so.*.*.*
+%{_mandir}/man1/gio-querymodules.1*
 
 %files gio-gsettings
 %defattr(644,root,root,755)
