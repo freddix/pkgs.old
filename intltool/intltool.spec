@@ -1,14 +1,13 @@
 %include	/usr/lib/rpm/macros.perl
-#
+
 Summary:	Utility scripts for internationalizing various kinds of data files
 Name:		intltool
-Version:	0.41.1
-Release:	3
+Version:	0.50.2
+Release:	1
 License:	GPL v2
 Group:		Development/Tools
-Source0:	http://edge.launchpad.net/intltool/trunk/0.41.1/+download/%{name}-%{version}.tar.gz
-# Source0-md5:	d6c91bf06681919ccfdf3624035b75dc
-Patch0:		%{name}-schemas-merge.patch
+Source0:	http://edge.launchpad.net/intltool/trunk/0.50.2/+download/%{name}-%{version}.tar.gz
+# Source0-md5:	23fbd879118253cb99aeac067da5f591
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -30,7 +29,6 @@ to support other types of files.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__aclocal}
