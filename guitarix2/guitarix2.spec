@@ -1,13 +1,13 @@
-%define		pre	beta1
+%define		pre	%{nil}
 
 Summary:	Simple Linux Rock Guitar Amplifier for JACK
 Name:		guitarix2
-Version:	0.22
-Release:	0.%{pre}.1
+Version:	0.22.3
+Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/guitarix/%{name}-%{version}%{pre}.tar.bz2
-# Source0-md5:	dce5f1e98d6189c2f1de47f97be753bb
+# Source0-md5:	f92934d580699516c0eca022cedc16c3
 BuildRequires:	boost-devel
 BuildRequires:	gtkmm-devel
 BuildRequires:	jack-audio-connection-kit-devel
