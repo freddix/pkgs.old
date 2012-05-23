@@ -3,7 +3,7 @@
 Summary:	Free mDNS/DNS-SD implementation
 Name:		avahi
 Version:	0.6.31
-Release:	2
+Release:	8
 License:	GPL v.2/LGPL
 Group:		Applications
 Source0:	http://avahi.org/download/%{name}-%{version}.tar.gz
@@ -25,6 +25,7 @@ BuildRequires:	gdbm-devel
 BuildRequires:	glib-devel
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk+-devel
+BuildRequires:	gtk+3-devel
 BuildRequires:	libdaemon-devel
 BuildRequires:	libglade-devel
 BuildRequires:	libtool
@@ -78,22 +79,21 @@ Requires:	%{name}-libs = %{version}-%{release}
 %description ui-libs
 Avahi ui libraries.
 
+%package ui-gtk3-libs
+Summary:	Avahi ui library, Gtk+3 version
+Group:		Libraries
+Requires:	%{name}-libs = %{version}-%{release}
+
+%description ui-gtk3-libs
+Avahi ui libraries, Gtk+3 version.
+
 %package devel
 Summary:	Header files for Avahi library
 Group:		Development/Libraries
-Requires:	%{name}-gir = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 This is the package containing the header files for Avahi library.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	gobject-introspection-data
-Requires:	%{name}-libs = %{version}-%{release}
-
-%description gir
-GObject introspection data for %{name}.
 
 %package ui-devel
 Summary:	Header files for Avahi ui library
@@ -102,6 +102,15 @@ Requires:	%{name}-glib-devel = %{version}-%{release}
 Requires:	%{name}-ui-libs = %{version}-%{release}
 
 %description ui-devel
+This is the package containing the header files for Avahi library.
+
+%package ui-gtk3-devel
+Summary:	Header files for Avahi ui library
+Group:		Development/Libraries
+Requires:	%{name}-glib-devel = %{version}-%{release}
+Requires:	%{name}-ui-gtk3-libs = %{version}-%{release}
+
+%description ui-gtk3-devel
 This is the package containing the header files for Avahi library.
 
 %package glib
@@ -189,7 +198,6 @@ Command line utilities using avahi-client.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-gtk3		\
 	--disable-mono		\
 	--disable-monodoc	\
 	--disable-qt3		\
@@ -259,6 +267,9 @@ fi
 %post	ui-libs -p /sbin/ldconfig
 %postun	ui-libs -p /sbin/ldconfig
 
+%post	ui-gtk3-libs -p /sbin/ldconfig
+%postun	ui-gtk3-libs -p /sbin/ldconfig
+
 %post	glib -p /sbin/ldconfig
 %postun	glib -p /sbin/ldconfig
 
@@ -314,11 +325,18 @@ fi
 %attr(755,root,root) %{_libdir}/libavahi-client.so.*.*.*
 %attr(755,root,root) %{_libdir}/libavahi-common.so.*.*.*
 %attr(755,root,root) %{_libdir}/libavahi-core.so.*.*.*
+%{_libdir}/girepository-1.0/Avahi-0.6.typelib
+%{_libdir}/girepository-1.0/AvahiCore-0.6.typelib
 
 %files ui-libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %ghost %{_libdir}/libavahi-ui.so.?
 %attr(755,root,root) %{_libdir}/libavahi-ui.so.*.*.*
+
+%files ui-gtk3-libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %ghost %{_libdir}/libavahi-ui-gtk3.so.?
+%attr(755,root,root) %{_libdir}/libavahi-ui-gtk3.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
@@ -341,6 +359,11 @@ fi
 %attr(755,root,root) %{_libdir}/libavahi-ui.so
 %{_includedir}/avahi-ui
 %{_pkgconfigdir}/avahi-ui.pc
+
+%files ui-gtk3-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libavahi-ui-gtk3.so
+%{_pkgconfigdir}/avahi-ui-gtk3.pc
 
 %if 0
 %files -n mono-avahi
@@ -411,9 +434,4 @@ fi
 %{_mandir}/man1/avahi-publish.*
 %{_mandir}/man1/avahi-resolve.*
 %{_mandir}/man1/avahi-set-host-name.*
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/Avahi-0.6.typelib
-%{_libdir}/girepository-1.0/AvahiCore-0.6.typelib
 
