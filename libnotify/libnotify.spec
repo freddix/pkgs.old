@@ -1,16 +1,17 @@
 Summary:	Desktop notifications library
 Name:		libnotify
-Version:	0.5.2
+Version:	0.7.5
 Release:	1
 License:	LGPL v2.1+ (library), GPL v2+ (tools)
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/libnotify/0.5/%{name}-%{version}.tar.bz2
-# Source0-md5:	4361058ae4e28a9ffce6764e7d03acd1
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/libnotify/0.7/%{name}-%{version}.tar.xz
+# Source0-md5:	8e9f8bd26517bc197ab1df748df289a9
 URL:		http://developer.gnome.org/notification-spec/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gdk-pixbuf-devel
 BuildRequires:	glib-gio-devel
+BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk-doc
 BuildRequires:	libtool
 BuildRequires:	pkg-config
@@ -72,10 +73,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %ghost %{_libdir}/libnotify.so.?
 %attr(755,root,root) %{_libdir}/libnotify.so.*.*.*
+%{_libdir}/girepository-1.0/Notify-0.7.typelib
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.so
+%{_datadir}/gir-1.0/Notify-0.7.gir
 %{_includedir}/libnotify
 %{_pkgconfigdir}/*.pc
 
