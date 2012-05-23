@@ -1,7 +1,7 @@
 Summary:	The Gimp Toolkit
 Name:		gtk+
 Version:	2.24.10
-Release:	4
+Release:	6
 Epoch:		2
 License:	LGPL
 Group:		X11/Libraries
@@ -41,7 +41,6 @@ BuildRequires:	xorg-libXrandr-devel
 BuildRequires:	xorg-libXrender-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	shared-mime-info
-Requires:	gdk-pixbuf
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		abivers		2.10.0
