@@ -1,12 +1,12 @@
 Summary:	SVG Rendering Library
 Name:		librsvg
-Version:	2.36.0
+Version:	2.36.1
 Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/librsvg/2.36/%{name}-%{version}.tar.xz
-# Source0-md5:	1dbd07bbc870433ce6c5edcfba13a102
+# Source0-md5:	89d483f30a7c77245b7ee02faaea5a5a
 Patch0:		%{name}-parse-path-crash.patch
 URL:		http://librsvg.sourceforge.net/
 BuildRequires:	autoconf
@@ -121,7 +121,7 @@ umask 022
 %files -n rsvg
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/rsvg-convert
-%{_mandir}/man1/rsvg.1*
+%{_mandir}/man1/rsvg-convert.1*
 
 %files -n gtk+-rsvg
 %defattr(644,root,root,755)
