@@ -1,11 +1,11 @@
 Summary:	Documentation utilities for GNOME
 Name:		gnome-doc-utils
-Version:	0.20.7
+Version:	0.20.10
 Release:	1
 License:	GPL v2+/LGPL v2+
 Group:		Development/Tools
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-doc-utils/0.20/%{name}-%{version}.tar.xz
-# Source0-md5:	c07b2759433ec9e337712a20c63113fb
+# Source0-md5:	3c64ad7bacd617b04999e4a168afaac5
 Patch0:		%{name}-no_scrollkeeper_update.patch
 URL:		http://www.gnome.org/
 BuildRequires:	libxslt-devel
@@ -16,7 +16,6 @@ Requires:	python-libxml2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_enable_debug_packages	0
-%define		_pkgconfigdir		%{_datadir}/pkgconfig
 
 %description
 Collection of documentation utilities for GNOME.
@@ -39,7 +38,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT	\
-	pkgconfigdir="%{_pkgconfigdir}"
+	pkgconfigdir="%{_npkgconfigdir}"
 
 %py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
 %py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
@@ -65,9 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_aclocaldir}/*.m4
 %{_datadir}/%{name}
 %{_datadir}/xml/gnome
-#%{_datadir}/xml/mallard
+%{_datadir}/xml/mallard
 %{_mandir}/man1/xml2po.1*
-%{_pkgconfigdir}/*.pc
+%{_npkgconfigdir}/*.pc
 
 %dir %{py_sitescriptdir}/xml2po
 %dir %{py_sitescriptdir}/xml2po/modes
