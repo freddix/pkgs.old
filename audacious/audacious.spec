@@ -1,27 +1,25 @@
 Summary:	Media player based on BMP
 Name:		audacious
-Version:	2.5.4
-Release:	2
+Version:	3.2.2
+Release:	4
 License:	GPL
 Group:		X11/Applications/Sound
-Source0:	http://distfiles.atheme.org/%{name}-%{version}.tar.gz
-# Source0-md5:	e4329571a1887fadfe4aac6f2b302871
+Source0:	http://distfiles.audacious-media-player.org/%{name}-%{version}.tar.bz2
+# Source0-md5:	28f1e2c683d358457ed9bfe8bcc29ec2
 URL:		http://audacious-media-player.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gettext-devel
-BuildRequires:	gtk+-devel
-BuildRequires:	libglade-devel
-BuildRequires:	libmowgli-devel >= 0.9
+BuildRequires:	gtk+3-devel
+#BuildRequires:	libguess-devel
 BuildRequires:	libsamplerate-devel
-BuildRequires:	libmcs-devel
-BuildRequires:	pkgconfig
+BuildRequires:	pkg-config
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	gtk+
+Requires(post,postun):	gtk+-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	audacious-plugins
-Requires:	mcs-backend
+Requires:	gtk+
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -46,15 +44,14 @@ Header files required for compiling Audacious media player plugins.
 %prep
 %setup -qn %{name}-%{version}
 
-sed -i -e 's|pt_PT|pt|' po/Makefile
-mv po/{pt_PT,pt}.po
+sed -i -e 's/gthread-2.0/gthread-2.0 gmodule-2.0/' configure.ac
 
 %build
 %{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %configure
-%{__make}
+%{__make} V=1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -67,6 +64,8 @@ install pixmaps/%{name}.png \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/48x48/apps/audacious.png
 install pixmaps/%{name}.svg \
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/scalable/apps/audacious.svg
+
+mv $RPM_BUILD_ROOT%{_datadir}/locale/pt{_PT,}
 
 %find_lang %{name}
 

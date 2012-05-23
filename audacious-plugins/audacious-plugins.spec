@@ -1,11 +1,11 @@
 Summary:	Plugins for Audacious media player
 Name:		audacious-plugins
-Version:	2.5.4
-Release:	3
+Version:	3.2.2
+Release:	4
 License:	GPL
 Group:		X11/Applications/Sound
-Source0:	http://distfiles.atheme.org/%{name}-%{version}.tar.gz
-# Source0-md5:	93e8d13f2a17d047a4c24e1e5605fbac
+Source0:	http://distfiles.audacious-media-player.org/%{name}-%{version}.tar.bz2
+# Source0-md5:	7aaf8ad389a2983baddbdd57207e0724
 URL:		http://audacious-media-player.org/
 BuildRequires:	SDL-devel
 BuildRequires:	alsa-lib-devel
@@ -29,6 +29,7 @@ BuildRequires:	libsamplerate-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libvorbis-devel
 BuildRequires:	libxml2-devel
+BuildRequires:	mpg123-libs-devel
 BuildRequires:	neon-devel
 BuildRequires:	pkg-config
 BuildRequires:	pulseaudio-devel
@@ -49,10 +50,8 @@ Plugins for Audacious media player.
 %{__autoheader}
 %configure \
 	--disable-adplug	\
-	--disable-coreaudio	\
 	--disable-modplug	\
 	--disable-oss		\
-	--disable-projectm-1.0	\
 	--disable-sid		\
 	--enable-amidiplug	\
 	--enable-ipv6
@@ -65,9 +64,10 @@ install -d $RPM_BUILD_ROOT%{_datadir}/audacious/paranormal/Presets
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-#mv $RPM_BUILD_ROOT%{_datadir}/%{name}/paranormal/Presets/*.pnv $RPM_BUILD_ROOT%{_datadir}/audacious/paranormal/Presets
+mv $RPM_BUILD_ROOT%{_datadir}/locale/pt{_PT,}
 
 %find_lang %{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -76,6 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/audacious/Skins
 %dir %{_libdir}/audacious/Input/amidi-plug
 %attr(755,root,root) %{_libdir}/audacious/Container/asx.so
+%attr(755,root,root) %{_libdir}/audacious/Container/audpl.so
 %attr(755,root,root) %{_libdir}/audacious/Container/m3u.so
 %attr(755,root,root) %{_libdir}/audacious/Container/pls.so
 %attr(755,root,root) %{_libdir}/audacious/Container/xspf.so
@@ -85,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/audacious/Effect/crystalizer.so
 %attr(755,root,root) %{_libdir}/audacious/Effect/echo.so
 %attr(755,root,root) %{_libdir}/audacious/Effect/ladspa.so
-%attr(755,root,root) %{_libdir}/audacious/Effect/mixdown.so
+%attr(755,root,root) %{_libdir}/audacious/Effect/mixer.so
 %attr(755,root,root) %{_libdir}/audacious/Effect/resample.so
 %attr(755,root,root) %{_libdir}/audacious/Effect/sndstretch.so
 %attr(755,root,root) %{_libdir}/audacious/Effect/stereo.so
@@ -95,18 +96,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/audacious/General/albumart.so
 %attr(755,root,root) %{_libdir}/audacious/General/aosd.so
 %attr(755,root,root) %{_libdir}/audacious/General/cd-menu-items.so
-%attr(755,root,root) %{_libdir}/audacious/General/evdev-plug.so
 %attr(755,root,root) %{_libdir}/audacious/General/gnomeshortcuts.so
 %attr(755,root,root) %{_libdir}/audacious/General/gtkui.so
 %attr(755,root,root) %{_libdir}/audacious/General/hotkey.so
 %attr(755,root,root) %{_libdir}/audacious/General/lyricwiki.so
+%attr(755,root,root) %{_libdir}/audacious/General/mpris2.so
 %attr(755,root,root) %{_libdir}/audacious/General/mtp_up.so
 %attr(755,root,root) %{_libdir}/audacious/General/notify.so
 %attr(755,root,root) %{_libdir}/audacious/General/scrobbler.so
+%attr(755,root,root) %{_libdir}/audacious/General/search-tool.so
 %attr(755,root,root) %{_libdir}/audacious/General/skins.so
 %attr(755,root,root) %{_libdir}/audacious/General/song_change.so
 %attr(755,root,root) %{_libdir}/audacious/General/statusicon.so
-%attr(755,root,root) %{_libdir}/audacious/General/streambrowser.so
 
 %attr(755,root,root) %{_libdir}/audacious/Input/aac.so
 %attr(755,root,root) %{_libdir}/audacious/Input/amidi-plug.so
@@ -133,22 +134,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/audacious/Output/pulse_audio.so
 %attr(755,root,root) %{_libdir}/audacious/Output/sdlout.so
 
-%attr(755,root,root) %{_libdir}/audacious/Transport/gio.so
+%attr(755,root,root) %{_libdir}/audacious/Transport/mms.so
 %attr(755,root,root) %{_libdir}/audacious/Transport/neon.so
 %attr(755,root,root) %{_libdir}/audacious/Transport/unix-io.so
 
 %attr(755,root,root) %{_libdir}/audacious/Visualization/blur_scope.so
 %attr(755,root,root) %{_libdir}/audacious/Visualization/cairo-spectrum.so
-%attr(755,root,root) %{_libdir}/audacious/Visualization/moodbar.so
-%attr(755,root,root) %{_libdir}/audacious/Visualization/paranormal.so
-%attr(755,root,root) %{_libdir}/audacious/Visualization/rocklight.so
-%attr(755,root,root) %{_libdir}/audacious/Visualization/spectrum.so
 
-%{_datadir}/audacious/images/bookmarks.png
-%{_datadir}/audacious/images/shoutcast.png
-%{_datadir}/audacious/images/streambrowser-16x16.png
-%{_datadir}/audacious/images/streambrowser-64x64.png
-%{_datadir}/audacious/images/xiph.png
 %{_datadir}/audacious/paranormal
 %{_datadir}/audacious/ui
 
