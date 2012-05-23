@@ -1,9 +1,9 @@
 %define		gst_major_ver	0.10
-#
+
 Summary:	GStreamer Streaming-media framework runtime
 Name:		gstreamer
 Version:	0.10.36
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gstreamer/%{name}-%{version}.tar.xz
@@ -55,20 +55,11 @@ GStreamer libraries.
 %package devel
 Summary:	Include files for GStreamer streaming-media framework
 Group:		Development/Libraries
-Requires:	%{name}-gir = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 This package contains the includes files necessary to develop
 applications and plugins for GStreamer.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for %{name}.
 
 %package apidocs
 Summary:	GStreamer API documentation
@@ -77,9 +68,6 @@ Requires:	gtk-doc-common
 
 %description apidocs
 GStreamer API documentation.
-
-%description apidocs -l pl
-Dokumentacja API Gstreamera.
 
 %prep
 %setup -q
@@ -154,10 +142,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{gstlibdir}
 %attr(755,root,root) %ghost %{_libdir}/lib*-%{gst_major_ver}.so.?
 %attr(755,root,root) %{_libdir}/lib*-%{gst_major_ver}.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*-%{gst_major_ver}.so
+%{_libdir}/lib*-%{gst_major_ver}.la
 %{_aclocaldir}/gst-element-check-%{gst_major_ver}.m4
 %{gstincludedir}
 %{_pkgconfigdir}/*-%{gst_major_ver}.pc
@@ -169,8 +159,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_gtkdocdir}/%{name}-%{gst_major_ver}
 %{_gtkdocdir}/%{name}-libs-%{gst_major_ver}
 %{_gtkdocdir}/%{name}-plugins-%{gst_major_ver}
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 

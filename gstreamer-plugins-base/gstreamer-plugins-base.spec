@@ -7,7 +7,7 @@
 Summary:	GStreamer Streaming-media framework base plugins
 Name:		gstreamer-plugins-base
 Version:	0.10.36
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-base/%{gstname}-%{version}.tar.xz
@@ -33,6 +33,7 @@ BuildRequires:	libogg-devel
 BuildRequires:	libtheora-devel
 BuildRequires:	libvisual-devel
 BuildRequires:	libvorbis-devel
+BuildRequires:	rpm-gstreamerprov
 BuildRequires:	xorg-libX11-devel
 BuildRequires:	xorg-libXext-devel
 BuildRequires:	xorg-libXv-devel
@@ -66,14 +67,6 @@ Requires:	gstreamer-devel >= %{gst_req_ver}
 
 %description devel
 Include files for GStreamer streaming-media framework plugins.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for %{name}.
 
 %package apidocs
 Summary:	GStreamer plugins API documentation
@@ -161,10 +154,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %ghost %{_libdir}/lib*-%{gst_major_ver}.so.?
 %attr(755,root,root) %{_libdir}/lib*-%{gst_major_ver}.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*-%{gst_major_ver}.so
+%{_libdir}/lib*-%{gst_major_ver}.la
 %{gstincludedir}/gst/app
 %{gstincludedir}/gst/audio
 %{gstincludedir}/gst/cdda
@@ -195,10 +190,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/gstreamer-tag-0.10.pc
 %{_pkgconfigdir}/gstreamer-video-0.10.pc
 %{_datadir}/gir-1.0/*.gir
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 
 %files apidocs
 %defattr(644,root,root,755)
