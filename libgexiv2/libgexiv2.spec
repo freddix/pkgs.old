@@ -1,11 +1,11 @@
 Summary:	GObject-based wrapper around the Exiv2 library
 Name:		libgexiv2
-Version:	0.3.1
+Version:	0.4.1
 Release:	2
 License:	GPL v2
 Group:		Libraries
-Source0:	http://yorba.org/download/gexiv2/0.3/%{name}-%{version}.tar.bz2
-# Source0-md5:	066ec95994ae34d7bec39de13123f5a3
+Source0:	http://yorba.org/download/gexiv2/0.4/%{name}-%{version}.tar.bz2
+# Source0-md5:	055effe708652f0c7440a3def06047da
 BuildRequires:	exiv2-devel
 BuildRequires:	glib-devel
 BuildRequires:	libstdc++-devel
@@ -28,7 +28,7 @@ This is the package containing the header files for gexiv2 library.
 %prep
 %setup -q
 
-# overkill follows
+# use rpmcflags
 sed -i -e 's|-O2 -g|%{rpmcflags}|g' Makefile
 
 %build
@@ -37,7 +37,8 @@ sed -i -e 's|-O2 -g|%{rpmcflags}|g' Makefile
 	--release
 
 %{__make} \
-	CFLAGS="%{rpmcxxflags} -pipe -fPIC -nostdlib"
+	CFLAGS="%{rpmcxxflags} -pipe -fPIC -nostdlib"	\
+	CXX="%{__cxx}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
