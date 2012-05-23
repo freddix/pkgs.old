@@ -2,14 +2,13 @@
 
 Summary:	The GNU Image Manipulation Program
 Name:		gimp
-Version:	2.6.12
-Release:	2
+Version:	2.8.0
+Release:	1
 Epoch:		1
 License:	GPL
 Group:		X11/Applications/Graphics
-Source0:	ftp://ftp.gimp.org/pub/gimp/v2.6/%{name}-%{version}.tar.bz2
-# Source0-md5:	9f876ee63a0c4a4c83f50f32fb3bbe63
-Patch0:		%{name}-uri-backend-libcurl.patch
+Source0:	ftp://ftp.gimp.org/pub/gimp/v2.8/%{name}-%{version}.tar.bz2
+# Source0-md5:	28997d14055f15db063eb92e1c8a7ebb
 URL:		http://www.gimp.org/
 BuildRequires:	alsa-lib-devel
 BuildRequires:	autoconf
@@ -33,9 +32,10 @@ BuildRequires:	libtool
 BuildRequires:	pkg-config
 BuildRequires:	poppler-glib-devel
 BuildRequires:	python-pygtk-devel
+BuildRequires:	udev-glib-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
-Requires(post,postun):  gtk+
-Requires(post,preun):	hicolor-icon-theme
+Requires(post,postun):  gtk+-update-icon-cache
+Requires(post,postun):	hicolor-icon-theme
 Requires:	gegl
 Requires:	python-pygtk-gtk
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -90,7 +90,6 @@ SVG plugin for Gimp.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__gtkdocize}
@@ -101,9 +100,9 @@ SVG plugin for Gimp.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules		\
 	--disable-static		\
 	--enable-default-binary		\
-	--enable-gimp-remote 		\
 	--enable-mmx			\
 	--enable-mp			\
 	--enable-sse			\
@@ -111,9 +110,7 @@ SVG plugin for Gimp.
 	--with-libcurl			\
 	--with-shm=posix		\
 	--without-aa			\
-	--without-gnomevfs		\
 	--without-gvfs 			\
-	--without-hal			\
 	--without-wmf
 %{__make}
 
@@ -153,11 +150,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/Wilber*
 
 %attr(755,root,root) %{_bindir}/gimp
-%attr(755,root,root) %{_bindir}/gimp-2.6
+%attr(755,root,root) %{_bindir}/gimp-2.8
 %attr(755,root,root) %{_bindir}/gimp-console
-%attr(755,root,root) %{_bindir}/gimp-console-2.6
-%attr(755,root,root) %{_bindir}/gimp-remote
-%attr(755,root,root) %{_bindir}/gimp-remote-2.6
+%attr(755,root,root) %{_bindir}/gimp-console-2.8
 %attr(755,root,root) %{_libdir}/gimp/%{mver}/modules/*.so
 %attr(755,root,root) %{_libdir}/gimp/%{mver}/plug-ins/*
 %attr(755,root,root) %{_libdir}/gimp/%{mver}/python/*.so
@@ -166,7 +161,6 @@ rm -rf $RPM_BUILD_ROOT
 %config %{_sysconfdir}/%{name}/%{mver}/controllerrc
 %config %{_sysconfdir}/%{name}/%{mver}/gtkrc*
 %config %{_sysconfdir}/%{name}/%{mver}/menurc
-%config %{_sysconfdir}/%{name}/%{mver}/ps-menurc
 %config %{_sysconfdir}/%{name}/%{mver}/sessionrc
 %config %{_sysconfdir}/%{name}/%{mver}/unitrc
 %config(noreplace) %{_sysconfdir}/%{name}/%{mver}/templaterc
@@ -182,6 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/%{name}/%{mver}
 
 %{_datadir}/gimp/%{mver}/brushes
+%{_datadir}/gimp/%{mver}/dynamics
 %{_datadir}/gimp/%{mver}/fractalexplorer
 %{_datadir}/gimp/%{mver}/gfig
 %{_datadir}/gimp/%{mver}/gflare
@@ -192,8 +187,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/gimp/%{mver}/palettes
 %{_datadir}/gimp/%{mver}/patterns
 %{_datadir}/gimp/%{mver}/scripts
+%{_datadir}/gimp/%{mver}/tags
 %{_datadir}/gimp/%{mver}/themes
 %{_datadir}/gimp/%{mver}/tips
+%{_datadir}/gimp/%{mver}/tool-presets
+%{_datadir}/gimp/%{mver}/ui
 
 %{_desktopdir}/gimp.desktop
 %{_iconsdir}/hicolor/*/apps/gimp.*
@@ -203,13 +201,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/gimp/%{mver}/python/*.png
 %{_libdir}/gimp/%{mver}/python/*.py[co]
 
-%{_mandir}/man1/gimp-2.6.1*
-%{_mandir}/man1/gimp.1*
-%{_mandir}/man1/gimp-console-2.6.1*
+%{_mandir}/man1/gimp-2.8.1*
+%{_mandir}/man1/gimp-console-*
 %{_mandir}/man1/gimp-console.1*
-%{_mandir}/man1/gimp-remote-2.6.1*
-%{_mandir}/man1/gimp-remote.1*
-%{_mandir}/man5/gimprc-2.6.5*
+%{_mandir}/man1/gimp.1*
+%{_mandir}/man5/gimprc-2.8.5*
 %{_mandir}/man5/gimprc.5*
 
 %files libs
