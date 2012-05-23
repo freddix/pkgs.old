@@ -1,21 +1,22 @@
 Summary:	Networking support for GLib
 Name:		glib-networking
-Version:	2.30.2
-Release:	1
+Version:	2.32.1
+Release:	2
 License:	LGPL v2
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.30/%{name}-%{version}.tar.xz
-# Source0-md5:	844886c099cbd3cbf43f52bac4da2ba7
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/glib-networking/2.32/%{name}-%{version}.tar.xz
+# Source0-md5:	af0282deb9c5b5770b2caed18579c761
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gettext-devel
 BuildRequires:	glib-devel
 BuildRequires:	gnutls-devel
-#BuildRequires:	gsettings-desktop-schemas-devel
+BuildRequires:	gsettings-desktop-schemas-devel
 BuildRequires:	intltool
 BuildRequires:	libproxy-devel
 BuildRequires:	libtool
+BuildRequires:	p11-kit-devel
 BuildRequires:	pkg-config
 Requires(post,postun):	glib-gio
 Requires:	ca-certificates
@@ -66,6 +67,7 @@ umask 022
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/glib-pacrunner
+%attr(755,root,root) %{_libdir}/gio/modules/libgiognomeproxy.so
 %attr(755,root,root) %{_libdir}/gio/modules/libgiognutls.so
 %attr(755,root,root) %{_libdir}/gio/modules/libgiolibproxy.so
 %{_datadir}/dbus-1/services/org.gtk.GLib.PACRunner.service
