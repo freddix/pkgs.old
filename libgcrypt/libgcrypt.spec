@@ -1,11 +1,11 @@
 Summary:	Cryptographic library based on the code from GnuPG
 Name:		libgcrypt
-Version:	1.4.6
-Release:	2
+Version:	1.5.0
+Release:	1
 License:	LGPL
 Group:		Libraries
 Source0:	ftp://ftp.gnupg.org/gcrypt/libgcrypt/%{name}-%{version}.tar.bz2
-# Source0-md5:	dbf99425a4fe9217c84ce3a35d938634
+# Source0-md5:	693f9c64d50c908bc4d6e01da3ff76d8
 Patch0:		%{name}-config.patch
 URL:		http://www.gnu.org/directory/security/libgcrypt.html
 BuildRequires:	autoconf
@@ -31,20 +31,11 @@ Requires:	%{name} = %{version}-%{release}
 %description devel
 Header files etc to develop libgcrypt applications.
 
-%package static
-Summary:	Static library
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static libgcrypt library.
-
 %prep
 %setup -q
 %patch0 -p1
 
 %build
-rm -f m4/libtool.m4
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
@@ -81,7 +72,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS THANKS NEWS README ChangeLog
 %attr(755,root,root) %{_bindir}/dumpsexp
 %attr(755,root,root) %{_bindir}/hmac256
-%attr(755,root,root) %ghost /%{_lib}/libgcrypt.so.11
+%attr(755,root,root) %ghost /%{_lib}/libgcrypt.so.??
 %attr(755,root,root) /%{_lib}/libgcrypt.so.*.*.*
 
 %files devel
@@ -92,8 +83,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_infodir}/*.info*
 %{_includedir}/*.h
 %{_aclocaldir}/*.m4
-
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/*.a
 
