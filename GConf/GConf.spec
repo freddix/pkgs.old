@@ -1,22 +1,20 @@
 Summary:	GNOME configuration database system
 Name:		GConf
-Version:	2.32.4
-Release:	1
+Version:	3.2.5
+Release:	4
 License:	LGPL
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/GConf/2.32/GConf-%{version}.tar.xz
-# Source0-md5:	083db5086d4a5a469e0e3b77847d9d8e
+Source0:	http://ftp.gnome.org/pub/gnome/sources/GConf/3.2/GConf-%{version}.tar.xz
+# Source0-md5:	1b803eb4f8576c572d072692cf40c9d8
 Patch0:		%{name}-NO_MAJOR_VERSION.patch
 Patch1:		%{name}-reload.patch
-Patch2:		%{name}-fix_wrong_return_value.patch
-Patch3:		%{name}-xml-gettext-domain.patch
+Patch2:		%{name}-xml-gettext-domain.patch
 URL:		http://www.gnome.org/
-BuildRequires:	ORBit2-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	dbus-glib-devel
 BuildRequires:	gettext-devel
-BuildRequires:	gtk+-devel
+BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc
 BuildRequires:	intltool
 BuildRequires:	libtool
@@ -48,7 +46,6 @@ GConf library.
 %package devel
 Summary:	GConf includes, etc
 Group:		X11/Development/Libraries
-Requires:	%{name}-gir = %{version}-%{release}
 Requires:	%{name}-utils = %{version}-%{release}
 
 %description devel
@@ -79,20 +76,11 @@ Requires:	gtk-doc-common
 %description apidocs
 GConf API documentation.
 
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for %{name}.
-
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 %{__gtkdocize}
@@ -104,9 +92,10 @@ GObject introspection data for %{name}.
 %{__autoconf}
 %{__automake}
 %configure \
-	--disable-static	\
-	--enable-gtk		\
-	--with-gtk=2.0		\
+	--disable-orbit			\
+	--disable-static		\
+	--enable-defaults-service	\
+	--enable-gtk			\
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
 
@@ -154,7 +143,6 @@ exit 0
 %defattr(644,root,root,755)
 %doc ChangeLog TODO AUTHORS NEWS README
 
-%dir %{_datadir}/GConf
 %dir %{_sysconfdir}/gconf
 %dir %{_sysconfdir}/gconf/schemas
 
@@ -175,13 +163,16 @@ exit 0
 
 %files libs
 %defattr(644,root,root,755)
+%dir %{_datadir}/GConf
+%dir %{_datadir}/GConf/gsettings
 %attr(755,root,root) %ghost %{_libdir}/lib*.so.?
 %attr(755,root,root) %{_libdir}/lib*.so.*.*.*
+%{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/gsettings-schema-convert
 %attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
 %{_includedir}/gconf2
 %{_aclocaldir}/*.m4
 %{_datadir}/gir-1.0/GConf-2.0.gir
@@ -189,10 +180,8 @@ exit 0
 
 %files backend-gsettings
 %defattr(644,root,root,755)
-%dir %{_datadir}/GConf/gsettings
 %{_sysconfdir}/xdg/autostart/gsettings-data-convert.desktop
 %attr(755,root,root) %{_bindir}/gsettings-data-convert
-%attr(755,root,root) %{_bindir}/gsettings-schema-convert
 %attr(755,root,root) %{_libdir}/gio/modules/libgsettingsgconfbackend.so
 
 %files utils
@@ -204,8 +193,4 @@ exit 0
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/gconf
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 
