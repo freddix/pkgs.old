@@ -2,18 +2,15 @@
 
 Summary:	Document viewer for multiple document formats
 Name:		evince%{?with_simple:-simple}
-Version:	2.32.0
-Release:	4
+Version:	3.4.0
+Release:	2
 License:	GPL v2
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/evince/2.32/evince-%{version}.tar.bz2
-# Source0-md5:	ebc3ce6df8dcbf29cb9492f8dd031319
+Source0:	http://ftp.gnome.org/pub/gnome/sources/evince/3.4/evince-%{version}.tar.xz
+# Source0-md5:	23c8a5eec7686d2bb607f9c8245ad242
 Patch0:		evince-desktop.patch
 Patch1:		evince-correct-return.patch
-Patch2:		evince-poppler-api.patch
-Patch3:		evince-sec-fix.patch
-Patch4:		evince-ice.patch
-Patch5:		evince-lz.patch
+Patch2:		evince-lz.patch
 URL:		http://www.gnome.org/projects/evince/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -22,8 +19,10 @@ BuildRequires:	djvulibre-devel
 BuildRequires:	ghostscript
 BuildRequires:	gnome-doc-utils
 BuildRequires:	gnome-icon-theme-devel
+BuildRequires:	gobject-introspection-devel
 BuildRequires:	intltool
 BuildRequires:	kpathsea-devel
+BuildRequires:	libgnome-keyring-devel
 BuildRequires:	libspectre-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtiff-devel
@@ -34,11 +33,9 @@ BuildRequires:	poppler-glib-devel
 BuildRequires:	python-libxml2
 Requires:	%{name}-libs = %{version}-%{release}
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	gtk+
 Requires(post,postun):	glib-gio-gsettings
-%if %{with simple}
-Requires(post,postun):	rarian
-%endif
+Requires(post,postun):	gtk+-update-icon-cache
+Requires(post,postun):	hicolor-icon-theme
 Requires:	xdg-icon-theme
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -92,9 +89,6 @@ Evince API documentation.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
 
 # kill gnome common deps
 sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
@@ -116,14 +110,11 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 %configure \
 	--disable-comics		\
 	--disable-schemas-compile	\
-	--disable-schemas-install 	\
 	--disable-scrollkeeper		\
 	--disable-silent-rules		\
 	--disable-static		\
 	--enable-djvu			\
 	--enable-dvi			\
-	--enable-impress		\
-	--enable-pixbuf			\
 	--enable-ps			\
 	--enable-t1lib			\
 	--enable-tiff			\
@@ -135,9 +126,9 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 	--without-keyring		\
 %else
 	--enable-dbus			\
+	--enable-introspection		\
 	--enable-nautilus		\
 	--with-keyring			\
-	--without-gconf			\
 %endif
 	--with-html-dir=%{_gtkdocdir}
 %{__make}
@@ -155,7 +146,7 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw,ks,ps}
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.{la,so}
 rm -rf $RPM_BUILD_ROOT{%{_includedir},%{_gtkdocdir},%{_pkgconfigdir},%{_datadir}/{gnome,omf}}
 %else
-rm -rf $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
+rm -rf $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0/*.la
 %endif
 
 %find_lang evince --with-gnome --with-omf
@@ -164,17 +155,11 @@ rm -rf $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0/*.la
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%if !%{with simple}
-%scrollkeeper_update_post
-%endif
 %update_desktop_database_post
 %update_icon_cache hicolor
 %update_gsettings_cache
 
 %postun
-%if !%{with simple}
-%scrollkeeper_update_postun
-%endif
 %update_desktop_database_postun
 %update_icon_cache hicolor
 %update_gsettings_cache
@@ -192,9 +177,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/evince/?/backends/*.so
-%attr(755,root,root) %{_libexecdir}/evince-convert-metadata
 %{_libexecdir}/?/backends/*.evince-backend
 %{_datadir}/evince
+%{_datadir}/thumbnailers/evince.thumbnailer
 %{_desktopdir}/*.desktop
 %{_iconsdir}/*/*/*/*
 
@@ -212,6 +197,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libev*.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libev*.so.?
+%{_libdir}/girepository-1.0/*.typelib
 
 %if !%{with simple}
 %files devel
@@ -220,10 +206,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libev*.la
 %{_includedir}/evince
 %{_pkgconfigdir}/*.pc
+%{_datadir}/gir-1.0/*.gir
 
 %files -n nautilus-extension-evince
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/nautilus/extensions-2.0/*.so*
+%attr(755,root,root) %{_libdir}/nautilus/extensions-3.0/*.so*
 
 %files apidocs
 %defattr(644,root,root,755)
