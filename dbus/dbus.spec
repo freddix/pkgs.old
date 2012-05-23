@@ -1,11 +1,11 @@
 Summary:	D-BUS message bus
 Name:		dbus
-Version:	1.4.18
-Release:	2
+Version:	1.5.12
+Release:	1
 License:	AFL v2.1 or GPL v2
 Group:		Libraries
 Source0:	http://dbus.freedesktop.org/releases/dbus/%{name}-%{version}.tar.gz
-# Source0-md5:	5944f93b194ce93d4c88142fc0e6b94b
+# Source0-md5:	ddf18c86fd86ca0d766e18a514e368fd
 Source1:	%{name}-xinitrc.sh
 Source2:	%{name}-tmpfiles.conf
 Patch0:		%{name}-nolibs.patch
@@ -16,6 +16,7 @@ BuildRequires:	expat-devel
 BuildRequires:	libtool
 BuildRequires:	pkg-config
 BuildRequires:	sed >= 4.0
+BuildRequires:	systemd-devel
 BuildRequires:	xmlto
 BuildRequires:	xorg-libX11-devel
 Requires(post):	/bin/systemctl
@@ -77,6 +78,7 @@ Header files for D-BUS.
 	--disable-silent-rules					\
 	--disable-static					\
 	--disable-tests						\
+	--enable-systemd					\
 	--with-console-auth-dir=%{_localstatedir}/run/console/	\
 	--with-system-pid-file=%{_localstatedir}/run/messagebus.pid	\
 	--with-systemdsystemunitdir=/lib/systemd/system		\
