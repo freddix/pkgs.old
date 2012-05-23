@@ -1,21 +1,19 @@
 Summary:	Integrated LaTeX Environment for the GNOME Desktop
 Name:		latexila
-Version:	2.2.2
-Release:	2
+Version:	2.5.0
+Release:	1
 License:	GPL v3
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/latexila/2.2/%{name}-%{version}.tar.xz
-# Source0-md5:	a6eb543898d61c16916be0d2982be68d
-Patch0:		%{name}-spellcheck.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/latexila/2.5/%{name}-%{version}.tar.xz
+# Source0-md5:	2e92fdee0278eaed556aafd98522dae0
 BuildRequires:	cmake
-BuildRequires:	gtksourceview2-devel
-BuildRequires:	gtkspell-devel
+BuildRequires:	gtksourceview3-devel
+BuildRequires:	gtkspell3-devel
 BuildRequires:	itstool
 BuildRequires:	libgee-devel
-BuildRequires:	libunique-devel
 Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	glib-gio-gsettings
-Requires(post,postun):	gtk+
+Requires(post,postun):	gtk+-update-icon-cache
 Requires:	latexmk
 Requires:	tetex-format-pdflatex
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -24,7 +22,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 rm -f src/C/*.c
@@ -58,8 +55,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README TODO
-%attr(755,root,root) %{_bindir}/*
+%doc AUTHORS NEWS README
+%attr(755,root,root) %{_bindir}/latexila
 %{_datadir}/%{name}
 %{_datadir}/glib-2.0/schemas/org.gnome.latexila.gschema.xml
 %{_desktopdir}/latexila.desktop
