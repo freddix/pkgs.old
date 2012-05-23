@@ -1,7 +1,7 @@
 Summary:	Web browser
 Name:		firefox
 Version:	11.0
-Release:	1
+Release:	2
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
@@ -10,8 +10,8 @@ Source1:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}
 # Source1-md5:	02321790ce5cb8edbf97c6272fa5ea3c
 Source2:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/linux-i686/xpi/pl.xpi
 # Source2-md5:	e7487c9657d9c555d35527630e7c15a9
+Source100:	vendor.js
 Patch0:		%{name}-version.patch
-Patch1:		%{name}-freddix.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	GConf-devel
 BuildRequires:	automake
@@ -48,7 +48,9 @@ Web browser.
 
 cd mozilla-release
 %patch0 -p1
-%patch1 -p1
+
+# ugly, but better than to install autoconf2_13
+sed -i 's#VPX_CODEC_USE_INPUT_PARTITION#VPX_CODEC_USE_INPUT_FRAGMENTS#' configure
 
 %build
 cd mozilla-release
@@ -59,29 +61,18 @@ cat << 'EOF' > .mozconfig
 mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/firefox-build
 
 #
-ac_add_options --bindir=%{_bindir}
-ac_add_options --datadir=%{_datadir}
-ac_add_options --exec-prefix=%{_exec_prefix}
-ac_add_options --includedir=%{_includedir}
-ac_add_options --infodir=%{_infodir}
 ac_add_options --libdir=%{_libdir}
-ac_add_options --libexecdir=%{_libexecdir}
-ac_add_options --localstatedir=%{_localstatedir}
-ac_add_options --mandir=%{_mandir}
 ac_add_options --prefix=%{_prefix}
-ac_add_options --sbindir=%{_sbindir}
-ac_add_options --sharedstatedir=%{_sharedstatedir}
-ac_add_options --sysconfdir=%{_sysconfdir}
 #
 ac_add_options --disable-crashreporter
 ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
 ac_add_options --disable-logging
 ac_add_options --disable-mochitest
-ac_add_options --disable-safe-browsing
 ac_add_options --disable-tests
 ac_add_options --disable-updater
-ac_add_options --disable-url-classifier
+ac_add_options --enable-safe-browsing
+ac_add_options --enable-url-classifier
 #
 ac_add_options --disable-debug
 ac_add_options --disable-pedantic
@@ -89,21 +80,12 @@ ac_add_options --disable-strip
 ac_add_options --disable-strip-install
 ac_add_options --enable-libxul
 ac_add_options --enable-optimize
-ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}-%{app_version}
 ac_add_options --with-libxul-sdk=$(pkg-config --variable=sdkdir libxul)
 #
 ac_add_options --disable-gnomeui
 ac_add_options --disable-gnomevfs
-ac_add_options --enable-canvas
-ac_add_options --enable-canvas3d
-ac_add_options --enable-default-toolkit=cairo-gtk2
 ac_add_options --enable-gio
-ac_add_options --enable-pango
-ac_add_options --enable-places
-ac_add_options --enable-shared-js
-ac_add_options --enable-smil
 ac_add_options --enable-startup-notification
-ac_add_options --enable-svg
 #
 ac_add_options --enable-system-cairo
 ac_add_options --enable-system-hunspell
@@ -120,10 +102,7 @@ ac_add_options --with-system-nss
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
 #
-ac_add_options --enable-chrome-format=omni
-ac_add_options --enable-extensions=default
 ac_add_options --enable-official-branding
-ac_add_options --with-distribution-id=org.freddix
 #
 MOZILLA_OFFICIAL=1
 BUILD_OFFICIAL=1
@@ -142,8 +121,7 @@ export CXXFLAGS="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir}/%{name}/extensions} \
-	$RPM_BUILD_ROOT%{_desktopdir}	\
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_desktopdir}}	\
 	$RPM_BUILD_ROOT%{_iconsdir}/hicolor/{16x16,22x22,24x24,32x32,48x48,256x256}/apps
 
 cd mozilla-release
@@ -154,6 +132,8 @@ cd mozilla-release
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/%{name}-%{app_version}/extensions/langpack-de@firefox.mozilla.org.xpi
 install %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/%{name}-%{app_version}/extensions/langpack-pl@firefox.mozilla.org.xpi
+
+install %{SOURCE100} $RPM_BUILD_ROOT%{_libdir}/%{name}-%{app_version}/defaults/preferences
 
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}-%{app_version}/dictionaries
 ln -s %{_libdir}/browser-plugins $RPM_BUILD_ROOT%{_libdir}/%{name}-%{app_version}/plugins
