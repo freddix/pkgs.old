@@ -1,16 +1,16 @@
 Summary:	General Window Manager interfacing for GNOME utilities
 Name:		libwnck
-Version:	2.30.7
-Release:	2
+Version:	3.4.0
+Release:	1
 License:	LGPL
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/gnome/sources/libwnck/2.30/%{name}-%{version}.tar.bz2
-# Source0-md5:	9bef4b8560acca78cd6f08a95039af9c
+Source0:	http://ftp.gnome.org/pub/gnome/sources/libwnck/3.4/%{name}-%{version}.tar.xz
+# Source0-md5:	e6774ece11c3e0b54f45d8746322507e
 Patch0:		%{name}-link.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gobject-introspection-devel
-BuildRequires:	gtk+-devel
+BuildRequires:	gtk+3-devel
 BuildRequires:	gtk-doc
 BuildRequires:	intltool
 BuildRequires:	libtool
@@ -48,9 +48,6 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
     -i -e 's/GNOME_COMMON_INIT//g'		\
     -i -e 's/GNOME_DEBUG_CHECK//g' configure.ac
 
-# fix gir breakage
-sed -i -e 's/--warn-all //' libwnck/Makefile.am
-
 %build
 %{__gtkdocize}
 %{__intltoolize}
@@ -72,7 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,crh,en@shaw}
 
-%find_lang %{name}
+%find_lang %{name}-3.0
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -80,24 +77,24 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%files -f %{name}.lang
+%files -f %{name}-3.0.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_bindir}/wnck-urgency-monitor
 %attr(755,root,root) %{_bindir}/wnckprop
-%attr(755,root,root) %ghost %{_libdir}/libwnck-1.so.??
-%attr(755,root,root) %{_libdir}/libwnck-1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libwnck-3.so.?
+%attr(755,root,root) %{_libdir}/libwnck-3.so.*.*.*
 %{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libwnck-1.so
-%{_libdir}/libwnck-1.la
-%{_includedir}/%{name}-1.0
-%{_pkgconfigdir}/libwnck-1.0.pc
-%{_datadir}/gir-1.0/Wnck-1.0.gir
+%attr(755,root,root) %{_libdir}/libwnck-3.so
+%{_libdir}/libwnck-3.la
+%{_includedir}/%{name}-3.0
+%{_pkgconfigdir}/libwnck-3.0.pc
+%{_datadir}/gir-1.0/Wnck-3.0.gir
 
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/%{name}
+%{_gtkdocdir}/%{name}-3.0
 
