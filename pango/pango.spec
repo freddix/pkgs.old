@@ -1,12 +1,12 @@
 Summary:	System for layout and rendering of internationalized text
 Name:		pango
-Version:	1.29.4
-Release:	2
+Version:	1.30.0
+Release:	1
 Epoch:		1
 License:	LGPL
 Group:		X11/Libraries
-Source0:	http://ftp.gnome.org/pub/gnome/sources/pango/1.29/%{name}-%{version}.tar.xz
-# Source0-md5:	9d5aba73897d2e8e8115b3f4fddbc0af
+Source0:	http://ftp.gnome.org/pub/gnome/sources/pango/1.32/%{name}-%{version}.tar.xz
+# Source0-md5:	2a70627ffd9f43c52c04cc0b05fe359f
 Patch0:		%{name}-xfonts.patch
 URL:		http://www.pango.org/
 BuildRequires:	autoconf
@@ -63,7 +63,7 @@ Pango API documentation.
 %patch0 -p1
 
 %build
-%{__gtkdocize}
+#%{__gtkdocize}
 %{__libtoolize}
 %{__aclocal}
 %{__autoheader}
