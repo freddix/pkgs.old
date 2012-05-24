@@ -1,9 +1,9 @@
 %define		pname	gst-python
-#
+
 Summary:	GStreamer Python bindings
 Name:		python-gstreamer
 Version:	0.10.22
-Release:	1
+Release:	2
 License:	GPL
 Group:		Libraries/Python
 Source0:	http://gstreamer.freedesktop.org/src/gst-python/%{pname}-%{version}.tar.bz2
@@ -40,7 +40,8 @@ Development files for GStreamer Python bindings.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-%configure
+%configure \
+	--disable-silent-rules
 %{__make}
 
 %install
