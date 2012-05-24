@@ -5,13 +5,13 @@
 
 Summary:	URI - Uniform Resource Identifiers (absolute and relative)
 Name:		perl-URI
-Version:	1.59
+Version:	1.60
 Release:	1
 # same as perl
 License:	GPL v1+ or Artistic
 Group:		Development/Languages/Perl
 Source0:	http://www.cpan.org/modules/by-module/%{pdir}/%{pnam}-%{version}.tar.gz
-# Source0-md5:	fecebf8fa20e2d26ea4a1649c095e96e
+# Source0-md5:	70f739be8ce28b8baba7c5920ffee4dc
 URL:		http://search.cpan.org/dist/URI/
 BuildRequires:	perl-devel
 BuildRequires:	rpm-perlprov
