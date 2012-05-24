@@ -1,7 +1,7 @@
 Summary:	A framework for defining policy for system-wide components
 Name:		polkit
 Version:	0.104
-Release:	5
+Release:	6
 License:	MIT
 Group:		Libraries
 Source0:	http://hal.freedesktop.org/releases/%{name}-%{version}.tar.gz
@@ -64,10 +64,11 @@ PolicyKit API documentation.
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-silent-rules				\
-	--disable-static				\
-	--with-html-dir=%{_gtkdocdir}			\
-	--with-os-type=suse				\
+	--disable-silent-rules			\
+	--disable-static			\
+	--enable-systemd			\
+	--with-html-dir=%{_gtkdocdir}		\
+	--with-os-type=suse			\
 	--with-pam-module-dir=/%{_lib}/security
 %{__make}
 
