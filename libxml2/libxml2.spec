@@ -1,14 +1,16 @@
 Summary:	libXML2 library
 Name:		libxml2
-Version:	2.7.7
-Release:	3
+Version:	2.7.8
+Release:	1
 Epoch:		1
 License:	MIT
 Group:		Libraries
 Source0:	ftp://xmlsoft.org/libxml2/%{name}-%{version}.tar.gz
-# Source0-md5:	9abc9959823ca9ff904f1fbcf21df066
+# Source0-md5:	8127a65e8c3b08856093099b52599c86
 Patch0:		%{name}-man_fixes.patch
 Patch1:		%{name}-open.gz.patch
+Patch2:		%{name}-reactivate-versionning-script.patch
+Patch3:		%{name}-xpath-double-free.patch
 URL:		http://xmlsoft.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -61,6 +63,8 @@ Python support for libxml2.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{__libtoolize}
