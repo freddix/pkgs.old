@@ -1,11 +1,11 @@
 Summary:	Non-linear video editor for linux
 Name:		openshot
-Version:	1.4.0
+Version:	1.4.2
 Release:	1
 License:	GPL v2
 Group:		X11/Applications
-Source0:	http://launchpad.net/openshot/1.4/1.4.0/+download/%{name}-%{version}.tar.gz
-# Source0-md5:	3061a49af6d1cbd9b1558b9f2b0ba8e2
+Source0:	http://launchpad.net/openshot/1.4/1.4.2/+download/%{name}-%{version}.tar.gz
+# Source0-md5:	16fea75be6b1fc9d31c6a30a81f85a38
 BuildRequires:	rpm-pythonprov
 BuildArch:	noarch
 Requires(post,postun):	shared-mime-info
