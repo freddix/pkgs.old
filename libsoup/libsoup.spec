@@ -1,11 +1,11 @@
 Summary:	SOAP (Simple Object Access Protocol) implementation in C
 Name:		libsoup
-Version:	2.36.1
+Version:	2.38.1
 Release:	1
 License:	LGPL v2
 Group:		Libraries
-Source0:	http://ftp.gnome.org/pub/gnome/sources/libsoup/2.36/%{name}-%{version}.tar.xz
-# Source0-md5:	5e6dcf0dfdbf58f67f576ed67f8923b9
+Source0:	http://ftp.gnome.org/pub/gnome/sources/libsoup/2.38/%{name}-%{version}.tar.xz
+# Source0-md5:	d13fb4968acea24c26b83268a308f580
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -34,7 +34,7 @@ server skeletons for easily calling and implementing SOAP methods.
 %package devel
 Summary:	Include files etc to develop SOAP applications
 Group:		Development/Libraries
-Requires:	%{name}-gir = %{version}-%{release}
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files, etc you can use to develop SOAP applications.
@@ -63,15 +63,6 @@ Requires:	gtk-doc-common
 
 %description apidocs
 libsoup API documentation.
-
-%package gir
-Summary:	GObject introspection data
-Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	gobject-introspection-data
-
-%description gir
-GObject introspection data for %{name}.
 
 %prep
 %setup -q
@@ -112,10 +103,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS NEWS README
 %attr(755,root,root) %ghost %{_libdir}/libsoup-%{apiver}.so.?
 %attr(755,root,root) %{_libdir}/libsoup-%{apiver}.so.*.*.*
+%{_libdir}/girepository-1.0/Soup-2.4.typelib
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libsoup-%{apiver}.so
+%{_libdir}/libsoup-%{apiver}.la
 %{_includedir}/libsoup-%{apiver}
 %{_pkgconfigdir}/libsoup-%{apiver}.pc
 %{_datadir}/gir-1.0/Soup-2.4.gir
@@ -124,10 +117,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %ghost %{_libdir}/libsoup-gnome-%{apiver}.so.?
 %attr(755,root,root) %{_libdir}/libsoup-gnome-%{apiver}.so.*.*.*
+%{_libdir}/girepository-1.0/SoupGNOME-2.4.typelib
 
 %files gnome-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libsoup-gnome-%{apiver}.so
+%{_libdir}/libsoup-gnome-%{apiver}.la
 %{_includedir}/libsoup-gnome-%{apiver}
 %{_pkgconfigdir}/libsoup-gnome-%{apiver}.pc
 %{_datadir}/gir-1.0/SoupGNOME-2.4.gir
@@ -135,8 +130,4 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/libsoup-*
-
-%files gir
-%defattr(644,root,root,755)
-%{_libdir}/girepository-1.0/*.typelib
 
