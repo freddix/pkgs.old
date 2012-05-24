@@ -1,15 +1,13 @@
 Summary:	Nautilus is a file manager for the GNOME desktop environment
 Name:		nautilus
-Version:	2.32.2.1
-Release:	2
+Version:	3.4.1
+Release:	1
 License:	GPL v2+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/gnome/sources/nautilus/2.32/%{name}-%{version}.tar.bz2
-# Source0-md5:	f75f387d1b439079967581d876009426
+Source0:	http://ftp.gnome.org/pub/gnome/sources/nautilus/3.4/%{name}-%{version}.tar.xz
+# Source0-md5:	219f0d75d5722711da1cd531cd23ab3e
 Source1:	%{name}-mount-archive.desktop
 URL:		http://nautilus.eazel.com/
-Patch0:		%{name}-freddix.patch
-Patch1:		%{name}-deprecated.patch
 BuildRequires:	GConf-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -22,14 +20,15 @@ BuildRequires:	gobject-introspection-devel
 BuildRequires:	intltool
 BuildRequires:	libexif-devel
 BuildRequires:	librsvg-devel
+BuildRequires:	libnotify-devel >= 0.7.5
 BuildRequires:	libtool
-BuildRequires:	libunique-devel
-BuildRequires:	libxml2-devel
+BuildRequires:	libxml2-devel >= 2.7.8
 BuildRequires:	pkg-config
 BuildRequires:	startup-notification-devel
-Requires(post,preun):	GConf
+BuildRequires:	tracker-devel
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	gtk+
+Requires(post,postun):	glib-gio-gsettings
+Requires(post,postun):	gtk+-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires(post,postun):	shared-mime-info
 Requires:	gtk+-rsvg
@@ -73,8 +72,6 @@ libnautilus-extension API documentation.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %build
 %{__gtkdocize}
@@ -93,7 +90,7 @@ libnautilus-extension API documentation.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-2.0
+install -d $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -109,17 +106,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 %update_mime_database
-%gconf_schema_install apps_nautilus_preferences.schemas
 %update_desktop_database_post
 %update_icon_cache hicolor
-
-%preun
-%gconf_schema_uninstall apps_nautilus_preferences.schemas
+%update_gsettings_cache
 
 %postun
-%update_desktop_database_postun
 %update_mime_database
 %update_icon_cache hicolor
+%update_gsettings_cache
 
 %post	libs -p /sbin/ldconfig
 %postun libs -p /sbin/ldconfig
@@ -130,20 +124,25 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/nautilus
 %attr(755,root,root) %{_bindir}/nautilus-autorun-software
 %attr(755,root,root) %{_bindir}/nautilus-connect-server
-%attr(755,root,root) %{_bindir}/nautilus-file-management-properties
+
+%dir %{_libexecdir}
+%dir %{_libexecdir}/extensions-3.0
+%attr(755,root,root) %{_libexecdir}/extensions-3.0/libnautilus-sendto.so
 %attr(755,root,root) %{_libexecdir}/nautilus-convert-metadata
 
-%dir %{_libdir}/nautilus/extensions-2.0
-
+%{_datadir}/GConf/gsettings/nautilus.convert
+%{_datadir}/dbus-1/services/org.freedesktop.FileManager1.service
+%{_datadir}/dbus-1/services/org.gnome.Nautilus.service
+%{_datadir}/glib-2.0/schemas/*.gschema.xml
 %{_datadir}/mime/packages/*.xml
 %{_datadir}/nautilus
 
-%{_desktopdir}/*
-%{_pixmapsdir}/nautilus
-%{_iconsdir}/hicolor/*/apps/*
-%{_sysconfdir}/gconf/schemas/apps_nautilus_preferences.schemas
+%{_desktopdir}/*.desktop
+%{_iconsdir}/hicolor/*/*/nautilus.*
 
 %{_mandir}/man1/nautilus*.1*
+
+%{_sysconfdir}/xdg/autostart/nautilus-autostart.desktop
 
 %files libs
 %defattr(644,root,root,755)
@@ -158,7 +157,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libnautilus-extension.la
 %{_includedir}/%{name}
 %{_pkgconfigdir}/libnautilus-extension.pc
-%{_datadir}/gir-1.0/Nautilus-2.0.gir
+%{_datadir}/gir-1.0/Nautilus-3.0.gir
 
 %files apidocs
 %defattr(644,root,root,755)
