@@ -1,13 +1,12 @@
 Summary:	Metacity window manager
 Name:		metacity
-Version:	2.30.3
-Release:	3
+Version:	2.34.3
+Release:	2
 Epoch:		3
 License:	GPL v2+
 Group:		X11/Window Managers
-Source0:	http://ftp.gnome.org/pub/gnome/sources/metacity/2.30/%{name}-%{version}.tar.bz2
-# Source0-md5:	553784f376d96b902e19ff437cd5b339
-Patch0:		%{name}-freddix.patch
+Source0:	http://ftp.gnome.org/pub/gnome/sources/metacity/2.34/%{name}-%{version}.tar.xz
+# Source0-md5:	4b19fa5bbc14dc669108bd46606b1bd1
 BuildRequires:	GConf-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -18,7 +17,7 @@ BuildRequires:	libglade-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	startup-notification-devel
-Requires(post,preun):	GConf
+Requires(post,postun):	glib-gio-gsettings
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires:	metacity-theme-shiki-colors
 Provides:	window-manager
@@ -53,7 +52,6 @@ Basic Metacity themes.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__intltoolize}
@@ -84,10 +82,10 @@ rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw,ha,ig,la}
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%gconf_schema_install metacity.schemas
+%update_gsettings_cache
 
-%preun
-%gconf_schema_uninstall metacity.schemas
+%postun
+%update_gsettings_cache
 
 %post	libs -p /sbin/ldconfig
 %postun	libs -p /sbin/ldconfig
@@ -99,13 +97,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/metacity-message
 %attr(755,root,root) %{_bindir}/metacity-theme-viewer
 %attr(755,root,root) %{_bindir}/metacity-window-demo
-
 %{_datadir}/%{name}
+%{_datadir}/GConf/gsettings/metacity-schemas.convert
+%{_datadir}/glib-2.0/schemas/org.gnome.metacity.gschema.xml
 %{_datadir}/gnome-control-center/keybindings/*.xml
 %{_datadir}/xml/metacity
 %{_mandir}/man1/metacity*.1*
-%{_sysconfdir}/gconf/schemas/metacity.schemas
-
 %{_datadir}/gnome/wm-properties/metacity-wm.desktop
 %{_desktopdir}/metacity.desktop
 
