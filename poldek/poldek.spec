@@ -1,4 +1,4 @@
-%define 	pre	rc4
+%define 	pre	rc5
 #
 Summary:	RPM packages management helper tool
 Name:		poldek
@@ -7,7 +7,7 @@ Release:	0.%{pre}.1
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://carme.pld-linux.org/~cactus/snaps/poldek/%{name}-%{version}%{pre}.tar.xz
-# Source0-md5:	1903db3137c297f42405ba2ac3fa17db
+# Source0-md5:	ab89926c28cfb6b7d72497fc37c16ac4
 Source1:	%{name}.conf
 Source2:	%{name}-aliases.conf
 Patch0:		%{name}-config.patch
