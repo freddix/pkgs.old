@@ -6,7 +6,7 @@
 Summary:	Movie player
 Name:		mplayer
 Version:	1.0
-Release:	5.%{subver}.%{svnver}.1
+Release:	5.%{subver}.%{svnver}.2
 Epoch:		3
 License:	GPL
 Group:		Applications/Multimedia
