@@ -1,9 +1,9 @@
 %define		module	pygobject
-#
+
 Summary:	Python bindings for GObject library
 Name:		python-%{module}
 Version:	2.28.6
-Release:	1
+Release:	4
 License:	LGPL
 Group:		Libraries/Python
 Source0:	http://ftp.gnome.org/pub/gnome/sources/pygobject/2.28/%{module}-%{version}.tar.bz2
@@ -26,9 +26,6 @@ BuildRequires:	python-devel
 BuildRequires:	python-pycairo-devel
 BuildRequires:	rpm-pythonprov
 %pyrequires_eq	python-modules
-# requires GLib-2.0.typelib, GModule-2.0.typelib
-# GObject-2.0.typelib, Gio-2.0.typelib
-Requires:	gobject-introspection-data
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -72,6 +69,7 @@ install -d m4
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-introspection	\
 	--disable-silent-rules
 %{__make}
 
@@ -113,6 +111,8 @@ rm -rf $RPM_BUILD_ROOT
 %{py_sitedir}/*.py[co]
 %{py_sitedir}/pygtk.pth
 
+# provided by pygobject3
+%if 0
 %dir %{py_sitedir}/gi
 %dir %{py_sitedir}/gi/overrides
 %dir %{py_sitedir}/gi/repository
@@ -121,6 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 %{py_sitedir}/gi/*.py[co]
 %{py_sitedir}/gi/overrides/*.py[co]
 %{py_sitedir}/gi/repository/*.py[co]
+%endif
 
 %dir %{py_sitedir}/glib
 %attr(755,root,root) %{py_sitedir}/glib/*.so
