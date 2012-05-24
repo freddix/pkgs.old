@@ -1,7 +1,7 @@
 Summary:	Sound server
 Name:		pulseaudio
 Version:	1.1
-Release:	3
+Release:	4
 License:	GPL v2+ (server and libpulsecore), LGPL v2+ (libpulse)
 Group:		Libraries
 Source0:	http://freedesktop.org/software/pulseaudio/releases/%{name}-%{version}.tar.gz
@@ -131,6 +131,9 @@ X11 module for PulseAudio.
 
 %prep
 %setup -q
+
+sed -i -e 's/load-module module-console-kit/#load-module module-console-kit/g' \
+	src/daemon/default.pa.in
 
 %build
 %{__libtoolize}
