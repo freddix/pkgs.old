@@ -1,0 +1,36 @@
+--- ncurses-ruby-0.9.1.orig/extconf.rb	2009-01-15 18:02:52.755914008 +0100
++++ ncurses-ruby-0.9.1/extconf.rb	2009-01-15 18:06:43.026276379 +0100
+@@ -27,6 +27,8 @@
+ have_header("unistd.h")
+ if have_header("ncurses.h")
+   curses_header = "ncurses.h"
++elsif have_header("ncursesw/curses.h")
++  curses_header = "ncursesw/curses.h"
+ elsif have_header("ncurses/curses.h")
+   curses_header = "ncurses/curses.h"
+ elsif have_header("curses.h")
+@@ -35,7 +37,9 @@
+   raise "ncurses header file not found"
+ end
+ 
+-if have_library("ncurses", "wmove")
++if have_library("ncursesw", "wmove")
++  curses_lib = "ncursesw"
++elsif have_library("ncurses", "wmove")
+   curses_lib = "ncurses"
+ elsif have_library("pdcurses", "wmove")
+   curses_lib = "pdcurses"
+@@ -120,11 +124,11 @@
+ 
+ puts "checking for the panel library..."
+ if have_header("panel.h")
+-  have_library("panel", "panel_hidden")
++  have_library("panelw", "panel_hidden")
+ end
+ puts "checking for the form library..."
+ if have_header("form.h")
+-  have_library("form", "new_form")
++  have_library("formw", "new_form")
+ end
+ 
+ create_makefile('ncurses')
