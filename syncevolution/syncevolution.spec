@@ -1,11 +1,11 @@
 Summary:	PIM SyncML synchronizer
 Name:		syncevolution
-Version:	1.2.1
+Version:	1.2.2
 Release:	1
 License:	GPL v2
 Group:		Applications
 Source0:	http://downloads.syncevolution.org/syncevolution/sources/%{name}-%{version}.tar.gz
-# Source0-md5:	da75826ec8a47556a0d072f5f292c7de
+# Source0-md5:	0f58a4adf0ff034d7ae7f6c8589ed5b0
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	boost-devel
