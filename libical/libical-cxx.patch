@@ -1,0 +1,23 @@
+--- libical-0.46/src/libicalss/icalspanlist.h.orig	2010-08-30 22:05:08.000000000 +0200
++++ libical-0.46/src/libicalss/icalspanlist.h	2010-09-05 09:42:08.695135135 +0200
+@@ -26,6 +26,9 @@
+ #define ICALSPANLIST_H
+ 
+ #include <libical/ical.h>
++#ifdef __cplusplus
++extern "C" {
++#endif
+ #include "icalset.h"
+ 
+ /** @file icalspanlist.h
+@@ -71,6 +74,10 @@
+ /** @brief Construct an icalspanlist from a VFREEBUSY component */
+ icalspanlist *icalspanlist_from_vfreebusy(icalcomponent* c);
+ 
++#ifdef __cplusplus
++}
++#endif
++
+ #endif
+ 				    
+ 
