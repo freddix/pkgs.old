@@ -1,0 +1,22 @@
+diff -aurN gdm-3.4.1.orig/data/gdm-shell.session.in gdm-3.4.1/data/gdm-shell.session.in
+--- gdm-3.4.1.orig/data/gdm-shell.session.in	2012-05-03 23:12:36.265983781 +0200
++++ gdm-3.4.1/data/gdm-shell.session.in	2012-05-03 23:14:33.141522974 +0200
+@@ -1,5 +1,5 @@
+ [GNOME Session]
+ Name=Display Manager
+ RequiredComponents=gnome-shell;gnome-settings-daemon;
+-IsRunnableHelper=bash -c 'gnome-shell --help | grep -q gdm-mode && @libexecdir@/gnome-session-check-accelerated'
++IsRunnableHelper=sh -c 'gnome-shell --help | grep -q gdm-mode && /usr/lib/gnome-session/gnome-session-check-accelerated'
+ FallbackSession=gdm-fallback
+diff -aurN gdm-3.4.1.orig/gui/simple-chooser/gdm-chooser-session.c gdm-3.4.1/gui/simple-chooser/gdm-chooser-session.c
+--- gdm-3.4.1.orig/gui/simple-chooser/gdm-chooser-session.c	2012-05-03 23:12:36.253983941 +0200
++++ gdm-3.4.1/gui/simple-chooser/gdm-chooser-session.c	2012-05-03 23:17:17.528467719 +0200
+@@ -131,7 +131,7 @@
+         ret = FALSE;
+ 
+         error = NULL;
+-        g_spawn_command_line_async (LIBEXECDIR "/gnome-settings-daemon", &error);
++        g_spawn_command_line_async ("/usr/lib/gnome-settings-daemon/gnome-settings-daemon", &error);
+         if (error != NULL) {
+                 g_warning ("Error starting settings daemon: %s", error->message);
+                 g_error_free (error);
