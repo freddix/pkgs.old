@@ -1,9 +1,9 @@
 %define		module	pygtk
-#
+
 Summary:	Python bindings for GTK+ 2.x libraries
 Name:		python-%{module}
 Version:	2.24.0
-Release:	1
+Release:	3
 Epoch:		2
 License:	LGPL
 Group:		Libraries/Python
