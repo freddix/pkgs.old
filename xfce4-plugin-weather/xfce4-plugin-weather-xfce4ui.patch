@@ -1,0 +1,81 @@
+diff -ur xfce4-weather-plugin-0.7.4-orig/configure.ac xfce4-weather-plugin-0.7.4/configure.ac
+--- xfce4-weather-plugin-0.7.4-orig/configure.ac	2011-02-02 21:31:29.000000000 +0100
++++ xfce4-weather-plugin-0.7.4/configure.ac	2011-03-01 11:56:04.369067640 +0100
+@@ -64,7 +64,7 @@
+ XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [2.6.0])
+ XDT_CHECK_PACKAGE([GTHREAD], [gthread-2.0], [2.6.0])
+ XDT_CHECK_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.3.90.2])
+-XDT_CHECK_PACKAGE([LIBXFCEGUI4], [libxfcegui4-1.0], [4.3.90.2])
++XDT_CHECK_PACKAGE([LIBXFCE4UI], [libxfce4ui-1], [4.8.0])
+ XDT_CHECK_PACKAGE([LIBXFCE4PANEL], [libxfce4panel-1.0], [4.3.99.1])
+ XDT_CHECK_PACKAGE([LIBXML], [libxml-2.0], [2.4.0])
+ 
+diff -ur xfce4-weather-plugin-0.7.4-orig/panel-plugin/Makefile.am xfce4-weather-plugin-0.7.4/panel-plugin/Makefile.am
+--- xfce4-weather-plugin-0.7.4-orig/panel-plugin/Makefile.am	2011-02-02 21:31:29.000000000 +0100
++++ xfce4-weather-plugin-0.7.4/panel-plugin/Makefile.am	2011-03-01 11:46:29.227067641 +0100
+@@ -33,7 +33,7 @@
+ 
+ xfce4_weather_plugin_CFLAGS =						\
+ 	$(LIBXFCE4PANEL_CFLAGS)						\
+-	$(LIBXFCEGUI4_CFLAGS)						\
++	$(LIBXFCE4UI_CFLAGS)						\
+ 	$(LIBXFCE4UTIL_CFLAGS)						\
+ 	$(GTK_CFLAGS)							\
+ 	$(LIBXML_CFLAGS)
+@@ -41,7 +41,7 @@
+ xfce4_weather_plugin_LDADD =						\
+ 	$(LIBXFCE4PANEL_LIBS)						\
+ 	$(LIBXFCE4UTIL_LIBS)						\
+-	$(LIBXFCEGUI4_LIBS)						\
++	$(LIBXFCE4UI_LIBS)						\
+ 	$(GTK_LIBS)							\
+ 	$(LIBXML_LIBS)							\
+ 	$(LIBRESOLV)
+diff -ur xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather.c xfce4-weather-plugin-0.7.4/panel-plugin/weather.c
+--- xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather.c	2011-02-02 21:31:29.000000000 +0100
++++ xfce4-weather-plugin-0.7.4/panel-plugin/weather.c	2011-03-01 11:23:33.860067640 +0100
+@@ -23,7 +23,7 @@
+ #include <sys/stat.h>
+ 
+ #include <libxfce4util/libxfce4util.h>
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include "weather-parsers.h"
+ #include "weather-data.h"
+diff -ur xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather-config.c xfce4-weather-plugin-0.7.4/panel-plugin/weather-config.c
+--- xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather-config.c	2011-02-02 21:31:29.000000000 +0100
++++ xfce4-weather-plugin-0.7.4/panel-plugin/weather-config.c	2011-03-01 11:23:33.856067640 +0100
+@@ -20,7 +20,7 @@
+ #endif
+ 
+ #include <string.h>
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include "weather-parsers.h"
+ #include "weather-data.h"
+diff -ur xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather-search.c xfce4-weather-plugin-0.7.4/panel-plugin/weather-search.c
+--- xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather-search.c	2011-02-02 21:31:29.000000000 +0100
++++ xfce4-weather-plugin-0.7.4/panel-plugin/weather-search.c	2011-03-01 11:23:33.842067640 +0100
+@@ -21,7 +21,7 @@
+ 
+ #include <string.h>
+ 
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include "weather-parsers.h"
+ #include "weather-data.h"
+diff -ur xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather-summary.c xfce4-weather-plugin-0.7.4/panel-plugin/weather-summary.c
+--- xfce4-weather-plugin-0.7.4-orig/panel-plugin/weather-summary.c	2011-02-02 21:31:29.000000000 +0100
++++ xfce4-weather-plugin-0.7.4/panel-plugin/weather-summary.c	2011-03-01 11:23:33.844067640 +0100
+@@ -19,7 +19,7 @@
+ #include <config.h>
+ #endif
+ 
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include "weather-parsers.h"
+ #include "weather-data.h"

@@ -1,0 +1,11 @@
+diff -aurN xfce4-screenshooter-1.8.1.orig/Makefile.am xfce4-screenshooter-1.8.1/Makefile.am
+--- xfce4-screenshooter-1.8.1.orig/Makefile.am	2012-05-13 13:24:24.936780865 +0200
++++ xfce4-screenshooter-1.8.1/Makefile.am	2012-05-13 17:32:44.066516111 +0200
+@@ -132,6 +132,7 @@
+ 	@SOUP_CFLAGS@
+ 
+ panel_plugin_libscreenshooterplugin_la_LDFLAGS = \
++	-module -avoid-version -no-undefined \
+ 	@EXO_LIBS@ \
+ 	@LIBXFCE4PANEL_LIBS@ \
+ 	@GTHREAD_LIBS@ \

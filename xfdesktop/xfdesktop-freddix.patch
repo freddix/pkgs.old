@@ -1,0 +1,136 @@
+diff -aurN xfdesktop-4.6.1.orig/common/xfdesktop-common.h xfdesktop-4.6.1/common/xfdesktop-common.h
+--- xfdesktop-4.6.1.orig/common/xfdesktop-common.h	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/common/xfdesktop-common.h	2009-12-13 14:41:59.000000000 +0100
+@@ -31,7 +31,7 @@
+ #include <X11/Xlib.h>
+ 
+ #define XFDESKTOP_CHANNEL        "xfce4-desktop"
+-#define DEFAULT_BACKDROP         DATADIR "/xfce4/backdrops/xfce-stripes.png"
++#define DEFAULT_BACKDROP         DATADIR "/pixmaps/freddix-artwork/default-wallpaper.svg"
+ #define DEFAULT_BACKDROP_LIST    "xfce4/desktop/backdrop.list"
+ #define DEFAULT_ICON_FONT_SIZE   12
+ #define DEFAULT_ICON_SIZE        32
+diff -aurN xfdesktop-4.6.1.orig/modules/menu/directory-data/xfce-education.directory.in xfdesktop-4.6.1/modules/menu/directory-data/xfce-education.directory.in
+--- xfdesktop-4.6.1.orig/modules/menu/directory-data/xfce-education.directory.in	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/modules/menu/directory-data/xfce-education.directory.in	2009-12-13 14:41:59.000000000 +0100
+@@ -2,6 +2,6 @@
+ Version=1.0
+ Encoding=UTF-8
+ Type=Directory
+-Icon=
++Icon=applications-science
+ _Name=Education
+ _Comment=Educational software
+diff -aurN xfdesktop-4.6.1.orig/modules/menu/menu-data/Makefile.am xfdesktop-4.6.1/modules/menu/menu-data/Makefile.am
+--- xfdesktop-4.6.1.orig/modules/menu/menu-data/Makefile.am	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/modules/menu/menu-data/Makefile.am	2009-12-13 14:41:59.000000000 +0100
+@@ -1,11 +1,10 @@
+ desktopdir = $(datadir)/applications
+ desktop_in_files = \
+-	xfce4-about-xfce.desktop.in \
+ 	xfce4-file-manager.desktop.in \
+-	xfce4-help.desktop.in \
+ 	xfce4-logout.desktop.in \
+ 	xfce4-run-program.desktop.in \
+ 	xfce4-terminal.desktop.in \
++	xfce4-mail-reader.desktop.in \
+ 	xfce4-web-browser.desktop.in
+ desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+ @INTLTOOL_DESKTOP_RULE@
+diff -aurN xfdesktop-4.6.1.orig/modules/menu/menu-data/xfce4-mail-reader.desktop.in xfdesktop-4.6.1/modules/menu/menu-data/xfce4-mail-reader.desktop.in
+--- xfdesktop-4.6.1.orig/modules/menu/menu-data/xfce4-mail-reader.desktop.in	1970-01-01 01:00:00.000000000 +0100
++++ xfdesktop-4.6.1/modules/menu/menu-data/xfce4-mail-reader.desktop.in	2009-12-13 14:41:59.000000000 +0100
+@@ -0,0 +1,11 @@
++[Desktop Entry]
++Version=1.0
++Type=Application
++Encoding=UTF-8
++Exec=exo-open --launch MailReader %u
++Icon=email
++StartupNotify=false
++Terminal=false
++Categories=X-XFCE;X-Xfce-Toplevel;
++OnlyShowIn=XFCE;
++_Name=Mail reader
+diff -aurN xfdesktop-4.6.1.orig/modules/menu/menu-data/xfce-applications.menu xfdesktop-4.6.1/modules/menu/menu-data/xfce-applications.menu
+--- xfdesktop-4.6.1.orig/modules/menu/menu-data/xfce-applications.menu	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/modules/menu/menu-data/xfce-applications.menu	2009-12-13 14:41:59.000000000 +0100
+@@ -17,13 +17,12 @@
+         <Filename>xfce4-terminal.desktop</Filename>
+         <Filename>xfce4-file-manager.desktop</Filename>
+         <Filename>xfce4-web-browser.desktop</Filename>
++        <Filename>xfce4-mail-reader.desktop</Filename>
+         <Separator/>
+         <Menuname>Settings</Menuname>
+         <Separator/>
+         <Merge type="all"/>
+         <Separator/>
+-        <Filename>xfce4-help.desktop</Filename>
+-        <Filename>xfce4-about-xfce.desktop</Filename>
+         <Filename>xfce4-logout.desktop</Filename>
+     </Layout>
+     
+diff -aurN xfdesktop-4.6.1.orig/panel-plugin/desktop-menu-plugin.c xfdesktop-4.6.1/panel-plugin/desktop-menu-plugin.c
+--- xfdesktop-4.6.1.orig/panel-plugin/desktop-menu-plugin.c	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/panel-plugin/desktop-menu-plugin.c	2009-12-13 14:41:59.000000000 +0100
+@@ -62,7 +62,7 @@
+ #include "xfce4-popup-menu.h"
+ 
+ #define BORDER 8
+-#define DEFAULT_BUTTON_ICON  DATADIR "/pixmaps/xfce4_xicon1.png"
++#define DEFAULT_BUTTON_ICON  DATADIR "/pixmaps/freddix-artwork/start-here.png"
+ #define DEFAULT_BUTTON_TITLE "Xfce Menu"
+ 
+ /* this'll only allow one copy of the plugin; useful for forcing the
+diff -aurN xfdesktop-4.6.1.orig/panel-plugin/xfce4-menu.desktop.in.in xfdesktop-4.6.1/panel-plugin/xfce4-menu.desktop.in.in
+--- xfdesktop-4.6.1.orig/panel-plugin/xfce4-menu.desktop.in.in	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/panel-plugin/xfce4-menu.desktop.in.in	2009-12-13 14:41:59.000000000 +0100
+@@ -3,5 +3,5 @@
+ Encoding=UTF-8
+ _Name=Xfce Menu
+ _Comment=Shows a menu containing categories of installed applications
+-Icon=xfce4_xicon1
++Icon=start-here
+ X-XFCE-Exec=@PLUGIN_PATH@/xfce4-menu-plugin
+diff -aurN xfdesktop-4.6.1.orig/po/pl.po xfdesktop-4.6.1/po/pl.po
+--- xfdesktop-4.6.1.orig/po/pl.po	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/po/pl.po	2009-12-13 14:41:59.000000000 +0100
+@@ -1289,6 +1289,10 @@
+ msgid "Log out of the Xfce Desktop"
+ msgstr "Wyloguj się z Xfce"
+ 
++#: ../modules/menu/menu-data/xfce4-mail-reader.desktop.in.h:1
++msgid "Mail reader"
++msgstr "Czytnik poczty"
++
+ #: ../modules/menu/menu-data/xfce4-run-program.desktop.in.h:1
+ msgid "Run Program..."
+ msgstr "Uruchom program..."
+diff -aurN xfdesktop-4.6.1.orig/src/xfdesktop-file-icon-manager.c xfdesktop-4.6.1/src/xfdesktop-file-icon-manager.c
+--- xfdesktop-4.6.1.orig/src/xfdesktop-file-icon-manager.c	2009-12-13 14:41:47.000000000 +0100
++++ xfdesktop-4.6.1/src/xfdesktop-file-icon-manager.c	2009-12-13 14:44:30.000000000 +0100
+@@ -246,7 +246,7 @@
+                                     g_param_spec_boolean("show-filesystem",
+                                                          "show filesystem",
+                                                          "show filesystem",
+-                                                         TRUE,
++                                                         FALSE,
+                                                          XFDESKTOP_PARAM_FLAGS));
+     g_object_class_install_property(gobject_class, PROP_SHOW_HOME,
+                                     g_param_spec_boolean("show-home",
+@@ -258,13 +258,13 @@
+                                     g_param_spec_boolean("show-trash",
+                                                          "show trash",
+                                                          "show trash",
+-                                                         TRUE,
++                                                         FALSE,
+                                                          XFDESKTOP_PARAM_FLAGS));
+     g_object_class_install_property(gobject_class, PROP_SHOW_REMOVABLE,
+                                     g_param_spec_boolean("show-removable",
+                                                          "show removable",
+                                                          "show removable",
+-                                                         TRUE,
++                                                         FALSE,
+                                                          XFDESKTOP_PARAM_FLAGS));
+ #undef XFDESKTOP_PARAM_FLAGS
+ 

@@ -1,0 +1,9 @@
+diff -aurN xfce4-taskmanager-1.0.0.orig/xfce4-taskmanager.desktop.in xfce4-taskmanager-1.0.0/xfce4-taskmanager.desktop.in
+--- xfce4-taskmanager-1.0.0.orig/xfce4-taskmanager.desktop.in	2010-06-15 20:25:33.000000000 +0200
++++ xfce4-taskmanager-1.0.0/xfce4-taskmanager.desktop.in	2010-06-15 20:25:51.000000000 +0200
+@@ -7,4 +7,4 @@
+ Terminal=false
+ StartupNotify=true
+ Type=Application
+-Categories=System;Utility;
++Categories=GTK;System;Utility;
