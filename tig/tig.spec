@@ -1,11 +1,11 @@
 Summary:	Text-mode interface for git
 Name:		tig
-Version:	0.18
+Version:	1.0
 Release:	1
 License:	GPL v2
 Group:		Development/Tools
 Source0:	http://jonas.nitro.dk/tig/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	4fa9e33c5daa76b6fed11e068405356f
+# Source0-md5:	a2d414d1cebbc9cd4f3d545bc6f225c6
 URL:		http://jonas.nitro.dk/tig/
 BuildRequires:	ncurses-devel
 Requires:	git
@@ -37,7 +37,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc BUGS README TODO *.html contrib/tigrc
+%doc BUGS README *.html contrib/tigrc
 %attr(755,root,root) %{_bindir}/tig
 %{_mandir}/man*/*
 
