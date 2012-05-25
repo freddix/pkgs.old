@@ -1,7 +1,7 @@
 Summary:	Allows command execution as root for specified users
 Name:		sudo
 Version:	1.8.5p1
-Release:	1
+Release:	2
 Epoch:		1
 License:	BSD
 Group:		Applications/System
@@ -47,6 +47,7 @@ rm -f acsite.m4
 	--with-logfac=auth	\
 	--without-kerb5		\
 	--without-ldap		\
+	--with-secure-path="/bin:/sbin:/usr/bin:/usr/sbin"	\
 	--without-skey
 %{__make}
 
