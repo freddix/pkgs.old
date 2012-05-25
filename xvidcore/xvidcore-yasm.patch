@@ -1,0 +1,106 @@
+diff -aurN xvidcore.orig/build/generic/configure.in xvidcore/build/generic/configure.in
+--- xvidcore.orig/build/generic/configure.in	2011-02-06 18:24:25.000000000 +0100
++++ xvidcore/build/generic/configure.in	2011-02-06 18:26:04.000000000 +0100
+@@ -16,7 +16,7 @@
+ API_MINOR="2"
+ 
+ dnl NASM/YASM version requirement
+-minimum_yasm_minor_version=8
++minimum_yasm_major_version=1
+ minimum_nasm_minor_version=0
+ minimum_nasm_major_version=2
+ nasm_prog="nasm"
+@@ -80,7 +80,7 @@
+ 				 [Build as a module on MacOS X]),
+ 		 [if test "$enable_macosx_module" = "yes" ; then
+ 		     macosx_module="yes"
+-		  else 
++		  else
+ 		     macosx_module="no"
+ 		  fi],
+ 		  [macosx_module="no"])
+@@ -167,7 +167,7 @@
+           x86_64)
+                 AC_MSG_RESULT(x86_64)
+                 ARCHITECTURE="X86_64"
+-		;;	
++		;;
+ 		powerpc)
+ 		AC_MSG_RESULT(PowerPC)
+ 		ARCHITECTURE="PPC"
+@@ -294,7 +294,7 @@
+ 	   AC_MSG_RESULT([dylib options])
+ 	   SHARED_LIB="libxvidcore.\$(API_MAJOR).\$(SHARED_EXTENSION)"
+ 	   SPECIFIC_LDFLAGS="-Wl,-read_only_relocs,suppress -dynamiclib -flat_namespace -compatibility_version \$(API_MAJOR) -current_version \$(API_MAJOR).\$(API_MINOR) -install_name \$(libdir)/\$(SHARED_LIB)"
+-	else 
++	else
+ 	   AC_MSG_RESULT([module options])
+  	   PRE_SHARED_LIB="libxvidcore.\$(SHARED_EXTENSION)-temp.o"
+ 	   SHARED_LIB="libxvidcore.\$(SHARED_EXTENSION).\$(API_MAJOR)"
+@@ -317,7 +317,7 @@
+ 	;;
+ esac
+ 
+-if test x"$PRE_SHARED_LIB" = x; then 
++if test x"$PRE_SHARED_LIB" = x; then
+   PRE_SHARED_LIB=$SHARED_LIB
+ fi
+ 
+@@ -354,15 +354,16 @@
+        dnl Checking yasm version
+        dnl
+        AC_MSG_CHECKING([for yasm version])
+-       yasm_minor=`$yasm_prog --version | cut -d '.' -f 2 | cut -d ' ' -f 1`
+-       if test -z $yasm_minor ; then
+-          yasm_minor=-1
++       yasm_major=`$yasm_prog --version | head -1 | cut -d '.' -f 1 | cut -d ' ' -f 2`
++
++       if test -z $yasm_major ; then
++          yasm_major=-1
+        fi
+-       AC_MSG_RESULT([$yasm_minor])
++       AC_MSG_RESULT([$yasm_major])
+ 
+        dnl Actually, yasm >= 0.7.99.2161 should be ok
+        dnl But I'm too lazy to check also the patch version...
+-       if test "$yasm_minor" -lt "$minimum_yasm_minor_version" ; then
++       if test "$yasm_major" -lt "$minimum_yasm_major_version" ; then
+          AC_MSG_WARN([yasm version is too old])
+        else
+          found_nasm_comp_prog="yes"
+@@ -441,7 +442,7 @@
+        if test "$ARCHITECTURE" = "X86_64" ; then
+                AFLAGS=${AFLAGS}" -DARCH_IS_X86_64"
+        fi
+-   else 
++   else
+        AC_MSG_WARN([no correct assembler was found - Compiling generic sources only])
+        ARCHITECTURE="GENERIC"
+    fi
+@@ -599,7 +600,7 @@
+ 	AC_MSG_WARN(Pthread not supported. No SMP support))
+ 
+ dnl ==========================================================================
+-dnl 
++dnl
+ dnl Now we can set CFLAGS if needed
+ dnl
+ dnl ==========================================================================
+@@ -624,7 +625,7 @@
+ fi
+ 
+ dnl ==========================================================================
+-dnl Some gcc flags can't be used for gcc >= 3.4.0 
++dnl Some gcc flags can't be used for gcc >= 3.4.0
+ dnl ==========================================================================
+ 
+ if test "$GCC" = "yes" ; then
+@@ -642,7 +643,7 @@
+ }
+ EOF
+ 	$CC -o gcc-ver test.c
+-	
++
+ 	GCC_MAJOR=`./gcc-ver M`
+ 	GCC_MINOR=`./gcc-ver m`
+ 
