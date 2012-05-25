@@ -1,7 +1,7 @@
 Summary:	X.org Wacom input driver
 Name:		xorg-driver-input-wacom
 Version:	0.14.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/linuxwacom/xf86-input-wacom-%{version}.tar.bz2
@@ -20,6 +20,13 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 X.org Wacom input driver.
+
+%package devel
+Group:          Development/Libraries
+Summary:        Header file for wacom driver
+
+%description devel
+Header file for wacom driver
 
 %prep
 %setup -qn xf86-input-wacom-%{version}
@@ -53,4 +60,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/xorg/modules/input/wacom_drv.so
 %{_datadir}/X11/xorg.conf.d/50-wacom.conf
 %{_mandir}/man4/wacom.4*
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/isdv4-serial-debugger
+%{_includedir}/xorg/Xwacom.h
+%{_includedir}/xorg/wacom-properties.h
+%{_includedir}/xorg/wacom-util.h
+%{_includedir}/xorg/isdv4.h
+%{_pkgconfigdir}/xorg-wacom.pc
 
