@@ -1,7 +1,7 @@
 Summary:	Library for compression and decompression
 Name:		zlib
 Version:	1.2.6
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 Source0:	http://www.zlib.net/%{name}-%{version}.tar.gz
