@@ -1,7 +1,7 @@
 Summary:	Small and clean implementation of an ATA S.M.A.R.T
 Name:		libatasmart
 Version:	0.18
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications
 Source0:	http://0pointer.de/public/%{name}-%{version}.tar.gz
