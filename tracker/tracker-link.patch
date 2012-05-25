@@ -1,0 +1,10 @@
+--- tracker-0.10.8/src/libtracker-data/Makefile.am.wiget	2011-04-08 18:33:18.332392677 +0200
++++ tracker-0.10.8/src/libtracker-data/Makefile.am	2011-04-08 18:34:26.596050671 +0200
+@@ -47,6 +47,7 @@ libtracker_data_la_SOURCES =
+ libtracker_data_la_LIBADD =                            \
+ 	$(top_builddir)/src/gvdb/libgvdb.la \
+ 	$(top_builddir)/src/libtracker-common/libtracker-common.la \
++	$(top_builddir)/src/libtracker-sparql/libtracker-sparql.la \
+ 	$(BUILD_LIBS)                                  \
+ 	$(LIBTRACKER_DATA_LIBS)
+ 
