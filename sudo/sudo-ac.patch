@@ -1,0 +1,12 @@
+diff -aurN sudo-1.6.9p8.orig/Makefile.in sudo-1.6.9p8/Makefile.in
+--- sudo-1.6.9p8.orig/Makefile.in	2007-11-02 20:15:16.000000000 +0100
++++ sudo-1.6.9p8/Makefile.in	2007-11-30 22:04:53.000000000 +0100
+@@ -186,7 +186,7 @@
+ 	$(LIBTOOL) --mode=compile $(CC) -c $(CPPFLAGS) $(CFLAGS) $(DEFS) $(OPTIONS) $(srcdir)/sudo_noexec.c
+ 
+ sudo_noexec.la: sudo_noexec.lo
+-	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -avoid-version -rpath $(noexecdir)
++	$(LIBTOOL) --mode=link $(CC) $(LDFLAGS) -o $@ sudo_noexec.lo -module -avoid-version -rpath $(noexecdir)
+ 
+ # Uncomment the following if you want "make distclean" to clean the parser
+ @DEV@PARSESRCS = sudo.tab.h sudo.tab.c lex.yy.c def_data.c def_data.h
