@@ -1,0 +1,36 @@
+--- ca-certificates-20090814/sbin/update-ca-certificates~	2010-05-05 14:10:46.000000000 +0300
++++ ca-certificates-20090814/sbin/update-ca-certificates	2010-05-05 14:10:52.783355044 +0300
+@@ -23,6 +23,7 @@
+ 
+ verbose=0
+ fresh=0
++DESTDIR=
+ while [ $# -gt 0 ];
+ do
+   case $1 in
+@@ -30,6 +31,8 @@
+   	verbose=1;;
+   --fresh|-f)
+ 	fresh=1;;
++  --destdir)
++	DESTDIR=$2; shift;;
+   --help|-h|*)
+ 	echo "$0: [--verbose] [--fresh]"
+ 	exit;;
+@@ -37,11 +40,11 @@
+   shift
+ done
+ 
+-CERTSCONF=/etc/ca-certificates.conf
+-CERTSDIR=/usr/share/ca-certificates
+-LOCALCERTSDIR=/etc/certs
+-CERTBUNDLE=/etc/certs/ca-certificates.crt
+-ETCCERTSDIR=@openssldir@
++CERTSCONF=$DESTDIR/etc/ca-certificates.conf
++CERTSDIR=$DESTDIR/usr/share/ca-certificates
++LOCALCERTSDIR=$DESTDIR/etc/certs
++CERTBUNDLE=$DESTDIR/etc/certs/ca-certificates.crt
++ETCCERTSDIR=$DESTDIR@openssldir@
+ 
+ cleanup() {
+   rm -f "$TEMPBUNDLE"

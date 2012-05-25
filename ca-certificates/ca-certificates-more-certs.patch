@@ -1,0 +1,56 @@
+--- ca-certificates-20120212/Makefile~	2011-12-06 04:03:08.000000000 +0200
++++ ca-certificates-20120212/Makefile	2012-05-12 11:40:20.330015955 +0300
+@@ -3,7 +3,7 @@
+ #
+ 
+ CERTSDIR = /usr/share/ca-certificates
+-SUBDIRS = mozilla cacert.org debconf.org spi-inc.org
++SUBDIRS = mozilla cacert.org debconf.org spi-inc.org thawte certum terena
+ 
+ all:
+ 	for dir in $(SUBDIRS); do \
+--- ca-certificates/certum/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ca-certificates-more/certum/Makefile	2007-02-02 07:23:19.000000000 +0100
+@@ -0,0 +1,12 @@
++#
++# Makefile
++#
++
++all:
++
++clean:
++
++install:
++	for p in *.crt; do \
++	 install -p -m 644 $$p $(CERTSDIR)/$$p ; \
++	done
+--- ca-certificates/thawte/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ca-certificates-more/thawte/Makefile	2007-02-02 07:23:19.000000000 +0100
+@@ -0,0 +1,12 @@
++#
++# Makefile
++#
++
++all:
++
++clean:
++
++install:
++	for p in *.crt; do \
++	 install -p -m 644 $$p $(CERTSDIR)/$$p ; \
++	done
+--- ca-certificates/terena/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ ca-certificates-more/terena/Makefile	2007-02-02 07:23:19.000000000 +0100
+@@ -0,0 +1,12 @@
++#
++# Makefile
++#
++
++all:
++
++clean:
++
++install:
++	for p in *.crt; do \
++	 install -p -m 644 $$p $(CERTSDIR)/$$p ; \
++	done

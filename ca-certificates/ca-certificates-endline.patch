@@ -1,0 +1,10 @@
+--- ca-certificates/sbin/update-ca-certificates~	2010-02-09 15:15:01.599029404 +0100
++++ ca-certificates/sbin/update-ca-certificates	2010-02-09 15:32:56.982153588 +0100
+@@ -70,6 +70,7 @@
+     echo +$PEM >> "$ADDED"
+   fi
+   cat "$CERT" >> "$TEMPBUNDLE"
++  echo >> "$TEMPBUNDLE"
+ }
+ 
+ remove() {
