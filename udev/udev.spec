@@ -1,7 +1,7 @@
 Summary:	A userspace implementation of devfs
 Name:		udev
 Version:	182
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 Group:		Base
