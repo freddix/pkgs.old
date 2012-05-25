@@ -1,0 +1,21 @@
+--- gypsy-0.8/src/Makefile.am.orig	2010-06-09 17:18:54.000000000 +0200
++++ gypsy-0.8/src/Makefile.am	2011-01-16 10:37:42.590362455 +0100
+@@ -10,6 +10,7 @@ gypsy_daemon_CFLAGS =		\
+ 
+ gypsy_daemon_LDADD =		\
+ 	$(GYPSY_LIBS)		\
++	$(BLUEZ_LIBS)		\
+ 	$(GPSBT_LIBS)		\
+ 	-lm
+ 
+--- gypsy-0.8/configure.ac.orig	2010-06-09 16:58:03.000000000 +0200
++++ gypsy-0.8/configure.ac	2011-01-16 10:38:38.518356589 +0100
+@@ -16,7 +16,7 @@ AC_ARG_ENABLE(bluetooth, AC_HELP_STRING(
+ 
+ if test x$enable_bluetooth = xyes; then
+ 	AC_DEFINE(HAVE_BLUEZ,1,[Define if we have Bluez])
+-	GYPSY_PC_MODULES="$GYPSY_PC_MODULES bluez"
++	PKG_CHECK_MODULES(BLUEZ, [bluez])
+ fi
+ 
+ AC_ARG_ENABLE(n810, AC_HELP_STRING([--enable-n810],[Enable support for Nokia N810 internal GPS]), ENABLE_N810=yes,)
