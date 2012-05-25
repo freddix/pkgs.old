@@ -1,7 +1,7 @@
 Summary:	GNU libc
 Name:		glibc
 Version:	2.12.2
-Release:	4
+Release:	5
 Epoch:		6
 License:	LGPL v2.1+
 Group:		Libraries
@@ -47,7 +47,6 @@ BuildRequires:	sed
 BuildRequires:	texinfo
 Requires(post):	ldconfig = %{epoch}:%{version}-%{release}
 Requires:	%{name}-misc = %{epoch}:%{version}-%{release}
-Requires:	basesystem
 Provides:	glibc(nptl)
 Provides:	glibc(tls)
 Provides:	rtld(GNU_HASH)
