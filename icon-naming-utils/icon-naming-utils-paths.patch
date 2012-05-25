@@ -1,0 +1,51 @@
+diff -aurN icon-naming-utils-0.8.5.orig/Makefile.am icon-naming-utils-0.8.5/Makefile.am
+--- icon-naming-utils-0.8.5.orig/Makefile.am	2007-08-18 14:24:06.000000000 +0200
++++ icon-naming-utils-0.8.5/Makefile.am	2007-08-23 21:07:34.000000000 +0200
+@@ -1,5 +1,5 @@
+ 
+-libexec_SCRIPTS = icon-name-mapping
++bin_SCRIPTS = icon-name-mapping
+ 
+ %: %.pl.in
+ 	sed -e "s#\@PERL\@#$(PERL)#g"		\
+@@ -11,20 +11,18 @@
+ pkgconfigdir = $(datadir)/pkgconfig
+ pkgconfig_DATA = $(pkgconfig_in_files:.pc.in=.pc)
+ 
+-dtddir = $(datadir)/dtds
+-dtd_DATA = legacy-icon-mapping.dtd
+-
+-pkgdata_DATA = legacy-icon-mapping.xml
++pkgdata_DATA = 				\
++	legacy-icon-mapping.xml		\
++	legacy-icon-mapping.dtd
+ 
+ EXTRA_DIST =				\
+ 	icon-name-mapping.pl.in		\
+ 	$(pkgconfig_in_files)		\
+-	$(dtd_DATA)			\
+ 	$(pkgdata_DATA)			\
+ 	icon-naming-utils-uninstalled.pc.in
+ 
+ CLEANFILES =				\
+-	$(libexec_SCRIPTS)
++	$(bin_SCRIPTS)
+ 
+ DISTCLEANFILES =			\
+ 	$(pkgconfig_DATA)		\
+@@ -39,4 +37,3 @@
+ 	depcomp				\
+ 	install-sh			\
+ 	missing
+-
+diff -aurN icon-naming-utils-0.8.5.orig/icon-naming-utils.pc.in icon-naming-utils-0.8.5/icon-naming-utils.pc.in
+--- icon-naming-utils-0.8.5.orig/icon-naming-utils.pc.in	2007-02-16 05:07:45.000000000 +0100
++++ icon-naming-utils-0.8.5/icon-naming-utils.pc.in	2007-08-23 21:08:33.000000000 +0200
+@@ -1,6 +1,6 @@
+ prefix=@prefix@
+ exec_prefix=@exec_prefix@
+-program_path=@libexecdir@
++program_path=@bindir@
+ 
+ Name: icon-naming-utils
+ Description: Utilities for mapping legacy GNOME and KDE icon names to the new Icon Naming Specification
