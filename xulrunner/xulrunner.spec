@@ -1,7 +1,7 @@
 Summary:	Mozilla Runtime Environment for XUL+XPCOM applications
 Name:		xulrunner
 Version:	11.0
-Release:	2
+Release:	4
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
@@ -21,6 +21,7 @@ BuildRequires:	gtk+-devel
 BuildRequires:	hunspell-devel
 BuildRequires:	libIDL-devel
 BuildRequires:	libevent-devel
+BuildRequires:	libffi-devel
 BuildRequires:	libjpeg-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	libpng-devel
@@ -74,6 +75,9 @@ cd mozilla-release
 %patch1 -p1
 %patch2 -p1
 
+# ugly, but better than to install autoconf2_13
+sed -i 's#VPX_CODEC_USE_INPUT_PARTITION#VPX_CODEC_USE_INPUT_FRAGMENTS#' configure
+
 # use system headers
 rm -f extensions/spellcheck/hunspell/src/*.hxx
 
@@ -91,54 +95,33 @@ mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-%{_target_cpu}
 ac_add_options --host=%{_host}
 ac_add_options --build=%{_host}
 #
-ac_add_options --bindir=%{_bindir}
-ac_add_options --datadir=%{_datadir}
-ac_add_options --exec-prefix=%{_exec_prefix}
-ac_add_options --includedir=%{_includedir}
-ac_add_options --infodir=%{_infodir}
 ac_add_options --libdir=%{_libdir}
-ac_add_options --libexecdir=%{_libexecdir}
-ac_add_options --localstatedir=%{_localstatedir}
-ac_add_options --mandir=%{_mandir}
 ac_add_options --prefix=%{_prefix}
-ac_add_options --sbindir=%{_sbindir}
-ac_add_options --sharedstatedir=%{_sharedstatedir}
-ac_add_options --sysconfdir=%{_sysconfdir}
 #
 ac_add_options --disable-crashreporter
 ac_add_options --disable-installer
 ac_add_options --disable-javaxpcom
 ac_add_options --disable-logging
 ac_add_options --disable-mochitest
-ac_add_options --disable-safe-browsing
 ac_add_options --disable-tests
 ac_add_options --disable-updater
-ac_add_options --disable-url-classifier
 #
-ac_add_options --disable-debug
-ac_add_options --disable-pedantic
-ac_add_options --disable-strip
-ac_add_options --disable-strip-install
+ac_add_options --enable-safe-browsing
+ac_add_options --enable-url-classifier
+#
 ac_add_options --enable-optimize
-ac_add_options --with-default-mozilla-five-home=%{_libdir}/%{name}
 #
 ac_add_options --disable-gnomeui
 ac_add_options --disable-gnomevfs
-ac_add_options --enable-canvas
-ac_add_options --enable-canvas3d
-ac_add_options --enable-default-toolkit=cairo-gtk2
 ac_add_options --enable-gio
-ac_add_options --enable-pango
-ac_add_options --enable-places
-ac_add_options --enable-shared-js
-ac_add_options --enable-smil
 ac_add_options --enable-startup-notification
-ac_add_options --enable-svg
 #
 ac_add_options --enable-system-cairo
 ac_add_options --enable-system-hunspell
 ac_add_options --enable-system-lcms
 ac_add_options --enable-system-sqlite
+ac_add_options --enable-system-ffi
+ac_add_options --enable-system-pixman
 ac_add_options --with-pthreads
 ac_add_options --with-system-bz2
 ac_add_options --with-system-jpeg
@@ -148,10 +131,6 @@ ac_add_options --with-system-nspr
 ac_add_options --with-system-nss
 ac_add_options --with-system-png
 ac_add_options --with-system-zlib
-#
-ac_add_options --enable-chrome-format=omni
-ac_add_options --enable-extensions=default
-ac_add_options --with-distribution-id=org.freddix
 #
 export BUILD_OFFICIAL=1
 export MOZILLA_OFFICIAL=1
@@ -163,6 +142,7 @@ EOF
 
 export CFLAGS="%{rpmcflags}"
 export CXXFLAGS="%{rpmcflags}"
+export LDFLAGS="%{rpmldflags}"
 
 %{__make} -f client.mk build	\
 	CC="%{__cc}"		\
@@ -182,7 +162,6 @@ install -d \
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/*.so
 ln -s %{_libdir}/%{name}/libmozalloc.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozalloc.so
-ln -s %{_libdir}/%{name}/libmozjs.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libmozjs.so
 ln -s %{_libdir}/%{name}/libxpcom.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libxpcom.so
 ln -s %{_libdir}/%{name}/libxul.so $RPM_BUILD_ROOT%{_libdir}/%{name}-devel/sdk/lib/libxul.so
 
@@ -215,7 +194,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/xulrunner/*.sh
 %attr(755,root,root) %{_libdir}/xulrunner/libmozalloc.so
-%attr(755,root,root) %{_libdir}/xulrunner/libmozjs.so
 %attr(755,root,root) %{_libdir}/xulrunner/libxpcom.so
 %attr(755,root,root) %{_libdir}/xulrunner/libxul.so
 %attr(755,root,root) %{_libdir}/xulrunner/mozilla-xremote-client
