@@ -1,0 +1,21 @@
+From 572e881ca73991c66d3afa303a6f4ab256c7c075 Mon Sep 17 00:00:00 2001
+From: Andrea Cimitan <andrea.cimitan@gmail.com>
+Date: Wed, 25 Jan 2012 14:02:29 +0000
+Subject: glib 2.31 compatibility fix by Dominique Leuenberger
+
+---
+diff --git a/src/animation.c b/src/animation.c
+index feb8a10..4b4c5f1 100644
+--- a/src/animation.c
++++ b/src/animation.c
+@@ -21,7 +21,7 @@
+ #include "animation.h"
+ 
+ #ifdef HAVE_ANIMATION
+-#include <glib/gtimer.h>
++#include <glib.h>
+ 
+ struct _AnimationInfo
+ {
+--
+cgit v0.9.0.2
