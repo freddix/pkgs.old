@@ -1,11 +1,11 @@
 Summary:	Shared MIME-info specification
 Name:		shared-mime-info
-Version:	0.91
-Release:	1
+Version:	1.0
+Release:	2
 License:	GPL
 Group:		Applications
 Source0:	http://freedesktop.org/~hadess/%{name}-%{version}.tar.xz
-# Source0-md5:	982a211560ba4c47dc791ccff34e8fbc
+# Source0-md5:	901b7977dbb2b71d12d30d4d8fb97028
 Source1:	audio.list
 Source2:	compressed.list
 Source3:	document.list
@@ -17,7 +17,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	docbook-utils
-BuildRequires:	glib-devel
+BuildRequires:	glib-gio-devel
 BuildRequires:	intltool
 BuildRequires:	libxml2-devel
 BuildRequires:	pkg-config
@@ -25,35 +25,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 This is the freedesktop.org shared MIME info database.
-
-Many programs and desktops use the MIME system to represent the types
-of files. Frequently, it is necessary to work out the correct MIME
-type for a file. This is generally done by examining the file's name
-or contents, and looking up the correct MIME type in a database.
-
-For interoperability, it is useful for different programs to use the
-same database so that different programs agree on the type of a file,
-and new rules for determining the type apply to all programs.
-
-This specification attempts to unify the type-guessing systems
-currently in use by GNOME, KDE and ROX. Only the name-to-type and
-contents-to-type mappings are covered by this spec; other MIME type
-information, such as the default handler for a particular type, or the
-icon to use to display it in a file manager, are not covered since
-these are a matter of style.
-
-In addition, freedesktop.org provides a shared database in this format
-to avoid inconsistencies between desktops. This database has been
-created by converting the existing KDE and GNOME databases to the new
-format and merging them together.
-
-%package devel
-Summary:	Pkgconfig file
-Group:		Development
-Requires:	pkgconfig
-
-%description devel
-Pkgconfig file.
 
 %prep
 %setup -q
@@ -64,6 +35,7 @@ Pkgconfig file.
 %{__autoconf}
 %{__automake}
 %configure \
+	--disable-silent-rules	\
 	--disable-update-mimedb
 %{__make}
 
@@ -74,8 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_desktopdir}
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	pkgconfigdir=%{_pkgconfigdir}
+	DESTDIR=$RPM_BUILD_ROOT
 
 cat > $RPM_BUILD_ROOT%{_desktopdir}/defaults.list <<EOF
 [Default Applications]
@@ -111,8 +82,5 @@ fi
 %{_datadir}/mime/packages/freedesktop.org.xml
 %{_desktopdir}/defaults.list
 %{_mandir}/man*/*
-
-%files devel
-%defattr(644,root,root,755)
-%{_pkgconfigdir}/*.pc
+%{_npkgconfigdir}/shared-mime-info.pc
 
