@@ -1,0 +1,11 @@
+--- testdisk-6.10/configure.ac.orig	2008-07-17 13:13:38.000000000 +0200
++++ testdisk-6.10/configure.ac	2008-07-17 23:14:59.366034707 +0200
+@@ -162,7 +162,7 @@
+     [SUDO_BIN="${withval}"])
+ 
+ AC_ARG_ENABLE([missing-uuid-ok],
+-    AS_HELP_STRING(--enable-missing-uuid-ok, force compilation even if both uuidgen and uuid_generate are missing, for developpement only (default is NO)),
++    AS_HELP_STRING([--enable-missing-uuid-ok], [force compilation even if both uuidgen and uuid_generate are missing, for developpement only (default is NO)]),
+     [case "${enableval}" in
+        yes) missing_uuid_ok=true ;;
+        no)  missing_uuid_ok=false ;;
