@@ -1,0 +1,23 @@
+diff -Naurp microcode_ctl-1.17.orig/Makefile microcode_ctl-1.17/Makefile
+--- microcode_ctl-1.17.orig/Makefile	2007-04-26 06:59:44.000000000 -0400
++++ microcode_ctl-1.17/Makefile	2008-02-05 11:22:23.000000000 -0500
+@@ -20,8 +20,8 @@ DESTDIR		=
+ PREFIX		= /usr/local
+ 
+ INSDIR		= $(PREFIX)/sbin
+-MANDIR		= $(PREFIX)/man/man8
+-MICDIR		= /etc
++MANDIR		= $(PREFIX)/share/man/man8
++MICDIR		= /lib/firmware
+ 
+ RCFILE		= microcode_ctl.start
+ RCFILEFINAL	= microcode_ctl
+@@ -44,7 +44,7 @@ install:
+ 			$(DESTDIR)$(MANDIR) $(DESTDIR)$(RCFILETO) \
+ 			$(DESTDIR)$(RCLINKTO)
+ 
+-	$(INS) -s -m 755 $(PROGRAM) $(DESTDIR)$(INSDIR)
++	$(INS) -m 755 $(PROGRAM) $(DESTDIR)$(INSDIR)
+ 	$(INS) -m 644 $(MICROCODE) $(DESTDIR)$(MICDIR)/microcode.dat
+ 
+ 	$(INS) -m 644 $(MANPAGE) $(DESTDIR)$(MANDIR)

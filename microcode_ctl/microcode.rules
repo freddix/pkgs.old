@@ -1,0 +1,2 @@
+KERNEL=="cpu[0-9]*", ACTION=="add", RUN+="/sbin/modprobe microcode"
+
