@@ -1,0 +1,12 @@
+diff -aurN contacts-0.2.orig/data/Makefile.am contacts-0.2/data/Makefile.am
+--- contacts-0.2.orig/data/Makefile.am	2006-11-13 11:12:51.000000000 +0100
++++ contacts-0.2/data/Makefile.am	2006-11-19 19:24:37.000000000 +0100
+@@ -12,7 +12,7 @@
+ schemadir = $(GCONF_SCHEMA_FILE_DIR)
+ schema_DATA = contacts.schemas
+ 
+-if HAVE_GCONF
++if GCONF_SCHEMAS_INSTALL
+ install-data-local:
+ 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) \
+ 		$(GCONFTOOL) --makefile-install-rule $(schema_DATA) || \
