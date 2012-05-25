@@ -1,0 +1,24 @@
+diff -aurN telepathy-mission-control-4.55.orig/server/Makefile.am telepathy-mission-control-4.55/server/Makefile.am
+--- telepathy-mission-control-4.55.orig/server/Makefile.am	2008-01-15 10:30:17.000000000 +0100
++++ telepathy-mission-control-4.55/server/Makefile.am	2008-01-23 21:19:11.000000000 +0100
+@@ -14,9 +14,9 @@
+ %.service: %.service.in Makefile
+ 	sed -e 's![@]libexecdir[@]!$(libexecdir)!' $< > $@
+ 
+-libexec_PROGRAMS = mission-control
+-mission_control_SOURCES = mc-server.c
+-mission_control_LDADD = $(top_builddir)/src/libmissioncontrol-server.la \
++libexec_PROGRAMS = telepathy-mission-control
++telepathy_mission_control_SOURCES = mc-server.c
++telepathy_mission_control_LDADD = $(top_builddir)/src/libmissioncontrol-server.la \
+ 			$(top_builddir)/libmissioncontrol/libmissioncontrol-client.la
+ 
+ endif
+diff -aurN telepathy-mission-control-4.55.orig/server/org.freedesktop.Telepathy.MissionControl.service.in telepathy-mission-control-4.55/server/org.freedesktop.Telepathy.MissionControl.service.in
+--- telepathy-mission-control-4.55.orig/server/org.freedesktop.Telepathy.MissionControl.service.in	2008-01-14 16:13:53.000000000 +0100
++++ telepathy-mission-control-4.55/server/org.freedesktop.Telepathy.MissionControl.service.in	2008-01-23 21:15:22.000000000 +0100
+@@ -1,3 +1,3 @@
+ [D-BUS Service]
+ Name=org.freedesktop.Telepathy.MissionControl
+-Exec=@libexecdir@/mission-control
++Exec=@libexecdir@/telepathy-mission-control
