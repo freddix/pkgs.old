@@ -1,0 +1,15 @@
+diff -aurN empathy-3.4.0.2.orig/configure.ac empathy-3.4.0.2/configure.ac
+--- empathy-3.4.0.2.orig/configure.ac	2012-04-13 12:53:22.291867109 +0200
++++ empathy-3.4.0.2/configure.ac	2012-04-13 12:53:42.150618841 +0200
+@@ -26,10 +26,7 @@
+         [https://live.gnome.org/Empathy])
+ 
+ AC_PREREQ([2.64])
+-AC_COPYRIGHT([
+-  Copyright (C) 2003-2007 Imendio AB
+-  Copyright (C) 2007-2010 Collabora Ltd.
+-])
++AC_COPYRIGHT([Copyright (C) 2003-2007 Imendio AB, Copyright (C) 2007-2010 Collabora Ltd.])
+ 
+ # Minimal version required
+ 
