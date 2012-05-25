@@ -6,7 +6,7 @@ Summary:	X.org video driver for Intel integrated graphics chipsets
 Name:		xorg-driver-video-intel
 Version:	2.19.0
 %if "%{gitver}" != "%{nil}"
-Release:	4.%{gitver}.1
+Release:	4.%{gitver}.2
 %else
 Release:	1
 %endif

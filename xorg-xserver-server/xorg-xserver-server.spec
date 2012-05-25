@@ -8,7 +8,7 @@ Release:	0.%{gitver}.1
 Source0:	http://cgit.freedesktop.org/xorg/xserver/snapshot/xserver-%{gitver}.tar.bz2
 # Source0-md5:	20e73b422bda6f0d1405af676983cc70
 %else
-Release:	1
+Release:	2
 Source0:	http://xorg.freedesktop.org/releases/individual/xserver/xorg-server-%{version}.tar.bz2
 # Source0-md5:	20e73b422bda6f0d1405af676983cc70
 %endif
