@@ -1,0 +1,12 @@
+diff -urN openobex-1.3.org/openobex.pc.in openobex-1.3/openobex.pc.in
+--- openobex-1.3.org/openobex.pc.in	2005-12-25 13:45:32.000000000 +0000
++++ openobex-1.3/openobex.pc.in	2006-09-10 10:10:50.293203000 +0000
+@@ -1,7 +1,7 @@
+ prefix=@prefix@
+ exec_prefix=@exec_prefix@
+ libdir=@libdir@
+-includedir=@includedir@
++includedir=@includedir@/openobex
+  
+ Name: OpenOBEX
+ Description: Free implementation of the Object Exchange protocol
