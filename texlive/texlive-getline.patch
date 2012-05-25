@@ -1,0 +1,360 @@
+--- texlive-20080816-source.orig/texk/afm2pl/afm2pl.c	2009-07-04 10:12:19.883158871 +0200
++++ texlive-20080816-source/texk/afm2pl/afm2pl.c	2009-07-04 10:58:24.613569483 +0200
+@@ -345,7 +345,7 @@
+ 
+ /* read a line from infile into buffer and obuffer */
+ int
+-  getline
++  tl_getline
+ P1H (void)
+ {
+   register char *p;
+@@ -781,7 +781,7 @@
+     afmencoding->vec[i] = ".notdef";
+   afmencoding->name = "Unspecified";
+ 
+-  while (getline ()) {
++  while (tl_getline ()) {
+     switch (interest (paramstring ())) {
+     case FontName:
+       fontname = paramnewstring ();
+@@ -963,7 +963,7 @@
+ 
+   while (1) {
+     while (param == 0 || *param == 0) {
+-      if (getline () == 0)
++      if (tl_getline () == 0)
+         error ("! premature end in encoding file");
+     }
+     if (param[0] == '%') {
+@@ -1540,7 +1540,7 @@
+     encfilename =
+       openin (encfilename, kpse_enc_format, ".enc");
+     for (lig_it = 0; lig_it < 2; lig_it++) {
+-      while (getline ()) {
++      while (tl_getline ()) {
+         /* search for (ligkern) comment in line */
+         for (p = buffer; *p; p++)
+           if (*p == '%') {
+@@ -1576,7 +1576,7 @@
+     for (i = 0; i < ligfilenames->n; i++) {
+       ligfilename = openin (ligfilenames->names[i],
+                             kpse_lig_format, ".lig");
+-      while (getline ())
++      while (tl_getline ())
+         checkligkern (buffer, 0);       /* 2nd param 0: lig file */
+       fclose (infile);
+     }
+@@ -1607,7 +1607,7 @@
+   for (i = 0; i < Ligfilenames->n; i++) {
+     ligfilename = openin (Ligfilenames->names[i],
+                           kpse_lig_format, ".lig");
+-    while (getline ())
++    while (tl_getline ())
+       checkligkern (buffer, 0);       /* 2nd param 0: lig file */
+     fclose (infile);
+   }
+--- texlive-20080816-source.orig/texk/dvipsk/afm2tfm.c	2009-07-04 10:12:20.843158881 +0200
++++ texlive-20080816-source/texk/dvipsk/afm2tfm.c	2009-07-04 11:00:22.889536405 +0200
+@@ -260,7 +260,7 @@
+ }
+ 
+ int
+-getline P1H(void) {
++tl_getline P1H(void) {
+    register char *p ;
+    register int c ;
+ 
+@@ -615,7 +615,7 @@
+    ai = newchar() ;
+    ai->adobenum = -1 ;
+    ai->adobename = "||" ; /* boundary character name */
+-   while (getline()) {
++   while (tl_getline()) {
+       switch(interest(paramstring())) {
+ case FontName:
+          fontname = paramnewstring() ;
+@@ -1891,7 +1891,7 @@
+ 
+    while (1) {
+       while (param == 0 || *param == 0) {
+-         if (getline() == 0)
++         if (tl_getline() == 0)
+             error("! premature end in encoding file") ;
+          for (p=buffer; *p; p++)
+             if (*p == '%') {
+@@ -1982,7 +1982,7 @@
+       p = gettoken() ;
+       if (strcmp(p, "]"))
+          error("! token 258 in encoding must be make-array (])") ;
+-      while (getline()) {
++      while (tl_getline()) {
+          for (p=buffer; *p; p++)
+             if (*p == '%') {
+                if (ignoreligkern == 0)
+--- texlive-20080816-source.orig/texk/web2c/cpascal.h	2009-07-04 10:12:24.699825510 +0200
++++ texlive-20080816-source/texk/web2c/cpascal.h	2009-07-04 11:02:06.002863123 +0200
+@@ -14,6 +14,7 @@
+ 
+ /* We must include this first, to resolve many C issues.  */
+ #include "config.h"
++#define getline tl_getline
+ 
+ /* We only use getopt in the applications, not in web2c itself.  */
+ #include <kpathsea/getopt.h>
+--- texlive-20080816-source.orig/texk/web2c/mpware/mpto.c	2009-07-04 10:12:23.563158028 +0200
++++ texlive-20080816-source/texk/web2c/mpware/mpto.c	2009-07-04 11:03:43.946185385 +0200
+@@ -97,7 +97,7 @@
+ }
+ 
+ char *
+-getline(void)
++tl_getline(void)
+ {				/* returns NULL on EOF or error, otherwise buf */
+     int c;
+     unsigned loc = 0;
+@@ -302,7 +302,7 @@
+     char *res = NULL;
+     do {
+ 	if (*aa == 0)
+-	  if ((aa = getline()) == NULL)
++	  if ((aa = tl_getline()) == NULL)
+ 	    err("btex section does not end");
+ 
+ 	if (getbta(aa) && *tt == 'e') {
+@@ -483,7 +483,7 @@
+ 	postverb = troff_postverb;
+     }
+     printf("%s", predoc);
+-    while (getline() != NULL)
++    while (tl_getline() != NULL)
+ 	do_line();
+     printf("%s", postdoc);
+     exit(0);
+--- texlive-20080816-source.orig/texk/web2c/tangleboot.p	2009-07-04 10:12:24.699825510 +0200
++++ texlive-20080816-source/texk/web2c/tangleboot.p	2009-07-04 12:21:16.892931576 +0200
+@@ -577,7 +577,7 @@
+ if not inputln(webfile)then begin begin writeln(stdout);
+ write(stdout,'! WEB file ended during a change');error;end;
+ inputhasended:=true;goto 10;end;if linesdontmatch then n:=n+1;end;
+-10:end;{:132}{135:}procedure getline;label 20;
++10:end;{:132}{135:}procedure tl_getline;label 20;
+ begin 20:if changing then{137:}begin line:=line+1;
+ if not inputln(changefile)then begin begin writeln(stdout);
+ write(stdout,'! Change file ended without @z');error;end;buffer[0]:=64;
+@@ -604,13 +604,13 @@
+ 60:controlcode:=135;61:controlcode:=2;92:controlcode:=3;
+ others:controlcode:=0 end;end;{:139}{140:}function skipahead:eightbits;
+ label 30;var c:eightbits;
+-begin while true do begin if loc>limit then begin getline;
++begin while true do begin if loc>limit then begin tl_getline;
+ if inputhasended then begin c:=136;goto 30;end;end;buffer[limit+1]:=64;
+ while buffer[loc]<>64 do loc:=loc+1;if loc<=limit then begin loc:=loc+2;
+ c:=controlcode(buffer[loc-1]);if(c<>0)or(buffer[loc-1]=62)then goto 30;
+ end;end;30:skipahead:=c;end;{:140}{141:}procedure skipcomment;label 10;
+ var bal:eightbits;c:ASCIIcode;begin bal:=0;
+-while true do begin if loc>limit then begin getline;
++while true do begin if loc>limit then begin tl_getline;
+ if inputhasended then begin begin writeln(stdout);
+ write(stdout,'! Input ended in mid-comment');error;end;goto 10;end;end;
+ c:=buffer[loc];loc:=loc+1;{142:}if c=64 then begin c:=buffer[loc];
+@@ -622,7 +622,7 @@
+ then bal:=bal+1 else if c=125 then begin if bal=0 then goto 10;
+ bal:=bal-1;end{:142};end;10:end;{:141}{145:}function getnext:eightbits;
+ label 20,30,31;var c:eightbits;d:eightbits;j,k:0..longestname;
+-begin 20:if loc>limit then begin getline;
++begin 20:if loc>limit then begin tl_getline;
+ if inputhasended then begin c:=136;goto 31;end;end;c:=buffer[loc];
+ loc:=loc+1;
+ if scanninghex then{146:}if((c>=48)and(c<=57))or((c>=65)and(c<=70))then
+@@ -647,7 +647,7 @@
+ 64:{150:}begin c:=controlcode(buffer[loc]);loc:=loc+1;
+ if c=0 then goto 20 else if c=13 then scanninghex:=true else if c=135
+ then{151:}begin{153:}k:=0;
+-while true do begin if loc>limit then begin getline;
++while true do begin if loc>limit then begin tl_getline;
+ if inputhasended then begin begin writeln(stdout);
+ write(stdout,'! Input ended in section name');error;end;goto 30;end;end;
+ d:=buffer[loc];{154:}if d=64 then begin d:=buffer[loc+1];
+--- texlive-20080816-source.orig/texk/dvi2tty/dvistuff.c	2009-07-04 10:12:21.486492239 +0200
++++ texlive-20080816-source/texk/dvi2tty/dvistuff.c	2009-07-04 12:34:19.938973989 +0200
+@@ -123,7 +123,7 @@
+ void            ruleaux         P3H(long, long, char);
+ long            horizontalmove  P1H(long);
+ int             skipnops        P1H(void);
+-linetype    *   getline         P1H(void);
++linetype    *   tl_getline         P1H(void);
+ linetype    *   findline        P1H(void);
+ unsigned long   num             P1H(int);
+ long            snum            P1H(int);
+@@ -149,7 +149,7 @@
+ void            ruleaux         (long, long, char);
+ long            horizontalmove  (long);
+ int             skipnops        (void);
+-linetype    *   getline         (void);
++linetype    *   tl_getline         (void);
+ linetype    *   findline        (void);
+ unsigned long   num             (int);
+ long            snum            (int);
+@@ -174,7 +174,7 @@
+ void            ruleaux         ();
+ long            horizontalmove  ();
+ int             skipnops        ();
+-linetype    *   getline         ();
++linetype    *   tl_getline         ();
+ linetype    *   findline        ();
+ unsigned long   num             ();
+ long            snum            ();
+@@ -316,7 +316,7 @@
+     h = 0L;  v = 0L;                        /* initialize coordinates   */
+     x = 0L;  w = 0L;  y = 0L;  z = 0L;      /* initialize amounts       */
+     sptr = 0;                               /* initialize stack         */
+-    currentline = getline();                /* initialize list of lines */
++    currentline = tl_getline();                /* initialize list of lines */
+     currentline->vv = 0L;
+     firstline   = currentline;
+     lastline    = currentline;
+@@ -671,7 +671,7 @@
+ 
+ /*----------------------------------------------------------------------------*/
+ 
+-linetype *getline()             /* returns an initialized line-object */
++linetype *tl_getline()             /* returns an initialized line-object */
+ {
+     register int  i;
+     register linetype *temp;
+@@ -686,7 +686,7 @@
+     temp->text[i] = '\0';
+     return temp;
+ 
+-} /* getline */
++} /* tl_getline */
+ 
+ /*----------------------------------------------------------------------------*/
+ 
+@@ -697,7 +697,7 @@
+ 
+     if (v <= firstline->vv) {                      /* above first line */
+         if (firstline->vv - v > VERTICALEPSILON) {
+-            temp = getline();
++            temp = tl_getline();
+             temp->next = firstline;
+             firstline->prev = temp;
+             temp->vv = v;
+@@ -708,7 +708,7 @@
+ 
+     if (v >= lastline->vv) {                       /* below last line */
+         if (v - lastline->vv > VERTICALEPSILON) {
+-            temp = getline();
++            temp = tl_getline();
+             temp->prev = lastline;
+             lastline->next = temp;
+             temp->vv = v;
+@@ -732,7 +732,7 @@
+     }
+ 
+     /* no line fits suitable, generate a new one */
+-    currentline = getline();
++    currentline = tl_getline();
+     currentline->next = temp->next;
+     currentline->prev = temp;
+     temp->next->prev = currentline;
+--- texlive-20080816-source.orig/texk/ttf2pk/newobj.c	2009-07-04 10:12:21.579825377 +0200
++++ texlive-20080816-source/texk/ttf2pk/newobj.c	2009-07-04 13:24:44.943254190 +0200
+@@ -134,7 +134,7 @@
+  */
+ 
+ Boolean
+-getline(char **bufferp, FILE *f)
++tl_getline(char **bufferp, FILE *f)
+ {
+   size_t l;
+ 
+--- texlive-20080816-source.orig/texk/ttf2pk/newobj.h	2009-07-04 10:12:21.536492551 +0200
++++ texlive-20080816-source/texk/ttf2pk/newobj.h	2009-07-04 13:25:35.789915748 +0200
+@@ -26,7 +26,7 @@
+ void *myrealloc(void *oldp, size_t len);
+ 
+ char *get_line(FILE *f);
+-Boolean getline(char **bufferp, FILE *f);
++Boolean tl_getline(char **bufferp, FILE *f);
+ char *newstring(char *s);
+ 
+ ttfinfo *newchar(Font *fnt);
+--- texlive-20080816-source.orig/texk/ttf2pk/parse.c	2009-07-04 10:12:21.576492082 +0200
++++ texlive-20080816-source/texk/ttf2pk/parse.c	2009-07-04 13:26:10.178664088 +0200
+@@ -63,7 +63,7 @@
+       if (*bufferp)
+         free(*bufferp);
+ 
+-      if (getline(bufferp, f) == False)
++      if (tl_getline(bufferp, f) == False)
+         oops("Premature end in encoding file.");
+ 
+       curp = *bufferp;
+@@ -187,7 +187,7 @@
+         "Token 258 in encoding must be make-array (]).");
+     free(p);
+ 
+-    while (getline(&buffer, enc_file))
++    while (tl_getline(&buffer, enc_file))
+     {
+       for (p = buffer; *p; p++)
+         if (*p == '%')
+@@ -246,7 +246,7 @@
+   if (replacement_file == NULL)
+     oops("Cannot open replacement file `%s'.", real_replacement_name);
+ 
+-  while (getline(&buffer, replacement_file))
++  while (tl_getline(&buffer, replacement_file))
+   {
+     for (p = buffer; *p; p++)
+       if (*p == '%')
+--- texlive-20080816-source.orig/libs/lua51/ldebug.c	2009-07-04 10:12:19.813158914 +0200
++++ texlive-20080816-source/libs/lua51/ldebug.c	2009-07-06 12:07:17.645671661 +0200
+@@ -48,7 +48,7 @@
+   if (pc < 0)
+     return -1;  /* only active lua functions have current-line information */
+   else
+-    return getline(ci_func(ci)->l.p, pc);
++    return tl_getline(ci_func(ci)->l.p, pc);
+ }
+ 
+ 
+--- texlive-20080816-source.orig/libs/lua51/ldebug.h	2009-07-04 10:12:19.813158914 +0200
++++ texlive-20080816-source/libs/lua51/ldebug.h	2009-07-06 12:07:17.648962801 +0200
+@@ -13,7 +13,7 @@
+ 
+ #define pcRel(pc, p)	(cast(int, (pc) - (p)->code) - 1)
+ 
+-#define getline(f,pc)	(((f)->lineinfo) ? (f)->lineinfo[pc] : 0)
++#define tl_getline(f,pc)	(((f)->lineinfo) ? (f)->lineinfo[pc] : 0)
+ 
+ #define resethookcount(L)	(L->hookcount = L->basehookcount)
+ 
+--- texlive-20080816-source.orig/libs/lua51/lvm.c	2009-07-04 10:12:19.816492277 +0200
++++ texlive-20080816-source/libs/lua51/lvm.c	2009-07-06 12:07:17.702572571 +0200
+@@ -70,10 +70,10 @@
+   if (mask & LUA_MASKLINE) {
+     Proto *p = ci_func(L->ci)->l.p;
+     int npc = pcRel(pc, p);
+-    int newline = getline(p, npc);
++    int newline = tl_getline(p, npc);
+     /* call linehook when enter a new function, when jump back (loop),
+        or when enter a new line */
+-    if (npc == 0 || pc <= oldpc || newline != getline(p, pcRel(oldpc, p)))
++    if (npc == 0 || pc <= oldpc || newline != tl_getline(p, pcRel(oldpc, p)))
+       luaD_callhook(L, LUA_HOOKLINE, newline);
+   }
+ }
+--- texlive-20080816-source.orig/libs/lua51/print.c	2009-07-04 10:12:19.813158914 +0200
++++ texlive-20080816-source/libs/lua51/print.c	2009-07-06 12:07:17.705304192 +0200
+@@ -84,7 +84,7 @@
+   int c=GETARG_C(i);
+   int bx=GETARG_Bx(i);
+   int sbx=GETARG_sBx(i);
+-  int line=getline(f,pc);
++  int line=tl_getline(f,pc);
+   printf("\t%d\t",pc+1);
+   if (line>0) printf("[%d]\t",line); else printf("[-]\t");
+   printf("%-9s\t",luaP_opnames[o]);

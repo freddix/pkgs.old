@@ -1,0 +1,97 @@
+--- texk/dvipdfmx/src/xbb.c~	2008-05-24 18:50:54.000000000 +0200
++++ texk/dvipdfmx/src/xbb.c	2010-02-02 08:48:15.046585508 +0100
+@@ -246,7 +246,7 @@
+   unsigned char sigbytes[4];
+   rewind (png_file);
+   if (fread(sigbytes, 1, sizeof(sigbytes), png_file) != sizeof(sigbytes) ||
+-      (!png_check_sig (sigbytes, sizeof(sigbytes)))) return 0;
++      (png_sig_cmp (sigbytes, 0, sizeof(sigbytes)))) return 0;
+   else return 1;
+ }             
+ 
+--- texk/dvipdfmx/src/pngimage.c~	2008-04-21 02:43:12.000000000 +0200
++++ texk/dvipdfmx/src/pngimage.c	2010-02-02 08:48:46.656790759 +0100
+@@ -146,7 +146,7 @@
+   rewind (png_file);
+   if (fread (sigbytes, 1, sizeof(sigbytes), png_file) !=
+       sizeof(sigbytes) ||
+-      (!png_check_sig (sigbytes, sizeof(sigbytes))))
++      (png_sig_cmp (sigbytes, 0, sizeof(sigbytes))))
+     return 0;
+   else
+     return 1;
+--- texk/dvipdfm/thumbnail.c~	2006-01-17 22:41:51.000000000 +0100
++++ texk/dvipdfm/thumbnail.c	2010-02-02 08:49:20.553252415 +0100
+@@ -80,7 +80,7 @@
+   }
+   if (fread (sigbytes, 1, sizeof(sigbytes), thumb_file) !=
+       sizeof(sigbytes) ||
+-      (!png_check_sig (sigbytes, sizeof(sigbytes)))) {
++      (png_sig_cmp (sigbytes, 0, sizeof(sigbytes)))) {
+     fprintf (stderr, "\nThumbnail not a png file! Skipping\n");
+     return NULL;
+   }
+--- texk/dvipdfm/pngimage.c~	2006-01-17 22:41:51.000000000 +0100
++++ texk/dvipdfm/pngimage.c	2010-02-02 08:49:52.673256038 +0100
+@@ -42,7 +42,7 @@
+   rewind (png_file);
+   if (fread (sigbytes, 1, sizeof(sigbytes), png_file) !=
+       sizeof(sigbytes) ||
+-      (!png_check_sig (sigbytes, sizeof(sigbytes))))
++      (png_sig_cmp (sigbytes, 0, sizeof(sigbytes))))
+     return 0;
+   else
+     return 1;
+--- texk/web2c/xetexdir/pngimage.c~	2006-07-26 18:19:45.000000000 +0200
++++ texk/web2c/xetexdir/pngimage.c	2010-02-02 08:50:56.269902747 +0100
+@@ -101,7 +101,7 @@
+   rewind (png_file);
+   if (fread (sigbytes, 1, sizeof(sigbytes), png_file) !=
+       sizeof(sigbytes) ||
+-      (!png_check_sig (sigbytes, sizeof(sigbytes))))
++      (png_sig_cmp (sigbytes, 0, sizeof(sigbytes))))
+     return 0;
+   else
+     return 1;
+--- texk/xdvipdfmx/src/xbb.c~	2008-05-25 17:00:35.000000000 +0200
++++ texk/xdvipdfmx/src/xbb.c	2010-02-02 08:51:27.863441254 +0100
+@@ -246,7 +246,7 @@
+   unsigned char sigbytes[4];
+   rewind (png_file);
+   if (fread(sigbytes, 1, sizeof(sigbytes), png_file) != sizeof(sigbytes) ||
+-      (!png_check_sig (sigbytes, sizeof(sigbytes)))) return 0;
++      (png_sig_cmp (sigbytes, 0, sizeof(sigbytes)))) return 0;
+   else return 1;
+ }             
+ 
+--- texk/xdvipdfmx/src/pngimage.c~	2007-11-22 17:48:06.000000000 +0100
++++ texk/xdvipdfmx/src/pngimage.c	2010-02-02 08:52:01.387188159 +0100
+@@ -146,7 +146,7 @@
+   rewind (png_file);
+   if (fread (sigbytes, 1, sizeof(sigbytes), png_file) !=
+       sizeof(sigbytes) ||
+-      (!png_check_sig (sigbytes, sizeof(sigbytes))))
++      (png_sig_cmp (sigbytes, 0, sizeof(sigbytes))))
+     return 0;
+   else
+     return 1;
+--- texk/web2c/xetexdir/XeTeX_ext.c.org	2010-02-02 09:11:16.226655687 +0100
++++ texk/web2c/xetexdir/XeTeX_ext.c	2010-02-02 09:14:23.969761702 +0100
+@@ -200,7 +200,7 @@
+ 			+ strlen(zlib_version)
+ #ifdef XETEX_OTHER
+ 			+ strlen(PNG_LIBPNG_VER_STRING)
+-			+ strlen(png_libpng_ver)
++			+ strlen(png_get_header_ver(NULL))
+ 			+ strlen(xpdfVersion)
+ 			+ 6 * 3 /* for fontconfig version #s (won't really need 3 digits per field!) */
+ #endif
+@@ -225,7 +225,7 @@
+ 		,
+ 		FC_VERSION / 10000, (FC_VERSION % 10000) / 100, FC_VERSION % 100,
+ 		fc_version / 10000, (fc_version % 10000) / 100, fc_version % 100,
+-		PNG_LIBPNG_VER_STRING, png_libpng_ver,
++		PNG_LIBPNG_VER_STRING, png_get_header_ver(NULL),
+ 		xpdfVersion
+ #endif
+ 		);

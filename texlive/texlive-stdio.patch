@@ -1,0 +1,10 @@
+--- texlive-20080816-source.orig/libs/teckit/source/Compiler.h	2009-07-04 10:12:18.509825692 +0200
++++ texlive-20080816-source/libs/teckit/source/Compiler.h	2009-07-04 11:21:01.692867633 +0200
+@@ -56,6 +56,7 @@
+ #include <string>
+ #include <vector>
+ #include <map>
++#include <stdio.h>
+ 
+ using namespace std;
+ 

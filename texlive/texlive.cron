@@ -1,0 +1,4 @@
+#!/bin/sh
+# Remove TeX fonts not used in 180 days
+[ -x /usr/sbin/tmpwatch ] && /usr/sbin/tmpwatch 4320 /var/lib/texmf/fonts || :
+

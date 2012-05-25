@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=XDvi
+Comment=DVI X11 previewer
+Comment[pl]=Przeglądarka DVI pod X11
+Icon=xdvi
+Exec=xdvi
+Terminal=false
+Type=Application
+Categories=Graphics;Viewer;
+# vi: encoding=utf-8

@@ -1,0 +1,21 @@
+--- texlive-20080816-source-orig/texk/kpathsea/Makefile.in	2008-05-29 22:59:08.000000000 +0200
++++ texlive-20080816-source/texk/kpathsea/Makefile.in	2008-12-14 12:45:30.000000000 +0100
+@@ -40,7 +40,7 @@
+ .c.lo:
+ 	$(KPATHSEA_CC) $(ALL_CFLAGS) -DMAKE_KPSE_DLL -c $<
+ 
+-default all: kpsewhich kpsestat kpseaccess kpsereadlink $(library).info manfiles
++default all: kpsewhich kpsestat kpseaccess kpsereadlink $(library).info manfiles libar
+ 
+ kpsewhich: $(kpathsea) kpsewhich.o
+ 	$(kpathsea_link) kpsewhich.o $(LOADLIBES)
+@@ -57,6 +57,9 @@
+ $(kpathsea): $(objects)
+ 	$(kpathsea_link) -rpath $(libdir) -version-info @KPSE_LT_VERS@ $(objects)
+ 
++libar: kpsewhich
++	$(AR) q .libs/libkpathsea.a .libs/libkpathsea.so.4.1.0
++
+ # First null out comments and leading/trailing whitespace, then remove
+ # lines that define invalid C identifiers, then remove blank lines and
+ # lines that define lowercase values (those are never path values). Each
