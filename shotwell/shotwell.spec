@@ -1,28 +1,28 @@
 Summary:	Photo organizer
 Name:		shotwell
-Version:	0.11.6
-Release:	3
+Version:	0.12.3
+Release:	1
 License:	LGPL
 Group:		X11/Applications
-Source0:	http://www.yorba.org/download/shotwell/0.11/%{name}-%{version}.tar.bz2
-# Source0-md5:	bbbf2843eb98b6f0ef1dfcfb934e15cf
+Source0:	http://www.yorba.org/download/shotwell/0.12/%{name}-%{version}.tar.bz2
+# Source0-md5:	de0e05350f8a7d557092489baf14d039
 Patch0:		%{name}-build.patch
 URL:		http://www.yorba.org/shotwell/
-BuildRequires:	GConf-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	gstreamer-plugins-base-devel
-BuildRequires:	gtk-webkit-devel
+BuildRequires:	gtk3-webkit-devel
 BuildRequires:	libexif-devel
 BuildRequires:	libgee-devel
 BuildRequires:	libgexiv2-devel >= 0.3.1
 BuildRequires:	libgphoto2-devel
 BuildRequires:	libraw-devel
 BuildRequires:	libsoup-devel
-BuildRequires:	libunique-devel
+BuildRequires:	libunique3-devel
 BuildRequires:	pkg-config
+BuildRequires:	rest-devel
 BuildRequires:	sqlite3-devel
 BuildRequires:	udev-glib-devel
-BuildRequires:	vala >= 0.11.7
+BuildRequires:	vala >= 0.16.0
 Requires(post,postun):	desktop-file-utils
 Requires(post,postun):	gtk+
 Requires(post,postun):	hicolor-icon-theme
@@ -43,6 +43,7 @@ export CFLAGS="%{rpmcflags}"
 ./configure \
 	--disable-desktop-update	\
 	--disable-icon-update		\
+	--disable-schemas-compile	\
 	--prefix=%{_prefix}		\
 	--release
 
@@ -58,6 +59,9 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_iconsdir}/hicolor/scalable/apps}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+# duplicated locale
+%{__rm} -r $RPM_BUILD_ROOT%{_localedir}/{ta_IN,te_IN}
 
 %find_lang %{name} --with-gnome
 %find_lang %{name}-extras
@@ -94,7 +98,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/*/apps/shotwell.*
 
 %{_datadir}/GConf/gsettings/shotwell.convert
-%{_datadir}/glib-2.0/schemas/gschemas.compiled
 %{_datadir}/glib-2.0/schemas/org.yorba.shotwell-extras.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.yorba.shotwell.gschema.xml
 
