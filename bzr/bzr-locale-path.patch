@@ -1,0 +1,12 @@
+diff -uNr bzr-2.5.0/setup.py bzr-2.5.0.new/setup.py
+--- bzr-2.5.0/setup.py	2012-02-24 11:42:19.000000000 +0100
++++ bzr-2.5.0.new/setup.py	2012-03-06 12:42:37.528774052 +0100
+@@ -76,7 +76,7 @@
+ I18N_FILES = []
+ for filepath in glob.glob("bzrlib/locale/*/LC_MESSAGES/*.mo"):
+     langfile = filepath[len("bzrlib/locale/"):]
+-    targetpath = os.path.dirname(os.path.join("share/locale", langfile))
++    targetpath = os.path.dirname(os.path.join("locale", langfile))
+     I18N_FILES.append((targetpath, [filepath]))
+ 
+ def get_bzrlib_packages():
