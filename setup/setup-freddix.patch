@@ -1,0 +1,66 @@
+diff -aurN setup-2.6.2.orig/etc/env.d/EDITOR setup-2.6.2/etc/env.d/EDITOR
+--- setup-2.6.2.orig/etc/env.d/EDITOR	2009-10-12 14:32:20.000000000 +0200
++++ setup-2.6.2/etc/env.d/EDITOR	2009-10-12 14:32:53.000000000 +0200
+@@ -1 +1 @@
+-#EDITOR=
++EDITOR=vim
+diff -aurN setup-2.6.2.orig/etc/fstab setup-2.6.2/etc/fstab
+--- setup-2.6.2.orig/etc/fstab	2009-10-12 14:32:20.000000000 +0200
++++ setup-2.6.2/etc/fstab	2009-10-12 14:36:02.000000000 +0200
+@@ -1,21 +1,18 @@
+-#/dev/hda1	swap			swap	defaults		0 0
+-#/dev/hda2	/			ext3	defaults		1 1
++#/dev/sda1	swap			swap	defaults		0 0
++#/dev/sda2	/			ext4	defaults		1 1
+ 
+ none		/proc			proc	defaults,noauto,gid=17	0 0
+ none		/sys			sysfs	defaults,noauto,gid=17	0 0
+-none		/proc/bus/usb		usbfs	defaults,noauto,devgid=78,devmode=0664	0 0
+-# Obsolete now:
+-#none		/dev			devfs	defaults,noauto		0 0
+-none		/dev/pts		devpts	gid=5,mode=620		0 0
+-none		/dev/cpuset		cpuset	defaults,noauto		0 0
+-#none		/dev/shm		tmpfs	mode=1777,nosuid,nodev,noexec		0 0
+-
+-/dev/fd0	/media/floppy		auto	user,noauto		0 0
+-/dev/cdrom	/media/cdrom		auto	users,noauto		0 0
+ 
+-# Examples for mount vfat and ntfs patritions using fsctrl group
+-# ntfs on Linux 2.6.x
++none		/proc/bus/usb		usbfs	defaults,noauto,devgid=78,devmode=0664	0 0
++none		/dev/pts		devpts	gid=5,mode=620				0 0
++none		/dev/cpuset		cpuset	defaults,noauto				0 0
++none		/dev/shm		tmpfs	mode=1777,nosuid,nodev,noexec		0 0
++none		/sys/kernel/debug	debugfs	defaults,noauto				0 0
++# Examples
++# 
++#/dev/fd0	/media/floppy		auto	user,noauto		0 0
++#/dev/cdrom	/media/cdrom		auto	users,noauto		0 0
+ #/dev/hdXX	/mnt/ntfs	ntfs	user,noauto,umask=002,uid=0,gid=28,nls=iso8859-2 0 0
+-# ntfs on Linux 2.4.x
+-#/dev/hdXX	/mnt/ntfs	ntfs	user,noauto,umask=002,uid=0,gid=28,iocharset=iso8859-2 0 0
+ #/dev/hdXX	/mnt/vfat	vfat	user,noauto,umask=002,uid=0,gid=28,iocharset=iso8859-2,codepage=852,exec,showexec 0 0
++
+diff -aurN setup-2.6.2.orig/etc/profile setup-2.6.2/etc/profile
+--- setup-2.6.2.orig/etc/profile	2009-10-12 14:32:20.000000000 +0200
++++ setup-2.6.2/etc/profile	2009-10-12 14:36:38.000000000 +0200
+@@ -8,7 +8,6 @@
+ strstr() {
+ 	[[ $1 = *$2* ]] && return 0 || return 1
+ }
+-strstr "$PATH" /usr/X11R6/bin || PATH="$PATH:/usr/X11R6/bin"
+ strstr "$PATH" /usr/local/bin || PATH="$PATH:/usr/local/bin"
+ strstr "$PATH" "$HOME/bin" || PATH="$PATH:$HOME/bin"
+ unset strstr
+diff -aurN setup-2.6.2.orig/Makefile setup-2.6.2/Makefile
+--- setup-2.6.2.orig/Makefile	2009-10-12 14:32:20.000000000 +0200
++++ setup-2.6.2/Makefile	2009-10-12 14:37:33.000000000 +0200
+@@ -20,7 +20,7 @@
+ 	    netgroup passwd profile protocols resolv.conf securetty \
+ 	    services shells suid_profile
+ PROFILE_FILES	= tmp-dir.csh tmp-dir.sh
+-ENV_FILES	= EDITOR HISTFILESIZE HOME_ETC MAILCHECK MAILPATH \
++ENV_FILES	= EDITOR HISTFILESIZE MAILCHECK MAILPATH \
+ 	    NNTPSERVER ORGANIZATION TMOUT VISUAL
+ 
+ SOURCES		= joinpasswd.c update-fstab.c postshell.c delpasswd.c

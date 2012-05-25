@@ -1,0 +1,11 @@
+diff -aurN setup-2.6.2.orig/etc/group setup-2.6.2/etc/group
+--- setup-2.6.2.orig/etc/group	2009-03-16 21:29:01.000000000 +0100
++++ setup-2.6.2/etc/group	2009-03-16 21:31:22.000000000 +0100
+@@ -33,6 +33,7 @@
+ usb::78:
+ fuse::84:
+ nobody::99:
++crontab::117:
+ stats::123:
+ logs::124:stats
+ fileshare::138:
