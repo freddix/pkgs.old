@@ -2,27 +2,23 @@
 
 Summary:	X.org server
 Name:		xorg-xserver-server
-Version:	1.12.0
+Version:	1.12.1
 %if "%{gitver}" != "%{nil}"
 Release:	0.%{gitver}.1
 Source0:	http://cgit.freedesktop.org/xorg/xserver/snapshot/xserver-%{gitver}.tar.bz2
-# Source0-md5:	3a3c4281f32c8702749e8f129372a355
+# Source0-md5:	20e73b422bda6f0d1405af676983cc70
 %else
-Release:	2
+Release:	1
 Source0:	http://xorg.freedesktop.org/releases/individual/xserver/xorg-server-%{version}.tar.bz2
-# Source0-md5:	3a3c4281f32c8702749e8f129372a355
+# Source0-md5:	20e73b422bda6f0d1405af676983cc70
 %endif
 License:	MIT
 Group:		X11/Servers
-# legacy
-Patch0:		%{name}-xwrapper.patch
-Patch1:		%{name}-less-acpi-brokenness.patch
-Patch2:		%{name}-fdo27497.patch
-Patch3:		%{name}-cache-indirect-opcode.patch
-Patch4:		%{name}-DamageSetReportAfterOp.patch
-#
+Patch0:		%{name}-less-acpi-brokenness.patch
+Patch1:		%{name}-fdo27497.patch
+Patch2:		%{name}-cache-indirect-opcode.patch
+Patch3:		%{name}-DamageSetReportAfterOp.patch
 URL:		http://xorg.freedesktop.org/
-# for glx headers
 BuildRequires:	OpenGL-GLX-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -103,11 +99,10 @@ Xephyr X server.
 %setup -qn xorg-server-%{version}
 %endif
 
-%patch0 -p0
+%patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1 -R
+%patch3 -p1 -R
 
 %build
 %{__libtoolize}
@@ -167,7 +162,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/X11/xorg.conf.d
 %{_datadir}/X11/xorg.conf.d/*.conf
 
-%attr(4755,root,root) %{_bindir}/Xwrapper
 %attr(755,root,root) %{_bindir}/X
 %attr(755,root,root) %{_bindir}/Xorg
 %attr(755,root,root) %{_bindir}/cvt

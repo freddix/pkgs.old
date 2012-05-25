@@ -1,30 +1,7 @@
-From chris at chris-wilson.co.uk  Wed Jan 26 06:47:17 2011
-From: chris at chris-wilson.co.uk (Chris Wilson)
-Date: Wed, 26 Jan 2011 14:47:17 +0000
-Subject: [PATCH] glx: Cache indirect opcode->index conversion
-Message-ID: <1296053237-28756-1-git-send-email-chris@chris-wilson.co.uk>
-
-Decoding the opcode into the appropriate index into the dispatch tables
-is quite expensive using the radix tree. By keeping a small cache, we
-can dramatically speed up indirect function dispatch.
-
-World of Padman over the network increased from 28fps to 45fps, with an
-almost identical increase when run indirectly over a local socket.
-Which serves as a nice reminder not to do this.
-
-Signed-off-by: Chris Wilson <chris at chris-wilson.co.uk>
----
- glx/indirect_table.c |    9 ++++++---
- glx/indirect_table.h |   13 +++++++++----
- glx/indirect_util.c  |   24 ++++++++++++++++++++----
- glx/indirect_util.h  |    4 ++--
- 4 files changed, 37 insertions(+), 13 deletions(-)
-
-diff --git a/glx/indirect_table.c b/glx/indirect_table.c
-index 01d1da3..747189a 100644
---- a/glx/indirect_table.c
-+++ b/glx/indirect_table.c
-@@ -188,9 +188,10 @@ static const void *Single_function_table[112][2] = {
+diff -aurN xorg-server-1.12.1.orig/glx/indirect_table.c xorg-server-1.12.1/glx/indirect_table.c
+--- xorg-server-1.12.1.orig/glx/indirect_table.c	2012-04-21 23:39:01.817692571 +0200
++++ xorg-server-1.12.1/glx/indirect_table.c	2012-04-21 23:41:51.805567428 +0200
+@@ -227,9 +227,10 @@
      /* [ 111] =   167 */ {NULL, NULL},
  };
  
@@ -36,8 +13,8 @@ index 01d1da3..747189a 100644
      Single_function_table,
      NULL,
      NULL
-@@ -1221,9 +1222,10 @@ static const gl_proto_size_func Render_size_func_table[74] = {
-    __glXDeleteFramebuffersEXTReqSize,
+@@ -1412,9 +1413,10 @@
+     __glXDeleteRenderbuffersEXTReqSize,
  };
  
 -const struct __glXDispatchInfo Render_dispatch_info = {
@@ -48,7 +25,7 @@ index 01d1da3..747189a 100644
      Render_function_table,
      Render_size_table,
      Render_size_func_table
-@@ -1585,9 +1587,10 @@ static const void *VendorPriv_function_table[104][2] = {
+@@ -1827,9 +1829,10 @@
      /* [ 103] = 65551 */ {NULL, NULL},
  };
  
@@ -60,25 +37,23 @@ index 01d1da3..747189a 100644
      VendorPriv_function_table,
      NULL,
      NULL
-diff --git a/glx/indirect_table.h b/glx/indirect_table.h
-index 4af1ccb..97dae3b 100644
---- a/glx/indirect_table.h
-+++ b/glx/indirect_table.h
-@@ -46,7 +46,12 @@ struct __glXDispatchInfo {
-     /**
+diff -aurN xorg-server-1.12.1.orig/glx/indirect_table.h xorg-server-1.12.1/glx/indirect_table.h
+--- xorg-server-1.12.1.orig/glx/indirect_table.h	2012-04-21 23:39:01.819692546 +0200
++++ xorg-server-1.12.1/glx/indirect_table.h	2012-04-21 23:43:23.621419571 +0200
+@@ -47,6 +47,12 @@
       */
-     const int_fast16_t * dispatch_tree;
--    
+     const int_fast16_t *dispatch_tree;
+ 
 +#define DISPATCH_CACHE_SIZE 32
 +    struct dispatch_cache {
-+	    uint16_t opcode;
-+	    int16_t index;
++	uint16_t opcode;
++	int16_t index;
 +    } dispatch_cache[DISPATCH_CACHE_SIZE];
 +
      /**
       * Array of protocol decode and dispatch functions index by the opcode
       * search tree (i.e., \c dispatch_tree).  The first element in each pair
-@@ -99,8 +104,8 @@ struct __glXDispatchInfo {
+@@ -99,8 +105,8 @@
   */
  #define IS_LEAF_INDEX(x)   ((x) <= 0)
  
@@ -89,32 +64,28 @@ index 4af1ccb..97dae3b 100644
 +extern struct __glXDispatchInfo Render_dispatch_info;
 +extern struct __glXDispatchInfo VendorPriv_dispatch_info;
  
- #endif /* INDIRECT_TABLE_H */
-diff --git a/glx/indirect_util.c b/glx/indirect_util.c
-index 46a2706..114d561 100644
---- a/glx/indirect_util.c
-+++ b/glx/indirect_util.c
-@@ -200,8 +200,8 @@ __glXSendReplySwap( ClientPtr client, const void * data, size_t elements,
- 
+ #endif                          /* INDIRECT_TABLE_H */
+diff -aurN xorg-server-1.12.1.orig/glx/indirect_util.c xorg-server-1.12.1/glx/indirect_util.c
+--- xorg-server-1.12.1.orig/glx/indirect_util.c	2012-04-21 23:39:01.821692522 +0200
++++ xorg-server-1.12.1/glx/indirect_util.c	2012-04-21 23:46:56.309760602 +0200
+@@ -192,7 +192,7 @@
+ }
  
  static int
--get_decode_index(const struct __glXDispatchInfo *dispatch_info,
--		 unsigned opcode)
-+__get_decode_index(struct __glXDispatchInfo *dispatch_info,
-+		   unsigned opcode)
+-get_decode_index(const struct __glXDispatchInfo *dispatch_info, unsigned opcode)
++__get_decode_index(const struct __glXDispatchInfo *dispatch_info, unsigned opcode)
  {
      int remaining_bits;
      int next_remain;
-@@ -273,8 +273,24 @@ get_decode_index(const struct __glXDispatchInfo *dispatch_info,
+@@ -257,8 +257,22 @@
+     return -1;
  }
  
- 
 +static inline int
-+get_decode_index(struct __glXDispatchInfo *dispatch_info,
-+		 unsigned opcode)
++get_decode_index(struct __glXDispatchInfo *dispatch_info, unsigned opcode)
 +{
 +    struct dispatch_cache *cache =
-+	    &dispatch_info->dispatch_cache[opcode & (DISPATCH_CACHE_SIZE-1)];
++	&dispatch_info->dispatch_cache[opcode & (DISPATCH_CACHE_SIZE-1)];
 +
 +    if (cache->opcode != opcode) {
 +	cache->opcode = opcode;
@@ -124,40 +95,35 @@ index 46a2706..114d561 100644
 +    return cache->index;
 +}
 +
-+
  void *
 -__glXGetProtocolDecodeFunction(const struct __glXDispatchInfo *dispatch_info,
 +__glXGetProtocolDecodeFunction(struct __glXDispatchInfo *dispatch_info,
- 			       int opcode, int swapped_version)
+                                int opcode, int swapped_version)
  {
      const int func_index = get_decode_index(dispatch_info, opcode);
-@@ -286,7 +302,7 @@ __glXGetProtocolDecodeFunction(const struct __glXDispatchInfo *dispatch_info,
- 
+@@ -270,7 +284,7 @@
+ }
  
  int
 -__glXGetProtocolSizeData(const struct __glXDispatchInfo *dispatch_info,
 +__glXGetProtocolSizeData(struct __glXDispatchInfo *dispatch_info,
- 			 int opcode, __GLXrenderSizeData *data)
+                          int opcode, __GLXrenderSizeData * data)
  {
      if (dispatch_info->size_table != NULL) {
-diff --git a/glx/indirect_util.h b/glx/indirect_util.h
-index b00727a..a1bcb22 100644
---- a/glx/indirect_util.h
-+++ b/glx/indirect_util.h
-@@ -43,11 +43,11 @@ extern void __glXSendReplySwap( ClientPtr client, const void * data,
+diff -aurN xorg-server-1.12.1.orig/glx/indirect_util.h xorg-server-1.12.1/glx/indirect_util.h
+--- xorg-server-1.12.1.orig/glx/indirect_util.h	2012-04-21 23:39:01.820692534 +0200
++++ xorg-server-1.12.1/glx/indirect_util.h	2012-04-21 23:47:56.373009707 +0200
+@@ -42,11 +42,11 @@
+ 
  struct __glXDispatchInfo;
  
- extern void *__glXGetProtocolDecodeFunction(
--    const struct __glXDispatchInfo *dispatch_info, int opcode,
-+    struct __glXDispatchInfo *dispatch_info, int opcode,
-     int swapped_version);
+-extern void *__glXGetProtocolDecodeFunction(const struct __glXDispatchInfo
++extern void *__glXGetProtocolDecodeFunction(struct __glXDispatchInfo
+                                             *dispatch_info, int opcode,
+                                             int swapped_version);
  
- extern int __glXGetProtocolSizeData(
--    const struct __glXDispatchInfo *dispatch_info, int opcode,
-+    struct __glXDispatchInfo *dispatch_info, int opcode,
-     __GLXrenderSizeData *data);
+-extern int __glXGetProtocolSizeData(const struct __glXDispatchInfo
++extern int __glXGetProtocolSizeData(struct __glXDispatchInfo
+                                     *dispatch_info, int opcode,
+                                     __GLXrenderSizeData * data);
  
- #endif /* __GLX_INDIRECT_UTIL_H__ */
--- 
-1.7.2.3
-

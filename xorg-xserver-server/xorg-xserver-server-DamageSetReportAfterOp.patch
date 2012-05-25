@@ -27,8 +27,8 @@ index f5265dd..b4bb478 100644
      if (!AddResource (stuff->damage, DamageExtType, (pointer) pDamageExt))
  	return BadAlloc;
  
-+    DamageSetReportAfterOp (pDamageExt->pDamage, TRUE);
-     DamageRegister (pDamageExt->pDrawable, pDamageExt->pDamage);
++    DamageSetReportAfterOp(pDamageExt->pDamage, TRUE);
+     DamageRegister(pDamageExt->pDrawable, pDamageExt->pDamage);
  
      if (pDrawable->type == DRAWABLE_WINDOW)
 --
