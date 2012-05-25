@@ -1,0 +1,13 @@
+--- openssl-0.9.8m/fips/Makefile.orig	2009-10-15 16:14:34.000000000 +0200
++++ openssl-0.9.8m/fips/Makefile	2010-03-20 08:50:18.958704379 +0100
+@@ -190,10 +190,6 @@
+ 		chmod 755 $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new; \
+ 		mv -f $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i.new $(INSTALL_PREFIX)$(INSTALLTOP)/bin/$$i; \
+ 	done
+-	cp -p -f $(FIPSLIBDIR)fipscanister.o $(FIPSLIBDIR)fipscanister.o.sha1 \
+-		$(FIPSLIBDIR)fips_premain.c $(FIPSLIBDIR)fips_premain.c.sha1 \
+-		$(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/; \
+-	chmod 0444 $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/fips*
+ 
+ lint:
+ 	@target=lint; $(RECURSIVE_MAKE)

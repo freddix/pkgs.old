@@ -1,0 +1,11 @@
+--- openssl-0.9.8i/crypto/cryptlib.h~	2008-11-13 11:22:38.000000000 +0200
++++ openssl-0.9.8i/crypto/cryptlib.h	2008-11-13 11:26:00.343937555 +0200
+@@ -82,7 +82,7 @@
+ #ifndef OPENSSL_SYS_VMS
+ #define X509_CERT_AREA		OPENSSLDIR
+ #define X509_CERT_DIR		OPENSSLDIR "/certs"
+-#define X509_CERT_FILE		OPENSSLDIR "/ca-certificates.crt"
++#define X509_CERT_FILE		"/etc/certs/ca-certificates.crt"
+ #define X509_PRIVATE_DIR	OPENSSLDIR "/private"
+ #else
+ #define X509_CERT_AREA		"SSLROOT:[000000]"

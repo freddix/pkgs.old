@@ -1,0 +1,12 @@
+diff -Nur openssl-0.9.6b/crypto/cryptlib.h openssl-0.9.6b-new/crypto/cryptlib.h
+--- openssl-0.9.6b/crypto/cryptlib.h	Tue May  2 14:35:04 2000
++++ openssl-0.9.6b-new/crypto/cryptlib.h	Sat Mar 16 12:27:30 2002
+@@ -77,7 +77,7 @@
+ #ifndef VMS
+ #define X509_CERT_AREA		OPENSSLDIR
+ #define X509_CERT_DIR		OPENSSLDIR "/certs"
+-#define X509_CERT_FILE		OPENSSLDIR "/cert.pem"
++#define X509_CERT_FILE		OPENSSLDIR "/ca-certificates.crt"
+ #define X509_PRIVATE_DIR	OPENSSLDIR "/private"
+ #else
+ #define X509_CERT_AREA		"SSLROOT:[000000]"

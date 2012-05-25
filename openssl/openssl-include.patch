@@ -1,0 +1,29 @@
+--- openssl-0.9.8m/Makefile.org.orig	2010-02-25 18:21:14.000000000 +0100
++++ openssl-0.9.8m/Makefile.org	2010-03-19 08:59:24.082711921 +0100
+@@ -441,7 +441,7 @@
+ 	@ ( echo 'prefix=$(INSTALLTOP)'; \
+ 	    echo 'exec_prefix=$${prefix}'; \
+ 	    echo 'libdir=$${exec_prefix}/$(LIBDIR)'; \
+-	    echo 'includedir=$${prefix}/include'; \
++	    echo 'includedir=$${prefix}/include/openssl'; \
+ 	    echo ''; \
+ 	    echo 'Name: OpenSSL-libcrypto'; \
+ 	    echo 'Description: OpenSSL cryptography library'; \
+@@ -454,7 +454,7 @@
+ 	@ ( echo 'prefix=$(INSTALLTOP)'; \
+ 	    echo 'exec_prefix=$${prefix}'; \
+ 	    echo 'libdir=$${exec_prefix}/$(LIBDIR)'; \
+-	    echo 'includedir=$${prefix}/include'; \
++	    echo 'includedir=$${prefix}/include/openssl'; \
+ 	    echo ''; \
+ 	    echo 'Name: OpenSSL'; \
+ 	    echo 'Description: Secure Sockets Layer and cryptography libraries'; \
+@@ -467,7 +467,7 @@
+ 	@ ( echo 'prefix=$(INSTALLTOP)'; \
+ 	    echo 'exec_prefix=$${prefix}'; \
+ 	    echo 'libdir=$${exec_prefix}/$(LIBDIR)'; \
+-	    echo 'includedir=$${prefix}/include'; \
++	    echo 'includedir=$${prefix}/include/openssl'; \
+ 	    echo ''; \
+ 	    echo 'Name: OpenSSL'; \
+ 	    echo 'Description: Secure Sockets Layer and cryptography libraries and tools'; \
