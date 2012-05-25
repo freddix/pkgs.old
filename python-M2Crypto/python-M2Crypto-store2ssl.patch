@@ -1,0 +1,13 @@
+--- m2crypto-0.17beta1/SWIG/_ssl.i.orig	2006-04-01 00:11:55.000000000 +0200
++++ m2crypto-0.17beta1/SWIG/_ssl.i	2006-12-06 23:41:00.895934552 +0100
+@@ -699,5 +699,10 @@
+ {
+   return SSL_is_init_finished(ssl);
+ }
++
++SSL *x509_store_ctx_get_ssl(X509_STORE_CTX *ctx) {
++  return (SSL *)X509_STORE_CTX_get_app_data(ctx);
++}
++
+ %}
+ 

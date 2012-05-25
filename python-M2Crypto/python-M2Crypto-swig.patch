@@ -1,0 +1,52 @@
+--- m2crypto-0.18.1/SWIG/_x509.i.orig	2007-06-14 00:57:34.000000000 +0200
++++ m2crypto-0.18.1/SWIG/_x509.i	2007-11-25 21:43:40.598378211 +0100
+@@ -279,19 +279,19 @@
+ %constant int XN_FLAG_SPC_EQ = (1 << 23);
+ %constant int XN_FLAG_DUMP_UNKNOWN_FIELDS = (1 << 24);
+ %constant int XN_FLAG_FN_ALIGN = (1 << 25);
+-%constant int XN_FLAG_ONELINE =(ASN1_STRFLGS_RFC2253 | \
+-            ASN1_STRFLGS_ESC_QUOTE | \
+-            XN_FLAG_SEP_CPLUS_SPC | \
++%constant int XN_FLAG_ONELINE =(ASN1_STRFLGS_RFC2253 |
++            ASN1_STRFLGS_ESC_QUOTE |
++            XN_FLAG_SEP_CPLUS_SPC |
+             XN_FLAG_SPC_EQ);
+-%constant int XN_FLAG_MULTILINE = (ASN1_STRFLGS_ESC_CTRL | \
+-            ASN1_STRFLGS_ESC_MSB | \
+-            XN_FLAG_SEP_MULTILINE | \
+-            XN_FLAG_SPC_EQ | \
+-            XN_FLAG_FN_LN | \
++%constant int XN_FLAG_MULTILINE = (ASN1_STRFLGS_ESC_CTRL |
++            ASN1_STRFLGS_ESC_MSB |
++            XN_FLAG_SEP_MULTILINE |
++            XN_FLAG_SPC_EQ |
++            XN_FLAG_FN_LN |
+             XN_FLAG_FN_ALIGN);
+-%constant int XN_FLAG_RFC2253 = (ASN1_STRFLGS_RFC2253 | \
+-            XN_FLAG_SEP_COMMA_PLUS | \
+-            XN_FLAG_DN_REV | \
++%constant int XN_FLAG_RFC2253 = (ASN1_STRFLGS_RFC2253 |
++            XN_FLAG_SEP_COMMA_PLUS |
++            XN_FLAG_DN_REV |
+             XN_FLAG_DUMP_UNKNOWN_FIELDS);
+ 
+ /* Cribbed from rsa.h. */
+--- m2crypto-0.18.1/SWIG/_asn1.i.orig	2007-05-09 00:21:51.000000000 +0200
++++ m2crypto-0.18.1/SWIG/_asn1.i	2007-11-25 21:43:56.039258137 +0100
+@@ -95,11 +95,11 @@
+ %constant int ASN1_STRFLGS_UTF8_CONVERT = 0x10;
+ %constant int ASN1_STRFLGS_DUMP_UNKNOWN = 0x100;
+ %constant int ASN1_STRFLGS_DUMP_DER = 0x200;
+-%constant int ASN1_STRFLGS_RFC2253 = (ASN1_STRFLGS_ESC_2253 | \
+-                ASN1_STRFLGS_ESC_CTRL | \
+-                ASN1_STRFLGS_ESC_MSB | \
+-                ASN1_STRFLGS_UTF8_CONVERT | \
+-                ASN1_STRFLGS_DUMP_UNKNOWN | \
++%constant int ASN1_STRFLGS_RFC2253 = (ASN1_STRFLGS_ESC_2253 |
++                ASN1_STRFLGS_ESC_CTRL |
++                ASN1_STRFLGS_ESC_MSB |
++                ASN1_STRFLGS_UTF8_CONVERT |
++                ASN1_STRFLGS_DUMP_UNKNOWN |
+                 ASN1_STRFLGS_DUMP_DER);
+ 
+ %inline %{
