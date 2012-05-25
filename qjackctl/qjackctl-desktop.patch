@@ -1,0 +1,16 @@
+diff -aurN qjackctl-0.3.8.orig/src/qjackctl.desktop.in qjackctl-0.3.8/src/qjackctl.desktop.in
+--- qjackctl-0.3.8.orig/src/qjackctl.desktop.in	2011-07-02 21:12:08.632073988 +0200
++++ qjackctl-0.3.8/src/qjackctl.desktop.in	2011-07-02 21:12:54.857496090 +0200
+@@ -11,9 +11,9 @@
+ Comment[fr]=QjackCtl est une interface graphique Qt pour le kit de connexion audio JACK
+ Comment[it]=QjackCtl è un'interfaccia di controllo per JACK basata su Qt
+ Comment[ru]=Программа для управления звуковым сервером JACK
+-Exec=@ac_prefix@/bin/qjackctl
++Exec=qjackctl
+ Icon=qjackctl
+-Categories=Audio;AudioVideo;Midi;X-Alsa;X-Jack;Qt;
++Categories=Audio;AudioVideo;Midi;Qt;
+ Terminal=false
+ Type=Application
+-X-SuSE-translate=true
++
