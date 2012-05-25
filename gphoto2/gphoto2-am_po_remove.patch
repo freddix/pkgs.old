@@ -1,0 +1,11 @@
+diff -aurN gphoto2-2.4.1.orig/configure.ac gphoto2-2.4.1/configure.ac
+--- gphoto2-2.4.1.orig/configure.ac	2008-04-09 18:39:47.000000000 +0200
++++ gphoto2-2.4.1/configure.ac	2008-04-09 18:40:50.000000000 +0200
+@@ -65,7 +65,6 @@
+ ALL_LINGUAS="az cs da de en_GB es eu fi fr hu it ja nb nl pa pl pt_BR ro ru rw sk sl sr sv uk vi zh_CN zh_TW"
+ AM_GNU_GETTEXT_VERSION([0.14.1])
+ AM_GNU_GETTEXT([external])
+-AM_PO_SUBDIRS()
+ AM_ICONV()
+ GP_GETTEXT_FLAGS()
+ 
