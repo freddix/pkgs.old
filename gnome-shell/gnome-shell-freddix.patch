@@ -1,0 +1,14 @@
+diff -aurN gnome-shell-3.4.0.orig/data/theme/gnome-shell.css gnome-shell-3.4.0/data/theme/gnome-shell.css
+--- gnome-shell-3.4.0.orig/data/theme/gnome-shell.css	2012-04-15 23:15:43.394889183 +0200
++++ gnome-shell-3.4.0/data/theme/gnome-shell.css	2012-04-15 23:17:15.612736297 +0200
+@@ -21,8 +21,8 @@
+ 
+ /* default text style */
+ stage {
+-    font-family: cantarell, sans-serif;
+-    font-size: 11pt;
++    font-family: Droid Sans, sans-serif;
++    font-size: 10pt;
+     color: white;
+ }
+ 
