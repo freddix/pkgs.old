@@ -1,20 +1,18 @@
 Summary:	Program that lets you launch Win applications
 Name:		wine
-Version:	1.3.28
+Version:	1.4
 Release:	1
 Epoch:		1
 License:	LGPL
 Group:		X11/Applications/Emulators
 Source0:	http://downloads.sourceforge.net/wine/%{name}-%{version}.tar.bz2
-# Source0-md5:	70574d609161cec8523804cd9364bcd2
-Source1:        http://downloads.sourceforge.net/wine/%{name}_gecko-1.2.0-x86.msi
-# Source1-md5:	f2ed548494c86c511892b1c02491c8c4
-Patch0:		%{name}-fontcache.patch
-Patch1:		%{name}-makedep.patch
-Patch2:		%{name}-ncurses.patch
-Patch3:		%{name}-ca_certificates.patch
-Patch4:		%{name}-rt.patch
-Patch5:		%{name}-ddraw.patch
+# Source0-md5:	6594ab86a4b1fb2c09dadfb4ea7fc4af
+Source1:        http://downloads.sourceforge.net/wine/%{name}_gecko-1.4-x86.msi
+# Source1-md5:	700aaa08724be1992cffed7b87e79a44
+Patch0:		%{name}-makedep.patch
+Patch1:		%{name}-ncurses.patch
+Patch2:		%{name}-ca_certificates.patch
+Patch3:		%{name}-rt.patch
 URL:		http://www.winehq.org/
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	alsa-lib-devel
@@ -99,8 +97,6 @@ Wine - programs.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-#%patch5 -p1
 
 %build
 %{__autoconf}
@@ -264,6 +260,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/wine/lib*.def.a
 %{_libdir}/wine/libadsiid.a
 %{_libdir}/wine/libdx*.a
+%{_libdir}/wine/libstrmbase.a
 %{_libdir}/wine/libstrmiids.a
 %{_libdir}/wine/libuuid.a
 %{_libdir}/wine/libwinecrt0.a
