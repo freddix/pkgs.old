@@ -1,0 +1,15 @@
+diff -aurN telepathy-logger-0.4.0.orig/configure.ac telepathy-logger-0.4.0/configure.ac
+--- telepathy-logger-0.4.0.orig/configure.ac	2012-04-10 14:42:01.086239919 +0200
++++ telepathy-logger-0.4.0/configure.ac	2012-04-10 14:42:17.848030368 +0200
+@@ -60,10 +60,7 @@
+ AC_SUBST([TPL_EXT_LT_AGE])
+ 
+ AC_PREREQ([2.65])
+-AC_COPYRIGHT([
+-  Copyright (C) 2003-2007 Imendio AB
+-  Copyright (C) 2007-2011 Collabora Ltd.
+-])
++AC_COPYRIGHT([Copyright (C) 2003-2007 Imendio AB, Copyright (C) 2007-2011 Collabora Ltd.])
+ 
+ # Minimal version required
+ GLIB_REQUIRED=2.25.11
