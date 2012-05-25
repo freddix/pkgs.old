@@ -1,0 +1,55 @@
+--- totem-3.4.0/configure.in.pld	2012-03-30 17:33:12.411826425 +0200
++++ totem-3.4.0/configure.in	2012-03-30 17:37:37.970387770 +0200
+@@ -120,52 +120,6 @@ GST_LIBS="$GST_LIBS -lgstbase-$GST_MAJOR
+ AC_SUBST(GST_LIBS)
+ EXTRA_BACKEND_LIBS="-lgstinterfaces-$GST_MAJORMINOR -lgstvideo-$GST_MAJORMINOR -lgstaudio-$GST_MAJORMINOR -lgstpbutils-$GST_MAJORMINOR"
+ 
+-dnl Check for required plugins
+-gst010_toolsdir=`$PKG_CONFIG --variable=toolsdir gstreamer-0.10`
+-gst010_inspect="$gst010_toolsdir/gst-inspect-0.10"
+-
+-dnl Give error and exit if we don't have the gst_inspect tool
+-AC_MSG_CHECKING([GStreamer 0.10 inspection tool])
+-if test -r "$gst010_inspect"; then
+-	AC_MSG_RESULT([yes])
+-else
+-	AC_MSG_RESULT([no])
+-	AC_MSG_ERROR([
+-		Cannot find required GStreamer-0.10 tool 'gst-inspect-0.10'.
+-		It should be part of gstreamer-0_10-utils. Please install it.
+-	])
+-fi
+-
+-dnl Check for elements from gst-plugins-base
+-for base_element in playbin2 ffmpegcolorspace videoscale
+-do
+-	AC_MSG_CHECKING([GStreamer 0.10 $base_element plugin])
+-	if $gst010_inspect $base_element >/dev/null 2>/dev/null; then
+-		AC_MSG_RESULT([yes])
+-	else
+-		AC_MSG_RESULT([no])
+-		AC_MSG_ERROR([
+-			Cannot find required GStreamer-0.10 plugin '$base_element'.
+-			It should be part of gst-plugins-base. Please install it.
+-		])
+-	fi
+-done
+-
+-dnl Check for elements from gst-plugins-good
+-for good_element in autoaudiosink goom
+-do
+-	AC_MSG_CHECKING([GStreamer 0.10 $good_element plugin])
+-	if $gst010_inspect $good_element >/dev/null 2>/dev/null; then
+-		AC_MSG_RESULT([yes])
+-	else
+-		AC_MSG_RESULT([no])
+-		AC_MSG_ERROR([
+-			Cannot find required GStreamer-0.10 plugin '$good_element'.
+-			It should be part of gst-plugins-good. Please install it.
+-		])
+-	fi
+-done
+-
+ dnl Check the smclient backend
+ AC_MSG_CHECKING([which smclient backend to use])
+ AC_ARG_WITH([smclient],
