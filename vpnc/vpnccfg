@@ -1,0 +1,23 @@
+#!/bin/sh
+CONF=/etc/vpnc.conf
+
+if [ `id -u` != 0 ]; then
+	echo "You must run $0 from r00t acount"
+	exit
+fi
+
+echo -n "Enter vpn gatway IP/Name: "
+read GATEWAY
+echo -n "Enter vpn group name: "
+read GROUP
+echo -n "Enter group secret: "
+read GPASS
+echo -n "Enter username: "
+read USER
+
+cat > $CONF << _EOF_
+IPSec gateway $GATEWAY
+IPSec ID $GROUP
+IPSec secret $GPASS
+Xauth username $USER
+_EOF_

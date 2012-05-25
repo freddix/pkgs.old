@@ -1,0 +1,9 @@
+diff -burNp vpnc-0.5.3/vpnc-script.in vpnc-0.5.3-dud/vpnc-script.in
+--- vpnc-0.5.3/vpnc-script.in	2008-11-19 21:55:51.000000000 +0100
++++ vpnc-0.5.3-dud/vpnc-script.in	2009-01-18 11:09:30.849557510 +0100
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #* reason                       -- why this script was called, one of: pre-init connect disconnect
+ #* VPNGATEWAY                   -- vpn gateway address (always present)
+ #* TUNDEV                       -- tunnel device (always present)
