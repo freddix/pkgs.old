@@ -1,0 +1,47 @@
+--- nmap-3.50/nbase/configlocal.m4.orig	2002-09-09 00:56:01.000000000 +0200
++++ nmap-3.50/nbase/configlocal.m4	2004-01-22 21:37:57.178324264 +0100
+@@ -11,7 +11,7 @@
+ dnl can't use getaddrinfo() because we can't get strings
+ dnl describing the error codes.
+ dnl
+-AC_DEFUN(APR_CHECK_WORKING_GETADDRINFO,[
++AC_DEFUN([APR_CHECK_WORKING_GETADDRINFO],[
+   AC_CACHE_CHECK(for working getaddrinfo, ac_cv_working_getaddrinfo,[
+   AC_TRY_RUN( [
+ #ifdef HAVE_NETDB_H
+@@ -62,7 +62,7 @@
+ dnl
+ dnl check for working getnameinfo() -- from Apache 2.0.40
+ dnl
+-AC_DEFUN(APR_CHECK_WORKING_GETNAMEINFO,[
++AC_DEFUN([APR_CHECK_WORKING_GETNAMEINFO],[
+   AC_CACHE_CHECK(for working getnameinfo, ac_cv_working_getnameinfo,[
+   AC_TRY_RUN( [
+ #ifdef HAVE_NETDB_H
+@@ -114,7 +114,7 @@
+ fi
+ ])
+ 
+-AC_DEFUN(APR_CHECK_SOCKADDR_IN6,[
++AC_DEFUN([APR_CHECK_SOCKADDR_IN6],[
+ AC_CACHE_CHECK(for sockaddr_in6, ac_cv_define_sockaddr_in6,[
+ AC_TRY_COMPILE([
+ #ifdef HAVE_SYS_TYPES_H
+@@ -140,7 +140,7 @@
+ fi
+ ])
+ 
+-AC_DEFUN(CHECK_AF_INET6_DEFINE,[
++AC_DEFUN([CHECK_AF_INET6_DEFINE],[
+ AC_CACHE_CHECK(for AF_INET6 definition, ac_cv_define_af_inet6,[
+ AC_TRY_COMPILE([
+ #ifdef HAVE_SYS_TYPES_H
+@@ -169,7 +169,7 @@
+ fi
+ ])
+ 
+-AC_DEFUN(APR_CHECK_SOCKADDR_STORAGE,[
++AC_DEFUN([APR_CHECK_SOCKADDR_STORAGE],[
+ AC_CACHE_CHECK(for sockaddr_storage, ac_cv_define_sockaddr_storage,[
+ AC_TRY_COMPILE([
+ #ifdef HAVE_SYS_TYPES_H
