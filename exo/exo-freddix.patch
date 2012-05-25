@@ -1,0 +1,11 @@
+diff -aurN exo-0.7.3.orig/exo-helper/helpers/helpers.rc exo-0.7.3/exo-helper/helpers/helpers.rc
+--- exo-0.7.3.orig/exo-helper/helpers/helpers.rc	2012-04-26 23:29:25.081381448 +0200
++++ exo-0.7.3/exo-helper/helpers/helpers.rc	2012-04-26 23:29:50.855059233 +0200
+@@ -5,6 +5,6 @@
+ #
+ 
+ WebBrowser=firefox
+-MailReader=thunderbird
++MailReader=sylpheed
+ TerminalEmulator=Terminal
+ FileManager=Thunar
