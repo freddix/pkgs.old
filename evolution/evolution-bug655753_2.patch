@@ -1,0 +1,44 @@
+From 1a3913d55151704d7bf84511afdd83330e4daecc Mon Sep 17 00:00:00 2001
+From: Milan Crha <mcrha@redhat.com>
+Date: Wed, 25 Apr 2012 14:45:07 +0000
+Subject: Remove "currently-offline" key from GSettings added for bug #655753
+
+---
+diff --git a/data/org.gnome.evolution.shell.gschema.xml.in b/data/org.gnome.evolution.shell.gschema.xml.in
+index 9164983..af6efd7 100644
+--- a/data/org.gnome.evolution.shell.gschema.xml.in
++++ b/data/org.gnome.evolution.shell.gschema.xml.in
+@@ -20,11 +20,6 @@
+       <_summary>Start in offline mode</_summary>
+       <_description>Whether Evolution will start up in offline mode instead of online mode.</_description>
+     </key>
+-    <key name="currently-offline" type="b">
+-      <default>false</default>
+-      <_summary>Current state of offline mode</_summary>
+-      <_description>Set to true when evolution is currently in offline mode, false otherwise. This is responding to both user choice of working online/offline and network outages noticed by any network monitoring system.</_description>
+-    </key>
+     <key name="folder-paths" type="as">
+       <default>[]</default>
+       <_summary>Offline folder paths</_summary>
+diff --git a/shell/e-shell.c b/shell/e-shell.c
+index 7f0625a..bc25284 100644
+--- a/shell/e-shell.c
++++ b/shell/e-shell.c
+@@ -1209,15 +1209,6 @@ e_shell_init (EShell *shell)
+ 		"org.gnome.evolution.shell",
+ 		"start-offline");
+ 
+-	e_shell_settings_install_property_for_key (
+-		"currently-offline",
+-		"org.gnome.evolution.shell",
+-		"currently-offline");
+-
+-	g_object_bind_property (shell, "online",
+-		e_shell_get_shell_settings (shell), "currently-offline",
+-		G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
+-
+ 	/*** Session Management ***/
+ 
+ 	sm_client = egg_sm_client_get ();
+--
+cgit v0.9.0.2

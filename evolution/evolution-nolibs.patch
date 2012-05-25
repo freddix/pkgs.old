@@ -1,0 +1,15 @@
+--- evolution-3.1.91/m4/evo_ldap_check.m4.orig	2011-06-08 19:12:25.000000000 +0200
++++ evolution-3.1.91/m4/evo_ldap_check.m4	2011-09-12 08:22:43.075017176 +0200
+@@ -55,9 +55,9 @@ AC_DEFUN([EVO_LDAP_CHECK],[
+ 			AC_MSG_ERROR([evolution requires OpenLDAP version >= 2])
+ 		fi
+ 
+-		AC_CHECK_LIB(resolv, res_query, [LDAP_LIBS="-lresolv"], [AC_CHECK_LIB(resolv, __res_query, [LDAP_LIBS="-lresolv"])])
+-		AC_CHECK_LIB(socket, bind, [LDAP_LIBS="$LDAP_LIBS -lsocket"])
+-		AC_CHECK_LIB(nsl, gethostbyaddr, [LDAP_LIBS="$LDAP_LIBS -lnsl"])
++		dnl AC_CHECK_LIB(resolv, res_query, [LDAP_LIBS="-lresolv"], [AC_CHECK_LIB(resolv, __res_query, [LDAP_LIBS="-lresolv"])])
++		AC_CHECK_FUNC(bind, , [AC_CHECK_LIB(socket, bind, [LDAP_LIBS="$LDAP_LIBS -lsocket"])])
++		AC_CHECK_FUNC(gethostbyaddr, , [AC_CHECK_LIB(nsl, gethostbyaddr, [LDAP_LIBS="$LDAP_LIBS -lnsl"])])
+ 		AC_CHECK_LIB(lber, ber_get_tag, [
+ 			if test "$with_static_ldap" = "yes"; then
+ 				LDAP_LIBS="$with_openldap/lib/liblber.a $LDAP_LIBS"

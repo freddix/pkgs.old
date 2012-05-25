@@ -1,0 +1,86 @@
+From bf2c718d1f1ecdaf0feec0274c2b12eee57aa6bf Mon Sep 17 00:00:00 2001
+From: Milan Crha <mcrha@redhat.com>
+Date: Mon, 23 Apr 2012 09:44:45 +0000
+Subject: Bug #655753 - Improve offline notification for network outage
+
+---
+diff --git a/data/org.gnome.evolution.shell.gschema.xml.in b/data/org.gnome.evolution.shell.gschema.xml.in
+index e5c0979..9164983 100644
+--- a/data/org.gnome.evolution.shell.gschema.xml.in
++++ b/data/org.gnome.evolution.shell.gschema.xml.in
+@@ -18,7 +18,12 @@
+     <key name="start-offline" type="b">
+       <default>false</default>
+       <_summary>Start in offline mode</_summary>
+-      <_description> Whether Evolution will start up in offline mode instead of online mode.</_description>
++      <_description>Whether Evolution will start up in offline mode instead of online mode.</_description>
++    </key>
++    <key name="currently-offline" type="b">
++      <default>false</default>
++      <_summary>Current state of offline mode</_summary>
++      <_description>Set to true when evolution is currently in offline mode, false otherwise. This is responding to both user choice of working online/offline and network outages noticed by any network monitoring system.</_description>
+     </key>
+     <key name="folder-paths" type="as">
+       <default>[]</default>
+diff --git a/modules/offline-alert/evolution-offline-alert.c b/modules/offline-alert/evolution-offline-alert.c
+index 5fcb797..4c3678f 100644
+--- a/modules/offline-alert/evolution-offline-alert.c
++++ b/modules/offline-alert/evolution-offline-alert.c
+@@ -81,7 +81,13 @@ offline_alert_network_available_cb (EShell *shell,
+                                     GParamSpec *pspec,
+                                     EOfflineAlert *extension)
+ {
+-	if (e_shell_get_network_available (shell))
++	if (e_shell_get_network_available (shell)) {
++		if (extension->alert != NULL)
++			e_alert_response (extension->alert, GTK_RESPONSE_OK);
++		return;
++	}
++
++	if (!e_shell_get_online (shell))
+ 		return;
+ 
+ 	g_return_if_fail (extension->alert == NULL);
+@@ -124,11 +130,6 @@ offline_alert_window_added_cb (GtkApplication *application,
+ 	if (e_shell_get_online (shell))
+ 		return;
+ 
+-	if (!e_shell_get_network_available (shell)) {
+-		g_object_notify (G_OBJECT (shell), "network-available");
+-		return;
+-	}
+-
+ 	g_return_if_fail (extension->alert == NULL);
+ 
+ 	/* This alert only shows at startup, not when the user
+@@ -137,7 +138,7 @@ offline_alert_window_added_cb (GtkApplication *application,
+ 
+ 	action = E_SHELL_WINDOW_ACTION_WORK_ONLINE (window);
+ 
+-	extension->alert = e_alert_new ("offline-alert:offline", NULL);
++	extension->alert = e_alert_new (e_shell_get_network_available (shell) ? "offline-alert:offline" : "offline-alert:no-network", NULL);
+ 	e_alert_add_action (extension->alert, action, GTK_RESPONSE_NONE);
+ 
+ 	g_object_add_weak_pointer (
+diff --git a/shell/e-shell.c b/shell/e-shell.c
+index bc25284..7f0625a 100644
+--- a/shell/e-shell.c
++++ b/shell/e-shell.c
+@@ -1209,6 +1209,15 @@ e_shell_init (EShell *shell)
+ 		"org.gnome.evolution.shell",
+ 		"start-offline");
+ 
++	e_shell_settings_install_property_for_key (
++		"currently-offline",
++		"org.gnome.evolution.shell",
++		"currently-offline");
++
++	g_object_bind_property (shell, "online",
++		e_shell_get_shell_settings (shell), "currently-offline",
++		G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE | G_BINDING_INVERT_BOOLEAN);
++
+ 	/*** Session Management ***/
+ 
+ 	sm_client = egg_sm_client_get ();
+--
+cgit v0.9.0.2
