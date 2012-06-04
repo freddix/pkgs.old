@@ -1,0 +1,24 @@
+--- pycrypto-2.0.1/./Hash/SHA.py~	2002-07-11 16:31:19.000000000 +0200
++++ pycrypto-2.0.1/./Hash/SHA.py	2008-12-06 13:31:00.044862198 +0100
+@@ -3,6 +3,9 @@
+ 
+ __revision__ = "$Id: SHA.py,v 1.4 2002/07/11 14:31:19 akuchling Exp $"
+ 
++from warnings import filterwarnings
++filterwarnings('ignore', '.* sha module', DeprecationWarning)
++
+ from sha import *
+ import sha
+ if hasattr(sha, 'digestsize'):
+--- pycrypto-2.0.1/./Hash/MD5.py~	2002-07-11 16:31:19.000000000 +0200
++++ pycrypto-2.0.1/./Hash/MD5.py	2008-12-06 13:31:11.014860719 +0100
+@@ -3,6 +3,9 @@
+ 
+ __revision__ = "$Id: MD5.py,v 1.4 2002/07/11 14:31:19 akuchling Exp $"
+ 
++from warnings import filterwarnings
++filterwarnings('ignore', '.* md5 module', DeprecationWarning)
++
+ from md5 import *
+ 
+ import md5
