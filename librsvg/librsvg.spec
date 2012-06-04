@@ -1,7 +1,7 @@
 Summary:	SVG Rendering Library
 Name:		librsvg
 Version:	2.36.1
-Release:	1
+Release:	2
 Epoch:		1
 License:	GPL v2+
 Group:		Libraries
