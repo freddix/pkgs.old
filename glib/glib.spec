@@ -1,12 +1,12 @@
 Summary:	Cross-platform software utility library
 Name:		glib
-Version:	2.32.2
+Version:	2.32.3
 Release:	1
 Epoch:		1
 License:	LGPL
 Group:		Libraries
 Source0:	http://download.gnome.org/sources/glib/2.32/%{name}-%{version}.tar.xz
-# Source0-md5:	5bfdb6197afb90e4dbc7b1bb98f0eae0
+# Source0-md5:	9bd3ac535c24b6c162be13b2c43c5adc
 Patch0:		%{name}-makefile.patch
 Patch1:		%{name}-warn_about_bad_dconf_paths.patch
 URL:		http://www.gtk.org/
