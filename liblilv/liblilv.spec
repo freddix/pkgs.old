@@ -1,19 +1,17 @@
 Summary:	Library to use with LV2 plugins
 Name:		liblilv
-Version:	0.5.0
+Version:	0.14.2
 Release:	1
 License:	GPL v2
 Group:		Libraries
 Source0:	http://download.drobilla.net/lilv-%{version}.tar.bz2
-# Source0-md5:	88f5a60ef4e217b6c44a4eff4ccf0ce9
+# Source0-md5:	1aea6761f3e44007c0fb4eb20630655d
 BuildRequires:	glib-devel
 BuildRequires:	jack-devel
-BuildRequires:	libsord-devel
-BuildRequires:	lv2-event
-BuildRequires:	lv2-uri-map
-BuildRequires:	lv2core-devel
+BuildRequires:	libsord-devel >= 0.8.0
+BuildRequires:	libsratom-devel >= 0.2.0
+BuildRequires:	lv2-devel
 BuildRequires:	pkg-config
-BuildRequires:	python
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
