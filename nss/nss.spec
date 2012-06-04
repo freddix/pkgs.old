@@ -2,13 +2,13 @@
 
 Summary:	Network Security Services
 Name:		nss
-Version:	3.13.3
+Version:	3.13.4
 Release:	1
 Epoch:		1
 License:	GPL
 Group:		Libraries
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_%{foover}_RTM/src/%{name}-%{version}.tar.gz
-# Source0-md5:	006cb82fa900e9e664b4b14a9b7810ca
+# Source0-md5:	2510d41ade236584cc0096954ea449c0
 Source1:	%{name}-mozilla-nss.pc
 Source2:	%{name}-config.in
 Source3:	http://www.cacert.org/certs/root.der
