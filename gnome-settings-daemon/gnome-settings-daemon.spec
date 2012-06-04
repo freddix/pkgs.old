@@ -1,12 +1,12 @@
 Summary:	GNOME Settings Daemon
 Name:		gnome-settings-daemon
-Version:	3.4.1
+Version:	3.4.2
 Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-settings-daemon/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	28144a0c69556cf1915a8e43c25a2869
+# Source0-md5:	f8c985ce46c720cff28208ccb799c6b7
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -92,12 +92,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(755,root,root) %{_libdir}/gnome-settings-daemon-3.0/*.so
 %{_libdir}/gnome-settings-daemon-3.0/*-plugin
-%{_datadir}/GConf/gsettings/gnome-settings-daemon.convert
 %{_datadir}/glib-2.0/schemas/*.xml
 %{_datadir}/dbus-1/services/org.gnome.SettingsDaemon.service
 %{_datadir}/gnome-settings-daemon
 %{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.power.policy
 %{_datadir}/polkit-1/actions/org.gnome.settings-daemon.plugins.wacom.policy
+%{_sysconfdir}/xdg/autostart/gnome-fallback-mount-helper.desktop
 %{_sysconfdir}/xdg/autostart/gnome-settings-daemon.desktop
 %{_iconsdir}/hicolor/*/*/*.*
 %{_mandir}/man1/gnome-settings-daemon.1*
@@ -106,4 +106,5 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_includedir}/gnome-settings-daemon-3.0
 %{_pkgconfigdir}/gnome-settings-daemon.pc
+%{_datadir}/dbus-1/interfaces/org.gnome.SettingsDaemonUpdates.xml
 
