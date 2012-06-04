@@ -1,11 +1,11 @@
 Summary:	XCB util-keysyms module
 Name:		xcb-util-keysyms
-Version:	0.3.8
-Release:	1
+Version:	0.3.9
+Release:	2
 License:	MIT
 Group:		Libraries
 Source0:	http://xcb.freedesktop.org/dist/%{name}-%{version}.tar.bz2
-# Source0-md5:	c75bb20e709093580a67eaf263251b50
+# Source0-md5:	64e4aad2d48cd4a92e2da13b9f35bfd2
 URL:		http://xcb.freedesktop.org/XcbUtil/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -63,7 +63,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libxcb-keysyms.so
-%{_libdir}/libxcb-keysyms.la
 %{_includedir}/xcb/*.h
 %{_pkgconfigdir}/*.pc
 

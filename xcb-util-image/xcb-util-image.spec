@@ -1,11 +1,11 @@
 Summary:	XCB util-image module
 Name:		xcb-util-image
-Version:	0.3.8
-Release:	1
+Version:	0.3.9
+Release:	2
 License:	MIT
 Group:		Libraries
 Source0:	http://xcb.freedesktop.org/dist/%{name}-%{version}.tar.bz2
-# Source0-md5:	245a96041f373b05764148e52d2e0211
+# Source0-md5:	fabb80b36490b00fc91289e2c7f66770
 URL:		http://xcb.freedesktop.org/XcbUtil/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -64,7 +64,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libxcb-image.so
-%{_libdir}/libxcb-image.la
 %{_includedir}/xcb/*.h
 %{_pkgconfigdir}/*.pc
 

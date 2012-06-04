@@ -1,11 +1,12 @@
 Summary:	XCB support libraries
 Name:		xcb-util
-Version:	0.3.8
-Release:	2
+Version:	0.3.9
+Release:	1
 License:	MIT
 Group:		Libraries
 Source0:	http://xcb.freedesktop.org/dist/%{name}-%{version}.tar.bz2
-# Source0-md5:	8ce019c4bbf20dce246b98f177cfccff
+# Source0-md5:	01dcc7a16d5020530552712710646ea2
+Patch0:		%{name}-bogus_soname.patch
 URL:		http://xcb.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -33,6 +34,7 @@ Header files for XCB util libraries.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -59,7 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README
-%attr(755,root,root) %ghost %{_libdir}/libxcb-*.so.?
+%attr(755,root,root) %ghost %{_libdir}/libxcb-*.so.0
 %attr(755,root,root) %{_libdir}/libxcb-*.so.*.*.*
 
 %files devel

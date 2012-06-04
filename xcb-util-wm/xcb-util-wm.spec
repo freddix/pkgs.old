@@ -1,11 +1,11 @@
 Summary:	XCB util-wm module
 Name:		xcb-util-wm
-Version:	0.3.8
-Release:	1
+Version:	0.3.9
+Release:	2
 License:	MIT
 Group:		Libraries
 Source0:	http://xcb.freedesktop.org/dist/%{name}-%{version}.tar.bz2
-# Source0-md5:	dda47289bc846a6a3e07824e9ec3aef8
+# Source0-md5:	c612aae7ffe2e70fe743efab9c5548e9
 URL:		http://xcb.freedesktop.org/XcbUtil/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -63,8 +63,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libxcb-ewmh.so
 %attr(755,root,root) %{_libdir}/libxcb-icccm.so
-%{_libdir}/libxcb-ewmh.la
-%{_libdir}/libxcb-icccm.la
 %{_includedir}/xcb/*.h
 %{_pkgconfigdir}/*.pc
 
