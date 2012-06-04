@@ -1,12 +1,14 @@
 Summary:	Sound server
 Name:		pulseaudio
-Version:	1.1
-Release:	4
+Version:	2.0
+Release:	5
 License:	GPL v2+ (server and libpulsecore), LGPL v2+ (libpulse)
 Group:		Libraries
 Source0:	http://freedesktop.org/software/pulseaudio/releases/%{name}-%{version}.tar.gz
-# Source0-md5:	1b76932ca7c4b2aa992941e41ed4594b
+# Source0-md5:	1406645d15e66be0f531235760edea32
 Source1:	%{name}-tmpfiles.conf
+Patch0:		%{name}-udev.patch
+Patch1:		%{name}-start-early.patch
 URL:		http://pulseaudio.org/
 BuildRequires:	GConf-devel
 BuildRequires:	alsa-lib-devel
@@ -44,8 +46,6 @@ Provides:	group(pulse-access)
 Provides:	user(pulse)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		filterout_ld	-Wl,--as-needed
-
 %description
 PulseAudio (previously known as PolypAudio) is a sound server for
 POSIX and Win32 operating systems. It allows you to do advanced
@@ -69,17 +69,6 @@ Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 Development files for PulseAudio libraries.
-
-%package esound-compat
-Summary:	EsounD compatibility start script
-Group:		Applications/Sound
-Requires:	%{name} = %{version}-%{release}
-Conflicts:	esound
-
-%description esound-compat
-EsounD compatibility start script, which allows to run pulseaudio
-daemon using "esd" command.
-NOTE: it ignores all command-line options!
 
 %package bluetooth
 Summary:	Bluetooth module for PulseAudio
@@ -131,6 +120,8 @@ X11 module for PulseAudio.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 sed -i -e 's/load-module module-console-kit/#load-module module-console-kit/g' \
 	src/daemon/default.pa.in
@@ -143,6 +134,7 @@ sed -i -e 's/load-module module-console-kit/#load-module module-console-kit/g' \
 %{__automake}
 %configure \
 	--disable-default-build-tests		\
+	--disable-esound			\
 	--disable-hal				\
 	--disable-hal-compat			\
 	--disable-lirc				\
@@ -151,6 +143,8 @@ sed -i -e 's/load-module module-console-kit/#load-module module-console-kit/g' \
 	--disable-silent-rules			\
 	--disable-solaris			\
 	--disable-static			\
+	--disable-xen				\
+	--enable-systemd			\
 	--with-access-group=pulse-access	\
 	--with-system-group=pulse		\
 	--with-system-user=pulse
@@ -163,9 +157,7 @@ install -d $RPM_BUILD_ROOT{/etc/tmpfiles.d,/var/lib/pulse}
 %{__make} -j1 install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/tmpfiles.d/pulse.conf
-
-ln -sf %{_bindir}/esdcompat $RPM_BUILD_ROOT%{_bindir}/esd
+install -D %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/pulse.conf
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/pulse-*/modules/*.la
 
@@ -180,7 +172,7 @@ rm -rf $RPM_BUILD_ROOT
 %pre
 %groupadd -g 226 pulse
 %groupadd -g 228 pulse-access
-%useradd -u 226 -g 226 -d /var/run/pulse -s /bin/false -c "Pulseaudio user" pulse
+%useradd -u 226 -g 226 -d /run/pulse -s /bin/false -c "Pulseaudio user" pulse
 
 %postun
 if [ "$1" = "0" ]; then
@@ -205,7 +197,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/pulse/system.pa
 %{_sysconfdir}/dbus-1/system.d/pulseaudio-system.conf
 /lib/udev/rules.d/90-pulseaudio.rules
-/etc/tmpfiles.d/pulse.conf
+%{systemdtmpfilesdir}/pulse.conf
 %attr(0700, pulse, pulse) %dir /var/lib/pulse
 
 %attr(755,root,root) %{_bindir}/pacat
@@ -225,7 +217,6 @@ fi
 %attr(755,root,root) %{_libdir}/pulse-*/modules/libprotocol-http.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/libprotocol-native.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/libprotocol-simple.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/libraop.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/librtp.so
 
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-alsa-card.so
@@ -239,8 +230,6 @@ fi
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-cli.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-combine-sink.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-combine.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-console-kit.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-cork-music-on-phone.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-dbus-protocol.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-default-device-restore.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-detect.so
@@ -265,8 +254,6 @@ fi
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-pipe-sink.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-pipe-source.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-position-event-sounds.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-raop-discover.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-raop-sink.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-remap-sink.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-rescue-streams.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-rtp-recv.so
@@ -285,16 +272,22 @@ fi
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-virtual-sink.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-virtual-source.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-volume-restore.so
+%attr(755,root,root) %{_libdir}/pulse-*/modules/module-role-cork.so
+%attr(755,root,root) %{_libdir}/pulse-*/modules/module-switch-on-port-available.so
+%attr(755,root,root) %{_libdir}/pulse-*/modules/module-systemd-login.so
+%attr(755,root,root) %{_libdir}/pulse-*/modules/module-virtual-surround-sink.so
 
 %{_datadir}/pulseaudio/alsa-mixer
 
 %{_mandir}/man1/pacat.1*
 %{_mandir}/man1/pacmd.1*
 %{_mandir}/man1/pactl.1*
+%{_mandir}/man1/padsp.1*
 %{_mandir}/man1/paplay.1*
 %{_mandir}/man1/pasuspender.1*
 %{_mandir}/man1/pulseaudio.1*
 %{_mandir}/man5/default.pa.5*
+%{_mandir}/man5/pulse-cli-syntax.5*
 %{_mandir}/man5/pulse-client.conf.5*
 %{_mandir}/man5/pulse-daemon.conf.5*
 
@@ -307,32 +300,23 @@ fi
 %attr(755,root,root) %{_libdir}/libpulse-mainloop-glib.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpulse-simple.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpulse.so.*.*.*
+%dir %{_libdir}/pulseaudio
+%attr(755,root,root) %{_libdir}/pulseaudio/libpulsecommon-2.0.so
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libpulse.so
 %attr(755,root,root) %{_libdir}/libpulse-mainloop-glib.so
 %attr(755,root,root) %{_libdir}/libpulse-simple.so
-%{_libdir}/libpulse.la
-%{_libdir}/libpulse-mainloop-glib.la
-%{_libdir}/libpulse-simple.la
-%{_libdir}/libpulse*-%{version}.la
 %{_includedir}/pulse
 %{_pkgconfigdir}/libpulse.pc
 %{_pkgconfigdir}/libpulse-mainloop-glib.pc
 %{_pkgconfigdir}/libpulse-simple.pc
-
-%files esound-compat
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/esd
-%attr(755,root,root) %{_bindir}/esdcompat
-%attr(755,root,root) %{_libdir}/pulse-*/modules/libprotocol-esound.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-esound-compat-spawnfd.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-esound-compat-spawnpid.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-esound-protocol-tcp.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-esound-protocol-unix.so
-%attr(755,root,root) %{_libdir}/pulse-*/modules/module-esound-sink.so
-%{_mandir}/man1/esdcompat.1*
+%{_datadir}/vala/vapi/libpulse-mainloop-glib.deps
+%{_datadir}/vala/vapi/libpulse-mainloop-glib.vapi
+%{_datadir}/vala/vapi/libpulse.deps
+%{_datadir}/vala/vapi/libpulse.vapi
+%{_libdir}/cmake/PulseAudio
 
 %files bluetooth
 %defattr(644,root,root,755)
@@ -358,6 +342,9 @@ fi
 %files zeroconf
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/pulse-*/modules/libavahi-wrap.so
+%attr(755,root,root) %{_libdir}/pulse-*/modules/libraop.so
+%attr(755,root,root) %{_libdir}/pulse-*/modules/module-raop-discover.so
+%attr(755,root,root) %{_libdir}/pulse-*/modules/module-raop-sink.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-zeroconf-discover.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-zeroconf-publish.so
 
@@ -370,4 +357,5 @@ fi
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-x11-publish.so
 %attr(755,root,root) %{_libdir}/pulse-*/modules/module-x11-xsmp.so
 %{_mandir}/man1/pax11publish.1*
+%{_mandir}/man1/start-pulseaudio-x11.1*
 
