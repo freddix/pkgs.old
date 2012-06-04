@@ -1,15 +1,15 @@
 Summary:	Lightweight C library for loading and wrapping LV2 plugin UIs
 Name:		libsuil
-Version:	0.4.4
+Version:	0.6.2
 Release:	1
 License:	GPL v2
 Group:		Libraries
 Source0:	http://download.drobilla.net/suil-%{version}.tar.bz2
-# Source0-md5:	ace6a58b4e7b748e1506184760502b63
+# Source0-md5:	062f1166786cf59a28b3b9bfbda6f15c
 BuildRequires:	QtGui-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	lv2-ui
+BuildRequires:	lv2-devel
 BuildRequires:	pkg-config
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -74,6 +74,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/suil-0
 %attr(755,root,root) %{_libdir}/suil-0/libsuil_gtk2_in_qt4.so
 %attr(755,root,root) %{_libdir}/suil-0/libsuil_qt4_in_gtk2.so
+%attr(755,root,root) %{_libdir}/suil-0/libsuil_x11_in_gtk2.so
+%attr(755,root,root) %{_libdir}/suil-0/libsuil_x11_in_qt4.so
 
 %files devel
 %defattr(644,root,root,755)
