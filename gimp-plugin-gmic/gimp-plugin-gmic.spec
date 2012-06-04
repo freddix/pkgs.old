@@ -2,13 +2,12 @@
 
 Summary:	G'MIC interpreter embedded in a GIMP plug-in
 Name:		gimp-plugin-%{plugin}
-Version:	1.5.0.6
+Version:	1.5.1.4
 Release:	1
 License:	CeCILL FREE SOFTWARE LICENSE
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/sourceforge/gmic/%{plugin}_%{version}.tar.gz
-# Source0-md5:	01ddab64ed2d127c2ee35602a3e141f5
-Source1:	%{name}-configure.in
+# Source0-md5:	5be861cb9223bc10a9b20c086a78987a
 Patch0:		%{name}-build.patch
 BuildRequires:	GraphicsMagick-c++-devel
 BuildRequires:	OpenCV-devel
@@ -28,12 +27,7 @@ G'MIC interpreter embedded in a GIMP plug-in.
 %setup -qn %{plugin}-%{version}
 %patch0 -p1
 
-install %{SOURCE1} configure.in
-
 %build
-%{__aclocal}
-%{__autoconf}
-%configure
 %{__make} -j1 -C src gimp		\
 	CC="%{__cxx}"			\
 	OPTCXXFLAGS="%{rpmcxxflags}"	\
@@ -50,6 +44,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README
+%doc COPYING README
 %attr(755,root,root) %{plugindir}/gmic
 
