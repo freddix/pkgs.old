@@ -2,21 +2,17 @@
 
 Summary:	OpenSSL Toolkit libraries for the "Secure Sockets Layer" (SSL v2/v3)
 Name:		openssl
-Version:	0.9.8v
+Version:	0.9.8x
 Release:	1
 License:	Apache-like
 Group:		Libraries
 Source0:	ftp://ftp.openssl.org/source/%{name}-%{version}.tar.gz
-# Source0-md5:	51a40a81b3b7abe8a5c33670bd3da0ce
-Source1:	%{name}-ssl-certificate.sh
-Source2:	%{name}-c_rehash.sh
-Patch0:		%{name}-optflags.patch
-Patch1:		%{name}-globalCA.diff
-Patch2:		%{name}-include.patch
-Patch3:		%{name}-ca-certificates.patch
-Patch4:		%{name}-ldflags.patch
-Patch5:		%{name}-asflag.patch
-Patch6:		%{name}-fips_install.patch
+# Source0-md5:	ee17e9bc805c8cc7d0afac3b0ef78eda
+Patch0:		%{name}-include.patch
+Patch1:		%{name}-ca-certificates.patch
+Patch2:		%{name}-ldflags.patch
+Patch3:		%{name}-asflag.patch
+Patch4:		%{name}-fips_install.patch
 URL:		http://www.openssl.org/
 BuildRequires:	perl-devel
 BuildRequires:	rpm-perlprov
@@ -66,23 +62,12 @@ Requires:	%{name} = %{version}-%{release}
 %description devel
 Development part of OpenSSL library.
 
-%package static
-Summary:	OpenSSL Toolkit - static libraries
-Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description static
-Static OpenSSL library.
-
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
 
 %{__perl} -pi -e 's#%{_prefix}/local/bin/perl#%{__perl}#g' \
 	`grep -l -r "%{_prefix}/local/bin/perl" *`
@@ -93,24 +78,17 @@ sed -i -e 's|$prefix/lib/engines|%{_libdir}/engines|g' Configure
 touch Makefile.*
 %{__perl} util/perlpath.pl %{__perl}
 
-OPTFLAGS="%{rpmcflags}"	\
 ./Configure		\
 	--openssldir=%{_sysconfdir}/%{name}	\
 	--libdir=%{_lib}			\
-	enable-cms				\
-	enable-idea				\
-	enable-mdc2				\
-	enable-rc5				\
-	enable-rfc3779				\
-	enable-seed				\
-	enable-tlsext				\
-	shared threads				\
+	enable-md2 shared zlib threads		\
 %ifarch %{ix86}
-	linux-elf
+	linux-elf	\
 %endif
 %ifarch %{x8664}
-	linux-x86_64
+	linux-x86_64	\
 %endif
+	%{rpmcflags} %{rpmldflags} -DOPENSSL_NO_TLS1_2_CLIENT
 
 %{__make} -j1 all rehash	\
 	CC="%{__cc}"		\
@@ -135,12 +113,11 @@ install -d $RPM_BUILD_ROOT{%{_sysconfdir}/%{name},%{_libdir}/%{name}} \
 	$RPM_BUILD_ROOT{%{_mandir}/{pl/man1,man{1,3,5,7}},%{_datadir}/ssl} \
 	$RPM_BUILD_ROOT%{_pkgconfigdir}
 
-%{__make} install \
+%{__make} -j1 install \
 	INSTALLTOP=%{_prefix} \
 	INSTALL_PREFIX=$RPM_BUILD_ROOT \
 	MANDIR=%{_mandir}
 
-install libcrypto.a libssl.a $RPM_BUILD_ROOT%{_libdir}
 install lib*.so.*.* $RPM_BUILD_ROOT%{_libdir}
 ln -sf libcrypto.so.*.* $RPM_BUILD_ROOT%{_libdir}/libcrypto.so
 ln -sf libssl.so.*.* $RPM_BUILD_ROOT%{_libdir}/libssl.so
@@ -150,9 +127,6 @@ rm -rf $RPM_BUILD_ROOT%{_sysconfdir}/%{name}/misc
 
 # not installed as individual utilities (see openssl dgst instead)
 %{__rm} $RPM_BUILD_ROOT%{_mandir}/man1/{md2,md4,md5,mdc2,ripemd160,sha,sha1}.1
-
-install %{SOURCE1} $RPM_BUILD_ROOT%{_bindir}/ssl-certificate
-install %{SOURCE2} $RPM_BUILD_ROOT%{_bindir}/c_rehash.sh
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -177,8 +151,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/openssl.cnf
 %attr(755,root,root) %{_bindir}/%{name}
-%attr(755,root,root) %{_bindir}/c_rehash.sh
-%attr(754,root,root) %{_bindir}/ssl-certificate
 
 %dir %{_libdir}/%{name}
 %attr(755,root,root) %{_libdir}/%{name}/CA.sh
@@ -243,6 +215,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/openssl*.3*
 %{_mandir}/man7/openssl_des_modes.7*
 
-%files static
-%defattr(644,root,root,755)
-%{_libdir}/lib*.a
