@@ -5,8 +5,8 @@ After=syslog.target network.target
 [Service]
 ExecStart=/usr/sbin/cupsd -f
 StandardOutput=syslog
-ExecStartPost=/sbin/udevadm trigger --subsystem-match=usb --attr-match=bInterfaceClass=07 --attr-match=bInterfaceSubClass=01
-ExecStartPost=/sbin/udevadm trigger --subsystem-match=usb --property-match=DEVNAME=/dev/usb/lp*
+ExecStartPost=/usr/bin/udevadm trigger --subsystem-match=usb --attr-match=bInterfaceClass=07 --attr-match=bInterfaceSubClass=01
+ExecStartPost=/usr/bin/udevadm trigger --subsystem-match=usb --property-match=DEVNAME=/dev/usb/lp*
 
 [Install]
 WantedBy=multi-user.target
