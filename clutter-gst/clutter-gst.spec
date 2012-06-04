@@ -1,11 +1,11 @@
 Summary:	Library integrating clutter with GStreamer
 Name:		clutter-gst
-Version:	1.5.4
+Version:	1.5.6
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://source.clutter-project.org/sources/clutter-gst/1.5/%{name}-%{version}.tar.xz
-# Source0-md5:	ab75f92e36bdd6b6bbb7cd0d44a18da5
+# Source0-md5:	9615d8617450a0778e8c5d28fc316163
 URL:		http://www.clutter-project.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
