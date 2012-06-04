@@ -1,7 +1,7 @@
 Summary:	DHCP Client Daemon
 Name:		dhcpcd
 Version:	5.5.6
-Release:	2
+Release:	3
 License:	BSD
 Group:		Networking/Daemons
 #Source0Download: http://developer.berlios.de/project/filelist.php?group_id=4229
@@ -22,6 +22,9 @@ draft-ietf-dhc-dhcp-09 (when -r option is not specified) and RFC1541
 
 %prep
 %setup -q
+
+# clientid by default
+sed -i -e "s|#clientid|clientid|" dhcpcd.conf
 
 %build
 %configure \
