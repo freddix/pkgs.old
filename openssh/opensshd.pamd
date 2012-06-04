@@ -22,13 +22,6 @@ session    required     pam_limits.so
 # that was authenticated
 session    optional     pam_loginuid.so
 
-# This also defines the MAIL environment variable
-# However, userdel also needs MAIL_DIR and MAIL_FILE variables
-# in /etc/login.defs to make sure that removing a user
-# also removes the user's mail spool file.
-# See comments in /etc/login.defs
-session    optional     pam_mail.so standard
-
 # Standard Un*x account and session
 account    include      common-account
 password   include      common-password
