@@ -1,22 +1,21 @@
 Summary:	A graphical Audio CD ripper and encoder
 Name:		asunder
-Version:	2.1
-Release:	1
+Version:	2.2
+Release:	2
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://littlesvr.ca/asunder/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	05419a29fd31321f0823c3f90ee1b911
+# Source0-md5:	4996860f552879fd8abdc87d1c6c7530
 URL:		http://littlesvr.ca/asunder/
 BuildRequires:	gettext-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	libcddb-devel
 BuildRequires:	pkg-config
 Requires:	cdparanoia-III
-Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-It allows to save tracks from an Audio CD as WAV, MP3, Ogg, and/or
-FLAC.
+Asunder is a graphical Audio CD ripper and encoder for Linux.
 
 %prep
 %setup -q
@@ -34,6 +33,7 @@ rm -rf $RPM_BUILD_ROOT
 desktop-file-validate $RPM_BUILD_ROOT%{_desktopdir}/asunder.desktop
 
 mv $RPM_BUILD_ROOT%{_datadir}/locale/ur{_PK,}
+rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/bs_BA
 
 %find_lang %{name}
 
