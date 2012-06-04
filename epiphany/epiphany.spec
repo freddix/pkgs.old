@@ -1,13 +1,19 @@
-%define		basever	3.5
+%define		basever	3.4
 
 Summary:	WebKit-based GNOME web browser
 Name:		epiphany
-Version:	%{basever}.1
-Release:	1
+Version:	%{basever}.2
+Release:	2
 License:	GPL v2
 Group:		X11/Applications/Networking
 Source0:	http://ftp.gnome.org/pub/gnome/sources/epiphany/%{basever}/%{name}-%{version}.tar.xz
-# Source0-md5:	549af7e85376b21bfe8af176a10207b5
+# Source0-md5:	dc0bf1dc42eb1dc3f0e80d50174315df
+Patch0:		1.patch
+Patch1:		2.patch
+Patch2:		3.patch
+Patch3:		4.patch
+Patch4:		5.patch
+Patch5:		6.patch
 URL:		http://www.gnome.org/projects/epiphany/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -33,7 +39,7 @@ Requires:	xdg-icon-theme
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-GNOME browser based on Gecko (Mozilla rendering engine).
+GNOME web browser based on WebKit.
 
 # doesn't require base
 %package devel
@@ -53,6 +59,12 @@ Epiphany API documentation.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+#%patch3 -p1
+%patch4 -p1
+%patch5 -p1
 
 # kill gnome common deps
 sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\

@@ -1,0 +1,21 @@
+From f1c478dc347b8e59dab6e4d23095b44c33515be7 Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Wed, 28 Mar 2012 17:16:28 +0000
+Subject: ephy-shell: save the session state on Quit
+
+It will be automatically restored on startup.
+---
+diff --git a/src/ephy-shell.c b/src/ephy-shell.c
+index 3e8450c..51135e8 100644
+--- a/src/ephy-shell.c
++++ b/src/ephy-shell.c
+@@ -246,6 +246,7 @@ quit_application (GSimpleAction *action,
+                   GVariant *parameter,
+                   gpointer user_data)
+ {
++  ephy_session_close (EPHY_SESSION (ephy_shell_get_session (ephy_shell)));
+   g_application_quit (g_application_get_default ());
+ }
+ 
+--
+cgit v0.9.0.2

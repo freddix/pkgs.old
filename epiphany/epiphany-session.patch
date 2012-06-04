@@ -1,0 +1,527 @@
+From 87131a9bef82b5ec84bcd4bd3bf9471d6325f7cd Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Wed, 28 Mar 2012 16:44:00 +0000
+Subject: ephy-session: always auto-resume session on crash
+
+Don't ask, just do it.
+---
+diff --git a/src/ephy-session.c b/src/ephy-session.c
+index 22c04d5..7277662 100644
+--- a/src/ephy-session.c
++++ b/src/ephy-session.c
+@@ -61,7 +61,6 @@ struct _EphySessionPrivate
+ {
+ 	GList *windows;
+ 	GList *tool_windows;
+-	GtkWidget *resume_infobar;
+ 	GtkWidget *resume_window;
+ 
+ 	GQueue *queue;
+@@ -71,7 +70,6 @@ struct _EphySessionPrivate
+ 
+ 	guint dont_save : 1;
+ 	guint quit_while_resuming : 1;
+-	guint loading_homepage : 1;
+ };
+ 
+ #define BOOKMARKS_EDITOR_ID	"BookmarksEditor"
+@@ -229,46 +227,6 @@ session_command_find (const SessionCommand *cmd,
+ }
+ 
+ static void
+-resume_infobar_response_cb (GtkWidget *info_bar,
+-			    int response,
+-			    EphySession *session)
+-{
+-	guint32 user_time;
+-	EphySessionPrivate *priv = session->priv;
+-
+-	LOG ("resume_infobar_response_cb response:%d", response);
+-
+-	gtk_widget_hide (info_bar);
+-
+-	user_time = gtk_get_current_event_time ();
+-
+-	priv->dont_save = FALSE;
+-
+-	gtk_widget_destroy (info_bar);
+-	priv->resume_infobar = NULL;
+-
+-	if (response == GTK_RESPONSE_YES)
+-	{
+-		ephy_session_queue_command (session,
+-					    EPHY_SESSION_CMD_LOAD_SESSION,
+-					    SESSION_CRASHED, NULL,
+-					    user_time, TRUE);
+-	}
+-}
+-
+-static void
+-resume_infobar_weak_ref_cb (EphySession *session,
+-			    GObject *zombie)
+-{
+-	EphySessionPrivate *priv = session->priv;
+-
+-	LOG ("resume_window_infobar_weak_ref_cb");
+-
+-	priv->dont_save = FALSE;
+-	session_command_queue_next (session);
+-}
+-
+-static void
+ session_command_autoresume (EphySession *session,
+ 			    guint32 user_time)
+ {
+@@ -290,13 +248,6 @@ session_command_autoresume (EphySession *session,
+ 	    priv->windows != NULL ||
+ 	    priv->tool_windows != NULL)
+ 	{
+-		/* FIXME can this happen? */
+-		if (priv->resume_infobar != NULL)
+-		{
+-			gtk_widget_hide (priv->resume_infobar);
+-			gtk_widget_destroy (priv->resume_infobar);
+-		}
+-
+ 		ephy_session_queue_command (session,
+ 					    EPHY_SESSION_CMD_MAYBE_OPEN_WINDOW,
+ 					    NULL, NULL, user_time, FALSE);
+@@ -313,8 +264,8 @@ session_command_autoresume (EphySession *session,
+ 	}
+ 
+ 	ephy_session_queue_command (session,
+-				    EPHY_SESSION_CMD_MAYBE_OPEN_WINDOW_RESTORE,
+-				    NULL, NULL, user_time, TRUE);
++				    EPHY_SESSION_CMD_LOAD_SESSION,
++				    SESSION_CRASHED, NULL, user_time, TRUE);
+ }
+ 
+ static void
+@@ -387,24 +338,11 @@ session_command_open_uris (EphySession *session,
+ 		 * that case use a new tab in the same window */
+ 		if (i == 0 && priv->resume_window != NULL)
+ 		{
+-			if (priv->resume_infobar != NULL)
+-			{
+-				embed = ephy_shell_new_tab_full (shell, EPHY_WINDOW (priv->resume_window),
+-								 NULL /* parent tab */,
+-								 request,
+-								 EPHY_NEW_TAB_IN_EXISTING_WINDOW | page_flags,
+-								 EPHY_WEB_VIEW_CHROME_ALL,
+-								 FALSE /* is popup? */,
+-								 user_time);
+-			}
+-			else
+-			{
+-				EphyWebView *web_view;
+-
+-				embed = ephy_embed_container_get_active_child (EPHY_EMBED_CONTAINER (priv->resume_window));
+-				web_view = ephy_embed_get_web_view (embed);
+-				ephy_web_view_load_url (web_view, url);
+-			}
++			EphyWebView *web_view;
++			
++			embed = ephy_embed_container_get_active_child (EPHY_EMBED_CONTAINER (priv->resume_window));
++			web_view = ephy_embed_get_web_view (embed);
++			ephy_web_view_load_url (web_view, url);
+ 		}
+ 		else
+ 		{
+@@ -426,46 +364,6 @@ session_command_open_uris (EphySession *session,
+ 	g_object_unref (shell);
+ }
+ 
+-static void
+-send_no_response_cb (GtkButton *button, GtkInfoBar *info_bar)
+-{
+-	gtk_info_bar_response (info_bar, GTK_RESPONSE_NO);
+-}
+-
+-static void
+-send_yes_response_cb (GtkButton *button, GtkInfoBar *info_bar)
+-{
+-	gtk_info_bar_response (info_bar, GTK_RESPONSE_YES);
+-}
+-
+-static void
+-loading_homepage_cb (EphyWebView *view, EphySession *session)
+-{
+-	EphySessionPrivate *priv = session->priv;
+-
+-	priv->loading_homepage = TRUE;
+-}
+-
+-static void
+-new_document_now_cb (EphyWebView *view, const char *uri, EphySession *session)
+-{
+-	EphySessionPrivate *priv = session->priv;
+-
+-	if (priv->loading_homepage)
+-	{
+-		priv->loading_homepage = FALSE;
+-		return;
+-	}
+-
+-	if (priv->resume_infobar) 
+-	{
+-		EphyEmbed *embed = EPHY_GET_EMBED_FROM_EPHY_WEB_VIEW (view);
+-		ephy_embed_remove_top_widget (embed, priv->resume_infobar);
+-		priv->resume_infobar = NULL;
+-		priv->resume_window = NULL;
+-	}
+-}
+-
+ static gboolean
+ session_command_dispatch (EphySession *session)
+ {
+@@ -507,74 +405,6 @@ session_command_dispatch (EphySession *session)
+ 							 cmd->user_time);
+ 			}
+ 			break;
+-		case EPHY_SESSION_CMD_MAYBE_OPEN_WINDOW_RESTORE:
+-			/* FIXME: maybe just check for normal windows? */
+-			if (priv->windows == NULL &&
+-			    priv->tool_windows == NULL)
+-			{
+-				GtkWidget *info_bar;
+-				GtkWidget *action_area;
+-				GtkWidget *button_box;
+-				GtkWidget *action_button;
+-				GtkWidget *content_area;
+-				GtkWidget *label;
+-				EphyEmbed *embed;
+-				EphyWebView *view;
+-
+-				session->priv->dont_save = TRUE;
+-
+-				embed = ephy_shell_new_tab_full (ephy_shell_get_default (),
+-								 NULL /* window */, NULL /* tab */,
+-								 NULL /* Networ	kRequest */,
+-								 EPHY_NEW_TAB_IN_NEW_WINDOW |
+-								 EPHY_NEW_TAB_HOME_PAGE,
+-								 EPHY_WEB_VIEW_CHROME_ALL,
+-								 FALSE /* is popup? */,
+-								 cmd->user_time);
+-
+-				info_bar = gtk_info_bar_new ();
+-
+-				session->priv->resume_infobar = info_bar;
+-				session->priv->resume_window = gtk_widget_get_toplevel (GTK_WIDGET (embed));
+-
+-				action_area = gtk_info_bar_get_action_area (GTK_INFO_BAR (info_bar));
+-				button_box = gtk_button_box_new (GTK_ORIENTATION_HORIZONTAL);
+-				gtk_container_add (GTK_CONTAINER (action_area), button_box);
+-
+-				action_button = gtk_button_new_with_mnemonic (_("_Don't recover"));
+-				g_signal_connect (action_button, "clicked",
+-						  G_CALLBACK (send_no_response_cb), info_bar);
+-				gtk_box_pack_start (GTK_BOX (button_box), action_button, FALSE, FALSE, 0);
+-
+-				action_button = gtk_button_new_with_mnemonic (_("_Recover session"));
+-				g_signal_connect (action_button, "clicked",
+-						  G_CALLBACK (send_yes_response_cb), info_bar);
+-				gtk_box_pack_start (GTK_BOX (button_box), action_button, FALSE, FALSE, 0);
+-
+-				label = gtk_label_new (_("Do you want to recover the previous browser windows and tabs?"));
+-				gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
+-				content_area = gtk_info_bar_get_content_area (GTK_INFO_BAR (info_bar));
+-				gtk_container_add (GTK_CONTAINER (content_area), label);
+-				gtk_widget_show_all (info_bar);
+-
+-				g_signal_connect (info_bar, "response",
+-						  G_CALLBACK (resume_infobar_response_cb), session);
+-
+-				g_object_weak_ref (G_OBJECT (info_bar),
+-						   (GWeakNotify) resume_infobar_weak_ref_cb,
+-						   session);
+-				
+-				ephy_embed_add_top_widget (embed, info_bar, FALSE);
+-
+-				view = ephy_embed_get_web_view (embed);
+-
+-				g_signal_connect (view, "loading-homepage",
+-						  G_CALLBACK (loading_homepage_cb), session);
+-
+-				g_signal_connect (view, "new-document-now",
+-						  G_CALLBACK (new_document_now_cb), session);
+-			}
+-			break;
+ 		default:
+ 			g_assert_not_reached ();
+ 			break;
+@@ -603,7 +433,6 @@ session_command_queue_next (EphySession *session)
+ 	LOG ("queue_next");
+ 
+ 	if (!g_queue_is_empty (priv->queue) &&
+-	    priv->resume_infobar == NULL &&
+ 	    priv->queue_idle_id == 0)
+ 	{
+ 		priv->queue_idle_id =
+--
+cgit v0.9.0.2
+From a803d47c6af1e1c147bbfa342e2b4cbd960185b4 Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Wed, 28 Mar 2012 16:45:17 +0000
+Subject: ephy-session: it's not really possible to close while restoring anymore
+
+---
+diff --git a/src/ephy-session.c b/src/ephy-session.c
+index 7277662..e9c3924 100644
+--- a/src/ephy-session.c
++++ b/src/ephy-session.c
+@@ -69,7 +69,6 @@ struct _EphySessionPrivate
+ 	GtkWidget *quit_interact_dialog;
+ 
+ 	guint dont_save : 1;
+-	guint quit_while_resuming : 1;
+ };
+ 
+ #define BOOKMARKS_EDITOR_ID	"BookmarksEditor"
+@@ -540,14 +539,6 @@ ephy_session_dispose (GObject *object)
+ 
+ 	LOG ("EphySession disposing");
+ 
+-	/* Only remove the crashed session if we're not shutting down while
+-	 * the session resume dialogue was still shown!
+-	*/
+-	if (priv->quit_while_resuming == FALSE)
+-	{
+-		session_delete (session, SESSION_CRASHED);
+-	}
+-
+ 	session_command_queue_clear (session);
+ 
+ 	G_OBJECT_CLASS (ephy_session_parent_class)->dispose (object);
+@@ -651,8 +642,6 @@ ephy_session_close (EphySession *session)
+ 	g_object_ref (ephy_shell_get_default ());
+ 
+ 	priv->dont_save = TRUE;
+-	/* need to set this up here while the dialogue hasn't been killed yet */
+-	priv->quit_while_resuming = priv->resume_window != NULL;	
+ 
+ 	/* Clear command queue */
+ 	session_command_queue_clear (session);
+--
+cgit v0.9.0.2
+From 15c3d2da0de1da85d344247c9551e2edc7615720 Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Wed, 28 Mar 2012 16:53:26 +0000
+Subject: ephy-session: rename session_crashed.xml to session_state.xml
+
+We are going to use his all the time now, not only for crashes.
+---
+diff --git a/src/ephy-session.c b/src/ephy-session.c
+index e9c3924..a33021e 100644
+--- a/src/ephy-session.c
++++ b/src/ephy-session.c
+@@ -73,7 +73,7 @@ struct _EphySessionPrivate
+ 
+ #define BOOKMARKS_EDITOR_ID	"BookmarksEditor"
+ #define HISTORY_WINDOW_ID	"HistoryWindow"
+-#define SESSION_CRASHED		"type:session_crashed"
++#define SESSION_STATE		"type:session_state"
+ 
+ static void ephy_session_class_init	(EphySessionClass *klass);
+ static void ephy_session_iface_init	(EphyExtensionIface *iface);
+@@ -103,10 +103,10 @@ get_session_file (const char *filename)
+ 		return NULL;
+ 	}
+ 
+-	if (strcmp (filename, SESSION_CRASHED) == 0)
++	if (strcmp (filename, SESSION_STATE) == 0)
+ 	{
+ 		path = g_build_filename (ephy_dot_dir (),
+-					 "session_crashed.xml",
++					 "session_state.xml",
+ 					 NULL);
+ 	}
+ 	else
+@@ -144,7 +144,7 @@ load_status_notify_cb (EphyWebView *view,
+ 	if (status == WEBKIT_LOAD_PROVISIONAL ||
+ 	    status == WEBKIT_LOAD_COMMITTED || 
+ 	    status == WEBKIT_LOAD_FINISHED)
+-		ephy_session_save (session, SESSION_CRASHED);
++		ephy_session_save (session, SESSION_STATE);
+ }
+ 
+ static void
+@@ -163,7 +163,7 @@ notebook_page_removed_cb (GtkWidget *notebook,
+ 			  guint position,
+ 			  EphySession *session)
+ {
+-	ephy_session_save (session, SESSION_CRASHED);
++	ephy_session_save (session, SESSION_STATE);
+ 
+ 	g_signal_handlers_disconnect_by_func
+ 		(ephy_embed_get_web_view (embed), G_CALLBACK (load_status_notify_cb),
+@@ -176,7 +176,7 @@ notebook_page_reordered_cb (GtkWidget *notebook,
+ 			    guint position,
+ 			    EphySession *session)
+ {
+-	ephy_session_save (session, SESSION_CRASHED);
++	ephy_session_save (session, SESSION_STATE);
+ }
+ 
+ static gboolean
+@@ -236,7 +236,7 @@ session_command_autoresume (EphySession *session,
+ 
+ 	LOG ("ephy_session_autoresume");
+ 
+-	saved_session_file = get_session_file (SESSION_CRASHED);
++	saved_session_file = get_session_file (SESSION_STATE);
+ 	saved_session_file_path = g_file_get_path (saved_session_file);
+ 	g_object_unref (saved_session_file);
+ 	crashed_session = g_file_test (saved_session_file_path, G_FILE_TEST_EXISTS);
+@@ -264,7 +264,7 @@ session_command_autoresume (EphySession *session,
+ 
+ 	ephy_session_queue_command (session,
+ 				    EPHY_SESSION_CMD_LOAD_SESSION,
+-				    SESSION_CRASHED, NULL, user_time, TRUE);
++				    SESSION_STATE, NULL, user_time, TRUE);
+ }
+ 
+ static void
+@@ -471,7 +471,7 @@ impl_attach_window (EphyExtension *extension,
+ 	LOG ("impl_attach_window");
+ 
+ 	session->priv->windows = g_list_append (session->priv->windows, window);
+-	ephy_session_save (session, SESSION_CRASHED);
++	ephy_session_save (session, SESSION_STATE);
+ 
+ 	g_signal_connect (window, "focus-in-event",
+ 			  G_CALLBACK (window_focus_in_event_cb), session);
+@@ -510,7 +510,7 @@ impl_detach_window (EphyExtension *extension,
+ 	LOG ("impl_detach_window");
+ 
+ 	session->priv->windows = g_list_remove (session->priv->windows, window);
+-	ephy_session_save (session, SESSION_CRASHED);
++	ephy_session_save (session, SESSION_STATE);
+ 
+ 	/* NOTE: since the window will be destroyed anyway, we don't need to
+ 	 * disconnect our signal handlers from its components.
+@@ -1217,7 +1217,7 @@ ephy_session_load (EphySession *session,
+ 	priv->dont_save = FALSE;
+ 	priv->resume_window = NULL;
+ 
+-	ephy_session_save (session, SESSION_CRASHED);
++	ephy_session_save (session, SESSION_STATE);
+ 
+ 	g_object_unref (ephy_shell_get_default ());
+ 
+@@ -1257,7 +1257,7 @@ ephy_session_add_window (EphySession *session,
+ 		g_list_append (session->priv->tool_windows, window);
+ 	gtk_application_add_window (GTK_APPLICATION (ephy_shell_get_default ()), window);
+ 
+-	ephy_session_save (session, SESSION_CRASHED);
++	ephy_session_save (session, SESSION_STATE);
+ }
+ 
+ /**
+@@ -1278,7 +1278,7 @@ ephy_session_remove_window (EphySession *session,
+ 		g_list_remove (session->priv->tool_windows, window);
+ 	gtk_application_remove_window (GTK_APPLICATION (ephy_shell_get_default ()), window);
+ 
+-	ephy_session_save (session, SESSION_CRASHED);
++	ephy_session_save (session, SESSION_STATE);
+ }
+ 
+ /**
+--
+cgit v0.9.0.2
+From f10d47f6e340ae8192b1d37013b3a26e9ddff6be Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Wed, 28 Mar 2012 16:56:21 +0000
+Subject: ephy-session: remove unused variable
+
+---
+diff --git a/src/ephy-session.c b/src/ephy-session.c
+index a33021e..2096bcf 100644
+--- a/src/ephy-session.c
++++ b/src/ephy-session.c
+@@ -535,7 +535,6 @@ static void
+ ephy_session_dispose (GObject *object)
+ {
+ 	EphySession *session = EPHY_SESSION (object);
+-	EphySessionPrivate *priv = session->priv;
+ 
+ 	LOG ("EphySession disposing");
+ 
+--
+cgit v0.9.0.2
+From f1c478dc347b8e59dab6e4d23095b44c33515be7 Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Wed, 28 Mar 2012 17:16:28 +0000
+Subject: ephy-shell: save the session state on Quit
+
+It will be automatically restored on startup.
+---
+diff --git a/src/ephy-shell.c b/src/ephy-shell.c
+index 3e8450c..51135e8 100644
+--- a/src/ephy-shell.c
++++ b/src/ephy-shell.c
+@@ -246,6 +246,7 @@ quit_application (GSimpleAction *action,
+                   GVariant *parameter,
+                   gpointer user_data)
+ {
++  ephy_session_close (EPHY_SESSION (ephy_shell_get_session (ephy_shell)));
+   g_application_quit (g_application_get_default ());
+ }
+ 
+--
+cgit v0.9.0.2
+From 381ce4af310607cc84ac1e84abbecda2d7d3e7d9 Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Fri, 30 Mar 2012 09:44:03 +0000
+Subject: ephy-window: save the session when the last window is closed manually
+
+If the user closes the last window manually (pressing the [x] button
+in the window) she probably wants to save the session contents too, so
+do that. This is consistent with the behavior of Firefox and Chrome.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=673122
+---
+diff --git a/src/ephy-window.c b/src/ephy-window.c
+index ee1c0c2..a54f7f2 100644
+--- a/src/ephy-window.c
++++ b/src/ephy-window.c
+@@ -49,6 +49,7 @@
+ #include "ephy-page-menu-action.h"
+ #include "ephy-prefs.h"
+ #include "ephy-private.h"
++#include "ephy-session.h"
+ #include "ephy-settings.h"
+ #include "ephy-shell.h"
+ #include "ephy-state.h"
+@@ -994,8 +995,10 @@ ephy_window_delete_event (GtkWidget *widget,
+ 			  GdkEventAny *event)
+ {
+ 	EphyWindow *window = EPHY_WINDOW (widget);
++	EphySession *session;
+ 	EphyEmbed *modified_embed = NULL;
+-	GList *tabs, *l;
++	GList *tabs, *l, *windows;
++	guint number_windows;
+ 	gboolean modified = FALSE;
+ 
+ 	/* We ignore the delete_event if the disable_quit lockdown has been set
+@@ -1039,6 +1042,18 @@ ephy_window_delete_event (GtkWidget *widget,
+ 		return TRUE;
+ 	}
+ 
++	/* If this is the last window, save its state in the session. */
++	session = EPHY_SESSION (ephy_shell_get_session (ephy_shell));
++	windows = ephy_session_get_windows (session);
++	number_windows = g_list_length (windows);
++	g_list_free (windows);
++
++	if (number_windows == 1)
++	{
++		ephy_session_close (session);
++		return TRUE;
++	}
++
+ 	/* See bug #114689 */
+ 	gtk_widget_hide (widget);
+ 
+--
+cgit v0.9.0.2

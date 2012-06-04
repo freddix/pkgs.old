@@ -1,0 +1,20 @@
+From f10d47f6e340ae8192b1d37013b3a26e9ddff6be Mon Sep 17 00:00:00 2001
+From: Xan Lopez <xan@igalia.com>
+Date: Wed, 28 Mar 2012 16:56:21 +0000
+Subject: ephy-session: remove unused variable
+
+---
+diff --git a/src/ephy-session.c b/src/ephy-session.c
+index a33021e..2096bcf 100644
+--- a/src/ephy-session.c
++++ b/src/ephy-session.c
+@@ -535,7 +535,6 @@ static void
+ ephy_session_dispose (GObject *object)
+ {
+ 	EphySession *session = EPHY_SESSION (object);
+-	EphySessionPrivate *priv = session->priv;
+ 
+ 	LOG ("EphySession disposing");
+ 
+--
+cgit v0.9.0.2

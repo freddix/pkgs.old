@@ -1,9 +1,9 @@
-%define		basever	3.5
+%define		basever	3.4
 
 Summary:	Collection of extensions for Epiphany
 Name:		epiphany-extensions
 Version:	3.4.0
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		X11/Applications/Networking
 Source0:	http://ftp.gnome.org/pub/gnome/sources/epiphany-extensions/3.4/%{name}-%{version}.tar.xz
@@ -11,7 +11,7 @@ Source0:	http://ftp.gnome.org/pub/gnome/sources/epiphany-extensions/3.4/%{name}-
 URL:		http://www.gnome.org/projects/epiphany/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	epiphany-devel >= 3.5.0
+BuildRequires:	epiphany-devel >= 3.4.0
 BuildRequires:	gtk3-webkit-devel
 BuildRequires:	intltool
 BuildRequires:	libtool
@@ -35,8 +35,6 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
     -i -e 's/GNOME_MAINTAINER_MODE_DEFINES//g'	\
     -i -e 's/GNOME_COMMON_INIT//g'		\
     -i -e 's/GNOME_DEBUG_CHECK//g' configure.ac
-
-sed -i -e 's/3.4/3.5/g' configure.ac
 
 %build
 %{__intltoolize}
