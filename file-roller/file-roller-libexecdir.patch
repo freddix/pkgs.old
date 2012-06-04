@@ -3,7 +3,7 @@ diff -aurN file-roller-3.4.0.orig/src/commands/Makefile.am file-roller-3.4.0/src
 +++ file-roller-3.4.0/src/commands/Makefile.am	2012-04-13 19:38:58.076403632 +0200
 @@ -1,4 +1,4 @@
 -privexecdir = $(libexecdir)/$(PACKAGE)
-+privexecdir = $(libexecdir)
++privexecdir = $(libexecdir)/
  privexec_PROGRAMS = rpm2cpio
  
  INCLUDES = $(DISABLE_DEPRECATED) $(FR_CFLAGS)
@@ -16,8 +16,8 @@ diff -aurN file-roller-3.4.0.orig/src/Makefile.am file-roller-3.4.0/src/Makefile
  uidir = $(datadir)/file-roller/ui
 -privexecdir = $(libexecdir)/file-roller/
 -shdir = $(libexecdir)/file-roller/
-+privexecdir = $(libexecdir)
-+shdir = $(libexecdir)
++privexecdir = $(libexecdir)/
++shdir = $(libexecdir)/
  endif
  
  INCLUDES =						\
@@ -27,7 +27,7 @@ diff -aurN file-roller-3.4.0.orig/src/sh/Makefile.am file-roller-3.4.0/src/sh/Ma
 @@ -1,5 +1,5 @@
 -shdir = $(libexecdir)/$(PACKAGE)
 -sh_DATA = isoinfo.sh 
-+shdir = $(libexecdir)
++shdir = $(libexecdir)/
 +sh_DATA = isoinfo.sh
  
  EXTRA_DIST = $(sh_DATA)
