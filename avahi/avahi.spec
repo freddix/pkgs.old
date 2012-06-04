@@ -3,12 +3,13 @@
 Summary:	Free mDNS/DNS-SD implementation
 Name:		avahi
 Version:	0.6.31
-Release:	8
+Release:	9
 License:	GPL v.2/LGPL
 Group:		Applications
 Source0:	http://avahi.org/download/%{name}-%{version}.tar.gz
 # Source0-md5:	2f22745b8f7368ad5a0a3fddac343f2d
 Source1:	%{name}.png
+Source2:	%{name}-tmpfiles.conf
 Patch0:		%{name}-desktop.patch
 Patch1:		%{name}-destdir.patch
 Patch2:		%{name}-browse-local.patch
@@ -208,7 +209,7 @@ Command line utilities using avahi-client.
 	--with-autoipd-user=avahi		\
 	--with-avahi-priv-access-group=avahi	\
 	--with-distro=none			\
-	--with-systemdsystemunitdir=/lib/systemd/system
+	--with-systemdsystemunitdir=%{systemdunitdir}
 %{__make}
 
 %install
@@ -220,6 +221,7 @@ install -d $RPM_BUILD_ROOT{%{_pixmapsdir},/etc/rc.d/init.d,/var/lib/avahi-autoip
 	pythondir=%{py_sitedir}
 
 install %{SOURCE1} $RPM_BUILD_ROOT%{_pixmapsdir}
+install -D %{SOURCE2} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 
 cp $RPM_BUILD_ROOT%{_datadir}/%{name}/interfaces/{avahi-discover,avahi-discover-standalone}.ui
 
@@ -234,7 +236,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 %groupadd -g 165 -r -f avahi
-%useradd -u 165 -r -d /usr/share/empty -s /bin/false -c "Avahi daemon" -g avahi avahi
+%useradd -u 165 -r -d /run/avahi -s /bin/false -c "Avahi daemon" -g avahi avahi
 
 %post
 if [ -s /etc/localtime ]; then
