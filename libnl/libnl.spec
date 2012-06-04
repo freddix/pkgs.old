@@ -1,12 +1,12 @@
 Summary:	Netlink sockets library
 Name:		libnl
-Version:	3.2.7
+Version:	3.2.9
 Release:	1
 Epoch:		1
 License:	LGPL v2.1
 Group:		Libraries
 Source0:	http://www.infradead.org/~tgr/libnl/files/%{name}-%{version}.tar.gz
-# Source0-md5:	6a233a9dffa0ee3a7f6110c95c5410ab
+# Source0-md5:	c13adec0239b266207fff07d79e5ce9e
 Patch0:		%{name}-link.patch
 URL:		http://www.infradead.org/~tgr/libnl/
 BuildRequires:	autoconf
@@ -87,6 +87,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/libnl
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/libnl/classid
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/libnl/pktloc
+%attr(755,root,root) %{_sbindir}/genl-ctrl-list
 %attr(755,root,root) %{_sbindir}/nl-class-*
 %attr(755,root,root) %{_sbindir}/nl-classid-lookup
 %attr(755,root,root) %{_sbindir}/nl-cls-*
@@ -112,6 +113,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libnl/cli/cls/*.so*
 %attr(755,root,root) %{_libdir}/libnl/cli/qdisc/*.so*
 
+%{_mandir}/man8/genl-ctrl-list.8.gz
 %{_mandir}/man8/nl-classid-lookup.8*
 %{_mandir}/man8/nl-pktloc-lookup.8*
 %{_mandir}/man8/nl-qdisc-*.8*
