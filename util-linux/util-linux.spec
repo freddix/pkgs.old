@@ -1,11 +1,11 @@
 Summary:	Collection of basic system utilities for Linux
 Name:		util-linux
-Version:	2.21
-Release:	3
+Version:	2.21.2
+Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.kernel.org/pub/linux/utils/util-linux/v2.21/%{name}-%{version}.tar.xz
-# Source0-md5:	208aa058f4117759d2939d1be7d662fc
+# Source0-md5:	54ba880f1d66782c2287ee2c898520e9
 Source2:	%{name}-login.pamd
 URL:		http://userweb.kernel.org/~kzak/util-linux-ng/
 BuildRequires:	autoconf
@@ -206,7 +206,6 @@ export CPPFLAGS
 	--enable-login-utils		\
 	--enable-partx			\
 	--enable-write			\
-	--with-pam			\
 	--without-selinux
 %{__make}
 
