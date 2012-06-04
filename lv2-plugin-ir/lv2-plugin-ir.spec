@@ -3,7 +3,7 @@
 Summary:	LV2 audio processing plugin
 Name:		lv2-plugin-ir
 Version:	1.3.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://factorial.hu/system/files/%{rname}-%{version}.tar.gz
@@ -14,7 +14,7 @@ BuildRequires:	gtk+-devel
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libstdc++-devel
-BuildRequires:	lv2core-devel
+BuildRequires:	lv2-devel
 BuildRequires:	pkg-config
 BuildRequires:	zita-convolver-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
