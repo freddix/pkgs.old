@@ -1,11 +1,11 @@
 Summary:	ITS-based XML translation tool
 Name:		itstool
-Version:	1.1.2
+Version:	1.1.3
 Release:	1
 License:	GPL v3
 Group:		Applications
 Source0:	http://files.itstool.org/itstool/%{name}-%{version}.tar.bz2
-# Source0-md5:	eb65689a98508a36a0fc778af2c22858
+# Source0-md5:	cde73f9559dfa4998b12729f470b7422
 URL:		http://itstool.org/
 Requires:	python-libxml2
 BuildArch:	noarch
