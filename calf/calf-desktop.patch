@@ -1,0 +1,17 @@
+diff -aurN calf-0.0.19.orig/calf.desktop.in calf-0.0.19/calf.desktop.in
+--- calf-0.0.19.orig/calf.desktop.in	2012-05-30 20:18:48.063929032 +0200
++++ calf-0.0.19/calf.desktop.in	2012-05-30 20:19:21.487511176 +0200
+@@ -2,12 +2,11 @@
+ Name=Calf Plugin Pack for JACK
+ Name[pl]=Zestaw wtyczek Calf
+ Name[ru]=Набор эффектов и инструментов Calf для JACK
+-Version=@VERSION@
+ Comment=Process and produce sounds using a set of plugins with JACK interface
+ Comment[pl]=Przetwarzaj i generuj dźwięk używając zestawu wtyczek zgodnych z JACK
+ Comment[ru]=Обработка и создание музыки при помощи эффектов и инструментов через JACK
+ Exec=calfjackhost
+ Terminal=false
+ Type=Application
+-Categories=Application;AudioVideo;Audio;GNOME
++Categories=AudioVideo;Audio;GNOME;GTK;
+ Icon=calf
