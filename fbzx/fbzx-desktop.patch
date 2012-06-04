@@ -1,0 +1,17 @@
+diff -aurN fbzx-2.9.0.orig/fbzx.desktop fbzx-2.9.0/fbzx.desktop
+--- fbzx-2.9.0.orig/fbzx.desktop	2012-06-01 19:55:50.740431032 +0200
++++ fbzx-2.9.0/fbzx.desktop	2012-06-01 22:43:48.237444982 +0200
+@@ -1,12 +1,9 @@
+ [Desktop Entry]
+-X-MultipleArgs=false
+ Type=Application
+-Version=2.9.0
+-Encoding=UTF-8
+ Name=FBZX
+ GenericName=A Sinclair ZX Spectrum emulator
+ Comment=Play with the old, great games of the venerable ZX Spectrum
+ TryExec=fbzx
+ Exec=fbzx
+-Categories=Game;
++Categories=Emulator;Game;
+ Icon=fbzx

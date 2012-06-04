@@ -1,0 +1,49 @@
+diff -aurN fbzx-2.9.0.orig/Makefile fbzx-2.9.0/Makefile
+--- fbzx-2.9.0.orig/Makefile	2012-06-01 19:55:50.743430996 +0200
++++ fbzx-2.9.0/Makefile	2012-06-01 22:51:21.196782212 +0200
+@@ -4,32 +4,27 @@
+         PREFIX2=/usr/local
+ endif
+ 
+-CFLAGS += `pkg-config --cflags sdl libpulse-simple alsa` -O2 -Wno-pointer-sign -Wall -D D_SOUND_PULSE -D D_SOUND_ALSA -D D_SOUND_OSS
+-LDFLAGS += `pkg-config --libs sdl libpulse-simple alsa`
++CFLAGS += `pkg-config --cflags sdl libpulse-simple alsa` $(OPTFLAGS) -Wno-pointer-sign -Wall -D D_SOUND_PULSE -D D_SOUND_ALSA -D D_SOUND_OSS
++LIBS += `pkg-config --libs sdl libpulse-simple alsa`
+ 
+ fbzx: computer.o Z80free.o Z80free_codes.o Z80free_codesCB.o Z80free_codesED.o Z80free_codesDD.o Z80free_codesFD.o Z80free_codesDDCB.o Z80free_codesFDCB.o emulator.o cargador.o characters.o menus.o sound.o tape.o spk_ay.o microdrive.o
+ 
+-	$(CC) -o fbzx computer.o Z80free.o Z80free_codes.o Z80free_codesCB.o Z80free_codesED.o Z80free_codesDD.o Z80free_codesFD.o Z80free_codesDDCB.o Z80free_codesFDCB.o emulator.o cargador.o characters.o menus.o sound.o tape.o spk_ay.o microdrive.o $(LDFLAGS)
++	$(CC) $(OPTFLAGS) $(LDFLAGS) -o fbzx computer.o Z80free.o Z80free_codes.o Z80free_codesCB.o Z80free_codesED.o Z80free_codesDD.o Z80free_codesFD.o Z80free_codesDDCB.o Z80free_codesFDCB.o emulator.o cargador.o characters.o menus.o sound.o tape.o spk_ay.o microdrive.o $(LIBS)
+ 
+ clean:
+ 	rm fbzx *.o *~
+ 
+ install:
+-	rm -f $(PREFIX2)/bin/fbzx
+-	cp fbzx $(PREFIX2)/bin
+-	mkdir -p $(PREFIX2)/share/fbzx
+-	mkdir -p $(PREFIX2)/share/spectrum-roms
+-	mkdir -p $(PREFIX2)/share/applications
+-	mkdir -p $(PREFIX2)/share/pixmaps
+-	mkdir -p $(PREFIX2)/share/doc/fbzx
+-	cp spectrum-roms/* $(PREFIX2)/share/spectrum-roms
+-	cp keymap.bmp $(PREFIX2)/share/fbzx
+-	cp fbzx.desktop $(PREFIX2)/share/applications
+-	cp fbzx.svg $(PREFIX2)/share/pixmaps
+-	cp AMSTRAD CAPABILITIES COPYING FAQ README README.TZX VERSIONS $(PREFIX2)/share/doc/fbzx/
+-	chmod 644 $(PREFIX2)/share/fbzx/*
+-	chmod 644 $(PREFIX2)/share/spectrum-roms/*
+-	chmod 644 $(PREFIX2)/share/doc/fbzx/*
++	mkdir -p $(DESTDIR)/usr/bin
++	mkdir -p $(DESTDIR)/usr/share/fbzx
++	mkdir -p $(DESTDIR)/usr/share/fbzx/spectrum-roms
++	mkdir -p $(DESTDIR)/usr/share/applications
++	mkdir -p $(DESTDIR)/usr/share/pixmaps
++	mkdir -p $(DESTDIR)/usr/share/doc/fbzx
++	cp fbzx $(DESTDIR)/usr/bin
++	cp spectrum-roms/* $(DESTDIR)/usr/share/fbzx/spectrum-roms
++	cp keymap.bmp $(DESTDIR)/usr/share/fbzx
++	cp fbzx.desktop $(DESTDIR)/usr/share/applications
+ 
+ uninstall:
+ 	rm -f $(PREFIX2)/bin/fbzx
