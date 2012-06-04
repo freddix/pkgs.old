@@ -1,0 +1,12 @@
+diff -aurN systemd-185.orig/src/journal/journald.conf systemd-185/src/journal/journald.conf
+--- systemd-185.orig/src/journal/journald.conf	2012-06-04 22:23:08.894258583 +0200
++++ systemd-185/src/journal/journald.conf	2012-06-04 22:23:32.124968158 +0200
+@@ -22,7 +22,7 @@
+ #ForwardToSyslog=yes
+ #ForwardToKMsg=no
+ #ForwardToConsole=no
+-#ImportKernel=yes
++ImportKernel=no
+ #TTYPath=/dev/console
+ #MaxLevelStore=debug
+ #MaxLevelSyslog=debug
