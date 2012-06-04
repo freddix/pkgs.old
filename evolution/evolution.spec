@@ -2,12 +2,12 @@
 
 Summary:	The GNOME Email/Calendar/Addressbook Suite
 Name:		evolution
-Version:	%{basever}.1
-Release:	4
+Version:	%{basever}.2
+Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evolution/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	d178b6a9869f92e66b2022d4e35077ee
+# Source0-md5:	e161138610416bfff07e6e0a1d9e4781
 Patch0:		%{name}-nolibs.patch
 Patch1:		%{name}-bug655753.patch
 Patch2:		%{name}-bug655753_2.patch
@@ -105,6 +105,7 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 	--disable-silent-rules				\
 	--disable-static				\
 	--enable-canberra				\
+	--enable-nm=no					\
 	--enable-nss=yes				\
 	--enable-smime=yes				\
 	--enable-weather				\
@@ -176,7 +177,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-mail.so
 %attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-mailto-handler.so
 %attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-mdn.so
-%attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-network-manager.so
+#%attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-network-manager.so
 %attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-offline-alert.so
 %attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-online-accounts.so
 %attr(755,root,root) %{_libdir}/evolution/%{basever}/modules/libevolution-module-plugin-lib.so
