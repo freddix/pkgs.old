@@ -1,11 +1,11 @@
 Summary:	Framework providing Desktop activity awareness
 Name:		zeitgeist
-Version:	0.9.0
+Version:	0.9.0.1
 Release:	1
 License:	LGPL v2
 Group:		Daemons
-Source0:	http://launchpad.net/zeitgeist/0.9/0.9.0/+download/%{name}-%{version}.tar.bz2
-# Source0-md5:	fc2706611f435a027cd520f0da0982d7
+Source0:	http://launchpad.net/zeitgeist/0.9/%{version}/+download/%{name}-%{version}.tar.bz2
+# Source0-md5:	08f2eb384824e8458f18e10db7654965
 URL:		http://launchpad.net/zeitgeist
 BuildRequires:	autoconf
 BuildRequires:	automake
