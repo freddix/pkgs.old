@@ -1,16 +1,14 @@
 Summary:	Realtime audio/video encoder and streaming server
 Name:		ffmpeg
 Version:	0.10.3
-Release:	1
-License:	GPL with LGPL parts
+Release:	2
+License:	GPL v3
 Group:		Applications/Multimedia
 Source0:	http://ffmpeg.org/releases/%{name}-%{version}.tar.bz2
 # Source0-md5:	775d184933f71ff44a2fff4968e78b2b
 URL:		http://ffmpeg.org/
 BuildRequires:	SDL-devel
 BuildRequires:	dirac-devel
-BuildRequires:	faac-devel
-BuildRequires:	faad2-devel
 BuildRequires:	flac-devel
 BuildRequires:	freetype-devel
 BuildRequires:	jack-audio-connection-kit-devel
@@ -30,6 +28,7 @@ BuildRequires:	perl-tools-pod
 BuildRequires:	schroedinger-devel
 BuildRequires:	speex-devel
 BuildRequires:	texinfo
+BuildRequires:	vo-aacenc-devel
 BuildRequires:	xvidcore-devel
 BuildRequires:	zlib-devel
 Requires:	%{name}-libs = %{version}-%{release}
@@ -80,12 +79,9 @@ sed -i -e 's|gsm/gsm.h|gsm.h|' configure libavcodec/libgsm.c
 	--disable-ffserver		\
 	--disable-static		\
 	--disable-stripping		\
+	--enable-avfilter		\
 	--enable-gpl			\
-	--enable-nonfree		\
-	--enable-version3		\
 	--enable-libdc1394		\
-	--enable-libdirac		\
-	--enable-libfaac		\
 	--enable-libgsm			\
 	--enable-libmp3lame		\
 	--enable-libopencore-amrnb	\
@@ -98,11 +94,13 @@ sed -i -e 's|gsm/gsm.h|gsm.h|' configure libavcodec/libgsm.c
 	--enable-libvpx			\
 	--enable-libx264		\
 	--enable-libxvid		\
-	--enable-avfilter		\
+	--enable-vaapi			\
+	--enable-libvo-aacenc		\
 	--enable-postproc		\
 	--enable-pthreads		\
 	--enable-runtime-cpudetect	\
 	--enable-shared			\
+	--enable-version3		\
 	--enable-x11grab
 %{__make} V=1
 
@@ -135,6 +133,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %ghost %{_libdir}/libavdevice.so.??
 %attr(755,root,root) %ghost %{_libdir}/libavfilter.so.?
 %attr(755,root,root) %ghost %{_libdir}/libavformat.so.??
+#%attr(755,root,root) %ghost %{_libdir}/libavresample.so.?
 %attr(755,root,root) %ghost %{_libdir}/libavutil.so.??
 %attr(755,root,root) %ghost %{_libdir}/libpostproc.so.??
 %attr(755,root,root) %ghost %{_libdir}/libswresample.so.?
@@ -143,10 +142,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libavdevice.so.*.*.*
 %attr(755,root,root) %{_libdir}/libavfilter.so.*.*.*
 %attr(755,root,root) %{_libdir}/libavformat.so.*.*.*
+#%attr(755,root,root) %{_libdir}/libavresample.so.*.*.*
 %attr(755,root,root) %{_libdir}/libavutil.so.*.*.*
 %attr(755,root,root) %{_libdir}/libpostproc.so.*.*.*
 %attr(755,root,root) %{_libdir}/libswresample.so.*.*.*
 %attr(755,root,root) %{_libdir}/libswscale.so.*.*.*
+
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/*.ffpreset
 %{_datadir}/%{name}/*.xsd
@@ -162,10 +163,12 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libpostproc.so
 %attr(755,root,root) %{_libdir}/libswresample.so
 %attr(755,root,root) %{_libdir}/libswscale.so
+#%attr(755,root,root) %{_libdir}/libavresample.so
 %{_includedir}/libavcodec
 %{_includedir}/libavdevice
 %{_includedir}/libavfilter
 %{_includedir}/libavformat
+#%{_includedir}/libavresample
 %{_includedir}/libavutil
 %{_includedir}/libpostproc
 %{_includedir}/libswresample
