@@ -1,12 +1,12 @@
 Summary:	GNOME games
 Name:		gnome-games
-Version:	3.4.1
-Release:	2
+Version:	3.4.2
+Release:	1
 Epoch:		1
 License:	LGPL
 Group:		X11/Applications/Games
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-games/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	7dc21d85550b58818a8db432f364bf3e
+# Source0-md5:	4888d77c1fc012ab044bddd305ed32d1
 URL:		http://live.gnome.org/GnomeGames
 BuildRequires:	OpenGL-GLU-devel
 BuildRequires:	autoconf
