@@ -7,19 +7,20 @@
 #
 Summary:	A System and Service Manager
 Name:		systemd
-Version:	183
-Release:	0.6
+Version:	185
+Release:	1
 Epoch:		1
 License:	GPL v2+
 Group:		Base
 Source0:	http://www.freedesktop.org/software/systemd/%{name}-%{version}.tar.xz
-# Source0-md5:	e1e5e0f376fa2a4cb4bc31a2161c09f2
+# Source0-md5:	a7dbbf05986eb0d2c164ec8e570eb78f
 Source10:	%{name}-locale.conf
 Source11:	%{name}-loop.conf
 Source12:	%{name}-sysctl.conf
 Source13:	%{name}-vconsole.conf
 Source14:	%{name}-os-release
 Source15:	%{name}-timezone
+Source16:	00-keyboard.conf
 # for rescue target, borrowed from sysvinit
 # to be removed after upgrade to util-linux-2.22
 Source20:	sulogin.c
@@ -28,6 +29,7 @@ Source30:	udev-65-permissions.rules
 #
 Patch0:		%{name}-freddix.patch
 Patch1:		%{name}-machine_id_writable.patch
+Patch2:		%{name}-use_kmsg.patch
 URL:		http://www.freedesktop.org/wiki/Software/systemd
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -144,8 +146,10 @@ udev API documentation.
 %prep
 %setup -q
 %patch0 -p1
-#%patch1 -p1
+%patch1 -p1
+%patch2 -p1
 
+# build fix
 sed -i -e '26d;' src/login/logind-inhibit.h
 
 %build
@@ -168,11 +172,8 @@ sed -i -e '26d;' src/login/logind-inhibit.h
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig \
-	$RPM_BUILD_ROOT%{_sysconfdir}/rsyslog.d	\
+install -d $RPM_BUILD_ROOT/etc/{udev/rules.d,X11/xorg.conf.d} \
 	$RPM_BUILD_ROOT/sbin
-
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/udev/rules.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -199,13 +200,13 @@ install %{SOURCE12} $RPM_BUILD_ROOT/etc/sysctl.d/sysctl.conf
 install %{SOURCE13} $RPM_BUILD_ROOT/etc/vconsole.conf
 install %{SOURCE14} $RPM_BUILD_ROOT/etc/os-release
 install %{SOURCE15} $RPM_BUILD_ROOT/etc/timezone
+install %{SOURCE16} $RPM_BUILD_ROOT/etc/X11/xorg.conf.d
 
 install %{SOURCE30} $RPM_BUILD_ROOT/%{_lib}/udev/rules.d/65-permissions.rules
 
 # required for rescue and emergency targets
 install sulogin $RPM_BUILD_ROOT/sbin
 
-install -d $RPM_BUILD_ROOT/sbin
 ln -s ../lib/systemd/systemd $RPM_BUILD_ROOT/sbin/init
 ln -s ../lib/systemd/systemd $RPM_BUILD_ROOT/bin/systemd
 
@@ -222,8 +223,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /bin/systemd-machine-id-setup > /dev/null 2>&1 || :
-/usr/lib/systemd/systemd-random-seed save > /dev/null 2>&1 || :
+/lib/systemd/systemd-random-seed save > /dev/null 2>&1 || :
 /bin/systemctl daemon-reexec > /dev/null 2>&1 || :
+/bin/systemctl start systemd-udev.service > /dev/null 2>&1 || :
 
 %post units
 if [ "$1" = "1" ] ; then
@@ -311,6 +313,7 @@ fi
 %config(noreplace) %verify(not md5 mtime size) /etc/sysctl.d/sysctl.conf
 %config(noreplace) %verify(not md5 mtime size) /etc/timezone
 %config(noreplace) %verify(not md5 mtime size) /etc/vconsole.conf
+%config(noreplace) %verify(not md5 mtime size) /etc/X11/xorg.conf.d/00-keyboard.conf
 
 %ghost %config(noreplace) %{_sysconfdir}/machine-id
 %ghost %config(noreplace) %{_sysconfdir}/machine-info
@@ -352,7 +355,6 @@ fi
 %{_prefix}/lib/tmpfiles.d/systemd.conf
 %{_prefix}/lib/tmpfiles.d/tmp.conf
 %{_prefix}/lib/tmpfiles.d/x11.conf
-%{_prefix}/lib/sysctl.d/coredump.conf
 
 %{_mandir}/man1/*.1*
 %{_mandir}/man5/*.5*
@@ -446,6 +448,7 @@ fi
 /%{_lib}/udev/rules.d/60-persistent-v4l.rules
 /%{_lib}/udev/rules.d/61-accelerometer.rules
 /%{_lib}/udev/rules.d/65-permissions.rules
+/%{_lib}/udev/rules.d/70-power-switch.rules
 /%{_lib}/udev/rules.d/75-net-description.rules
 /%{_lib}/udev/rules.d/75-probe_mtd.rules
 /%{_lib}/udev/rules.d/75-tty-description.rules
