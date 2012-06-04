@@ -1,11 +1,11 @@
 Summary:	GNOME calculator
 Name:		gcalctool
-Version:	6.4.1.1
+Version:	6.4.2.1
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Math
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gcalctool/6.4/%{name}-%{version}.tar.xz
-# Source0-md5:	ea604540f86e2c6a52579b68e7d047e9
+# Source0-md5:	37d75c6481ddccecd5073ea1eed7077e
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -39,7 +39,8 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 %{__autoconf}
 %{__automake}
 %configure \
-	--disable-schemas-compile
+	--disable-schemas-compile	\
+	--disable-silent-rules
 %{__make}
 
 %install
