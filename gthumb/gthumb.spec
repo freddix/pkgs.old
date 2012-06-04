@@ -1,12 +1,12 @@
 Summary:	An image viewer and browser for GNOME
 Name:		gthumb
-Version:	3.0.0
+Version:	3.0.1
 Release:	1
 License:	GPL v2
 Vendor:		GNOME
 Group:		X11/Applications/Graphics
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gthumb/3.0/%{name}-%{version}.tar.xz
-# Source0-md5:	70cc20019cd7fc033b000a1d780d834d
+# Source0-md5:	248b44f2fba99701e9185d9a890c4537
 URL:		http://live.gnome.org/gthumb
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -104,30 +104,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/%{name}/extensions/*.so
 %{_libdir}/%{name}/extensions/*.extension
 %{_datadir}/gthumb
-%{_datadir}/GConf/gsettings/*.convert
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.change-date.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.comments.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.contact-sheet.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.convert-format.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.crop.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.enums.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.facebook.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.file-manager.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.gstreamer-tools.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.image-print.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.image-viewer.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.importer.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.photo-importer.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.picasaweb.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.pixbuf-savers.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.rename-series.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.resize-images.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.resize.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.rotate.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.slideshow.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.gthumb.webalbums.gschema.xml
+%{_datadir}/glib-2.0/schemas/*.xml
 %{_desktopdir}/*.desktop
 %{_iconsdir}/hicolor/*/apps/*.png
 %{_iconsdir}/hicolor/*/apps/*.svg
+%{_mandir}/man1/gthumb.1*
 
