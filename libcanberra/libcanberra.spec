@@ -1,7 +1,7 @@
 Summary:	libcanberra - the portable sound event library
 Name:		libcanberra
 Version:	0.28
-Release:	6
+Release:	7
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://0pointer.de/lennart/projects/libcanberra/%{name}-%{version}.tar.gz
