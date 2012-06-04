@@ -5,7 +5,7 @@
 Summary:	Generic image processing library
 Name:		gegl
 Version:	0.2.0
-Release:	2
+Release:	4
 License:	GPL v2
 Group:		Applications
 Source0:	ftp://ftp.gimp.org/pub/gegl/0.2/%{name}-%{version}.tar.bz2
