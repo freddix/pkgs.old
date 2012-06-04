@@ -1,7 +1,7 @@
 Summary:	RT synthesizer
 Name:		fluidsynth
 Version:	1.1.5
-Release:	1
+Release:	2
 License:	LGPL
 Group:		Applications/Sound
 Source0:	http://downloads.sourceforge.net/project/fluidsynth/fluidsynth-1.1.5/%{name}-%{version}.tar.bz2
