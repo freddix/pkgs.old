@@ -2,12 +2,12 @@
 
 Summary:	GMIME library
 Name:		gmime
-Version:	2.6.8
+Version:	2.6.9
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://download.gnome.org/sources/gmime/2.6/%{name}-%{version}.tar.xz
-# Source0-md5:	fa84a5835ce036164a097cae419a3897
+# Source0-md5:	9ee3d2ba3b796974787ce357743ee383
 Patch0:		%{name}-link.patch
 URL:		http://spruce.sourceforge.net/gmime/
 BuildRequires:	autoconf
