@@ -1,7 +1,7 @@
 Summary:	Userspace virtual filesystem
 Name:		gvfs
 Version:	1.12.3
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gvfs/1.12/%{name}-%{version}.tar.xz
@@ -134,9 +134,10 @@ Header files for GVFS library.
 # gvfsafpserver.h:51: error: redefinition of typedef 'GVfsAfpServer'
 # gvfsafpvolume.h:30: note: previous declaration of 'GVfsAfpServer' was here
 %configure \
-	--disable-afp	\
-	--disable-hal	\
-	--disable-gdu	\
+	--disable-afp			\
+	--disable-hal			\
+	--disable-gdu			\
+	--disable-schemas-compile	\
 	--disable-silent-rules
 %{__make}
 
