@@ -1,11 +1,11 @@
 Summary:	GNOME session manager
 Name:		gnome-session
-Version:	3.4.1
-Release:	2
+Version:	3.4.2.1
+Release:	1
 License:	LGPL
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-session/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	993ade4c005ec47d7992ab971177bad9
+# Source0-md5:	7254bcc8e1e493cbf2a27e4f3cbe966b
 Source1:	%{name}-gnome.desktop
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
