@@ -1,11 +1,11 @@
 Summary:	System daemon for managing color devices
 Name:		colord
-Version:	0.1.20
+Version:	0.1.21
 Release:	1
 License:	GPL v2+ and LGPL v2+
 Group:		Daemons
 Source0:	http://www.freedesktop.org/software/colord/releases/%{name}-%{version}.tar.xz
-# Source0-md5:	a42a36158b2b52748ac8ad913cdc4cb3
+# Source0-md5:	8028ac0d078efb2584602e7931dd06b2
 URL:		http://www.freedesktop.org/software/colord/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -159,15 +159,15 @@ fi
 
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %ghost %{_libdir}/libcolord.so.?
-%attr(755,root,root) %{_libdir}/libcolord.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libcolord*.so.?
+%attr(755,root,root) %{_libdir}/libcolord*.so.*.*.*
 %{_libdir}/girepository-1.0/*.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libcolord.so
+%attr(755,root,root) %{_libdir}/libcolord*.so
 %{_includedir}/colord-1
-%{_pkgconfigdir}/colord.pc
+%{_pkgconfigdir}/colord*.pc
 %{_datadir}/gir-1.0/*.gir
 %{_datadir}/vala/vapi/colord.vapi
 
