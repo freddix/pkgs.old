@@ -1,11 +1,11 @@
 Summary:	GNOME text editor
 Name:		gedit
-Version:	3.4.1
-Release:	2
+Version:	3.4.2
+Release:	1
 License:	GPL v2
 Group:		X11/Applications/Editors
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gedit/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	f3d057140091dc28aef81bbe3bfca029
+# Source0-md5:	1f3e9f255fc16609ca8598a82da18cff
 URL:		http://gedit.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -39,12 +39,22 @@ small at its core, multiple document editing and many more functions.
 
 %package plugins-python
 Summary:	Gedit plugins written in python
-Group:		Documentation
+Group:		Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	python-pygobject3
 
 %description plugins-python
 Gedit plugins written in python.
+
+%package plugin-zeitgeist
+Summary:	Gedit zeitgeist plugin
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Suggests:	zeitgeist
+Suggests:	zeitgeist-datahub
+
+%description plugin-zeitgeist
+Logs access and leave event for documents used with gedit.
 
 %package libs
 Summary:	gedit libraries
@@ -133,6 +143,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/gedit
 %attr(755,root,root) %{_bindir}/gnome-text-editor
 %attr(755,root,root) %{_libdir}/gedit/plugins/*.so
+%exclude %{_libdir}/gedit/plugins/libzeitgeistplugin.so
 %{_libdir}/gedit/plugins/changecase.plugin
 %{_libdir}/gedit/plugins/docinfo.plugin
 %{_libdir}/gedit/plugins/filebrowser.plugin
@@ -170,17 +181,20 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/glib-2.0/schemas/org.gnome.gedit.plugins.pythonconsole.gschema.xml
 %{py_sitedir}/gi/overrides/*.py[co]
 
+%files plugin-zeitgeist
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/gedit/plugins/libzeitgeistplugin.so
+%{_libdir}/gedit/plugins/zeitgeist.plugin
+
 %files libs
 %defattr(644,root,root,755)
-%attr(755,root,root) %ghost %{_libdir}/libgedit-private.so.?
-%attr(755,root,root) %{_libdir}/libgedit-private.so.*.*.*
 %dir %{_libdir}/gedit
 %dir %{_libdir}/gedit/girepository-1.0
+%attr(755,root,root) %{_libdir}/gedit/libgedit-private.so
 %{_libdir}/gedit/girepository-1.0/Gedit-3.0.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libgedit-private.so
 %{_includedir}/gedit-3.0
 %{_pkgconfigdir}/gedit.pc
 
