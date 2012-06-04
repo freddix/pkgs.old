@@ -1,11 +1,11 @@
 Summary:	Password manager for the GNOME
 Name:		revelation
-Version:	0.4.12
+Version:	0.4.13
 Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	https://bitbucket.org/erikg/revelation/downloads/%{name}-%{version}.tar.bz2
-# Source0-md5:	26a8cdfb623010d7f7a719d1b7dfe1c5
+# Source0-md5:	4490bd0d080307f3338b9dcf84b50535
 URL:		http://revelation.olasagasti.info/index.php
 BuildRequires:	autoconf
 BuildRequires:	automake
