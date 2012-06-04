@@ -1,16 +1,16 @@
 Summary:	Mozilla Runtime Environment for XUL+XPCOM applications
 Name:		xulrunner
-Version:	11.0
-Release:	4
+Version:	12.0
+Release:	1
 Epoch:		1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/firefox/releases/%{version}/source/firefox-%{version}.source.tar.bz2
-# Source0-md5:	4b07acf47857aff72776d805409cdd1b
-Source1:	%{name}-freddix-prefs.js
+# Source0-md5:	80c3e5927274de7f181fb5f931ac5fd4
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-pc.patch
 Patch2:		%{name}-hunspell.patch
+Patch3:		%{name}-system_cairo.patch
 URL:		http://developer.mozilla.org/en/docs/XULRunner
 BuildRequires:	GConf-devel
 BuildRequires:	OpenGL-devel
@@ -33,7 +33,7 @@ BuildRequires:	pango-devel
 BuildRequires:	perl-modules
 BuildRequires:	pkg-config
 BuildRequires:	sed
-BuildRequires:	sqlite3-devel >= 3.7.9
+BuildRequires:	sqlite3-devel >= 3.7.10
 BuildRequires:	startup-notification-devel
 BuildRequires:	xorg-libXcursor-devel
 BuildRequires:	xorg-libXft-devel
@@ -74,9 +74,7 @@ cd mozilla-release
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-
-# ugly, but better than to install autoconf2_13
-sed -i 's#VPX_CODEC_USE_INPUT_PARTITION#VPX_CODEC_USE_INPUT_FRAGMENTS#' configure
+%patch3 -p1
 
 # use system headers
 rm -f extensions/spellcheck/hunspell/src/*.hxx
@@ -151,8 +149,6 @@ export LDFLAGS="%{rpmldflags}"
 %install
 rm -rf $RPM_BUILD_ROOT
 cd mozilla-release
-
-cp -p %{SOURCE1} obj-%{_target_cpu}/dist/bin/defaults/pref/all-freddix.js
 
 %{__make} -j1 -f client.mk install \
 	DESTDIR=$RPM_BUILD_ROOT
