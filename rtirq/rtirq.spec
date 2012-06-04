@@ -1,11 +1,11 @@
 Summary:	Realtime IRQ thread system tunning
 Name:		rtirq
-Version:	20111007
+Version:	20120505
 Release:	1
 License:	GPL v2
 Group:		System/Applications
 Source0:	http://www.rncbc.org/jack/%{name}-%{version}.tar.gz
-# Source0-md5:	3f0e95e0d7028806ba408b3d8cd5fe28
+# Source0-md5:	1228311c17fe91921689a2bf10b21ce5
 BuildArch:	noarch
 Requires:	schedtool
 Requires:	util-linux
