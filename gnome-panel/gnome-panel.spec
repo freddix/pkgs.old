@@ -1,11 +1,11 @@
 Summary:	GNOME panel
 Name:		gnome-panel
-Version:	3.4.1
+Version:	3.4.2.1
 Release:	1
 License:	LGPL
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-panel/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	798d185f12cf64345caebe2c319a2dbe
+# Source0-md5:	1a7c12b22b7e5f61ce7ab90608b2c2c8
 URL:		http://www.gnome.org/
 BuildRequires:	GConf-devel
 BuildRequires:	NetworkManager-devel
