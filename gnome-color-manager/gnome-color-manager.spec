@@ -1,11 +1,11 @@
 Summary:	Color profile manager for the GNOME desktop
 Name:		gnome-color-manager
-Version:	3.4.0
-Release:	2
+Version:	3.4.2
+Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://download.gnome.org/sources/gnome-color-manager/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	dc8e97c93a29a7623f8e248ed784b77f
+# Source0-md5:	9c9e84d17a9a5d2b6e6d078f924095b8
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	colord-devel
