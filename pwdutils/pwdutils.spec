@@ -1,11 +1,12 @@
 Summary:	Utilities to manage the passwd and shadow user information
 Name:		pwdutils
-Version:	3.2.13
-Release:	3
+Version:	3.2.19
+Release:	1
 License:	GPL v2
 Group:		Applications/System
-Source0:	ftp://ftp.kernel.org/pub/linux/utils/net/NIS/%{name}-%{version}.tar.bz2
-# Source0-md5:	e247bf8af65393e369735d83faecdb26
+#Source0:	ftp://ftp.kernel.org/pub/linux/utils/net/NIS/%{name}-%{version}.tar.bz2
+Source0:	http://www.linux-nis.org/download/pwdutils/%{name}-%{version}.tar.bz2
+# Source0-md5:	25a77a0ab376eacf24ad5eab7af4cdce
 Source1:	%{name}.useradd
 Source2:	%{name}.login.defs
 Source10:	%{name}-chage.pamd
