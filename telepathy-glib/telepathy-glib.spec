@@ -1,7 +1,7 @@
 Summary:	Telepathy Glib bindings
 Name:		telepathy-glib
 Version:	0.18.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Libraries
 Source0:	http://telepathy.freedesktop.org/releases/telepathy-glib/%{name}-%{version}.tar.gz
