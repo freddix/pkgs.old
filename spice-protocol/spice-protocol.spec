@@ -1,11 +1,11 @@
 Summary:	SPICE protocol headers
 Name:		spice-protocol
-Version:	0.10.1
+Version:	0.10.3
 Release:	1
 License:	BSD
 Group:		Development/Libraries
 Source0:	http://www.spice-space.org/download/releases/%{name}-%{version}.tar.bz2
-# Source0-md5:	7147ef0d9295dbe44510870f8d047e9c
+# Source0-md5:	c8048ebe881bc4342e99201c945d86b9
 URL:		http://www.spice-space.org/
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
