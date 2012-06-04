@@ -1,11 +1,12 @@
 Summary:	Disk Management Service
 Name:		udisks2
-Version:	1.96.0
+Version:	1.97.0
 Release:	1
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://udisks.freedesktop.org/releases/udisks-%{version}.tar.bz2
-# Source0-md5:	427a31f0d9056af79e44f0278844c8b9
+# Source0-md5:	8ae4ef908ab706789e0e2b33d8810877
+Patch0:		%{name}-fdo49842.patch
 URL:		http://www.freedesktop.org/wiki/Software/udisks
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -57,6 +58,7 @@ API documentation for udisks2 library.
 
 %prep
 %setup -qn udisks-%{version}
+%patch0 -p1
 
 # kill gnome common deps
 sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
@@ -76,6 +78,7 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 	--disable-silent-rules		\
 	--disable-static		\
 	--with-html-dir=%{_gtkdocdir}	\
+	--with-udevdir=/lib/udev	\
 	--with-systemdsystemunitdir=%{systemdunitdir}
 %{__make}
 
