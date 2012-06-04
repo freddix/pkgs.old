@@ -1,0 +1,21 @@
+diff -aurN swh-plugins-0.4.11.orig/Makefile.am swh-plugins-0.4.11/Makefile.am
+--- swh-plugins-0.4.11.orig/Makefile.am	2004-10-27 17:48:27.000000000 +0200
++++ swh-plugins-0.4.11/Makefile.am	2004-10-27 18:36:20.354831416 +0200
+@@ -33,7 +33,7 @@
+ 	latency_1914.la xfade_1915.la \
+ 	mbeq_1197.la pitch_scale_1193.la pitch_scale_1194.la imp_1199.la
+ 
+-SUBDIRS = m4  po util gsm gverb metadata
++SUBDIRS = m4  po util gverb metadata
+ 
+ # Wacky stuff to stop automake getting confused
+ EXTRA_DIST = config.rpath  @top_srcdir@/*.xml @top_srcdir@/*.c @top_srcdir@/*.h \
+@@ -68,7 +68,7 @@
+ sc3_1427_la_LIBADD = util/libdb.a util/librms.a
+ sc4_1882_la_LIBADD = util/libdb.a util/librms.a
+ se4_1883_la_LIBADD = util/libdb.a util/librms.a
+-gsm_1215_la_LIBADD = gsm/libgsm.a
++gsm_1215_la_LIBADD = -lgsm
+ gverb_1216_la_LIBADD = gverb/libgverb.a
+ lcr_delay_1436_la_DEPENDENCIES = util/biquad.h
+ 
