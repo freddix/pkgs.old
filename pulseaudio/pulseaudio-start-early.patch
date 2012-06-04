@@ -1,0 +1,17 @@
+From 1a6c9dc0a4f695764d48f06ac17ced42b7432499 Mon Sep 17 00:00:00 2001
+From: Lennart Poettering <lennart@poettering.net>
+Date: Tue, 15 May 2012 23:06:17 +0000
+Subject: gnome: start PA early in the gnome session
+
+---
+diff --git a/src/daemon/pulseaudio.desktop.in b/src/daemon/pulseaudio.desktop.in
+index 99bdbd0..b75b378 100644
+--- a/src/daemon/pulseaudio.desktop.in
++++ b/src/daemon/pulseaudio.desktop.in
+@@ -8,3 +8,4 @@ Terminal=false
+ Type=Application
+ Categories=
+ GenericName=
++X-GNOME-Autostart-Phase=Initialization
+--
+cgit v0.9.0.2-2-gbebe
