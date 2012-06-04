@@ -15,10 +15,10 @@ diff -aurN slim-1.3.3.orig/slim.conf slim-1.3.3/slim.conf
 -reboot_cmd          /sbin/shutdown -r now
 -console_cmd         /usr/bin/xterm -C -fg white -bg black +sb -T "Console login" -e /bin/sh -c "/bin/cat /etc/issue; exec /bin/login"
 -#suspend_cmd        /usr/sbin/suspend
-+halt_cmd	dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
-+reboot_cmd	dbus-send --system --print-reply --dest="org.freedesktop.ConsoleKit" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
++halt_cmd	systemctl start poweroff.service
++reboot_cmd	systemctl start reboot.service
 +console_cmd	chvt 2
-+suspend_cmd	dbus-send --system --print-reply --dest="org.freedesktop.UPower" /org/freedesktop/UPower org.freedesktop.UPower.Suspend
++suspend_cmd	systemctl start suspend.service
  
  # Full path to the xauth binary
 -xauth_path         /usr/bin/xauth 
@@ -27,7 +27,7 @@ diff -aurN slim-1.3.3.orig/slim.conf slim-1.3.3/slim.conf
  # Xauth file for server
 -authfile           /var/run/slim.auth
 -
-+authfile           /var/run/slim/slim.auth
++authfile           /run/slim/slim.auth
  
  # Activate numlock when slim starts. Valid values: on|off
  # numlock             on
@@ -78,7 +78,7 @@ diff -aurN slim-1.3.3.orig/slim.conf slim-1.3.3/slim.conf
  
  # Lock file
 -lockfile            /var/run/slim.lock
-+lockfile            /var/run/slim/slim.lock
++lockfile            /run/slim/slim.lock
  
  # Log file
  logfile             /var/log/slim.log
