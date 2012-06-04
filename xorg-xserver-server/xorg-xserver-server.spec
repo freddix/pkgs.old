@@ -2,15 +2,15 @@
 
 Summary:	X.org server
 Name:		xorg-xserver-server
-Version:	1.12.1
+Version:	1.12.2
 %if "%{gitver}" != "%{nil}"
 Release:	0.%{gitver}.1
 Source0:	http://cgit.freedesktop.org/xorg/xserver/snapshot/xserver-%{gitver}.tar.bz2
-# Source0-md5:	20e73b422bda6f0d1405af676983cc70
+# Source0-md5:	791f0323b886abb7954de7f042bb7dc6
 %else
-Release:	2
+Release:	1
 Source0:	http://xorg.freedesktop.org/releases/individual/xserver/xorg-server-%{version}.tar.bz2
-# Source0-md5:	20e73b422bda6f0d1405af676983cc70
+# Source0-md5:	791f0323b886abb7954de7f042bb7dc6
 %endif
 License:	MIT
 Group:		X11/Servers
@@ -122,7 +122,7 @@ Xephyr X server.
 	--enable-kdrive				\
 	--enable-xephyr				\
 	--enable-xnest				\
-	--with-default-font-path="%{_fontsdir}/misc,%{_fontsdir}/TTF,%{_fontsdir}/Type1" \
+	--with-fontrootdir="%{_fontsdir}"	\
 	--with-dri-driver-path=%{_libdir}/xorg/modules/dri	\
 	--with-os-name="Freddix"		\
 	--with-xkb-output=/var/lib/xkb		\
