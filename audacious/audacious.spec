@@ -1,11 +1,11 @@
 Summary:	Media player based on BMP
 Name:		audacious
-Version:	3.2.2
-Release:	4
+Version:	3.2.3
+Release:	1
 License:	GPL
 Group:		X11/Applications/Sound
 Source0:	http://distfiles.audacious-media-player.org/%{name}-%{version}.tar.bz2
-# Source0-md5:	28f1e2c683d358457ed9bfe8bcc29ec2
+# Source0-md5:	322d9281168b92e3ef4e9334e6a2d5f3
 URL:		http://audacious-media-player.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
