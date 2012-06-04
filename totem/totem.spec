@@ -1,11 +1,11 @@
 Summary:	Movie player for GNOME
 Name:		totem
-Version:	3.4.1
-Release:	1
+Version:	3.4.2
+Release:	2
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.4/%{name}-%{version}.tar.xz
-# Source0-md5:	e74a2ce5399cce760fb60adcf1f5b835
+# Source0-md5:	2d91a16448db39e5e094395a2e143329
 Patch0:		%{name}-kill-the-bitch.patch
 URL:		http://www.gnome.org/projects/totem/
 BuildRequires:	autoconf
@@ -79,7 +79,6 @@ Summary:	Totem plugins
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 %pyrequires_eq	python-modules
-Requires:	python-gdata
 Requires:	python-pygtk
 
 %description plugins
@@ -124,6 +123,7 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 %configure \
 	--disable-schemas-compile	\
 	--disable-scrollkeeper		\
+	--disable-silent-rules		\
 	--disable-static		\
 	--disable-vala			\
 	--enable-browser-plugins	\
@@ -184,7 +184,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_datadir}/glib-2.0/schemas/org.gnome.totem.enums.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.totem.gschema.xml
-%{_datadir}/GConf/gsettings/totem.convert
 
 %{_datadir}/thumbnailers/totem.thumbnailer
 
@@ -216,11 +215,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/totem/plugins/chapters
 %dir %{_libdir}/totem/plugins/dbus
 %dir %{_libdir}/totem/plugins/gromit
+%dir %{_libdir}/totem/plugins/im-status
 %dir %{_libdir}/totem/plugins/iplayer
 %dir %{_libdir}/totem/plugins/media-player-keys
 %dir %{_libdir}/totem/plugins/ontop
 %dir %{_libdir}/totem/plugins/opensubtitles
 %dir %{_libdir}/totem/plugins/pythonconsole
+%dir %{_libdir}/totem/plugins/save-file
 %dir %{_libdir}/totem/plugins/screensaver
 %dir %{_libdir}/totem/plugins/screenshot
 %dir %{_libdir}/totem/plugins/skipto
