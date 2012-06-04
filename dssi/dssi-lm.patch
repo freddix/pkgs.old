@@ -1,0 +1,11 @@
+diff -aurN dssi-1.1.0.orig/jack-dssi-host/Makefile.am dssi-1.1.0/jack-dssi-host/Makefile.am
+--- dssi-1.1.0.orig/jack-dssi-host/Makefile.am	2012-05-28 22:51:12.825409604 +0200
++++ dssi-1.1.0/jack-dssi-host/Makefile.am	2012-05-28 22:51:33.067156545 +0200
+@@ -22,6 +22,6 @@
+ if DARWIN
+ jack_dssi_host_LDADD = $(AM_LDFLAGS) -lmx $(ALSA_LIBS) $(LIBLO_LIBS) $(JACK_LIBS)
+ else
+-jack_dssi_host_LDADD = $(AM_LDFLAGS) $(ALSA_LIBS) $(LIBLO_LIBS) $(JACK_LIBS)
++jack_dssi_host_LDADD = $(AM_LDFLAGS) $(ALSA_LIBS) $(LIBLO_LIBS) $(JACK_LIBS) -lm -ldl
+ endif
+ 
