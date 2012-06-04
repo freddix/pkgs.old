@@ -1,11 +1,11 @@
 Summary:	The Gimp Toolkit
 Name:		gtk+3
-Version:	3.4.2
+Version:	3.4.3
 Release:	1
 License:	LGPL
 Group:		X11/Libraries
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gtk+/3.4/gtk+-%{version}.tar.xz
-# Source0-md5:	9e20443fbaa3ba3e9cbd2fc44d6be121
+# Source0-md5:	e552d52c3b0824eb99842dc9c5f4875f
 URL:		http://www.gtk.org/
 BuildRequires:	atk-devel
 BuildRequires:	autoconf
@@ -18,8 +18,6 @@ BuildRequires:	docbook-style-xsl
 BuildRequires:	gdk-pixbuf-devel
 BuildRequires:	gettext-devel
 BuildRequires:	glib-devel
-# --disable-schemas-compile broken
-BuildRequires:	glib-gio-gsettings
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk-doc
 BuildRequires:	jasper-devel
@@ -44,11 +42,11 @@ BuildRequires:	xorg-libXrender-devel
 Requires:	%{name}-libs = %{epoch}:%{version}-%{release}
 Requires(post,postun):	glib-gio-gsettings
 Requires:	atk >= 1:2.4.0
-Requires:	colord
 Requires:	gdk-pixbuf >= 2.26.0
 Requires:	glib-gio >= 1:2.32.0
 Requires:	pango >= 1:1.30.0
 Requires:	shared-mime-info
+Suggests:	colord
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		abivers		3.0.0
