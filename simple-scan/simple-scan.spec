@@ -1,11 +1,11 @@
 Summary:	Simple scanning utility
 Name:		simple-scan
-Version:	3.4.1
+Version:	3.4.2
 Release:	1
 License:	GPL v3+
 Group:		Applications/Multimedia
-Source0:	https://launchpad.net/simple-scan/3.4/3.4.1/+download/%{name}-%{version}.tar.gz
-# Source0-md5:	72872c66724bc90dc1fb462b40ac21d7
+Source0:	https://launchpad.net/simple-scan/3.4/%{version}/+download/%{name}-%{version}.tar.gz
+# Source0-md5:	a88c5c1027f0f01cfc953a45447b3a98
 URL:		https://launchpad.net/simple-scan
 BuildRequires:	autoconf
 BuildRequires:	automake
