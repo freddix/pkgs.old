@@ -1,15 +1,15 @@
 Summary:	Web browser
 Name:		firefox
-Version:	12.0
-Release:	0.3
+Version:	13.0
+Release:	0.1
 License:	MPL v1.1 or GPL v2+ or LGPL v2.1+
 Group:		X11/Applications
 Source0:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/source/%{name}-%{version}.source.tar.bz2
-# Source0-md5:	80c3e5927274de7f181fb5f931ac5fd4
+# Source0-md5:	f50ca7656eec47030b396f39075fa980
 Source1:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/linux-i686/xpi/de.xpi
-# Source1-md5:	3837059d8fd355e83a9e29fc5c34b4b1
+# Source1-md5:	79286174632ac70c78a6404b2fd84f36
 Source2:	http://releases.mozilla.org/pub/mozilla.org/%{name}/releases/%{version}/linux-i686/xpi/pl.xpi
-# Source2-md5:	4a9d0533bf8942083af3a058f4ef9be1
+# Source2-md5:	4ecece6d582e4f6a7cf0914ce6205e74
 Source100:	vendor.js
 Patch0:		%{name}-config.patch
 Patch1:		%{name}-pc.patch
@@ -89,12 +89,12 @@ ac_add_options --disable-tests
 ac_add_options --disable-updater
 #
 ac_add_options --enable-safe-browsing
-ac_add_options --enable-url-classifier
 #
 ac_add_options --disable-debug
 ac_add_options --disable-pedantic
 ac_add_options --disable-strip
 ac_add_options --disable-strip-install
+#
 ac_add_options --enable-optimize
 #
 ac_add_options --disable-gnomeui
@@ -144,8 +144,6 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_desktopdir}}	\
 
 cd mozilla-release
 
-cp -p %{SOURCE100} obj-%{_target_cpu}/dist/bin/defaults/pref/all-freddix.js
-
 %{__make} -f client.mk install		\
 	DESTDIR=$RPM_BUILD_ROOT		\
 	STRIP="/bin/true"
@@ -153,7 +151,7 @@ cp -p %{SOURCE100} obj-%{_target_cpu}/dist/bin/defaults/pref/all-freddix.js
 install %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/%{name}/extensions/langpack-de@firefox.mozilla.org.xpi
 install %{SOURCE2} $RPM_BUILD_ROOT%{_libdir}/%{name}/extensions/langpack-pl@firefox.mozilla.org.xpi
 
-install %{SOURCE100} $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults/preferences
+install %{SOURCE100} $RPM_BUILD_ROOT%{_libdir}/%{name}/defaults/pref
 
 %{__rm} -r $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
 ln -s %{_datadir}/myspell $RPM_BUILD_ROOT%{_libdir}/%{name}/dictionaries
@@ -221,7 +219,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/chrome
 %{_libdir}/%{name}/chrome.manifest
 %{_libdir}/%{name}/components/binary.manifest
-%{_libdir}/%{name}/defaults/preferences
 %{_libdir}/%{name}/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}
 %{_libdir}/%{name}/icons
 %{_libdir}/%{name}/omni.ja
@@ -229,6 +226,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/%{name}/platform.ini
 %{_libdir}/%{name}/update-settings.ini
 %{_libdir}/%{name}/defaults/pref/channel-prefs.js
+%{_libdir}/%{name}/defaults/pref/vendor.js
 %{_libdir}/%{name}/dependentlibs.list
 
 %lang(de) %{_libdir}/%{name}/extensions/langpack-de@firefox.mozilla.org.xpi
