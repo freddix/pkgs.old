@@ -1,15 +1,16 @@
 Summary:	PNG library
 Name:		libpng
-Version:	1.4.9
+Version:	1.5.10
 Release:	1
 Epoch:		2
 License:	distributable
 Group:		Libraries
 Source0:	http://downloads.sourceforge.net/libpng/%{name}-%{version}.tar.xz
-# Source0-md5:	3d6ca2f99f1f19dd746975e7fce6a45c
+# Source0-md5:	9c2ac3c3a31de2ab867875718f8de18e
 Patch0:		%{name}-pngminus.patch
-# http://heanet.dl.sourceforge.net/project/vdubapngmod/libpng-apng-patch/%{version}/libpng-%{version}-apng.patch
-Patch1:		%{name}-apng.patch
+# https://sourceforge.net/projects/apng/files/libpng/
+Patch1:		http://downloads.sourceforge.net/libpng-apng/%{name}-%{version}-apng.patch.gz
+Patch2:		%{name}-apng-fix.patch
 URL:		http://www.libpng.org/pub/png/libpng.html
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -48,7 +49,8 @@ from PNM files.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p0
+%patch1 -p1
+%patch2 -p1
 
 %build
 %if 0
@@ -85,15 +87,15 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc ANNOUNCE CHANGES README LICENSE
-%attr(755,root,root) %ghost %{_libdir}/libpng14.so.??
-%attr(755,root,root) %{_libdir}/libpng14.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libpng15.so.??
+%attr(755,root,root) %{_libdir}/libpng15.so.*.*.*
 
 %files devel
 %defattr(644,root,root,755)
 %doc *.txt
 %attr(755,root,root) %{_bindir}/libpng*-config
 %attr(755,root,root) %{_libdir}/libpng*.so
-%{_includedir}/libpng14
+%{_includedir}/libpng15
 %{_includedir}/png*.h
 %{_pkgconfigdir}/libpng*.pc
 
