@@ -1,18 +1,12 @@
-%define		pre	rc5
-%define		sname	MPlayer
-%define		subver	rc5
-%define		svnver	20120320
-#
 Summary:	Movie player
 Name:		mplayer
-Version:	1.0
-Release:	5.%{subver}.%{svnver}.2
+Version:	1.1
+Release:	2
 Epoch:		3
 License:	GPL
 Group:		Applications/Multimedia
-#Source0:	ftp://ftp2.mplayerhq.hu/MPlayer/releases/%{sname}-%{version}%{pre}.tar.bz2
-Source0:	%{name}-%{version}%{pre}-%{svnver}.tar.xz
-# Source0-md5:	965ec593e1bca2036d2a97217c600661
+Source0:	ftp://ftp1.mplayerhq.hu/MPlayer/releases/MPlayer-%{version}.tar.xz
+# Source0-md5:	ac7bf1cfedc1c5c24bfc83107eefb1d9
 Source1:	%{name}.desktop
 Patch0:		%{name}-link.patch
 URL:		http://www.mplayerhq.hu/
@@ -94,10 +88,10 @@ MEncoder is a movie encoder for Linux and is a part of the MPlayer
 package.
 
 %prep
-%setup -qn mplayer
+%setup -qn MPlayer-%{version}
 %patch0 -p1
 
-echo %{svnver} > VERSION
+echo %{version} > VERSION
 
 install -d ffmpeg
 
@@ -105,9 +99,7 @@ cp -f etc/codecs.conf etc/codecs.win32.conf
 
 %build
 CC="%{__cc}"
-CFLAGS="%{rpmcflags}"
-LDFLAGS="%{rpmldflags}"
-export CC CFLAGS LDFLAGS
+export CC
 
 ./configure \
 	--confdir=%{_sysconfdir}/mplayer	\
@@ -150,6 +142,8 @@ export CC CFLAGS LDFLAGS
 	--enable-x11				\
 	--enable-xv				\
 	--enable-xvmc				\
+	--extra-cflags="%{rpmcflags}"		\
+	--extra-ldflags="%{rpmldflags}"		\
 	--language=en,de,pl			\
 	--prefix=%{_prefix}			\
 	--with-xvmclib=XvMCW			\
