@@ -1,0 +1,50 @@
+diff -ur qt-everywhere-opensource-src-4.6.0-beta1/tools/assistant/lib/lib.pro qt-everywhere-opensource-src-4.6.0-beta1.new/tools/assistant/lib/lib.pro
+--- qt-everywhere-opensource-src-4.6.0-beta1/tools/assistant/lib/lib.pro	2009-10-13 17:34:08.000000000 +0200
++++ qt-everywhere-opensource-src-4.6.0-beta1.new/tools/assistant/lib/lib.pro	2009-10-18 10:39:24.621596267 +0200
+@@ -5,6 +5,11 @@
+ TARGET = QtHelp
+ DEFINES += QHELP_LIB \
+     QT_CLUCENE_SUPPORT
++
++!contains(CONFIG, static) {
++    CONFIG += dll
++}
++
+ CONFIG += qt \
+     warn_on
+ include(../../../src/qbase.pri)
+Tylko w qt-everywhere-opensource-src-4.6.0-beta1.new/tools/assistant/lib: lib.pro~
+diff -ur qt-everywhere-opensource-src-4.6.0-beta1/tools/designer/src/uitools/uitools.pro qt-everywhere-opensource-src-4.6.0-beta1.new/tools/designer/src/uitools/uitools.pro
+--- qt-everywhere-opensource-src-4.6.0-beta1/tools/designer/src/uitools/uitools.pro	2009-10-13 17:34:08.000000000 +0200
++++ qt-everywhere-opensource-src-4.6.0-beta1.new/tools/designer/src/uitools/uitools.pro	2009-10-18 10:40:38.624930212 +0200
+@@ -1,7 +1,7 @@
+ TEMPLATE = lib
+ TARGET = $$qtLibraryTarget(QtUiTools)
+ QT += xml
+-CONFIG += qt staticlib
++CONFIG += qt
+ DESTDIR = ../../../../lib
+ DLLDESTDIR = ../../../../bin
+ 
+@@ -22,11 +22,20 @@
+ QMAKE_TARGET_PRODUCT = UiLoader
+ QMAKE_TARGET_DESCRIPTION = QUiLoader
+ 
++!contains(CONFIG, static) {
++    CONFIG += dll
++} else {
++    CONFIG += staticlib
++}
++
+ include(../lib/uilib/uilib.pri)
+ 
+ HEADERS += quiloader.h
+ SOURCES += quiloader.cpp
+ 
++target.path=$$[QT_INSTALL_LIBS]
++INSTALLS        += target
++
+ include($$QT_BUILD_TREE/include/QtUiTools/headers.pri, "", true)
+ quitools_headers.files = $$SYNCQT.HEADER_FILES $$SYNCQT.HEADER_CLASSES
+ quitools_headers.path = $$[QT_INSTALL_HEADERS]/QtUiTools
+Tylko w qt-everywhere-opensource-src-4.6.0-beta1.new/tools/designer/src/uitools: uitools.pro~
