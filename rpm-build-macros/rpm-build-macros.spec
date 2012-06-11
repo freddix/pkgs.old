@@ -3,7 +3,7 @@
 Summary:	Freddix RPM build macros
 Name:		rpm-build-macros
 Version:	%{rpm_macros_rev}
-Release:	1
+Release:	3
 License:	GPL
 Group:		Base
 Source0:	rpm.macros
