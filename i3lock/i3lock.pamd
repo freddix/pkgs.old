@@ -1,0 +1,3 @@
+# Standard Un*x authentication.
+auth       include      common-auth
+
