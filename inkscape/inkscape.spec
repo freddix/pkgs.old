@@ -1,11 +1,14 @@
 Summary:	Scalable vector graphics editor
 Name:		inkscape
 Version:	0.48.2
-Release:	2
+Release:	3
 License:	GPL v2, LGPL v2.1
 Group:		X11/Applications/Graphics
 Source0:	http://download.sourceforge.net/inkscape/%{name}-%{version}.tar.bz2
 # Source0-md5:	f60b98013bd1121b2cc301f3485076ba
+Patch0:		%{name}-libpng15.patch
+Patch1:		%{name}-glib.patch
+Patch2:		%{name}-poppler.patch
 URL:		http://www.inkscape.org/
 BuildRequires:	ImageMagick-c++-devel
 BuildRequires:	autoconf
@@ -42,6 +45,9 @@ vector drawings.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %{__libtoolize}
