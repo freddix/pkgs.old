@@ -1,11 +1,11 @@
 Summary:	Open source flash player
 Name:		lightspark
-Version:	0.5.7
+Version:	0.6.0.1
 Release:	1
 License:	GPL v3
 Group:		X11/Applications/Multimedia
-Source0:	http://edge.launchpad.net/lightspark/trunk/lightspark-0.5.7/+download/%{name}-%{version}.tar.gz
-# Source0-md5:	613b4baad01159726dd8c5133c6ff526
+Source0:	http://edge.launchpad.net/lightspark/trunk/lightspark-%{version}/+download/%{name}-%{version}.tar.gz
+# Source0-md5:	66e13a61d06dd0c8c81303fabaee8549
 URL:		http://lightspark.sourceforge.net/
 BuildRequires:	SDL-devel
 BuildRequires:	autoconf
