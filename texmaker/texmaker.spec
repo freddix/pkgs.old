@@ -1,11 +1,11 @@
 Summary:	LaTeX development environment
 Name:		texmaker
-Version:	3.3.2
+Version:	3.3.4
 Release:	1
 License:	GPL
 Group:		X11/Applications/Publishing
 Source0:	http://www.xm1math.net/texmaker/%{name}-%{version}.tar.bz2
-# Source0-md5:	c10b85dadc8b4205e1fd7baeaad97e7f
+# Source0-md5:	6010c540bb3d0d3571bf523601bc1a48
 Patch0:		%{name}-spelldir.patch
 URL:		http://www.xm1math.net/texmaker/
 BuildRequires:	QtDBus-devel
@@ -14,9 +14,8 @@ BuildRequires:	QtNetwork-devel
 BuildRequires:	QtWebKit-devel
 BuildRequires:	QtXml-devel
 BuildRequires:	poppler-qt4-devel
-BuildRequires:	qt4-build
-BuildRequires:	qt4-phonon-devel
-BuildRequires:	qt4-qmake
+BuildRequires:	qt-build
+BuildRequires:	qt-qmake
 Requires(post,postun):	desktop-file-utils
 Requires:	tetex-format-pdflatex
 Suggests:	hunspell-dictionaries
@@ -31,7 +30,7 @@ develop documents with LaTeX, in just one application.
 %patch0 -p1
 
 %build
-qmake-qt4 -unix texmaker.pro	\
+qmake -unix texmaker.pro	\
 	CXXFLAGS="%{rpmcflags}"	\
 	PREFIX="%{_prefix}"
 %{__make}
@@ -44,30 +43,16 @@ rm -rf $RPM_BUILD_ROOT
 
 rm $RPM_BUILD_ROOT%{_datadir}/texmaker/{*.{aff,dic},*README*}
 
+%find_lang %{name} --with-qm --without-mo --all-name
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc utilities/AUTHORS utilities/CHANGELOG.txt
 %attr(755,root,root) %{_bindir}/*
 %dir %{_datadir}/%{name}
-
-%lang(cs) %{_datadir}/%{name}/texmaker_cs.qm
-%lang(de) %{_datadir}/%{name}/texmaker_de.qm
-%lang(es) %{_datadir}/%{name}/texmaker_es.qm
-%lang(fa) %{_datadir}/%{name}/texmaker_fa.qm
-%lang(fr) %{_datadir}/%{name}/texmaker_fr.qm
-%lang(gl) %{_datadir}/%{name}/texmaker_gl.qm
-%lang(hu) %{_datadir}/%{name}/texmaker_hu.qm
-%lang(it) %{_datadir}/%{name}/texmaker_it.qm
-%lang(nl) %{_datadir}/%{name}/texmaker_nl.qm
-%lang(pl) %{_datadir}/%{name}/texmaker_pl.qm
-%lang(pt) %{_datadir}/%{name}/texmaker_pt_BR.qm
-%lang(ru) %{_datadir}/%{name}/texmaker_ru.qm
-%lang(zh_CN) %{_datadir}/%{name}/texmaker_zh_CN.qm
-%lang(zh_TW) %{_datadir}/%{name}/texmaker_zh_TW.qm
-
 %{_datadir}/%{name}/*.css
 %{_datadir}/%{name}/*.html
 %{_datadir}/%{name}/*.js
