@@ -1,0 +1,15 @@
+diff -aurN skype-1.4.0.74.orig/skype.desktop skype-1.4.0.74/skype.desktop
+--- skype-1.4.0.74.orig/skype.desktop	2007-06-12 13:27:50.000000000 +0200
++++ skype-1.4.0.74/skype.desktop	2007-06-15 17:59:13.000000000 +0200
+@@ -2,8 +2,8 @@
+ Name=Skype
+ Comment=Skype Internet Telephony
+ Exec=skype
+-Icon=skype.png
+-Terminal=0
++Icon=skype
++Terminal=false
+ Type=Application
+ Encoding=UTF-8
+-Categories=Network;Application;
++Categories=Qt;Network;InstantMessaging;
