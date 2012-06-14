@@ -1,7 +1,7 @@
 Summary:	Graph Visualization Tools
 Name:		graphviz
 Version:	2.26.3
-Release:	3
+Release:	4
 License:	CPL v1.0
 Group:		X11/Applications/Graphics
 Source0:	http://www.graphviz.org/pub/graphviz/ARCHIVE/%{name}-%{version}.tar.gz
