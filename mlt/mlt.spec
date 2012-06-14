@@ -1,11 +1,11 @@
 Summary:	MLT - Media Lovin' Toolkit
 Name:		mlt
-Version:	0.7.8
+Version:	0.8.0
 Release:	1
 License:	GPL
 Group:		X11/Applications/Multimedia
 Source0:	http://downloads.sourceforge.net/mlt/%{name}-%{version}.tar.gz
-# Source0-md5:	4bdce45d832e065ac4c8c8ca56765e1d
+# Source0-md5:	d56e0cdfba9c5b5608bf84493322615f
 URL:		http://www.dennedy.org/mlt/twiki/bin/view/MLT/WebHome
 BuildRequires:	SDL-devel
 BuildRequires:	ffmpeg-devel
