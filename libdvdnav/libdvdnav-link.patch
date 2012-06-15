@@ -1,0 +1,10 @@
+--- libdvdnav-4.2.0/src/Makefile.am.orig	2012-03-16 17:46:42.664641814 +0100
++++ libdvdnav-4.2.0/src/Makefile.am	2012-03-16 17:47:36.542132564 +0100
+@@ -27,6 +27,7 @@ libdvdnav_la_LDFLAGS = \
+ libdvdnavmini_la_SOURCES = $(libdvdnav_la_SOURCES)
+ 
+ libdvdnavmini_la_LIBADD = $(THREAD_LIBS) \
++			  $(DVDREAD_LIBS) \
+ 	$(top_builddir)/src/vm/libdvdvm.la
+ 
+ libdvdnavmini_la_LDFLAGS = $(libdvdnav_la_LDFLAGS)
