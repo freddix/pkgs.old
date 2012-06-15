@@ -1,15 +1,17 @@
 Summary:	dvdauthor - a program that will generate a DVD movie
 Name:		dvdauthor
-Version:	0.6.18
-Release:	3
+Version:	0.7.0
+Release:	1
 License:	GPL v2
 Group:		Applications/Multimedia
 Source0:	http://downloads.sourceforge.net/dvdauthor/%{name}-%{version}.tar.gz
-# Source0-md5:	ded5373800ac6448ff044606f5047550
+# Source0-md5:	33a447fb98ab3293ac40f869eedc17ff
+Patch0:		%{name}-libpng15.patch
 URL:		http://dvdauthor.sourceforge.net/
 BuildRequires:	ImageMagick-devel
 BuildRequires:	freetype-devel
-BuildRequires:	libdvdnav-devel
+BuildRequires:	fribidi-devel
+BuildRequires:	libdvdread-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libxml2-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -20,6 +22,7 @@ MPEG-2 stream that should play when you put it in a DVD player.
 
 %prep
 %setup -qn %{name}
+%patch0 -p0
 
 %build
 %configure
