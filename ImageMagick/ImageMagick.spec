@@ -1,9 +1,9 @@
 %include	/usr/lib/rpm/macros.perl
-#
-%define		ver		6.7.6
-%define		pver		0
+
+%define		ver		6.7.7
+%define		pver		7
 %define		QuantumDepth	16
-#
+
 Summary:	Image display, conversion, and manipulation under X
 Name:		ImageMagick
 Version:	%{ver}%{?pver:.%{pver}}
@@ -12,7 +12,7 @@ Epoch:		1
 License:	Apache-like
 Group:		X11/Applications/Graphics
 Source0:	http://www.imagemagick.org/download/%{name}-%{ver}-%{pver}.tar.xz
-# Source0-md5:	546ed0fc09435a817837b3e0fd6e307c
+# Source0-md5:	07552207f0292c148fa184489d3a5491
 Patch0:		%{name}-libpath.patch
 Patch1:		%{name}-ac.patch
 Patch2:		%{name}-ldflags.patch
@@ -214,7 +214,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/ImageMagick-%{ver}/config/*.xml
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/ImageMagick/*.xml
-%{_sysconfdir}/ImageMagick/sRGB.icc
 
 %{_mandir}/man1/[Iacdims]*
 
