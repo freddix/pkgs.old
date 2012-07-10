@@ -1,11 +1,11 @@
 Summary:	Flash plugin for Netscape-compatible WWW browsers
 Name:		adobe-flash
-Version:	11.1.102.55
+Version:	11.2.202.236
 Release:	1
 License:	Free to use, non-distributable
 Group:		X11/Applications/Multimedia
 Source0:	http://fpdownload.macromedia.com/get/flashplayer/pdc/%{version}/install_flash_player_11_linux.i386.tar.gz
-# Source0-md5:	e9753df741e415c6d0707a2bf65f5940
+# Source0-md5:	00b3dd02b9ac600272440ebadda724e1
 URL:		http://www.adobe.com/products/flashplayer/
 Requires(post,postun):	gtk+
 Requires(post,postun):	hicolor-icon-theme
