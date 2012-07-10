@@ -7,7 +7,7 @@ Version:	8.0.3
 Release:	0.%{gitver}.1
 Source:		http://cgit.freedesktop.org/mesa/mesa/snapshot/mesa-%{gitver}.tar.bz2
 %else
-Release:	4
+Release:	5
 Source0:	ftp://ftp.freedesktop.org/pub/mesa/%{version}/MesaLib-%{version}.tar.gz
 # Source0-md5:	b7210a6d6e4584bd852ab29294ce717e
 %endif
@@ -152,6 +152,7 @@ X.org DRI software rasterizer driver.
 %{__aclocal}
 %{__autoconf}
 %configure \
+	--disable-asm			\
 	--disable-egl			\
 	--enable-gallium-llvm		\
 	--enable-glx-tls		\
