@@ -1,12 +1,12 @@
 Summary:	A library of programming functions mainly aimed at real time computer vision
 Name:		OpenCV
-Version:	2.3.1
-Release:	2
+Version:	2.4.1
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Libraries
-Source0:	http://downloads.sourceforge.net/opencvlibrary/%{name}-%{version}a.tar.bz2
-# Source0-md5:	82e4b6bfa349777233eea09b075e931e
+Source0:	http://downloads.sourceforge.net/opencvlibrary/%{name}-%{version}.tar.bz2
+# Source0-md5:	144aafa12260150490ce77d8debc1a23
 URL:		http://opencv.willowgarage.com
 BuildRequires:	cmake
 BuildRequires:	ffmpeg-devel
@@ -63,18 +63,21 @@ find -perm 755 -name "*.c" -exec chmod -x  {} ';'
 
 %undos samples/c/adaptiveskindetector.cpp
 
-sed -i -e 's/USE_O3 ON/USE_O3 OFF/'		\
-    -i -e 's/ENABLE_SSE ON/ENABLE_SSE OFF/'	\
-    -i -e 's/ENABLE_SSE2 ON/ENABLE_SSE2 OFF/'	\
-    CMakeLists.txt
-
 %build
 mkdir build
 cd build
 %cmake .. \
+	-DBUILD_EXAMPLES=OFF		\
 	-DBUILD_SWIG_PYTHON_SUPPORT=1	\
 	-DBUILD_TESTS=0			\
+	-DBUILD_TESTS=OFF		\
 	-DENABLE_OPENMP=1		\
+	-DENABLE_SSE2=ON		\
+	-DENABLE_SSE3=OFF		\
+	-DENABLE_SSE41=OFF		\
+	-DENABLE_SSE42=OFF		\
+	-DENABLE_SSE=ON			\
+	-DENABLE_SSSE3=OFF		\
 	-DUSE_FAST_MATH=0		\
 	-DUSE_O3=0			\
 	-DUSE_OMIT_FRAME_POINTER=0	\
