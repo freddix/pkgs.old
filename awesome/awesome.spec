@@ -1,11 +1,11 @@
 Summary:	awesome window manager
 Name:		awesome
-Version:	3.4.11
+Version:	3.4.12
 Release:	1
 License:	GPL v2
 Group:		X11/Window Managers
 Source0:	http://awesome.naquadah.org/download/%{name}-%{version}.tar.xz
-# Source0-md5:	d6aa71334b5cd4ef63ce69d6c612ecf2
+# Source0-md5:	2c3490b820a19c044290027e6f2eb6c8
 Source1:	%{name}-xsession.desktop
 URL:		http://awesome.naquadah.org/
 BuildRequires:	asciidoc
