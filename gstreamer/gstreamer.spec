@@ -3,7 +3,7 @@
 Summary:	GStreamer Streaming-media framework runtime
 Name:		gstreamer
 Version:	0.10.36
-Release:	2
+Release:	3
 License:	LGPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gstreamer/%{name}-%{version}.tar.xz
@@ -19,7 +19,7 @@ BuildRequires:	check-devel
 BuildRequires:	docbook-utils
 BuildRequires:	flex
 BuildRequires:	gettext-autopoint
-BuildRequires:	glib-devel
+BuildRequires:	glib-gio-devel
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gtk-doc
 BuildRequires:	libtool

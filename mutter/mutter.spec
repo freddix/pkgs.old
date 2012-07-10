@@ -1,7 +1,7 @@
 Summary:	Window manager
 Name:		mutter
 Version:	3.4.1
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://ftp.acc.umu.se/pub/GNOME/sources/mutter/3.4/%{name}-%{version}.tar.xz

@@ -1,7 +1,7 @@
 Summary:	GNOME desktop
 Name:		gnome-desktop
 Version:	3.4.2
-Release:	2
+Release:	4
 License:	LGPL
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-desktop/3.4/%{name}-%{version}.tar.xz
@@ -84,6 +84,7 @@ Requires:	pulseaudio
 Requires:	seahorse
 Requires:	shared-color-profiles
 Requires:	simple-scan
+Requires:	sound-juicer
 Requires:	telepathy-gabble
 Requires:	telepathy-salut
 Requires:	totem

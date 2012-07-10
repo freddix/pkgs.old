@@ -1,5 +1,5 @@
 %define		gitver	%{nil}
-%define		rel	3
+%define		rel	4
 
 Summary:	C library optimized for size
 Name:		uClibc

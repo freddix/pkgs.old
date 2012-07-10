@@ -8,7 +8,7 @@ Release:        0.%{gitver}.2
 Source0:        http://cgit.freedesktop.org/intel-driver/snapshot/intel-driver-%{gitver}.tar.bz2
 # Source0-md5:	fdd2b089c0555b1789f92a881914d02b
 %else
-Release:        2
+Release:        3
 Source0:	http://cgit.freedesktop.org/vaapi/intel-driver/snapshot/intel-driver-%{version}.tar.xz
 # Source0-md5:	fdd2b089c0555b1789f92a881914d02b
 %endif

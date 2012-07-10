@@ -1,7 +1,7 @@
 Summary:	Movie player
 Name:		mplayer
 Version:	1.1
-Release:	2
+Release:	3
 Epoch:		3
 License:	GPL
 Group:		Applications/Multimedia
@@ -14,6 +14,7 @@ BuildRequires:	OpenGL-devel
 BuildRequires:	SDL-devel
 BuildRequires:	alsa-lib-devel
 BuildRequires:	cdparanoia-III-devel
+BuildRequires:	crystalhd-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	dirac-devel
 BuildRequires:	docbook-style-xsl
@@ -131,6 +132,7 @@ export CC
 	--enable-alsa				\
 	--enable-bluray				\
 	--enable-cdparanoia			\
+	--enable-crystalhd			\
 	--enable-dvdnav				\
 	--enable-dynamic-plugins		\
 	--enable-fbdev				\

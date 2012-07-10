@@ -1,7 +1,7 @@
 Summary:	GNU libtool, a shared library generation tool
 Name:		libtool
 Version:	2.4.2
-Release:	1
+Release:	2
 Epoch:		2
 License:	GPL
 Group:		Development/Tools

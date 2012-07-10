@@ -3,7 +3,7 @@
 Summary:	Document viewer for multiple document formats
 Name:		evince%{?with_simple:-simple}
 Version:	3.4.0
-Release:	2
+Release:	5
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/evince/3.4/evince-%{version}.tar.xz
@@ -37,6 +37,7 @@ Requires(post,postun):	glib-gio-gsettings
 Requires(post,postun):	gtk+-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires:	xdg-icon-theme
+Obsoletes:	evince2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_libexecdir	%{_libdir}/evince

@@ -1,13 +1,14 @@
 Summary:	JavaScript interpreter and libraries
 Name:		js
 Version:	1.8.5
-Release:	2
+Release:	3
 License:	MPL 1.1 or GPL v2+ or LGPL v2.1+
 Group:		Libraries
 Source0:	http://ftp.mozilla.org/pub/mozilla.org/js/%{name}185-1.0.0.tar.gz
 # Source0-md5:	a4574365938222adca0a6bd33329cb32
 Patch0:		%{name}-install.patch
 Patch1:		%{name}-bits_per_word.patch
+Patch2:		%{name}-opt.patch
 URL:		http://www.mozilla.org/js/
 BuildRequires:	libstdc++-devel
 BuildRequires:	nspr-devel >= 4.7.0
@@ -17,6 +18,8 @@ BuildRequires:	readline-devel
 BuildRequires:	rpm-perlprov
 BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+%define		filterout	-fno-strict-aliasing
 
 %description
 JavaScript Reference Implementation (codename SpiderMonkey). The
@@ -38,6 +41,7 @@ Header files for JavaScript reference library.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 cd js/src

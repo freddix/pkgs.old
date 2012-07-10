@@ -1,7 +1,7 @@
 Summary:	The Gimp Toolkit
 Name:		gtk+
 Version:	2.24.10
-Release:	6
+Release:	7
 Epoch:		2
 License:	LGPL
 Group:		X11/Libraries

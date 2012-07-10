@@ -1,7 +1,7 @@
 Summary:	Shared MIME-info specification
 Name:		shared-mime-info
 Version:	1.0
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications
 Source0:	http://freedesktop.org/~hadess/%{name}-%{version}.tar.xz
@@ -11,7 +11,7 @@ Source2:	compressed.list
 Source3:	document.list
 Source4:	image.list
 Source5:	video.list
-Source6:	x-handlers.list
+Source6:	misc.list
 URL:		http://www.freedesktop.org/wiki/Software/shared-mime-info
 BuildRequires:	autoconf
 BuildRequires:	automake

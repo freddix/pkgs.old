@@ -3,7 +3,7 @@
 Summary:	PostScript & PDF interpreter and renderer
 Name:		ghostscript
 Version:	9.05
-Release:	2
+Release:	3
 License:	GPL
 Group:		Applications/Graphics
 Source0:	http://downloads.sourceforge.net/ghostscript/%{name}-%{version}.tar.bz2

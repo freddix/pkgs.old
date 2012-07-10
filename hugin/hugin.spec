@@ -1,13 +1,14 @@
 Summary:	Toolchain to create panoramic images
 Name:		hugin
 Version:	2011.4.0
-Release:	1
+Release:	3
 License:	GPL v2+
 Group:		X11/Applications/Graphics
 Source0:	http://downloads.sourceforge.net/hugin/%{name}-%{version}.tar.bz2
 # Source0-md5:	3e4866dbbc7974972604aa18580eae0e
 Patch0:		%{name}-cppflags.patch
 Patch1:		%{name}-desktop.patch
+Patch2:		%{name}-gcc47.patch
 URL:		http://hugin.sourceforge.net/
 BuildRequires:	OpenEXR-devel
 BuildRequires:	ZThread-devel
@@ -42,6 +43,7 @@ more.
 %setup -q
 %patch0 -p0
 %patch1 -p1
+%patch2 -p1
 
 mv -f src/translations/{ca_ES,ca}.po
 mv -f src/translations/{cs_CZ,cs}.po

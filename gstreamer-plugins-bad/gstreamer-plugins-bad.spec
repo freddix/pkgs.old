@@ -7,12 +7,13 @@
 Summary:	Bad GStreamer Streaming-media framework plugins
 Name:		gstreamer-plugins-bad
 Version:	0.10.23
-Release:	2
+Release:	3
 License:	LPL
 Group:		Libraries
 Source0:	http://gstreamer.freedesktop.org/src/gst-plugins-bad/%{gstname}-%{version}.tar.xz
 # Source0-md5:	e4822fa2cc933768e2998311a1565979
 Patch0:		%{name}-divx4linux.patch
+Patch1:		%{name}-musicbrainz5.patch
 URL:		http://gstreamer.freedesktop.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -43,7 +44,7 @@ BuildRequires:	libkate-devel
 BuildRequires:	libmms-devel
 BuildRequires:	libmodplug-devel
 BuildRequires:	libmpcdec-devel
-BuildRequires:	libmusicbrainz-devel
+BuildRequires:	libmusicbrainz5-devel
 BuildRequires:	libofa-devel
 BuildRequires:	libsndfile-devel
 BuildRequires:	libstdc++-devel
@@ -53,6 +54,7 @@ BuildRequires:	mjpegtools-devel
 BuildRequires:	neon-devel
 BuildRequires:	rpm-gstreamerprov
 BuildRequires:	soundtouch-devel
+BuildRequires:	vo-aacenc-devel
 BuildRequires:	xvidcore-devel
 Requires(post,preun):	glib-gio-gsettings
 Requires:	%{name}-libs = %{version}-%{release}
@@ -95,8 +97,9 @@ Requires:	gtk-doc-common
 gstreamer-plugins-bad API documentation.
 
 %prep
-%setup -q -n %{gstname}-%{version}
+%setup -qn %{gstname}-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__autopoint}
@@ -108,7 +111,6 @@ patch -p0 < common/gettext.patch
 %{__automake}
 %configure \
 	--disable-gsm		\
-	--disable-jack		\
 	--disable-ladspa	\
 	--disable-silent-rules	\
 	--disable-static	\
@@ -237,7 +239,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstspeed.so
 %attr(755,root,root) %{gstlibdir}/libgststereo.so
 %attr(755,root,root) %{gstlibdir}/libgstsubenc.so
-%attr(755,root,root) %{gstlibdir}/libgsttrm.so
 %attr(755,root,root) %{gstlibdir}/libgsttta.so
 %attr(755,root,root) %{gstlibdir}/libgstvcdsrc.so
 %attr(755,root,root) %{gstlibdir}/libgstvdpau.so
@@ -247,6 +248,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gstlibdir}/libgstvideoparsersbad.so
 %attr(755,root,root) %{gstlibdir}/libgstvideosignal.so
 %attr(755,root,root) %{gstlibdir}/libgstvmnc.so
+%attr(755,root,root) %{gstlibdir}/libgstvoaacenc.so
 %attr(755,root,root) %{gstlibdir}/libgstvp8.so
 %attr(755,root,root) %{gstlibdir}/libgstxvid.so
 %attr(755,root,root) %{gstlibdir}/libgsty4mdec.so

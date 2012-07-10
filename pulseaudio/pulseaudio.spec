@@ -1,7 +1,7 @@
 Summary:	Sound server
 Name:		pulseaudio
 Version:	2.0
-Release:	5
+Release:	6
 License:	GPL v2+ (server and libpulsecore), LGPL v2+ (libpulse)
 Group:		Libraries
 Source0:	http://freedesktop.org/software/pulseaudio/releases/%{name}-%{version}.tar.gz

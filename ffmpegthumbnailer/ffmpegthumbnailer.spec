@@ -1,7 +1,7 @@
 Summary:	Lightweight video thumbnailer
 Name:		ffmpegthumbnailer
 Version:	2.0.7
-Release:	3
+Release:	4
 License:	GPL v2
 Group:		Applications/Graphics
 Source0:	http://ffmpegthumbnailer.googlecode.com/files/%{name}-%{version}.tar.gz
@@ -31,6 +31,9 @@ Header files for libffmpegthumbnailer library.
 
 %prep
 %setup -q
+
+# .so is not a right lib to dlopen
+sed -i "s|2.0.so|2.0.so.0|" main.cpp
 
 %build
 %{__libtoolize}
@@ -64,7 +67,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libffmpegthumbnailer.so
-%{_libdir}/libffmpegthumbnailer.la
 %{_includedir}/libffmpegthumbnailer
 %{_pkgconfigdir}/libffmpegthumbnailer.pc
 

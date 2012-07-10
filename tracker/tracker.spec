@@ -3,7 +3,7 @@
 Summary:	Tracker - an indexing subsystem
 Name:		tracker
 Version:	0.14.1
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/tracker/0.14/%{name}-%{version}.tar.xz
@@ -19,7 +19,6 @@ BuildRequires:	evolution-devel
 BuildRequires:	exempi-devel
 BuildRequires:	flac-devel
 BuildRequires:	gettext-devel
-BuildRequires:	gnome-panel-devel
 BuildRequires:	gstreamer-devel
 BuildRequires:	gtk-doc
 BuildRequires:	id3lib-devel
@@ -81,15 +80,6 @@ Requires:	gtk-doc-common
 %description apidocs
 Tracker libraries API documentation.
 
-%package -n gnome-applet-search-bar
-Summary:	Tracker search bar plugin for GNOME Panel
-Group:		X11/Applications
-Requires:	%{name} = %{version}-%{release}
-Requires:	gnome-panel
-
-%description -n gnome-applet-search-bar
-Tracker search bar plugin for GNOME Panel.
-
 %package -n evolution-plugin-tracker
 Summary:	Tracker plugin for Evolution
 Group:		X11/Applications
@@ -122,6 +112,7 @@ Adds Tracker integration to Nautilus.
 %configure \
 	--disable-hal				\
 	--disable-silent-rules			\
+	--disable-tracker-search-bar		\
 	--disable-unit-tests			\
 	--enable-libvorbis			\
 	--with-html-dir=%{_gtkdocdir}
@@ -289,13 +280,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_gtkdocdir}/libtracker-extract
 %{_gtkdocdir}/libtracker-miner
 %{_gtkdocdir}/libtracker-sparql
-
-%files -n gnome-applet-search-bar
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libexecdir}/tracker-search-bar
-%{_datadir}/dbus-1/services/org.gnome.panel.applet.SearchBarFactory.service
-%{_datadir}/gnome-panel/4.0/applets/org.gnome.panel.SearchBar.panel-applet
-%{_mandir}/man1/tracker-search-bar.1*
 
 %files -n evolution-plugin-tracker
 %defattr(644,root,root,755)

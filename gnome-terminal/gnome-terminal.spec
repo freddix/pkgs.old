@@ -1,11 +1,12 @@
 Summary:	GNOME Terminal
 Name:		gnome-terminal
 Version:	3.4.1.1
-Release:	1
+Release:	2
 License:	GPL
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/gnome/sources/gnome-terminal/3.4/%{name}-%{version}.tar.xz
 # Source0-md5:	fbacc01a7d0c6602bbd901c02423e6ad
+Patch0:		%{name}-dark-theme.patch
 URL:		http://www.gnome.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -27,6 +28,7 @@ This is a terminal thing that isn't finished at all.
 
 %prep
 %setup -q
+%patch0 -p1
 
 # kill gnome common deps
 sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\

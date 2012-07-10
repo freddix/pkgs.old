@@ -1,14 +1,17 @@
 %define		org_name	xfce4-mailwatch-plugin
-#
+
 Summary:	Mailwatch plugin for XFCE panel
 Name:		xfce4-plugin-mailwatch
 Version:	1.1.0
-Release:	17
+Release:	16
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://spuriousinterrupt.org/files/mailwatch/%{org_name}-%{version}.tar.bz2
 # Source0-md5:	f84dce86be1d7f25f169f262aaacee4e
 Patch0:		%{name}-xfce4ui.patch
+Patch1:		%{name}-gnutls.patch
+Patch2:		%{name}-link.patch
+Patch3:		%{name}-mbox-refresh.patch
 URL:		http://goodies.xfce.org/projects/panel-plugins/template
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -18,7 +21,7 @@ BuildRequires:	libxfce4ui-devel
 BuildRequires:	pkg-config
 BuildRequires:	xfce4-dev-tools
 BuildRequires:	xfce4-panel-devel
-Requires(post,postun):	gdk-pixbuf
+Requires(post,postun):	gtk+
 Requires(post,postun):	hicolor-icon-theme
 Requires:	xfce4-panel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -29,6 +32,9 @@ Template plugin for XFCE panel.
 %prep
 %setup -qn %{org_name}-%{version}
 %patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 sed -i -e 's|nb_NO|nb|' -e 's|pt_PT|pt|' po/LINGUAS
 mv po/{pt_PT,pt}.po
