@@ -1,17 +1,15 @@
 %bcond_with	bootstrap
-#
+
 Summary:	GNU Compiler Collection: the C compiler and shared files
 Name:		gcc
-Version:	4.4.6
+Version:	4.7.1
 Release:	2
 Epoch:		6
 License:	GPL v3+
 Group:		Development/Languages
 Source0:	ftp://gcc.gnu.org/pub/gcc/releases/gcc-%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	ab525d429ee4425050a554bc9247d6c4
+# Source0-md5:	933e6f15f51c031060af64a9e14149ff
 Source1:	%{name}-optimize-la.pl
-Patch0:		%{name}-nolocalefiles.patch
-Patch1:		%{name}-nodebug.patch
 URL:		http://gcc.gnu.org/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -33,6 +31,8 @@ Obsoletes:	gcc4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_slibdir	/%{_lib}
+%define		gcclibdir	%{_libdir}/gcc/%{_target_platform}/%{version}
+
 %define		filterout	-fwrapv -fno-strict-aliasing -fsigned-char
 # FIXME: unresolved symbols
 %define		skip_post_check_so	libmudflap.so.0.0.0 libmudflapth.so.0.0.0
@@ -213,10 +213,27 @@ Obsoletes:	libg2c-static
 %description -n libgfortran-static
 Static Fortran 95 Libraries.
 
+%package -n libquadmath
+Summary:	GCC __float128 shared support library
+License:	GPL v2+ with linking exception
+Group:		Libraries
+
+%description -n libquadmath
+This package contains GCC shared support library which is needed for
+__float128 math support and for Fortran REAL*16 support.
+
+%package -n libquadmath-devel
+Summary:	Header files for GCC __float128 support library
+License:	GPL v2+ with linking exception
+Group:		Development/Libraries
+Requires:	libquadmath = %{epoch}:%{version}-%{release}
+
+%description -n libquadmath-devel
+This package contains header files for GCC support library which is
+needed for __float128 math support and for Fortran REAL*16 support.
+
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 mv ChangeLog ChangeLog.general
 
@@ -243,23 +260,32 @@ TEXCONFIG=false			\
 	--with-local-prefix=%{_prefix}/local				\
 	--with-slibdir=%{_slibdir}					\
 	--x-libraries=%{_libdir}					\
+	--disable-build-poststage1-with-cxx				\
+	--disable-build-with-cxx					\
 	--disable-cld							\
+	--disable-libssp						\
 	--disable-libstdcxx-pch						\
+	--disable-libunwind-exceptions					\
 	--disable-multilib						\
 	--disable-werror						\
 	--enable-__cxa_atexit						\
-	--enable-c99							\
-	--enable-cmath							\
+	--enable-checking=release					\
+	--enable-clocale=gnu						\
+	--enable-gnu-unique-object					\
 	--enable-languages="c,c++,fortran"				\
+	--enable-ld=default						\
 	--enable-libstdcxx-allocator=new				\
+	--enable-libstdcxx-time						\
+	--enable-linker-build-id					\
 	--enable-linux-futex						\
-	--enable-long-long						\
+	--enable-lto							\
 	--enable-nls							\
 	--enable-shared							\
 	--enable-threads=posix						\
 	--with-demangler-in-ld						\
 	--with-gnu-as							\
 	--with-gnu-ld							\
+	--with-linker-hash-style=gnu					\
 	--with-pkgversion="Freddix"					\
 	--with-system-zlib						\
 	--without-x							\
@@ -268,8 +294,6 @@ cd ..
 
 %{__make} -C builddir							\
 	BOOT_CFLAGS="%{rpmcflags}"					\
-	GCJFLAGS="%{rpmcflags}"						\
-	GNATLIBCFLAGS="%{rpmcflags}"					\
 	LDFLAGS_FOR_TARGET="%{rpmldflags}"				\
 	STAGE1_CFLAGS="%{rpmcflags} -O0 -g0"				\
 	infodir=%{_infodir}						\
@@ -284,47 +308,43 @@ install -d $RPM_BUILD_ROOT{/lib,%{_aclocaldir},%{_datadir},%{_infodir}}
 	infodir=%{_infodir}		\
 	mandir=%{_mandir}
 
-install builddir/gcc/specs $RPM_BUILD_ROOT%{_libdir}/gcc/%{_target_platform}/%{version}
+cp -p builddir/gcc/specs $RPM_BUILD_ROOT%{gcclibdir}
 
 ln -sf %{_bindir}/cpp $RPM_BUILD_ROOT/lib/cpp
 ln -sf gcc $RPM_BUILD_ROOT%{_bindir}/cc
 echo ".so gcc.1" > $RPM_BUILD_ROOT%{_mandir}/man1/cc.1
 
-libssp=$(cd $RPM_BUILD_ROOT%{_libdir}; echo libssp.so.*.*.*)
-mv $RPM_BUILD_ROOT{%{_libdir}/$libssp,%{_slibdir}}
-libssp=$(cd $RPM_BUILD_ROOT%{_libdir}; echo libssp.so.*)
-mv $RPM_BUILD_ROOT{%{_libdir}/$libssp,%{_slibdir}}
-ln -sf %{_slibdir}/$libssp $RPM_BUILD_ROOT%{_libdir}/libssp.so
-
 ln -sf gfortran $RPM_BUILD_ROOT%{_bindir}/g95
 echo ".so gfortran.1" > $RPM_BUILD_ROOT%{_mandir}/man1/g95.1
 
-# avoid -L poisoning in *.la - there should be only -L%{_libdir}/gcc/*/%{version}
-# normalize libdir, to avoid propagation of unnecessary RPATHs by libtool
-for f in libgomp.la libmudflap.la libmudflapth.la libssp.la libssp_nonshared.la \
-	libstdc++.la libsupc++.la libgfortran.la ;
+# avoid -L poisoning in *.la. normalize libdir
+# to avoid propagation of unnecessary RPATHs by libtool
+for f in \
+	libgfortran.la	\
+	libgomp.la	\
+	libitm.la	\
+	libmudflap.la	\
+	libmudflapth.la	\
+	libquadmath.la	\
+	libstdc++.la	\
+	libsupc++.la
 do
 	%{__perl} %{SOURCE1} $RPM_BUILD_ROOT%{_libdir}/$f %{_libdir} > $RPM_BUILD_ROOT%{_libdir}/$f.fixed
 	mv $RPM_BUILD_ROOT%{_libdir}/$f{.fixed,}
 done
 
-gccdir=$(echo $RPM_BUILD_ROOT%{_libdir}/gcc/*/*)
-cp $gccdir/install-tools/include/*.h $gccdir/include
-cp $gccdir/include-fixed/syslimits.h $gccdir/include
-rm -rf $gccdir/install-tools
-rm -rf $gccdir/include-fixed
+cp -p $RPM_BUILD_ROOT%{gcclibdir}/install-tools/include/*.h $RPM_BUILD_ROOT%{gcclibdir}/include
+cp -p $RPM_BUILD_ROOT%{gcclibdir}/include-fixed/syslimits.h $RPM_BUILD_ROOT%{gcclibdir}/include
+%{__rm} -r $RPM_BUILD_ROOT%{gcclibdir}/install-tools
+%{__rm} -r $RPM_BUILD_ROOT%{gcclibdir}/include-fixed
+
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libstdc++.so.*-gdb.py
 
 %find_lang gcc
 %find_lang cpplib
 
 %find_lang libstdc\+\+
 install libstdc++-v3/include/precompiled/* $RPM_BUILD_ROOT%{_includedir}
-
-# cvs snap doesn't contain (release does) below files,
-# so let's create dummy entries to satisfy %%files.
-[ ! -f NEWS ] && touch NEWS
-[ ! -f libgfortran/AUTHORS ] && touch libgfortran/AUTHORS
-[ ! -f libgfortran/README ] && touch libgfortran/README
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -357,6 +377,8 @@ rm -rf $RPM_BUILD_ROOT
 %postun	-p /sbin/ldconfig -n libstdc++
 %post	-p /sbin/ldconfig -n libgfortran
 %postun	-p /sbin/ldconfig -n libgfortran
+%post	-p /sbin/ldconfig -n libquadmath
+%postun	-p /sbin/ldconfig -n libquadmath
 
 %files -f gcc.lang
 %defattr(644,root,root,755)
@@ -365,55 +387,29 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*-gcc*
 %attr(755,root,root) %{_bindir}/cc
 %attr(755,root,root) %{_bindir}/gcc
-%attr(755,root,root) %{_bindir}/gccbug
+%attr(755,root,root) %{_bindir}/gcc-ar
+%attr(755,root,root) %{_bindir}/gcc-nm
+%attr(755,root,root) %{_bindir}/gcc-ranlib
 %attr(755,root,root) %{_bindir}/gcov
-%attr(755,root,root) %{_libdir}/gcc/*/*/collect2
-%attr(755,root,root) %ghost %{_slibdir}/libssp.so.?
-%attr(755,root,root) %{_libdir}/libssp.so
+%attr(755,root,root) %{_libdir}/libitm.so
 %attr(755,root,root) %{_slibdir}/lib*.so
+%attr(755,root,root) %{gcclibdir}/collect2
+%attr(755,root,root) %{gcclibdir}/liblto_plugin.so*
+%attr(755,root,root) %{gcclibdir}/lto-wrapper
+%attr(755,root,root) %{gcclibdir}/lto1
+%dir %{gcclibdir}/include
 
-%dir %{_libdir}/gcc/*/*/include
-%dir %{_libdir}/gcc/*/*/include/ssp
+%{gcclibdir}/crt*.o
+%{gcclibdir}/include/*.h
+%{gcclibdir}/libgcc.a
+%{gcclibdir}/libgcc_eh.a
+%{gcclibdir}/libgcov.a
+%{gcclibdir}/plugin
+%{gcclibdir}/specs
 
-%{_libdir}/gcc/*/*/crt*.o
-%{_libdir}/gcc/*/*/include/ammintrin.h
-%{_libdir}/gcc/*/*/include/avxintrin.h
-%{_libdir}/gcc/*/*/include/bmmintrin.h
-%{_libdir}/gcc/*/*/include/cpuid.h
-%{_libdir}/gcc/*/*/include/cross-stdarg.h
-%{_libdir}/gcc/*/*/include/emmintrin.h
-%{_libdir}/gcc/*/*/include/float.h
-%{_libdir}/gcc/*/*/include/immintrin.h
-%{_libdir}/gcc/*/*/include/iso646.h
-%{_libdir}/gcc/*/*/include/limits.h
-%{_libdir}/gcc/*/*/include/mm3dnow.h
-%{_libdir}/gcc/*/*/include/mm_malloc.h
-%{_libdir}/gcc/*/*/include/mmintrin-common.h
-%{_libdir}/gcc/*/*/include/mmintrin.h
-%{_libdir}/gcc/*/*/include/nmmintrin.h
-%{_libdir}/gcc/*/*/include/omp.h
-%{_libdir}/gcc/*/*/include/pmmintrin.h
-%{_libdir}/gcc/*/*/include/smmintrin.h
-%{_libdir}/gcc/*/*/include/ssp/*.h
-%{_libdir}/gcc/*/*/include/stdarg.h
-%{_libdir}/gcc/*/*/include/stdbool.h
-%{_libdir}/gcc/*/*/include/stddef.h
-%{_libdir}/gcc/*/*/include/stdfix.h
-%{_libdir}/gcc/*/*/include/syslimits.h
-%{_libdir}/gcc/*/*/include/tmmintrin.h
-%{_libdir}/gcc/*/*/include/unwind.h
-%{_libdir}/gcc/*/*/include/varargs.h
-%{_libdir}/gcc/*/*/include/wmmintrin.h
-%{_libdir}/gcc/*/*/include/x86intrin.h
-%{_libdir}/gcc/*/*/include/xmmintrin.h
-%{_libdir}/gcc/*/*/libgcc.a
-%{_libdir}/gcc/*/*/libgcc_eh.a
-%{_libdir}/gcc/*/*/libgcov.a
-%{_libdir}/gcc/*/*/specs
-%{_libdir}/libssp.a
-%{_libdir}/libssp.la
-%{_libdir}/libssp_nonshared.a
-%{_libdir}/libssp_nonshared.la
+%{_libdir}/libitm.la
+%{_libdir}/libitm.a
+%{_libdir}/libitm.spec
 
 %{_infodir}/gcc*
 %{_mandir}/man1/cc.1*
@@ -423,17 +419,19 @@ rm -rf $RPM_BUILD_ROOT
 %files -n cpp -f cpplib.lang
 %defattr(644,root,root,755)
 %dir %{_libdir}/gcc
-%dir %{_libdir}/gcc/*
-%dir %{_libdir}/gcc/*/*
+%dir %{_libdir}/gcc/%{_target_platform}
+%dir %{gcclibdir}
 %attr(755,root,root) %{_bindir}/cpp
-%attr(755,root,root) %{_libdir}/gcc/*/*/cc1
+%attr(755,root,root) %{gcclibdir}/cc1
 %attr(755,root,root) /lib/cpp
 %{_mandir}/man1/cpp.1*
 %{_infodir}/cpp*
 
 %files -n libgcc
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_slibdir}/lib*.so.*
+%attr(755,root,root) %{_slibdir}/libgcc_s.so.1
+%attr(755,root,root) %ghost %{_libdir}/libitm.so.1
+%attr(755,root,root) %{_libdir}/libitm.so.*.*.*
 
 %files -n libgomp
 %defattr(644,root,root,755)
@@ -445,8 +443,8 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libgomp.so
 %{_libdir}/libgomp.la
 %{_libdir}/libgomp.spec
-%{_libdir}/gcc/*/*/finclude
-%{_infodir}/libgomp*
+%{gcclibdir}/finclude
+%{gcclibdir}/include/omp.h
 
 %files -n libgomp-static
 %defattr(644,root,root,755)
@@ -454,18 +452,23 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n libmudflap
 %defattr(644,root,root,755)
-%attr(755,root,root) %ghost %{_libdir}/libmudflap*.so.?
-%attr(755,root,root) %{_libdir}/libmudflap*.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libmudflap.so.0
+%attr(755,root,root) %ghost %{_libdir}/libmudflapth.so.0
+%attr(755,root,root) %{_libdir}/libmudflap.so.*.*.*
+%attr(755,root,root) %{_libdir}/libmudflapth.so.*.*.*
 
 %files -n libmudflap-devel
 %defattr(644,root,root,755)
-%{_libdir}/gcc/*/*/include/mf-runtime.h
-%{_libdir}/libmudflap*.la
-%attr(755,root,root) %{_libdir}/libmudflap*.so
+%attr(755,root,root) %{_libdir}/libmudflap.so
+%attr(755,root,root) %{_libdir}/libmudflapth.so
+%{_libdir}/libmudflap.la
+%{_libdir}/libmudflapth.la
+%{gcclibdir}/include/mf-runtime.h
 
 %files -n libmudflap-static
 %defattr(644,root,root,755)
-%{_libdir}/libmudflap*.a
+%{_libdir}/libmudflap.a
+%{_libdir}/libmudflapth.a
 
 %files c++
 %defattr(644,root,root,755)
@@ -474,7 +477,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*-g++
 %attr(755,root,root) %{_bindir}/c++
 %attr(755,root,root) %{_bindir}/*-c++
-%attr(755,root,root) %{_libdir}/gcc/*/*/cc1plus
+%attr(755,root,root) %{gcclibdir}/cc1plus
 %{_libdir}/libsupc++.a
 %{_libdir}/libsupc++.la
 %{_mandir}/man1/g++.1*
@@ -503,25 +506,39 @@ rm -rf $RPM_BUILD_ROOT
 %files fortran
 %defattr(644,root,root,755)
 %doc gcc/fortran/ChangeLog
+%attr(755,root,root) %{_bindir}/*-gfortran
 %attr(755,root,root) %{_bindir}/g95
 %attr(755,root,root) %{_bindir}/gfortran
-%attr(755,root,root) %{_bindir}/*-gfortran
-%{_infodir}/gfortran*
-%attr(755,root,root) %{_libdir}/gcc/*/*/f951
-%{_libdir}/gcc/*/*/libgfortranbegin.a
-%{_libdir}/gcc/*/*/libgfortranbegin.la
-%{_libdir}/libgfortran.la
 %attr(755,root,root) %{_libdir}/libgfortran.so
+%attr(755,root,root) %{gcclibdir}/f951
+%{_libdir}/libgfortran.la
+%{_libdir}/libgfortran.spec
+%{gcclibdir}/libcaf_single.a
+%{gcclibdir}/libcaf_single.la
+%{gcclibdir}/libgfortranbegin.a
+%{gcclibdir}/libgfortranbegin.la
 %{_mandir}/man1/g95.1*
 %{_mandir}/man1/gfortran.1*
 
 %files -n libgfortran
 %defattr(644,root,root,755)
-%doc libgfortran/{AUTHORS,README,ChangeLog}
+%doc libgfortran/ChangeLog
 %attr(755,root,root) %ghost %{_libdir}/libgfortran.so.?
 %attr(755,root,root) %{_libdir}/libgfortran.so.*.*.*
 
 %files -n libgfortran-static
 %defattr(644,root,root,755)
 %{_libdir}/libgfortran.a
+
+%files -n libquadmath
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libquadmath.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libquadmath.so.0
+
+%files -n libquadmath-devel
+%defattr(644,root,root,755)
+%{gcclibdir}/include/quadmath.h
+%{gcclibdir}/include/quadmath_weak.h
+%attr(755,root,root) %{_libdir}/libquadmath.so
+%{_libdir}/libquadmath.la
 
