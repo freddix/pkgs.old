@@ -1,17 +1,20 @@
+# binutils-2_22-branch
+%define		snap	20120615
+
 Summary:	GNU Binary Utility Development Utilities
 Name:		binutils
 Version:	2.22
-Release:	1
+Release:	2.%{snap}.3
 Epoch:		3
 License:	GPL
 Group:		Development/Tools
-Source0:	http://ftp.gnu.org/gnu/binutils/%{name}-%{version}.tar.bz2
-# Source0-md5:	ee0f10756c84979622b992a4a61ea3f5
+#Source0:	http://ftp.gnu.org/gnu/binutils/%{name}-%{version}.tar.bz2
+Source0:	%{name}-%{version}-%{snap}.tar.xz
+# Source0-md5:	511caa35ee513a139f8c34cfffc11b4d
 Patch0:		%{name}-libtool-relink.patch
 Patch1:		%{name}-discarded.patch
 Patch2:		%{name}-libtool-m.patch
-Patch3:		%{name}-use-hashtype-both-by-default.patch
-Patch4:		%{name}-tooldir.patch
+Patch3:		%{name}-tooldir.patch
 URL:		http://sources.redhat.com/binutils/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -65,35 +68,46 @@ GNU binutils static libraries.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p0
-%patch4 -p1
-
-#rm config/override.m4
+%patch3 -p1
 
 %build
-cp -f /usr/share/automake/config.* .
-
 CFLAGS="%{rpmcflags}"; export CFLAGS
 CC="%{__cc}"; export CC
 
-./configure %{_target_platform} 				\
-	--disable-debug						\
-	--disable-werror					\
-	--enable-build-warnings=,-Wno-missing-prototypes	\
-	--enable-shared						\
-	--enable-targets=i686-linux				\
-	--infodir=%{_infodir}					\
-	--libdir=%{_libdir}					\
-	--mandir=%{_mandir}					\
-	--prefix=%{_prefix}					\
+mkdir build
+cd build
+../configure %{_target_platform} 	\
+	--disable-debug			\
+	--disable-werror		\
+	--enable-gold			\
+	--enable-ld=default		\
+	--enable-shared			\
+	--infodir=%{_infodir}		\
+	--libdir=%{_libdir}		\
+	--mandir=%{_mandir}		\
+	--prefix=%{_prefix}		\
 	--with-tooldir=%{_prefix}
-%{__make}
+
+%{__make} tooldir=%{_prefix}
+
+cp -a libiberty libiberty-pic
+%{__make} -C libiberty-pic clean
+%{__make} CFLAGS="${CFLAGS} -fPIC" -C libiberty-pic
+
+cp -a bfd bfd-pic
+%{__make} -C bfd-pic clean
+%{__make} CFLAGS="${CFLAGS} -fPIC -fvisibility=hidden" -C bfd-pic
+
+cp -a opcodes opcodes-pic
+%{__make} -C opcodes-pic clean
+%{__make} CFLAGS="${CFLAGS} -fPIC" -C opcodes-pic
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT	\
+	tooldir=%{_prefix}
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/standards.info*
 
@@ -102,10 +116,12 @@ rm -f $RPM_BUILD_ROOT%{_infodir}/standards.info*
 rm -f $RPM_BUILD_ROOT%{_mandir}/man1/{dlltool,nlmconv,windres}.1
 
 install include/libiberty.h $RPM_BUILD_ROOT%{_includedir}
-install libiberty/pic/libiberty.a $RPM_BUILD_ROOT%{_libdir}
+install build/libiberty-pic/libiberty.a $RPM_BUILD_ROOT%{_libdir}
+install build/bfd-pic/libbfd.a $RPM_BUILD_ROOT%{_libdir}
+install build/opcodes-pic/libopcodes.a $RPM_BUILD_ROOT%{_libdir}
 
 # remove evil -L pointing inside builder's home
-perl -pi -e 's@-L[^ ]*/pic @@g' $RPM_BUILD_ROOT%{_libdir}/libbfd.la
+perl -pi -e 's@-L[^ ]*/pic @@g' $RPM_BUILD_ROOT%{_libdir}/*.la
 
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
@@ -140,9 +156,24 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README
-%attr(755,root,root) %{_bindir}/[!g]*
-%attr(755,root,root) %{_bindir}/g[!a]*
-#%{_prefix}/lib/ldscripts
+%attr(755,root,root) %{_bindir}/addr2line
+%attr(755,root,root) %{_bindir}/ar
+%attr(755,root,root) %{_bindir}/as
+%attr(755,root,root) %{_bindir}/c++filt
+%attr(755,root,root) %{_bindir}/elfedit
+%attr(755,root,root) %{_bindir}/gprof
+%attr(755,root,root) %{_bindir}/ld
+%attr(755,root,root) %{_bindir}/ld.bfd
+%attr(755,root,root) %{_bindir}/ld.gold
+%attr(755,root,root) %{_bindir}/nm
+%attr(755,root,root) %{_bindir}/objcopy
+%attr(755,root,root) %{_bindir}/objdump
+%attr(755,root,root) %{_bindir}/ranlib
+%attr(755,root,root) %{_bindir}/readelf
+%attr(755,root,root) %{_bindir}/size
+%attr(755,root,root) %{_bindir}/strings
+%attr(755,root,root) %{_bindir}/strip
+%{_prefix}/lib/ldscripts
 
 %{_mandir}/man1/*
 
@@ -161,8 +192,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libbfd.so
 %attr(755,root,root) %{_libdir}/libopcodes.so
-%{_libdir}/libbfd.la
-%{_libdir}/libopcodes.la
+%{_libdir}/*.la
 %{_libdir}/libiberty.a
 %{_includedir}/*.h
 %{_infodir}/bfd.info*
