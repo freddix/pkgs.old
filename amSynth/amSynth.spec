@@ -1,11 +1,11 @@
 Summary:	Software synthesizer
 Name:		amSynth
-Version:	1.3.0
+Version:	1.3.1
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Sound
 Source0:	http://amsynth.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	2ce5ee9adda16badf3f4f2792001fb4d
+# Source0-md5:	f21cb484283dc642138ab9d7f6099e89
 BuildRequires:	alsa-lib-devel
 BuildRequires:	gtkmm-devel
 BuildRequires:	jack-audio-connection-kit-devel
