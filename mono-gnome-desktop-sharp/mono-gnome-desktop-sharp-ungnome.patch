@@ -1,0 +1,176 @@
+diff -aurN gnome-desktop-sharp-2.26.0.orig/configure.in gnome-desktop-sharp-2.26.0/configure.in
+--- gnome-desktop-sharp-2.26.0.orig/configure.in	2012-07-07 10:11:14.170216845 +0200
++++ gnome-desktop-sharp-2.26.0/configure.in	2012-07-07 11:00:59.059900585 +0200
+@@ -157,21 +157,21 @@
+ 
+ ## Versions of dependencies
+ GNOME_REQUIRED_VERSION=2.25.0
+-GNOME_SHARP_REQUIRED_VERSION=2.24.0
++## GNOME_SHARP_REQUIRED_VERSION=2.24.0
+ 
+-PKG_CHECK_MODULES(GNOMESHARP, gnome-sharp-2.0 >= $GNOME_SHARP_REQUIRED_VERSION)
+-AC_SUBST(GNOMESHARP_CFLAGS)
+-AC_SUBST(GNOMESHARP_LIBS)
++## PKG_CHECK_MODULES(GNOMESHARP, gnome-sharp-2.0 >= $GNOME_SHARP_REQUIRED_VERSION)
++## AC _SUBST(GNOMESHARP_CFLAGS)
++## AC_SUBST(GNOMESHARP_LIBS)
+ 
+ AC_SUBST(CFLAGS)
+ 
+ PKG_CHECK_MODULES(GNOMEDESKTOP, gnome-desktop-2.0 >= $GNOME_REQUIRED_VERSION)
+ 
+-NAUTILUSBURN_REQUIRED_VERSION=2.22.1
++## NAUTILUSBURN_REQUIRED_VERSION=2.22.1
+ 
+-PKG_CHECK_MODULES(NAUTILUSBURN, libnautilus-burn >= $NAUTILUSBURN_REQUIRED_VERSION, enable_nautilusburn=yes, enable_nautilusburn=no)
+-AC_SUBST(NAUTILUSBURN_CFLAGS)
+-AC_SUBST(NAUTILUSBURN_LIBS)
++## PKG_CHECK_MODULES(NAUTILUSBURN, libnautilus-burn >= $NAUTILUSBURN_REQUIRED_VERSION, enable_nautilusburn=yes, enable_nautilusburn=no)
++## AC_SUBST(NAUTILUSBURN_CFLAGS)
++## AC_SUBST(NAUTILUSBURN_LIBS)
+ 
+ RSVG_REQUIRED_VERSION=2.22.2
+ 
+@@ -179,27 +179,27 @@
+ AC_SUBST(RSVG_CFLAGS)
+ AC_SUBST(RSVG_LIBS)
+ 
+-PKG_CHECK_MODULES(GNOME_PANEL, libpanelapplet-2.0 >= $GNOME_REQUIRED_VERSION, enable_gnome_panel=yes, enable_gnome_panel=no)
+-AC_SUBST(GNOME_PANEL_CFLAGS)
+-AC_SUBST(GNOME_PANEL_LIBS)
++## PKG_CHECK_MODULES(GNOME_PANEL, libpanelapplet-2.0 >= $GNOME_REQUIRED_VERSION, enable_gnome_panel=yes, enable_gnome_panel=no)
++## AC_SUBST(GNOME_PANEL_CFLAGS)
++## AC_SUBST(GNOME_PANEL_LIBS)
+ 
+-GNOME_PRINT_REQUIRED_VERSION=2.18.0
++## GNOME_PRINT_REQUIRED_VERSION=2.18.0
+ 
+-PKG_CHECK_MODULES(GNOME_PRINT, libgnomeprint-2.2 >= $GNOME_PRINT_REQUIRED_VERSION libgnomeprintui-2.2 >= $GNOME_PRINT_REQUIRED_VERSION, enable_gnome_print=yes, enable_gnome_print=no)
+-AC_SUBST(GNOME_PRINT_CFLAGS)
+-AC_SUBST(GNOME_PRINT_LIBS)
++## PKG_CHECK_MODULES(GNOME_PRINT, libgnomeprint-2.2 >= $GNOME_PRINT_REQUIRED_VERSION libgnomeprintui-2.2 >= $GNOME_PRINT_REQUIRED_VERSION, enable_gnome_print=yes, enable_gnome_print=no)
++## AC_SUBST(GNOME_PRINT_CFLAGS)
++## AC_SUBST(GNOME_PRINT_LIBS)
+ 
+-GTKHTML_REQUIRED_VERSION=3.23.5
++## GTKHTML_REQUIRED_VERSION=3.23.5
+ 
+-PKG_CHECK_MODULES(GTKHTML, libgtkhtml-3.14 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-AC_SUBST(GTKHTML_CFLAGS)
+-AC_SUBST(GTKHTML_LIBS)
++## PKG_CHECK_MODULES(GTKHTML, libgtkhtml-3.14 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
++## AC_SUBST(GTKHTML_CFLAGS)
++## AC_SUBST(GTKHTML_LIBS)
+ 
+-GTKSOURCEVIEW_REQUIRED_VERSION=2.2.2
++## GTKSOURCEVIEW_REQUIRED_VERSION=2.2.2
+ 
+-PKG_CHECK_MODULES(GTKSOURCEVIEW, gtksourceview-2.0 >= $GTKSOURCEVIEW_REQUIRED_VERSION, enable_gtksourceview=yes, enable_gtksourceview=no)
+-AC_SUBST(GTKSOURCEVIEW_CFLAGS)
+-AC_SUBST(GTKSOURCEVIEW_LIBS)
++## PKG_CHECK_MODULES(GTKSOURCEVIEW, gtksourceview-2.0 >= $GTKSOURCEVIEW_REQUIRED_VERSION, enable_gtksourceview=yes, enable_gtksourceview=no)
++## AC_SUBST(GTKSOURCEVIEW_CFLAGS)
++##AC_SUBST(GTKSOURCEVIEW_LIBS)
+ 
+ VTE_REQUIRED_VERSION=0.16.14
+ 
+@@ -211,11 +211,11 @@
+ AC_SUBST(WNCK_CFLAGS)
+ AC_SUBST(WNCK_LIBS)
+ 
+-AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
+-AM_CONDITIONAL(ENABLE_GNOME_PANEL, test "x$enable_gnome_panel" = "xyes")
+-AM_CONDITIONAL(ENABLE_GNOME_PRINT, test "x$enable_gnome_print" = "xyes")
+-AM_CONDITIONAL(ENABLE_GTKSOURCEVIEW, test "x$enable_gtksourceview" = "xyes")
+-AM_CONDITIONAL(ENABLE_NAUTILUSBURN, test "x$enable_nautilusburn" = "xyes")
++## AM_CONDITIONAL(ENABLE_GTKHTML, test "x$enable_gtkhtml" = "xyes")
++##AM_CONDITIONAL(ENABLE_GNOME_PANEL, test "x$enable_gnome_panel" = "xyes")
++## AM_CONDITIONAL(ENABLE_GNOME_PRINT, test "x$enable_gnome_print" = "xyes")
++##AM_CONDITIONAL(ENABLE_GTKSOURCEVIEW, test "x$enable_gtksourceview" = "xyes")
++##AM_CONDITIONAL(ENABLE_NAUTILUSBURN, test "x$enable_nautilusburn" = "xyes")
+ AM_CONDITIONAL(ENABLE_RSVG, test "x$enable_rsvg" = "xyes")
+ AM_CONDITIONAL(ENABLE_VTE, test "x$enable_vte" = "xyes")
+ AM_CONDITIONAL(ENABLE_WNCK, test "x$enable_wnck" = "xyes")
+@@ -228,28 +228,9 @@
+ gnomedesktop/Makefile
+ gnomedesktop/gnomedesktop-sharp.dll.config
+ gnomedesktop/gnome-desktop-sharp-2.0.pc
+-gnomepanel/Makefile
+-gnomepanel/glue/Makefile
+-gnomepanel/gnome-panel-sharp.dll.config
+-gnomepanel/gnome-panel-sharp-2.24.pc
+-gnomeprint/Makefile
+-gnomeprint/gnome-print-sharp.dll.config
+-gnomeprint/gnome-print-sharp-2.18.pc
+-nautilusburn/Makefile
+-nautilusburn/glue/Makefile
+-nautilusburn/nautilusburn-sharp.dll.config
+-nautilusburn/nautilusburn-sharp.pc
+ rsvg/Makefile
+ rsvg/rsvg2-sharp.dll.config
+ rsvg/rsvg2-sharp-2.0.pc
+-gtkhtml/Makefile
+-gtkhtml/glue/Makefile
+-gtkhtml/gtkhtml-sharp.dll.config
+-gtkhtml/gtkhtml-sharp-3.14.pc
+-gtksourceview/Makefile
+-gtksourceview/glue/Makefile
+-gtksourceview/gtksourceview2-sharp.dll.config
+-gtksourceview/gtksourceview2-sharp.pc
+ vte/Makefile
+ vte/vte-sharp.dll.config
+ vte/vte-sharp-0.16.pc
+@@ -271,11 +252,6 @@
+ echo ""
+ echo "   Optional assemblies included in the build:"
+ echo ""
+-echo "      * gnome-panel-sharp.dll: $enable_gnome_panel"
+-echo "      * gnome-print-sharp.dll: $enable_gnome_print"
+-echo "      * gtkhtml-sharp.dll: $enable_gtkhtml"
+-echo "      * gtksourceview2-sharp.dll: $enable_gtksourceview"
+-echo "      * nautilusburn-sharp.dll: $enable_nautilusburn"
+ echo "      * rsvg-sharp.dll: $enable_rsvg"
+ echo "      * vte-sharp.dll: $enable_vte"
+ echo "      * wnck-sharp.dll: $enable_wnck"
+diff -aurN gnome-desktop-sharp-2.26.0.orig/gnomedesktop/gnome-desktop-sharp-2.0.pc.in gnome-desktop-sharp-2.26.0/gnomedesktop/gnome-desktop-sharp-2.0.pc.in
+--- gnome-desktop-sharp-2.26.0.orig/gnomedesktop/gnome-desktop-sharp-2.0.pc.in	2012-07-07 10:11:14.166216893 +0200
++++ gnome-desktop-sharp-2.26.0/gnomedesktop/gnome-desktop-sharp-2.0.pc.in	2012-07-07 11:25:49.275270329 +0200
+@@ -7,6 +7,6 @@
+ Name: GnomeDesktop#
+ Description: GnomeDesktop# - GNOMEDesktop .NET Binding
+ Version: @VERSION@
+-Requires: gnome-sharp-2.0
++Requires: gtk-sharp-2.0
+ Cflags: -I:${gapidir}/gnomedesktop-api.xml
+ Libs: -r:${assemblies_dir}/gnomedesktop-sharp.dll
+diff -aurN gnome-desktop-sharp-2.26.0.orig/gnomedesktop/gnomedesktop-sharp.dll.config.in gnome-desktop-sharp-2.26.0/gnomedesktop/gnomedesktop-sharp.dll.config.in
+--- gnome-desktop-sharp-2.26.0.orig/gnomedesktop/gnomedesktop-sharp.dll.config.in	2012-07-07 10:11:14.166216893 +0200
++++ gnome-desktop-sharp-2.26.0/gnomedesktop/gnomedesktop-sharp.dll.config.in	2012-07-07 11:25:09.835763391 +0200
+@@ -3,5 +3,5 @@
+   <dllmap dll="libgobject-2.0-0.dll" target="libgobject-2.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
+   <dllmap dll="libgthread-2.0-0.dll" target="libgthread-2.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
+   <dllmap dll="libgtk-win32-2.0-0.dll" target="libgtk-x11-2.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
+-  <dllmap dll="gnome-desktop-2" target="libgnome-desktop-2@LIB_PREFIX@.11@LIB_SUFFIX@"/>
++  <dllmap dll="gnome-desktop-2" target="libgnome-desktop-2@LIB_PREFIX@.17@LIB_SUFFIX@"/>
+ </configuration>
+diff -aurN gnome-desktop-sharp-2.26.0.orig/Makefile.am gnome-desktop-sharp-2.26.0/Makefile.am
+--- gnome-desktop-sharp-2.26.0.orig/Makefile.am	2012-07-07 10:11:14.170216845 +0200
++++ gnome-desktop-sharp-2.26.0/Makefile.am	2012-07-07 11:01:17.523669757 +0200
+@@ -1,4 +1,4 @@
+-SUBDIRS = sources gnomedesktop gnomepanel gnomeprint gtkhtml gtksourceview nautilusburn rsvg vte wnck #sample 
++SUBDIRS = sources gnomedesktop rsvg vte wnck
+ 
+ EXTRA_DIST = 			\
+ 	gtk-sharp.snk		\
+diff -aurN gnome-desktop-sharp-2.26.0.orig/Makefile.include gnome-desktop-sharp-2.26.0/Makefile.include
+--- gnome-desktop-sharp-2.26.0.orig/Makefile.include	2012-07-07 10:11:14.166216893 +0200
++++ gnome-desktop-sharp-2.26.0/Makefile.include	2012-07-07 10:53:41.515370644 +0200
+@@ -40,7 +40,7 @@
+ 	sed -e "s/@API_VERSION@/$(API_VERSION)/" $(top_srcdir)/AssemblyInfo.cs.in > AssemblyInfo.cs
+ 
+ build_sources = $(addprefix $(srcdir)/, $(sources)) AssemblyInfo.cs
+-build_references = $(MONO_CAIRO_LIBS) $(GNOMESHARP_LIBS) $(addprefix /r:, $(references))
++build_references = $(MONO_CAIRO_LIBS) $(GTKSHARP_LIBS) $(addprefix /r:, $(references))
+ 
+ if PLATFORM_WIN32
+ GAPI_CDECL_INSERT=$(top_srcdir)/gapi-cdecl-insert --keyfile=$(SNK) $(ASSEMBLY)

@@ -1,0 +1,11 @@
+--- gtk-sharp-2.12.11/configure.in.orig	2011-07-27 21:24:59.000000000 +0200
++++ gtk-sharp-2.12.11/configure.in	2011-11-27 09:57:21.954502949 +0100
+@@ -124,7 +124,7 @@
+ fi
+ 
+ if test "x$has_mono" = "xtrue"; then
+-GACUTIL_FLAGS='-package $(PACKAGE_VERSION) -gacdir $(DESTDIR)$(prefix)/lib'
++GACUTIL_FLAGS='-package $(PACKAGE_VERSION) -root $(DESTDIR)$(prefix)/lib'
+ GENERATED_SOURCES=generated/*.cs
+ AC_PATH_PROG(RUNTIME, mono, no)
+ 

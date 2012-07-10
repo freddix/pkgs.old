@@ -1,0 +1,21 @@
+--- notify-sharp-0.4.0/src/Makefile.am~	2007-06-11 19:45:45.000000000 +0200
++++ notify-sharp-0.4.0/src/Makefile.am	2009-01-30 09:57:10.494082466 +0100
+@@ -20,14 +20,14 @@
+ 
+ install-data-local:
+ 	@if test -n '$(TARGET)'; then                       \
+-          echo "$(GACUTIL) /i $(TARGET) /f /gacdir $(DESTDIR)$(libdir)";    \
+-          $(GACUTIL) /i $(TARGET) /package $(ASSEMBLY) /f /gacdir $(libdir) /root $(DESTDIR)$(libdir) || exit 1; \
++          echo "$(GACUTIL) /i $(TARGET) /f /gacdir $(DESTDIR)$(prefix)/lib";    \
++          $(GACUTIL) /i $(TARGET) /package $(ASSEMBLY) /f /gacdir $(prefix)/lib /root $(DESTDIR)$(prefix)/lib || exit 1; \
+         fi
+ 
+ uninstall-local:
+ 	@if test -n '$(TARGET)'; then                       \
+-          echo "$(GACUTIL) /u $(ASSEMBLY) /gacdir $(DESTDIR)$(libdir)";  \
+-          $(GACUTIL) /u $(ASSEMBLY) /package $(ASSEMBLY) /gacdir $(libdir) /root $(DESTDIR)$(libdir) || exit 1;   \
++          echo "$(GACUTIL) /u $(ASSEMBLY) /gacdir $(DESTDIR)$(prefix)/lib";  \
++          $(GACUTIL) /u $(ASSEMBLY) /package $(ASSEMBLY) /gacdir $(prefix)/lib /root $(DESTDIR)$(prefix)/lib || exit 1;   \
+         fi
+ 
+ EXTRA_DIST = \
