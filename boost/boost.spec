@@ -1,21 +1,22 @@
-#
-%define		_fver	%(echo %{version} | tr . _)
-#
+# TODO: enable openmpi support
+
+%define		fver	%(echo %{version} | tr . _)
+
 Summary:	The Boost C++ Libraries
 Name:		boost
-Version:	1.44.0
-Release:	2
+Version:	1.50.0
+Release:	1
 License:	Boost Software License and others
 Group:		Libraries
-Source0:	http://downloads.sourceforge.net/boost/%{name}_%{_fver}.tar.bz2
-# Source0-md5:	f02578f5218f217a9f20e9c30e119c6a
+Source0:	http://downloads.sourceforge.net/boost/%{name}_%{fver}.tar.bz2
+# Source0-md5:	52dd00be775e689f55a987baebccc462
 Patch0:		%{name}-link.patch
 URL:		http://www.boost.org/
-BuildRequires:	boost-jam >= 3.1.3
 BuildRequires:	bzip2-devel
+BuildRequires:	libicu-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	perl-base
-BuildRequires:	python-devel >= 2.5
+BuildRequires:	python-devel
 BuildRequires:	rpm-pythonprov
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -32,10 +33,12 @@ upcoming C++ Standard Library Technical Report.
 %package devel
 Summary:	Boost C++ development headers
 Group:		Development/Libraries
+Requires:	%{name}-chrono-devel = %{version}-%{release}
 Requires:	%{name}-date_time-devel = %{version}-%{release}
 Requires:	%{name}-filesystem-devel = %{version}-%{release}
 Requires:	%{name}-graph-devel = %{version}-%{release}
 Requires:	%{name}-iostreams-devel = %{version}-%{release}
+Requires:	%{name}-locale-devel = %{version}-%{release}
 Requires:	%{name}-prg_exec_monitor-devel = %{version}-%{release}
 Requires:	%{name}-program_options-devel = %{version}-%{release}
 Requires:	%{name}-python-devel = %{version}-%{release}
@@ -45,6 +48,7 @@ Requires:	%{name}-serialization-devel = %{version}-%{release}
 Requires:	%{name}-signals-devel = %{version}-%{release}
 Requires:	%{name}-system-devel = %{version}-%{release}
 Requires:	%{name}-thread-devel = %{version}-%{release}
+Requires:	%{name}-timer-devel = %{version}-%{release}
 Requires:	%{name}-unit_test_framework-devel = %{version}-%{release}
 Requires:	%{name}-wave-devel = %{version}-%{release}
 Requires:	%{name}-wserialization-devel = %{version}-%{release}
@@ -60,6 +64,23 @@ Requires:	%{name}-devel = %{version}-%{release}
 
 %description doc
 Documentation for the Boost C++ Library.
+
+###
+%package chrono
+Summary:	Boost C++ chrono library
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description chrono
+Boost C++ chrono library.
+
+%package chrono-devel
+Summary:	Boost C++ chrono headers
+Group:		Development/Libraries
+Requires:	%{name}-chrono = %{version}-%{release}
+
+%description chrono-devel
+Boost C++ chrono headers.
 
 ###
 %package date_time
@@ -129,6 +150,25 @@ Requires:	%{name}-iostreams = %{version}-%{release}
 %description iostreams-devel
 Boost C++ iostreams headers.
 
+###
+%package locale
+Summary:	Boost C++ locale library
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description locale
+Boost C++ locale library.
+
+%package locale-devel
+Summary:	Boost C++ locale headers
+Group:		Development/Libraries
+Requires:	%{name}-locale = %{version}-%{release}
+
+%description locale-devel
+Boost C++ locale headers.
+
+
+###
 %package math
 Summary:	Boost C++ iostreams libraries
 Group:		Libraries
@@ -282,6 +322,23 @@ Requires:	%{name}-system = %{version}-%{release}
 Boost C++ system headers.
 
 ###
+%package timer
+Summary:	Boost C++ timer library
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description timer
+Boost C++ timer library.
+
+%package timer-devel
+Summary:	Boost C++ timer headers
+Group:		Development/Libraries
+Requires:	%{name}-timer = %{version}-%{release}
+
+%description timer-devel
+Boost C++ timer headers.
+
+###
 %package thread
 Summary:	Boost C++ thread library
 Group:		Development/Libraries
@@ -349,95 +406,72 @@ Requires:	%{name}-wserialization = %{version}-%{release}
 %description wserialization-devel
 Boost C++ wserialization headers.
 
+%package tools
+Summary:	Boost tools
+Group:		Development/Libraries
+
+%description tools
+Boost tools.
+
 %prep
-%setup -q -n %{name}_%{_fver}
+%setup -qn %{name}_%{fver}
 %patch0 -p1
 
 sed -i "s/<optimization>speed : -O3/<optimization>speed : ${CXXFLAGS:-%rpmcxxflags} -fPIC/" tools/build/v2/tools/gcc.jam
 sed -i 's/<debug-symbols>on : -g/<debug-symbols>on :/' tools/build/v2/tools/gcc.jam
 sed -i 's:find-static:find-shared:' libs/graph/build/Jamfile.v2
 
+echo "using mpi ;" >> tools/build/v2/user-config.jam
+
+cat << EOF > tools/build/v2/user-config.jam
+using gcc : %(%{__cxx} -dumpversion) : %{__cxx} ;
+EOF
+
 %build
 PYTHON_ROOT=%{_prefix}
 PYTHON_VERSION=2.5
-bjam \
+
+mkdir -p dist/bin
+cd tools/build/v2/engine
+./build.sh gcc
+cd ../../../../
+cp tools/build/v2/engine/bin.linuxx86/bjam dist/bin
+
+cd tools
+../dist/bin/bjam release	\
 	--toolset=gcc		\
 	-d2			\
+	cflags="%{rpmcflags}"	\
+	debug-symbols=on
+cd ..
+
+./dist/bin/bjam release		\
+	--layout=system		\
+	--toolset=gcc		\
+	-d2			\
+	cflags="%{rpmcflags}"	\
 	debug-symbols=on	\
+	link=shared		\
+	runtime-link=shared	\
 	inlining=on		\
-	threading=multi		\
-	variant=release
+	threading=multi
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_datadir}/boostbook,%{_libdir},%{_includedir}}
 
 cp -rf boost $RPM_BUILD_ROOT%{_includedir}
 
-install bin.v2/libs/*/build/gcc-*/release/debug-symbols-on/inlining-on/threading-multi/lib*.so.*.*.* \
-	$RPM_BUILD_ROOT%{_libdir}
-
-# create symlinks without -gccXX-mt-* things in names
-for f in $RPM_BUILD_ROOT%{_libdir}/*.so.*.*.*; do
-	[ -f "$f" ] || continue
-	f=$(basename "$f")
-	soname=$(basename "$f" | sed -e 's#-gcc..-mt-.*#.so#g')
-	[ ! -f "$RPM_BUILD_ROOT%{_libdir}/$soname" ] && ln -s "$f" "$RPM_BUILD_ROOT%{_libdir}/$soname"
-	rawsoname=$(basename "$f" | sed -e 's#\.so.*#.so#g')
-	[ ! -f "$RPM_BUILD_ROOT%{_libdir}/$rawsoname" ] && ln -s "$f" "$RPM_BUILD_ROOT%{_libdir}/$rawsoname"
-done
-
-# documentation
-install -d $RPM_BUILD_ROOT%{_docdir}/boost-%{version}
-
-%if 0
-# as the documentation doesn't completely reside in a directory of its
-# own, we need to find out ourselves... this looks for HTML files and
-# then collects everything linked from those.  this is certainly quite
-# unoptimized wrt mkdir calls, but does it really matter?
-installdocs() {
-for i in $(find -type f -name '*.htm*'); do
-	# bjam docu is included in the boost-jam RPM
-	if test "`echo $i | sed 's,jam_src,,'`" = "$i"; then
-		install -d $RPM_BUILD_ROOT%{_docdir}/boost-%{version}/${i%/*}
-		for LINKED in `%{__perl} - $i $RPM_BUILD_ROOT%{_docdir}/boost-%{version}/$i <<'EOT'
-			sub rewrite_link
-			{
-				my $link = shift;
-				# rewrite links from boost/* to %{_includedir}/boost/* and
-				# ignore external links as well as document-internal ones.
-				# HTML files are also ignored as they get installed anyway.
-				if (!($link =~ s,^(?:../)*boost/,%{_includedir}/boost/,) && !($link =~ m,(?:^[^/]+:|^\#|\.html?(?:$|\#)),))
-				{
-					(my $file = $link) =~ s/\#.*//;
-					print "$file\n";
-				}
-				$link;
-			}
-			open IN, @ARGV[0];
-			open OUT, ">@ARGV[1]";
-			my $in_link;
-			while (<IN>)
-			{
-				$in_link and s/^\s*"([^"> ]*)"/'"' . rewrite_link($1) . '"'/e;
-				s/(href|src)="([^"> ]*)"/"$1=\"" . rewrite_link($2) . '"'/eig;
-				print OUT;
-				$in_link = /href|src=\s*$/;
-			}
-EOT`; do
-			TARGET=${i%/*}/$LINKED
-			# ignore non-existant linked files
-			if test -f $TARGET; then
-				install -D -m 644 $TARGET $RPM_BUILD_ROOT%{_docdir}/boost-%{version}/$TARGET
-			fi
-		done
-	fi
-done
-}; installdocs
-%endif
+install -p stage/lib/lib*.so.* $RPM_BUILD_ROOT%{_libdir}
+cp -a stage/lib/lib*.so $RPM_BUILD_ROOT%{_libdir}
+install -p dist/bin/* $RPM_BUILD_ROOT%{_bindir}
+cp -rf dist/share/* $RPM_BUILD_ROOT%{_datadir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	chrono -p /sbin/ldconfig
+%postun	chrono -p /sbin/ldconfig
 
 %post	date_time -p /sbin/ldconfig
 %postun	date_time -p /sbin/ldconfig
@@ -447,6 +481,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	graph -p /sbin/ldconfig
 %postun	graph -p /sbin/ldconfig
+
+%post	locale -p /sbin/ldconfig
+%postun	locale -p /sbin/ldconfig
 
 %post	iostreams -p /sbin/ldconfig
 %postun	iostreams -p /sbin/ldconfig
@@ -478,6 +515,9 @@ rm -rf $RPM_BUILD_ROOT
 %post	thread -p /sbin/ldconfig
 %postun	thread -p /sbin/ldconfig
 
+%post	timer -p /sbin/ldconfig
+%postun	timer -p /sbin/ldconfig
+
 %post	unit_test_framework -p /sbin/ldconfig
 %postun	unit_test_framework -p /sbin/ldconfig
 
@@ -498,6 +538,15 @@ rm -rf $RPM_BUILD_ROOT
 %files doc
 %defattr(644,root,root,755)
 %{_docdir}/%{name}-%{version}
+
+###
+%files chrono
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libboost_chrono.so.*
+
+%files chrono-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libboost_chrono.so
 
 ###
 %files date_time
@@ -535,6 +584,16 @@ rm -rf $RPM_BUILD_ROOT
 %files iostreams-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libboost_iostreams.so
+
+###
+%files locale
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libboost_locale.so.*
+
+###
+%files locale-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libboost_locale.so
 
 ###
 %files math
@@ -610,6 +669,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libboost_system.so
 
 ###
+%files timer
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libboost_timer.so.*
+
+%files timer-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libboost_timer.so
+
+###
 %files thread
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libboost_thread.so.*
@@ -637,7 +705,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libboost_wave.so
 
-
 ###
 %files serialization
 %defattr(644,root,root,755)
@@ -657,4 +724,9 @@ rm -rf $RPM_BUILD_ROOT
 %files wserialization-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libboost_wserialization.so
+
+%files tools
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/*
+%{_datadir}/boostbook
 
