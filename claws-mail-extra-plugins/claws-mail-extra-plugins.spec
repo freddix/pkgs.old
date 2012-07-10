@@ -1,11 +1,11 @@
 Summary:	Extra plugins for Claws Mail
 Name:		claws-mail-extra-plugins
-Version:	3.8.0
+Version:	3.8.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://downloads.sourceforge.net/sylpheed-claws/%{name}-%{version}.tar.bz2
-# Source0-md5:	4776f6e0357a694f384349ac73b6da52
+# Source0-md5:	04528ff6c8a7a38d392c4f2afb1bb0d2
 Patch0:		%{name}-geolocation.patch
 URL:		http://www.claws-mail.org/plugins.php
 BuildRequires:	claws-mail-devel

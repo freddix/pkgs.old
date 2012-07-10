@@ -1,5 +1,5 @@
---- claws-mail-extra-plugins-3.8.0/geolocation_plugin-0.0.7/configure.ac~	2011-12-16 12:20:45.000000000 +0100
-+++ claws-mail-extra-plugins-3.8.0/geolocation_plugin-0.0.7/configure.ac	2012-01-02 12:51:12.947113060 +0100
+--- claws-mail-extra-plugins-3.8.1/geolocation_plugin-0.0.8/configure.ac~	2011-12-16 12:20:45.000000000 +0100
++++ claws-mail-extra-plugins-3.8.1/geolocation_plugin-0.0.8/configure.ac	2012-01-02 12:51:12.947113060 +0100
 @@ -103,7 +103,9 @@
  	CHAMPLAIN_VERSION=0.6.0], [])
  PKG_CHECK_EXISTS(champlain-gtk-0.8 > 0.8.0,[CHAMPLAIN_MODULE=champlain-gtk-0.8
@@ -11,8 +11,8 @@
  
  AC_SUBST(VERSION)
  AC_SUBST(PLUGINVERSION)
---- claws-mail-extra-plugins-3.8.0/geolocation_plugin-0.0.7/src/geolocation_plugin.c~	2011-09-21 08:19:41.000000000 +0200
-+++ claws-mail-extra-plugins-3.8.0/geolocation_plugin-0.0.7/src/geolocation_plugin.c	2012-01-02 12:59:59.397060657 +0100
+--- claws-mail-extra-plugins-3.8.1/geolocation_plugin-0.0.8/src/geolocation_plugin.c~	2011-09-21 08:19:41.000000000 +0200
++++ claws-mail-extra-plugins-3.8.1/geolocation_plugin-0.0.8/src/geolocation_plugin.c	2012-01-02 12:59:59.397060657 +0100
 @@ -276,7 +276,7 @@
    /* create map widget */
    map = gtk_champlain_embed_new();

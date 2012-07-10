@@ -1,11 +1,11 @@
 Summary:	Claws Mail is an email client (and news reader) based on GTK+
 Name:		claws-mail
-Version:	3.8.0
-Release:	2
+Version:	3.8.1
+Release:	1
 License:	GPL v3
 Group:		X11/Applications/Mail
 Source0:	http://downloads.sourceforge.net/sylpheed-claws/%{name}-%{version}.tar.bz2
-# Source0-md5:	df9f1657d7f34959a2205344d952c2e3
+# Source0-md5:	d388929fb1c8f04d4bcb2139faaf9e70
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	bzip2-devel
