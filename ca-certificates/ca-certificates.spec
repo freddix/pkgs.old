@@ -1,11 +1,11 @@
 Summary:	Common CA Certificates PEM files
 Name:		ca-certificates
-Version:	20120212
+Version:	20120623
 Release:	1
 License:	distributable
 Group:		Libraries
 Source0:	ftp://ftp.debian.org/debian/pool/main/c/ca-certificates/%{name}_%{version}.tar.gz
-# Source0-md5:	391dea8d827db935ca0d0d1e6641bf23
+# Source0-md5:	5105d4cc086f0d4ecf7bf2e4c4667289
 Source1:	https://www.verisign.com/support/thawte-roots.zip
 # Source1-md5:	21a284ebdc6e8f4178d5cc10fb9e1ef2
 Source2:	http://www.certum.pl/keys/CA.pem
@@ -45,10 +45,9 @@ Source18:	http://crt.tcs.terena.org/TERENACodeSigningCA.crt
 Patch0:		%{name}-undebianize.patch
 Patch1:		%{name}-more-certs.patch
 Patch2:		%{name}-etc-certs.patch
-Patch3:		%{name}-c_rehash.sh.patch
-Patch4:		%{name}-endline.patch
-Patch5:		%{name}-DESTDIR.patch
-Patch6:		%{name}.d.patch
+Patch3:		%{name}-endline.patch
+Patch4:		%{name}-DESTDIR.patch
+Patch5:		%{name}.d.patch
 URL:		http://www.cacert.org/
 BuildRequires:	openssl-tools
 BuildRequires:	python
@@ -89,7 +88,6 @@ Skrypt i dane do odświeżania bazy certyfikatów CA.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-%patch6 -p1
 
 %{__sed} -i -e 's,@openssldir@,%{openssldir},' sbin/update-ca-certificates*
 
