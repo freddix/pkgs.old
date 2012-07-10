@@ -1,39 +1,21 @@
 Summary:	GNU libc
 Name:		glibc
-Version:	2.12.2
-Release:	5
+Version:	2.16.0
+Release:	2
 Epoch:		6
 License:	LGPL v2.1+
 Group:		Libraries
+# branch release/2.15/master
+#Source0:	%{name}-%{version}.tar.xz
 Source0:	http://ftp.gnu.org/pub/gnu/glibc/%{name}-%{version}.tar.xz
-# Source0-md5:	e0043f4f8e1aa61acc62fdf0f4d6133d
+# Source0-md5:	80b181b02ab249524ec92822c0174cf7
 Source6:	%{name}-localedb-gen
 Source7:	%{name}-LD-path.c
 #
-Patch0:		%{name}-pl.po-update.patch
-Patch1:		%{name}-pld.patch
-Patch2:		%{name}-crypt-blowfish.patch
-Patch3:		%{name}-paths.patch
-Patch4:		%{name}-no_opt_override.patch
-Patch5:		%{name}-missing-nls.patch
-Patch6:		%{name}-info.patch
-Patch7:		%{name}-no_debuggable_objects.patch
-Patch8:		%{name}-new-charsets.patch
-Patch9:		%{name}-thread_start.patch
-#
-Patch20:	%{name}-tzfile-noassert.patch
-Patch21:	%{name}-morelocales.patch
-Patch22:	%{name}-locale_fixes.patch
-Patch23:	%{name}-ZA_collate.patch
-Patch24:	%{name}-with-stroke.patch
-Patch25:	%{name}-cv_gnu89_inline.patch
-Patch26:	%{name}-posix-sh.patch
-Patch27:	%{name}-static-shared-getpagesize.patch
-Patch28:	%{name}-ignore-origin-of-privileged-program.patch
-Patch29:	%{name}-bug12343.patch
+Patch0:		%{name}-posix-sh.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=552960
+Patch1:		%{name}-pthread_wait_cond.patch
 URL:		http://www.gnu.org/software/libc/
-BuildRequires:	autoconf
-BuildRequires:	automake
 BuildRequires:	binutils
 BuildRequires:	uClibc-static
 BuildRequires:	gawk
@@ -55,16 +37,17 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # avoid -s here (ld.so must not be stripped to allow any program debugging)
 %define		filterout_ld		(-Wl,)?-[sS] (-Wl,)?--strip.*
-# avoid -D_FORTIFY_SOURCE=X
-%define		filterout_cpp		-D_FORTIFY_SOURCE=[0-9]+
 
-# optimize it a lot, switch off debug
+# avoid -D_FORTIFY_SOURCE=X
+%define		filterout_cpp	-D_FORTIFY_SOURCE=[0-9]+
+
+# switch off debug
 %define		specflags	-DNDEBUG
 
 # ld.so needs not to be stripped to work
 # gdb needs unstripped libpthread for some threading support
 # ...but we can strip at least debuginfo from them
-%define		_autostripdebug		.*/libpthread-[0-9.]*so\\|.*/ld-[0-9.]*so
+%define		_autostripdebug		.*/ld-[0-9.]*so\\|.*/libpthread-[0-9.]*so\\|.*libthread_db-[0-9.]*so
 
 # we don't want perl dependency in glibc-devel
 %define		_noautoreqfiles		%{_bindir}/mtrace
@@ -211,6 +194,54 @@ Obsoletes:	libiconv-static
 %description static
 GNU libc static libraries.
 
+%package -n nss_compat
+Summary:	Old style NYS NSS glibc module
+Group:		Base
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n nss_compat
+Old style NYS NSS glibc module.
+
+%package -n nss_dns
+Summary:	BIND NSS glibc module
+Group:		Base
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n nss_dns
+BIND NSS glibc module.
+
+%package -n nss_files
+Summary:	Traditional files databases NSS glibc module
+Group:		Base
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n nss_files
+Traditional files databases NSS glibc module.
+
+%package -n nss_hesiod
+Summary:	hesiod NSS glibc module
+Group:		Base
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n nss_hesiod
+glibc NSS (Name Service Switch) module for databases access.
+
+%package -n nss_nis
+Summary:	NIS(YP) NSS glibc module
+Group:		Base
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n nss_nis
+glibc NSS (Name Service Switch) module for NIS(YP) databases access.
+
+%package -n nss_nisplus
+Summary:	NIS+ NSS module
+Group:		Base
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+
+%description -n nss_nisplus
+glibc NSS (Name Service Switch) module for NIS+ databases access.
+
 %package pic
 Summary:	glibc PIC archive
 Group:		Development/Libraries/Libc
@@ -223,83 +254,34 @@ library which is a smaller subset of the standard libc shared library.
 
 %prep
 %setup -q
+%patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
-%patch9 -p1
-#
-%patch20 -p1
-%patch21 -p1
-%patch22 -p1
-%patch23 -p1
-%patch24 -p1
-%patch25 -p1
-%patch26 -p1
-%patch27 -p1
-%patch28 -p1
-%patch29 -p1
 
 # cleanup backups after patching
 find '(' -name '*~' -o -name '*.orig' ')' -print0 | xargs -0 -r -l512 rm -f
 
 chmod +x scripts/cpp
 
-# i786 (aka pentium4) hack
-ln -s i686 nptl/sysdeps/i386/i786
-ln -s i686 nptl/sysdeps/unix/sysv/linux/i386/i786
-
 %build
-cp -f /usr/share/automake/config.sub scripts
-%{__aclocal}
-%{__autoconf}
-
 rm -rf builddir
 install -d builddir
 cd builddir
 
 AWK="gawk" \
 ../%configure \
-	--disable-profile			\
-	--enable-add-ons=nptl,libidn		\
-	--enable-bind-now			\
-	--enable-hidden-plt			\
-	--enable-kernel="2.6.32"		\
-	--enable-stackguard-randomization	\
-	--with-__thread				\
-	--with-headers=%{_includedir}		\
-	--with-tls				\
-	--without-cvs				\
-	--without-gd 				\
+	--disable-profile		\
+	--enable-add-ons=nptl,libidn	\
+	--enable-bind-now		\
+	--enable-kernel="2.6.32"	\
+	--enable-obsolete-rpc		\
+	--with-headers=%{_includedir}	\
+	--without-cvs			\
 	--without-selinux
-
 %{__make} \
 	AWK="gawk" \
 	sLIBdir=%{_libdir}
 
 cd ..
-
-%if 0
-cd builddir
-env LANGUAGE=C LC_ALL=C \
-%{__make} tests 2>&1 | awk '
-BEGIN { file = "" }
-{
-	if (($0 ~ /\*\*\* \[.*\.out\] Error/) && ($0 !~ /annexc/) && (file == "")) {
-		file=$0;
-		gsub(/.*\[/, NIL, file);
-		gsub(/\].*/, NIL, file);
-	}
-	print $0;
-}
-END { if (file != "") { print "ERROR OUTPUT FROM " file; system("cat " file); exit(1); } }'
-cd ..
-done
-%endif
 
 CC="%{__cc}"
 %{_target_cpu}-uclibc-gcc %{SOURCE7} %{rpmcflags} -Os -static -o glibc-postinst
@@ -315,17 +297,11 @@ env LANGUAGE=C LC_ALL=C \
 	infodir=%{_infodir} \
 	mandir=%{_mandir}
 
-%if 0
-env LANGUAGE=C LC_ALL=C \
-%{__make} localedata/install-locales \
-	install_root=$RPM_BUILD_ROOT
-%endif
-
 PICFILES="libc_pic.a libc.map
 	math/libm_pic.a libm.map
 	resolv/libresolv_pic.a"
 
-install -p $PICFILES	$RPM_BUILD_ROOT%{_libdir}
+install -p $PICFILES $RPM_BUILD_ROOT%{_libdir}
 install -p elf/soinit.os $RPM_BUILD_ROOT%{_libdir}/soinit.o
 install -p elf/sofini.os $RPM_BUILD_ROOT%{_libdir}/sofini.o
 
@@ -342,7 +318,7 @@ mv -f $RPM_BUILD_ROOT/%{_lib}/libpcprofile.so $RPM_BUILD_ROOT%{_libdir}
 rm -f $RPM_BUILD_ROOT%{_sysconfdir}/localtime
 rm -rf $RPM_BUILD_ROOT%{_datadir}/zoneinfo
 
-ln -sf libbsd-compat.a		$RPM_BUILD_ROOT%{_libdir}/libbsd.a
+ln -sf libbsd-compat.a $RPM_BUILD_ROOT%{_libdir}/libbsd.a
 
 # make symlinks across top-level directories absolute
 for l in BrokenLocale anl cidn crypt dl m nsl resolv rt thread_db util; do
@@ -391,6 +367,8 @@ done
 # Languages not supported by glibc locales, but usable via $LANGUAGE:
 #   ang - Old English (gtk+, gnome)
 #   ca@valencia (gtk+, gnome; as ca_ES@valencia in FileZilla; locale exists in Debian)
+#   en@shaw - English with Shavian alphabet (gnome)
+#   la - Latin
 #   tlh - Klingon (bzflag)
 # and variants:
 #   sr@ije (use LANGUAGE=sr_ME@ije/sr_RS@ije) (gnome)
@@ -399,38 +377,80 @@ done
 #   az_IR (gtk+2)
 #   bal (newt,pessulus)
 #   bem (alacarte)
-#   ckb [or ku_IQ/ku_IR] (vlc,miro)
 #   co  (vlc)
+#   fil (stellarium)
+#   frp (xfce, lxlauncher)
 #   gn  (gn_BR in gnome, maybe gn_PY)
-#   bal (newt)
-#   haw (iso-codes)
+#   haw (iso-codes, stellarium)
+#   hrx (stellarium)
 #   ilo (kudzu)
 #   io  (gtk+2, gnome, alacarte)
-#   jv  (gmpc)
+#   jv  (gmpc, avant-window-navigator, kdesudo)
 #   kok (iso-codes)
-#   lb  (geany,miro)
+#   lb  (geany,miro,deluge)
 #   man (ccsm; incorrectly named md)
+#   mhr (pidgin)
 #   mus (bluez-gnome)
-#   sco (gnomad2, picard)
+#   pms (deluge)
+#   sco (gnomad2, picard, stellarium)
 #   swg (sim)
 #   syr (iso-codes)
 #   tet (vlc)
 #
-# bn is used for bn_BD or bn_IN? Assume bn_IN as nothing for bn_BD appeared
-# till now.
+# To be removed (after fixing packages still using it):
+#   sr@Latn (use sr@latin instead)
+#
+# To be clarified:
+#   sr@ije or sr@ijekavian? (currently sr@ije is supported)
+#   sr@ijelatin or sr@ijekavianlatin? (currently not supported)
+#   sr@ijekavian and sr@ijekavianlatin exist in: akonadi-googledata, amarok, k3b, konversation, ktorrent, wesnoth
+#
+# Short forms (omitted country code, used instead of long form) for ambiguous or unclear cases:
+# aa=aa_ER
+# ar=common? (AE, BH, DZ, EG, IQ, JO, KW, LB, LY, MA, OM, QA, SA, SD, SY, TN, YE)
+# bn=bn_BD
+# bo=bo_CN? (or common for CN, IN?)
+# ca=ca_ES
+# ckb=ckb_IQ
+# de=de_DE
+# en=common? (en_AU, en_CA, en_GB, en_NZ, en_US are used for particular variants)
+# eo=common
+# es=es_ES
+# eu=eu_ES
+# fr=fr_FR
+# fy=fy_NL
+# gez=gez_ET (?)
+# it=it_IT
+# li=li_NL
+# nds=nds_DE
+# nl=nl_NL
+# om=om_ET
+# pa=pa_IN
+# pt=pt_PT
+# ru=ru_RU
+# so=so_SO
+# sr=sr_RS [cyrillic]
+# sv=sv_SE
+# sw=sw_TZ (or common for KE, TZ, UG?)
+# ta=ta_IN
+# te=te_IN
+# ti=ti_ER (?)
+# tr=tr_TR
+# ur=ur_PK (?)
+# zh: no short code used (use zh_CN, zh_HK, zh_SG[not included yet], zh_TW)
 #
 # Omitted here - already existing (with libc.mo):
 #   be ca cs da de el en_GB es fi fr gl hr hu it ja ko nb nl pl pt_BR ru rw sk
 #   sv tr zh_CN zh_TW
 #
-for i in aa aa@saaho af am an ang ar ar_TN as ast az be@alternative be@latin \
-	bg bn bn_IN bo br bs byn ca@valencia crh csb cy de_AT de_CH dv dz en \
+for i in aa aa@saaho af am an ang ar ar_TN as ast az be@latin be@tarask \
+	bg bn bn_IN bo br bs byn ca@valencia ckb crh csb cy de_AT de_CH dv dz en \
 	en@boldquot en@quot en@shaw en_AU en_CA en_NZ en_US eo es_AR es_CL es_CO es_CR \
 	es_DO es_EC es_GT es_HN es_MX es_NI es_PA es_PE es_PR es_SV es_UY \
 	es_VE et eu fa fil fo fr_BE fr_CA fr_CH fur fy ga gd gez gu gv ha he \
-	hi hne hsb hy ia id ig ik is it_CH iu jv ka kk kl km kn ks ku kw ky la \
+	hi hne hsb hy ia id ig ik is it_CH iu ka kg kk kl km kn ks ku kw ky la \
 	lg li lo lt lv mai mg mi mk ml mn mr ms mt my nds ne nl_BE nn nr nso \
-	oc om or pa pap ps pt ps rm ro sa sc se si sid sl so sq sr sr@Latn \
+	oc om or pa pap ps pt ps rm ro sa sc se si sid sl so sq sr sr@Latn tl \
 	sr@ije sr@latin ss st sw ta te tg th ti tig tk tl tlh tn ts tt ug uk \
 	ur uz uz@cyrillic ve vi wa wal wo xh yi yo zh_HK zu; do
 	if [ ! -d $RPM_BUILD_ROOT%{_datadir}/locale/$i/LC_MESSAGES ]; then
@@ -442,7 +462,7 @@ for i in aa aa@saaho af am an ang ar ar_TN as ast az be@alternative be@latin \
 done
 
 # LC_TIME category, used for localized date formats (at least by coreutils)
-for i in af be bg ca cs da de el en eo es et eu fi fr ga gl hu id it ja ko lg lt \
+for i in af be bg ca cs da de el en eo es et eu fi fr ga gl hu id it ja kk ko lg lt \
 	ms nb nl pl pt pt_BR ro ru rw sk sl sv tr uk vi zh_CN zh_TW; do
 	if [ ! -d $RPM_BUILD_ROOT%{_datadir}/locale/$i ]; then
 		echo "%lang($lang) %{_datadir}/locale/$i" >> glibc.lang
@@ -456,15 +476,15 @@ chmod +x $RPM_BUILD_ROOT%{_bindir}/localedb-gen
 install localedata/SUPPORTED $RPM_BUILD_ROOT%{_datadir}/i18n
 
 # shutup check-files
-rm -f $RPM_BUILD_ROOT%{_mandir}/README.*
-rm -f $RPM_BUILD_ROOT%{_mandir}/diff.*
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 # we don't support kernel without ptys support
-rm -f $RPM_BUILD_ROOT%{_libdir}/pt_chown
-# rpcbind
-rm -f $RPM_BUILD_ROOT%{_mandir}/*/man8/rpcinfo.8
-rm -f $RPM_BUILD_ROOT%{_mandir}/man8/rpcinfo.8
-rm -f $RPM_BUILD_ROOT%{_sbindir}/rpcinfo
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/pt_chown
+
+%if 0
+%check
+cd builddir
+%{__make} -j1 check
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -493,47 +513,52 @@ fi
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc README NEWS FAQ BUGS
+%doc README NEWS BUGS
 %attr(755,root,root) /sbin/glibc-postinst
 # TODO: package ldconfig symlinks as %ghost
-%attr(755,root,root) /%{_lib}/ld-%{version}.so
+%attr(755,root,root) /%{_lib}/ld-*.so
 # wildly arch-dependent ld.so SONAME symlink
 %attr(755,root,root) /%{_lib}/ld-linux.so.2
-%attr(755,root,root) /%{_lib}/libBrokenLocale-%{version}.so
+%attr(755,root,root) /%{_lib}/libBrokenLocale-*.so
 %attr(755,root,root) /%{_lib}/libBrokenLocale.so.1
 %attr(755,root,root) /%{_lib}/libSegFault.so
-%attr(755,root,root) /%{_lib}/libanl-%{version}.so
+%attr(755,root,root) /%{_lib}/libanl-*.so
 %attr(755,root,root) /%{_lib}/libanl.so.1
-%attr(755,root,root) /%{_lib}/libc-%{version}.so
+%attr(755,root,root) /%{_lib}/libc-*.so
 %attr(755,root,root) /%{_lib}/libc.so.6
-%attr(755,root,root) /%{_lib}/libcidn-%{version}.so
+%attr(755,root,root) /%{_lib}/libcidn-*.so
 %attr(755,root,root) /%{_lib}/libcidn.so.1
-%attr(755,root,root) /%{_lib}/libcrypt-%{version}.so
+%attr(755,root,root) /%{_lib}/libcrypt-*.so
 %attr(755,root,root) /%{_lib}/libcrypt.so.1
-%attr(755,root,root) /%{_lib}/libdl-%{version}.so
+%attr(755,root,root) /%{_lib}/libdl-*.so
 %attr(755,root,root) /%{_lib}/libdl.so.2
-%attr(755,root,root) /%{_lib}/libm-%{version}.so
+%attr(755,root,root) /%{_lib}/libm-*.so
 %attr(755,root,root) /%{_lib}/libm.so.6
-%attr(755,root,root) /%{_lib}/libnsl-%{version}.so
+%attr(755,root,root) /%{_lib}/libnsl-*.so
 %attr(755,root,root) /%{_lib}/libnsl.so.1
-%attr(755,root,root) /%{_lib}/libpthread-%{version}.so
+%attr(755,root,root) /%{_lib}/libpthread-*.so
 %attr(755,root,root) /%{_lib}/libpthread.so.0
-%attr(755,root,root) /%{_lib}/libresolv-%{version}.so
+%attr(755,root,root) /%{_lib}/libresolv-*.so
 %attr(755,root,root) /%{_lib}/libresolv.so.2
-%attr(755,root,root) /%{_lib}/librt-%{version}.so
+%attr(755,root,root) /%{_lib}/librt-*.so
 %attr(755,root,root) /%{_lib}/librt.so.1
 %attr(755,root,root) /%{_lib}/libthread_db-1.0.so
 %attr(755,root,root) /%{_lib}/libthread_db.so.1
-%attr(755,root,root) /%{_lib}/libutil-%{version}.so
+%attr(755,root,root) /%{_lib}/libutil-*.so
 %attr(755,root,root) /%{_lib}/libutil.so.1
 
 %defattr(644,root,root,755)
-%attr(755,root,root) /%{_lib}/libnss_dns-%{version}.so
+%attr(755,root,root) /%{_lib}/libnss_dns-*.so
 %attr(755,root,root) /%{_lib}/libnss_dns.so.2
 
 %defattr(644,root,root,755)
-%attr(755,root,root) /%{_lib}/libnss_files-%{version}.so
+%attr(755,root,root) /%{_lib}/libnss_files-*.so
 %attr(755,root,root) /%{_lib}/libnss_files.so.2
+
+%attr(755,root,root) %{_bindir}/makedb
+%attr(755,root,root) /%{_lib}/libnss_db-*.so
+%attr(755,root,root) /%{_lib}/libnss_db.so.2
+%{_var}/db/Makefile
 
 %files -n ldconfig
 %defattr(644,root,root,755)
@@ -546,6 +571,9 @@ fi
 
 %files misc -f %{name}.lang
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/catchsegv
+%attr(755,root,root) %{_bindir}/ldd
+%attr(755,root,root) %{_bindir}/pldd
 
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/nsswitch.conf
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/gai.conf
@@ -558,7 +586,6 @@ fi
 %attr(755,root,root) %{_bindir}/getconf
 %attr(755,root,root) %{_bindir}/getent
 %attr(755,root,root) %{_bindir}/iconv
-%attr(755,root,root) %{_bindir}/ldd
 %attr(755,root,root) %{_bindir}/lddlibc4
 %attr(755,root,root) %{_bindir}/locale
 %attr(755,root,root) %{_bindir}/rpcgen
@@ -635,7 +662,7 @@ fi
 
 %files devel-doc
 %defattr(644,root,root,755)
-%doc documentation/* NOTES PROJECTS
+%doc documentation/* PROJECTS
 %{_infodir}/libc.info*
 
 %files -n localedb-src
@@ -672,6 +699,26 @@ fi
 %{_libdir}/libresolv.a
 %{_libdir}/librt.a
 %{_libdir}/libutil.a
+
+%files -n nss_compat
+%defattr(644,root,root,755)
+%attr(755,root,root) /%{_lib}/libnss_compat-*.so
+%attr(755,root,root) /%{_lib}/libnss_compat.so.2
+
+%files -n nss_hesiod
+%defattr(644,root,root,755)
+%attr(755,root,root) /%{_lib}/libnss_hesiod-*.so
+%attr(755,root,root) /%{_lib}/libnss_hesiod.so.2
+
+%files -n nss_nis
+%defattr(644,root,root,755)
+%attr(755,root,root) /%{_lib}/libnss_nis-*.so
+%attr(755,root,root) /%{_lib}/libnss_nis.so.2
+
+%files -n nss_nisplus
+%defattr(644,root,root,755)
+%attr(755,root,root) /%{_lib}/libnss_nisplus-*.so
+%attr(755,root,root) /%{_lib}/libnss_nisplus.so.2
 
 %files pic
 %defattr(644,root,root,755)
